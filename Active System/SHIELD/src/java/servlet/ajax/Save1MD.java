@@ -7,6 +7,7 @@ package servlet.ajax;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,9 +57,38 @@ public class Save1MD extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("<strong>Mission Details</strong> have been <strong>saved.</strong>");
+        
+        //Save Mission Details from SHIELD 1
+//        Mission mson = new Mission();
+//        mson.setTitle(request.getParameter("title"));
+//        mson.setObjective(request.getParameter("objective"));
+//        mson.setAreaName(request.getParameter("area"));
+//        mson.setSituation(request.getParameter("situation"));
+//        mson.setCommanderIntent(request.getParameter("commander-intent"));
+//        mson.setConceptOfOperations(request.getParameter("concept-of-operation"));
+//        mson.setThemesStressed(request.getParameter("theme-stress"));
+//        mson.setThemesAvoid(request.getParameter("theme-avoid"));
+//        int x = 0;
+//        ArrayList<Task> taskList = new ArrayList<Task>();
+//        Task tk;
+//        String element, task;
+//        do {
+//            element = request.getParameter("element" + x);
+//            if (element != null) {
+//                if (element != "") {
+//                    System.out.println("Making new task " + x);
+//                    tk = new Task();
+//                    tk.setId(x + 1);
+//                    tk.setPsyopElement(element);
+//                    tk.setText(request.getParameter("task" + x));
+//                    taskList.add(tk);
+//                    x++;
+//                }
+//            } else {
+//                x = -1;
+//            }
+//        } while (x != -1);
+//        mson.setTaskList(taskList);
     }
 
     /**

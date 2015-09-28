@@ -21,6 +21,23 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission1md.js"></script>
         <script src="js/mission-menu-builder.js"></script>
+        <script>
+            var missionID = '<%=request.getParameter("id")>';
+            alert('<%=request.getAttribute("id")%>');
+        </script>
+
+        <!--Google Map-->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script type="text/javascript">
+            var geocoder;
+            var map;
+            var marker;
+            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
+            var address;
+            var areaJSON;
+            var savedArea;
+
+        </script>
 
     </head>
 
@@ -63,8 +80,19 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Select Area:  </h5>
-                                        <input name="area" id="mission-area" class="form-box" placeholder="Search for an Area" required>
+                                        <h5>Mission Area:  </h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" value="Search Area" onclick="codeAddress()">
+                                                    Locate Area
+                                                </button>
+                                            </span>
+                                        </div><!-- /input-group -->
                                     </td>
                                 </tr>
                                 <tr>
@@ -76,22 +104,22 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Situation:  </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <textarea name="situation" id="mission-situation" rows="4" cols="50" class="form-box" placeholder="Enter Situation" style="height: 70px; margin-top: 5px;" required ></textarea>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
                                         <h5>Mission Objective:  </h5>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">
                                         <textarea name="objective" id="mission-objective" rows="4" cols="50" class="form-box" placeholder="Enter Mission Objective" style="height: 70px; margin-top: 5px;" required></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>Situation:  </h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <textarea name="situation" id="mission-situation" rows="4" cols="50" class="form-box" placeholder="Enter Situation" style="height: 70px; margin-top: 5px;" required ></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -116,7 +144,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <textarea name="concept-of-operation" id="concept-operations" rows="4" cols="50" class="form-box" placeholder="Enter Concept of Operations" style="height: 70px; margin-top: 5px;" required></textarea>
+                                        <textarea name="concept-of-operation" id="concept-of-operation" rows="4" cols="50" class="form-box" placeholder="Enter Concept of Operations" style="height: 70px; margin-top: 5px;" required></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -155,7 +183,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!--Notification Alert-->
         <div class="alert-messages text-center">
         </div>

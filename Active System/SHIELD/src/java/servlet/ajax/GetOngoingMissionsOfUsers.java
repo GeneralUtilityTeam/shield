@@ -11,13 +11,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  *
  * @author Dan Torres
  */
-public class BeginNewMission extends HttpServlet {
+public class GetOngoingMissionsOfUsers extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class BeginNewMission extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BeginNewMission</title>");
+            out.println("<title>Servlet GetOngoingMissions</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BeginNewMission at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetOngoingMissions at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,26 +58,30 @@ public class BeginNewMission extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String title = (String)request.getParameter("missionTitle");
-        String area = (String)request.getParameter("missionArea");
-        String objective = (String)request.getParameter("missionObjective");
+        JSONArray msonArray = new JSONArray();
         
-        JSONObject missionJSOB = new JSONObject();
-        //Create a random ID for mission
+        //Dummy data
+        JSONObject op1 = new JSONObject();
+        op1.put("id", "1");
+        op1.put("title", "OPERATION PAGKAMULAT");
+        op1.put("objective", "To increase voter population");
+        op1.put("area", "Pampanga");
+        op1.put("status", "5");
+        msonArray.put(op1);
         
-        //This is for dummy data
-        missionJSOB.put("id", 3);
-        missionJSOB.put("title", title);
-        missionJSOB.put("area", area);
-        missionJSOB.put("objective", objective);
+        JSONObject op2 = new JSONObject();
+        op2.put("id", "2");
+        op2.put("title", "OPERATION TIKAS");
+        op2.put("objective", "To increase voter population");
+        op2.put("area", "Dumaguete");
+        op2.put("status", "4");
+        msonArray.put(op2);
         
-        //Save Mission to database
+        String msonJSON = msonArray.toString();
         
-        String mission = missionJSOB.toString();
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(mission);
+        response.getWriter().write(msonJSON);
     }
 
     /**

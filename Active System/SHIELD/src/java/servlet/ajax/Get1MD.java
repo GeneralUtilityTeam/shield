@@ -17,7 +17,7 @@ import org.json.JSONObject;
  *
  * @author Dan Torres
  */
-public class BeginNewMission extends HttpServlet {
+public class Get1MD extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +36,10 @@ public class BeginNewMission extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BeginNewMission</title>");
+            out.println("<title>Servlet Get1MD</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BeginNewMission at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Get1MD at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,18 +57,26 @@ public class BeginNewMission extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String title = (String)request.getParameter("missionTitle");
-        String area = (String)request.getParameter("missionArea");
-        String objective = (String)request.getParameter("missionObjective");
+
+        String missionID = (String)request.getParameter("missionID");                
+        //Call DAO for Get1MD - use missionID
+        
+        JSONObject areaJSOB = new JSONObject();
+        areaJSOB.put("Longitude", "121.000");
+        areaJSOB.put("Latitude", "14.5800");
+        areaJSOB.put("Zoom", "17");
+        areaJSOB.put("Name", "Manila, Philippines");
+        
         
         JSONObject missionJSOB = new JSONObject();
         //Create a random ID for mission
         
         //This is for dummy data
-        missionJSOB.put("id", 3);
-        missionJSOB.put("title", title);
-        missionJSOB.put("area", area);
-        missionJSOB.put("objective", objective);
+        missionJSOB.put("id", missionID);
+        missionJSOB.put("title", "OPERATION PAGKAMULAT");
+        missionJSOB.put("area", areaJSOB);
+        missionJSOB.put("objective", "To increase voter population");
+
         
         //Save Mission to database
         

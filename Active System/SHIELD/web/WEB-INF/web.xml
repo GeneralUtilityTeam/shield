@@ -104,6 +104,14 @@
         <servlet-name>ENSourceView</servlet-name>
         <servlet-class>servlet.encoder.ENSourceView</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Get1MD</servlet-name>
+        <servlet-class>servlet.ajax.Get1MD</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetOngoingMissions</servlet-name>
+        <servlet-class>servlet.ajax.GetOngoingMissionsOfUsers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -207,6 +215,14 @@
     <servlet-mapping>
         <servlet-name>ENSourceView</servlet-name>
         <url-pattern>/ENSourceView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get1MD</servlet-name>
+        <url-pattern>/Get1MD</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetOngoingMissions</servlet-name>
+        <url-pattern>/GetOngoingMissions</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

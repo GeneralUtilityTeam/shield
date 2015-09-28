@@ -1,12 +1,42 @@
-function initialize(){
-    //replace first parameter with Mission Status - msonJSOB.status
-    buildNav(1, 1);
+function initialize() {
+    $.ajax({
+        type: "GET",
+        url: "Get1MD",
+        data: {
+            missionID: missionID
+        },
+        success: function (responseJSOB) {
+            msonJSOB = responseJSOB;
+            buildNav(msonJSOB.status, 1);
+            if (msonJSOB.title != 'undefined')
+                document.getElementById('mission-title').value = msonJSOB.title;
+            if (msonJSOB.area != null) {
+                document.getElementById('address').value = msonJSOB.area.Name;
+                areaJSON = msonJSOB.area;
+                initializeMap();
+            }
+            if (msonJSOB.objective != 'undefined')
+                document.getElementById('mission-objective').innerHTML = msonJSOB.objective;
+            if (msonJSOB.commanderIntent != 'undefined')
+                document.getElementById('commander-intent').innerHTML = msonJSOB.commanderIntent;
+            if (msonJSOB.conceptOfOperations != 'undefined')
+                document.getElementById('concept-of-operation').innerHTML = msonJSOB.conceptOfOperations;
+            if (msonJSOB.themesStress != 'undefined')
+                document.getElementById('theme-stress').innerHTML = msonJSOB.themesStress;
+            if (msonJSOB.themesAvoid != 'undefined')
+                document.getElementById('theme-avoid').innerHTML = msonJSOB.themesAvoid;
+            if (msonJSOB.situation != 'undefined')
+                document.getElementById('mission-situation').innerHTML = msonJSOB.situation;
+//            for (var x = 0; x < msonJSOB.taskList.length; x++) {
+//                addTask(msonJSOB.taskList[x].psyopElement, msonJSOB.taskList[x].text);
+//            }
+        }
+    });
 }
 function addTask(psyopElement, text) {
     var taskSection = document.getElementById("task-table");
     var row = document.createElement("tr");
     var cell = row.insertCell(0);
-
     var elementArea = document.createElement('textarea');
     elementArea.setAttribute("type", "text");
     elementArea.setAttribute("class", "form-box");
@@ -17,7 +47,6 @@ function addTask(psyopElement, text) {
     elementArea.setAttribute("style", "margin-top: 5px; width: 20%; resize: none");
     elementArea.innerHTML = psyopElement;
     cell.appendChild(elementArea);
-
     var taskArea = document.createElement('textarea');
     taskArea.setAttribute("type", "text;");
     taskArea.setAttribute("class", "form-box");
@@ -28,19 +57,161 @@ function addTask(psyopElement, text) {
     taskArea.setAttribute("style", "margin-top: 5px; width: 80%; resize: none");
     taskArea.innerHTML = text;
     cell.appendChild(taskArea);
-
     taskSection.appendChild(row);
     $('html, body').scrollTop($(document).height());
 }
 
-function saveMD(){
-    $.ajax({
-        type: "GET",
-        url: "Save1MD",
-        success: function (response) {
-            showAndDismissAlert("success", response);
-            setTimeout(function(){ window.location.assign("ANMission2DS") }, 3000);
+function saveMD() {
+    var missionTitle = document.getElementById("mission-title").value;
+    var missionArea = document.getElementById("address").value;
+    var missionObjective = document.getElementById("mission-objective").value;
+    var missionSituation = document.getElementById("mission-situation").value;
+    var commanderIntent = document.getElementById("commander-intent").value;
+    var conceptOfOperation = document.getElementById("concept-of-operation").value;
+    var themeStress = document.getElementById("theme-stress").value;
+    var themeAvoid = document.getElementById("theme-avoid").value;
+    //Please create variable for Task
+
+    if (missionTitle === "" || missionArea === "" || missionObjective === "" ||
+            missionSituation === "" || commanderIntent === "" || conceptOfOperation === "" ||
+            themeStress === "" || themeAvoid === "") {
+        showAndDismissAlert("danger", "<strong>Save Mission Details failed.</strong> Please complete the form.");
+    }
+    else {
+        $.ajax({
+            type: "GET",
+            url: "Save1MD",
+            data: {
+                missionTitle: missionTitle,
+                missionArea: saveElements(),
+                missionObjective: missionObjective,
+                missionSituation: missionSituation,
+                commanderIntent: commanderIntent,
+                conceptOfOperation: conceptOfOperation,
+                themeStress: themeStress,
+                themeAvoid: themeAvoid
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
+                setTimeout(function () {
+                    window.location.assign("ANMission2DS?id=" + missionID)
+                }, 3000);
+            }
+        });
+    }
+}
+
+function initializeMap() {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(areaJSON.Latitude, areaJSON.Longitude);
+    var mapOptions = {
+        zoom: 13,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById('mission1md-area-map'), mapOptions);
+    google.maps.event.addListener(map, 'click', function () {
+        infowindow.close();
+    });
+    savedArea = areaJSON.Name;
+    document.getElementById("address").value = savedArea;
+    geocoder.geocode({'address': savedArea}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            if (marker) {
+                marker.setMap(null);
+                if (infowindow)
+                    infowindow.close();
+            }
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                position: results[0].geometry.location
+            });
+            google.maps.event.addListener(marker, 'dragend', function () {
+                // updateMarkerStatus('Drag ended');
+                geocodePosition(marker.getPosition());
+            });
+            google.maps.event.addListener(marker, 'click', function () {
+                if (marker.formatted_address) {
+                    infowindow.setContent(marker.formatted_address + "<br>coordinates: " + marker.getPosition().toUrlValue(6));
+                } else {
+                    infowindow.setContent(savedArea + "<br>coordinates: " + marker.getPosition().toUrlValue(6));
+                }
+                infowindow.open(map, marker);
+            });
+            google.maps.event.trigger(marker, 'click');
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
         }
     });
 }
 
+function clone(obj) {
+    if (obj == null || typeof (obj) != 'object')
+        return obj;
+    var temp = new obj.constructor();
+    for (var key in obj)
+        temp[key] = clone(obj[key]);
+    return temp;
+}
+
+
+function geocodePosition(pos) {
+    geocoder.geocode({
+        latLng: pos
+    }, function (responses) {
+        if (responses && responses.length > 0) {
+            marker.formatted_address = responses[0].formatted_address;
+        } else {
+            marker.formatted_address = 'Cannot determine address at this location.';
+        }
+        infowindow.setContent(marker.formatted_address + "<br>coordinates: " + marker.getPosition().toUrlValue(6));
+        infowindow.open(map, marker);
+    });
+}
+
+function codeAddress() {
+    address = document.getElementById('address').value;
+    geocoder.geocode({'address': address}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            if (marker) {
+                marker.setMap(null);
+                if (infowindow)
+                    infowindow.close();
+            }
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                position: results[0].geometry.location
+            });
+            google.maps.event.addListener(marker, 'dragend', function () {
+                // updateMarkerStatus('Drag ended');
+                geocodePosition(marker.getPosition());
+            });
+            google.maps.event.addListener(marker, 'click', function () {
+                if (marker.formatted_address) {
+                    infowindow.setContent(marker.formatted_address + "<br>coordinates: " + marker.getPosition().toUrlValue(6));
+                } else {
+                    infowindow.setContent(address + "<br>coordinates: " + marker.getPosition().toUrlValue(6));
+                }
+                infowindow.open(map, marker);
+            });
+            google.maps.event.trigger(marker, 'click');
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+function saveElements() {
+    var mapElements = {
+        Longitude: map.getCenter().lng().toFixed(6),
+        Latitude: map.getCenter().lat().toFixed(6),
+        Zoom: map.getZoom(),
+        Name: address
+    };
+
+    var area = JSON.stringify(mapElements);
+    return area;
+}

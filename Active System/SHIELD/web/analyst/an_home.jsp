@@ -10,6 +10,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+        <!--Data Table-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+
         <!--Layout-->
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
@@ -20,6 +25,16 @@
 
         <!--Page Script-->
         <script src="analyst/pagescripts/an_home.js"></script>
+
+        <!--Google Map-->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script>
+            var geocoder;
+            var map;
+            var marker;
+            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
+            var address;
+        </script>
 
     </head>
     <body onload="initialize()">
@@ -35,25 +50,24 @@
                         Mission Status
                     </a>
                 </li>
-                <li><a data-toggle="modal" data-target="#beginMission">Begin New Mission</a></li>
+                <li><a data-toggle="modal" data-target="#beginMission" onclick="initializeMap()">Begin New Mission</a></li>
             </ul>
             <div id="content-shield" style="border-top: none; height: 82vh;">
                 <div id="myTabContent" class="tab-content">
 
                     <div class="tab-pane fade in active" id="mission-status">
-                        <table class="table table-bordered table-hover list-table">
-                            <caption class="matrix-caption" style="font-size: 18px;">MY ONGOING MISSIONS</caption>
-                            <thead style="background-color: #D3D3D3;">
-                                <tr  data-toggle="tooltip" data-placement="bottom"
-                                     title="Click Mission to proceed to Mission Cycle">
-                                    <th width="20%">Mission Title</th>
-                                    <th width="30%">Mission Objective</th>
-                                    <th width="30%">Area of Operation</th>
-                                    <th width="20%">Progress</th>
+                        <h4 style="font-weight: 700; text-align: center;">MY ONGOING MISSIONS</h4>
+                        <table id="mission-table" class="table table-hover table-bordered list-table" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Mission Title</th>
+                                    <th>Mission Objective</th>
+                                    <th>Area of Operation</th>
+                                    <th>Progress</th>
                                 </tr>
                             </thead>
-                            <tbody id="mission-table-body">
 
+                            <tbody id="mission-table-body">
                             </tbody>
                         </table>
                     </div>
@@ -84,7 +98,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="text" name="mission-title" class="form-box" placeholder="Enter Mission Title"required>
+                                    <input type="text" id="mission-title" class="form-box" placeholder="Enter Mission Title"required>
                                 </td>
                             </tr> 
                             <tr>
@@ -94,13 +108,20 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="text" name="mission-area" class="form-box" placeholder="Search for an Area"required>
+                                    <div class="input-group">
+                                        <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" value="Search Area" onclick="codeAddress()">
+                                                Locate Area
+                                            </button>
+                                        </span>
+                                    </div><!-- /input-group -->
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div id="mission-area-map">
-                                       
+
                                     </div>
                                 </td>
                             </tr>
@@ -111,7 +132,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <textarea rows="4" name="mission-objective" cols="50" class="form-box" placeholder="Enter Mission Objective" style="height: 70px; margin-top: 5px;" required></textarea>
+                                    <textarea rows="4" id="mission-objective" cols="50" class="form-box" placeholder="Enter Mission Objective" style="height: 70px; margin-top: 5px;" required></textarea>
                                 </td>
                             </tr>
 
