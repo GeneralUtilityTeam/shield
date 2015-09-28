@@ -104,6 +104,10 @@
         <servlet-name>ENSourceView</servlet-name>
         <servlet-class>servlet.encoder.ENSourceView</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SendElements</servlet-name>
+        <servlet-class>SendElements</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -207,6 +211,10 @@
     <servlet-mapping>
         <servlet-name>ENSourceView</servlet-name>
         <url-pattern>/ENSourceView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendElements</servlet-name>
+        <url-pattern>/SendElements</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
