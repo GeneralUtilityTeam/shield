@@ -109,8 +109,8 @@
         <servlet-class>servlet.ajax.Get1MD</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetOngoingMissions</servlet-name>
-        <servlet-class>servlet.ajax.GetOngoingMissionsOfUsers</servlet-class>
+        <servlet-name>GetOngoingMissionOfUser</servlet-name>
+        <servlet-class>servlet.ajax.GetOngoingMissionOfUser</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetAllMissions</servlet-name>
@@ -253,8 +253,8 @@
         <url-pattern>/Get1MD</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GetOngoingMissions</servlet-name>
-        <url-pattern>/GetOngoingMissions</url-pattern>
+        <servlet-name>GetOngoingMissionOfUser</servlet-name>
+        <url-pattern>/GetOngoingMissionOfUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetAllMissions</servlet-name>
