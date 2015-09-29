@@ -109,8 +109,8 @@
         <servlet-class>servlet.ajax.Get1MD</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetOngoingMissions</servlet-name>
-        <servlet-class>servlet.ajax.GetOngoingMissionsOfUsers</servlet-class>
+        <servlet-name>GetOngoingMissionOfUser</servlet-name>
+        <servlet-class>servlet.ajax.GetOngoingMissionOfUser</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetAllMissions</servlet-name>
@@ -143,6 +143,18 @@
     <servlet>
         <servlet-name>RemoveExcerptToMission</servlet-name>
         <servlet-class>servlet.ajax.RemoveExcerptFromMission</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetMissionNodes</servlet-name>
+        <servlet-class>servlet.ajax.GetMissionNodes</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetMissionEdges</servlet-name>
+        <servlet-class>servlet.ajax.GetMissionEdges</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCarverMatrix</servlet-name>
+        <servlet-class>servlet.ajax.CreateCarverMatrix</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -253,8 +265,8 @@
         <url-pattern>/Get1MD</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GetOngoingMissions</servlet-name>
-        <url-pattern>/GetOngoingMissions</url-pattern>
+        <servlet-name>GetOngoingMissionOfUser</servlet-name>
+        <url-pattern>/GetOngoingMissionOfUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetAllMissions</servlet-name>
@@ -287,6 +299,18 @@
     <servlet-mapping>
         <servlet-name>RemoveExcerptToMission</servlet-name>
         <url-pattern>/RemoveExcerptToMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetMissionNodes</servlet-name>
+        <url-pattern>/GetMissionNodes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetMissionEdges</servlet-name>
+        <url-pattern>/GetMissionEdges</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCarverMatrix</servlet-name>
+        <url-pattern>/CreateCarverMatrix</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
