@@ -5,8 +5,11 @@
  */
 package servlet.ajax;
 
+import dao.MissionDAO;
+import entity.Mission;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +21,7 @@ import org.json.JSONObject;
  *
  * @author Dan Torres
  */
-public class GetOngoingMissionsOfUsers extends HttpServlet {
+public class GetOngoingMissionOfUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,26 +61,16 @@ public class GetOngoingMissionsOfUsers extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        JSONArray msonArray = new JSONArray();
         
-        //Dummy data
-        JSONObject op1 = new JSONObject();
-        op1.put("id", "1");
-        op1.put("title", "OPERATION PAGKAMULAT");
-        op1.put("objective", "To increase voter population");
-        op1.put("area", "Pampanga");
-        op1.put("status", "5");
-        msonArray.put(op1);
-        
-        JSONObject op2 = new JSONObject();
-        op2.put("id", "2");
-        op2.put("title", "OPERATION TIKAS");
-        op2.put("objective", "To increase voter population");
-        op2.put("area", "Dumaguete");
-        op2.put("status", "4");
-        msonArray.put(op2);
-        
-        String msonJSON = msonArray.toString();
+//        int userID = 2;
+//        MissionDAO msonDAO = new MissionDAO();
+//        ArrayList<Mission> msonList = msonDAO.GetAllOngoingMissionOfUser(userID);
+//        String msonJSON = new JSONArray(msonList).toString();
+
+        MissionDAO msonDAO = new MissionDAO();
+        ArrayList msonList = msonDAO.GetAllOngoingMissionOfUser(2);
+        JSONArray msonJArr = new JSONArray(msonList);
+        String msonJSON = msonJArr.toString();
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
