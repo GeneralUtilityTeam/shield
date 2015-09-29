@@ -24,7 +24,7 @@ public class ANMission1MD extends FatherServlet {
 
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission1md.jsp");
         dispatch.forward(request, response);

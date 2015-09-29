@@ -22,8 +22,7 @@
         <script src="analyst/pagescripts/an_mission1md.js"></script>
         <script src="js/mission-menu-builder.js"></script>
         <script>
-            var missionID = '<%=request.getParameter("id")>';
-            alert('<%=request.getAttribute("id")%>');
+            var msonJSOB = <%=request.getParameter("id")%>;
         </script>
 
         <!--Google Map-->

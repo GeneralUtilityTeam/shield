@@ -142,14 +142,13 @@ function codeAddress() {
 }
 
 function saveElements() {
-                var mapElements = {
-                    Longitude: marker.getPosition().lng().toFixed(6),
-                    Latitude: marker.getPosition().lat().toFixed(6),
-                    Zoom: map.getZoom(),
-                    Name: marker.formatted_address
-                };
+    var mapElements = {
+        Longitude: map.getCenter().lng().toFixed(6),
+        Latitude: map.getCenter().lat().toFixed(6),
+        Zoom: map.getZoom(),
+        Name: address
+    };
 
-                var stringElements = JSON.stringify(mapElements);
-                alert(stringElements);
-                window.location.assign("SendElements?area=" + stringElements);
-            }
+    var area = JSON.stringify(mapElements);
+    return area;
+}
