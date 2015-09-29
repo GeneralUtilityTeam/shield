@@ -10,6 +10,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+        <!--Data Table-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+        
         <!--Layout-->
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
@@ -29,16 +34,16 @@
         <div id="container-fluid">
             <div id="content-shield" style="border-top: none;">
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addSource" style="margin-right: 1vw;"><span class="glyphicon glyphicon-plus"></span> Add New Source</button>
+                    <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addSource" style="margin-right: 1vw; margin-bottom: 1vw;"><span class="glyphicon glyphicon-plus"></span> Add New Source</button>
 
-                    <table class="table table-bordered table-hover list-table">
+                    <table id="source-table" class="table table-bordered table-hover list-table">
                         <thead style="background-color: #D3D3D3;">
-                        <th style="width: 25%;">Type</th>
-                        <th style="width: 30%;">Name</th>
-                        <th style="width: 30%;">Description</th>
-                        <th style="width: 15%;">Date Published</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Date Published</th>
                         </thead>
-                        <tbody id="src-table">
+                        <tbody id="source-table-body">
                         </tbody>
                     </table>
                 </div>

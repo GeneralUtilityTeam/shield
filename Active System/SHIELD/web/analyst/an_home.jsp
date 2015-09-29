@@ -58,7 +58,7 @@
                     <div class="tab-pane fade in active" id="mission-status">
                         <h4 style="font-weight: 700; text-align: center;">MY ONGOING MISSIONS</h4>
                         <table id="mission-table" class="table table-hover table-bordered list-table" cellspacing="0" width="100%">
-                            <thead>
+                            <thead style="background-color: #D3D3D3;">
                                 <tr>
                                     <th>Mission Title</th>
                                     <th>Mission Objective</th>

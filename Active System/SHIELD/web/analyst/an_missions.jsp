@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <!--Data Table-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
 
         <!--Layout-->
         <link href="css/layout.css" rel="stylesheet" type="text/css">
@@ -29,17 +34,17 @@
 
         <div id="container-fluid">
             <div id="content-shield" style="border-top: none;">
-                <table class="table table-bordered table-hover list-table">
-                            <caption class="matrix-caption" style="font-size: 18px;">ALL MISSIONS</caption>
+                <h4 style="font-weight: 700; text-align: center;">ALL MISSIONS</h4>
+                <table id="mission-table" class="table table-bordered table-hover list-table" width="100%">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
-                                    <th width="20%">Mission Title</th>
-                                    <th width="30%">Mission Objective</th>
-                                    <th width="30%">Area of Operation</th>
-                                    <th width="20%">Progress</th>
+                                    <th>Mission Title</th>
+                                    <th>Mission Objective</th>
+                                    <th>Area of Operation</th>
+                                    <th>Progress</th>
                                 </tr>
                             </thead>
-                            <tbody id="existing-table-body">
+                            <tbody id="mission-table-body">
                                
                                 </tbody>
                         </table>
