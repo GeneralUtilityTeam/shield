@@ -1,28 +1,28 @@
 function initialize() {
-    alert(msonJSOB);
+    console.log(msonJSOB);
     buildNav(msonJSOB.status, 1);
     if (msonJSOB.title != 'undefined')
         document.getElementById('mission-title').value = msonJSOB.title;
-    if (msonJSOB.area != null) {
-        document.getElementById('address').value = msonJSOB.area.Name;
+    if (msonJSOB.lat != null && msonJSOB.lng != null) {
+        document.getElementById('address').value = msonJSOB.area;
         areaJSON = msonJSOB.area;
         initializeMap();
     }
-    if (msonJSOB.objective != 'undefined')
+    if (msonJSOB.objective != null)
         document.getElementById('mission-objective').innerHTML = msonJSOB.objective;
-    if (msonJSOB.commanderIntent != 'undefined')
+    if (msonJSOB.commanderIntent != null)
         document.getElementById('commander-intent').innerHTML = msonJSOB.commanderIntent;
-    if (msonJSOB.conceptOfOperations != 'undefined')
-        document.getElementById('concept-of-operation').innerHTML = msonJSOB.conceptOfOperations;
-    if (msonJSOB.themesStress != 'undefined')
-        document.getElementById('theme-stress').innerHTML = msonJSOB.themesStress;
-    if (msonJSOB.themesAvoid != 'undefined')
-        document.getElementById('theme-avoid').innerHTML = msonJSOB.themesAvoid;
-    if (msonJSOB.situation != 'undefined')
+    if (msonJSOB.conceptOfOperation != null)
+        document.getElementById('concept-of-operation').innerHTML = msonJSOB.conceptOfOperation;
+    if (msonJSOB.themeStress != null)
+        document.getElementById('theme-stress').innerHTML = msonJSOB.themeStress;
+    if (msonJSOB.themeAvoid != null)
+        document.getElementById('theme-avoid').innerHTML = msonJSOB.themeAvoid;
+    if (msonJSOB.situation != null)
         document.getElementById('mission-situation').innerHTML = msonJSOB.situation;
-//            for (var x = 0; x < msonJSOB.taskList.length; x++) {
-//                addTask(msonJSOB.taskList[x].psyopElement, msonJSOB.taskList[x].text);
-//            }
+//    for (var x = 0; x < msonJSOB.taskList.length; x++) {
+//        addTask(msonJSOB.taskList[x].psyopElement, msonJSOB.taskList[x].text);
+//     }
 }
 function addTask(psyopElement, text) {
     var taskSection = document.getElementById("task-table");
@@ -94,9 +94,9 @@ function saveMD() {
 
 function initializeMap() {
     geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(areaJSON.Latitude, areaJSON.Longitude);
+    var latlng = new google.maps.LatLng(msonJSOB.lat, msonJSOB.lng);
     var mapOptions = {
-        zoom: 13,
+        zoom: msonJSOB.scope,
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }

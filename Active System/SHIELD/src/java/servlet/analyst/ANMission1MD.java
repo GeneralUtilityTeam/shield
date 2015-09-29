@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import servlet.father.FatherServlet;
 
 /**
@@ -28,8 +29,8 @@ public class ANMission1MD extends FatherServlet {
             throws ServletException, IOException {
          
         MissionDAO msonDAO = new MissionDAO();
-        String msonJSOB = new JSONArray().toString();
-        request.setAttribute("msonJSOB", this);
+        String msonJSOB = new JSONObject(msonDAO.GetMission(Integer.parseInt(request.getParameter("id")))).toString();
+        request.setAttribute("msonJSOB", msonJSOB);
         
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission1md.jsp");
