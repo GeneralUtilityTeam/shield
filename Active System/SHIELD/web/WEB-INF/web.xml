@@ -112,6 +112,14 @@
         <servlet-name>GetOngoingMissions</servlet-name>
         <servlet-class>servlet.ajax.GetOngoingMissionsOfUsers</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAllMissions</servlet-name>
+        <servlet-class>servlet.ajax.GetAllMissions</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetAllSources</servlet-name>
+        <servlet-class>servlet.ajax.GetAllSources</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -223,6 +231,14 @@
     <servlet-mapping>
         <servlet-name>GetOngoingMissions</servlet-name>
         <url-pattern>/GetOngoingMissions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAllMissions</servlet-name>
+        <url-pattern>/GetAllMissions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAllSources</servlet-name>
+        <url-pattern>/GetAllSources</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
