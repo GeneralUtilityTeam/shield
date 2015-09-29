@@ -120,6 +120,30 @@
         <servlet-name>GetAllSources</servlet-name>
         <servlet-class>servlet.ajax.GetAllSources</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetExcerptOfMission</servlet-name>
+        <servlet-class>servlet.ajax.GetExcerptOfMission</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PrimaryExcerptSearch</servlet-name>
+        <servlet-class>servlet.ajax.PrimaryExcerptSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetExcerpt</servlet-name>
+        <servlet-class>servlet.ajax.GetExcerpt</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SecondaryExcerptSearch</servlet-name>
+        <servlet-class>servlet.ajax.SecondaryExcerptSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddExcerptToMission</servlet-name>
+        <servlet-class>servlet.ajax.AddExcerptToMission</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveExcerptToMission</servlet-name>
+        <servlet-class>servlet.ajax.RemoveExcerptFromMission</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -239,6 +263,30 @@
     <servlet-mapping>
         <servlet-name>GetAllSources</servlet-name>
         <url-pattern>/GetAllSources</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetExcerptOfMission</servlet-name>
+        <url-pattern>/GetExcerptOfMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PrimaryExcerptSearch</servlet-name>
+        <url-pattern>/PrimaryExcerptSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetExcerpt</servlet-name>
+        <url-pattern>/GetExcerpt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SecondaryExcerptSearch</servlet-name>
+        <url-pattern>/SecondaryExcerptSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddExcerptToMission</servlet-name>
+        <url-pattern>/AddExcerptToMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveExcerptToMission</servlet-name>
+        <url-pattern>/RemoveExcerptToMission</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
