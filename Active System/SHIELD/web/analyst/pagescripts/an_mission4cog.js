@@ -1,6 +1,6 @@
 function initialize() {
     //replace first parameter with Mission Status - msonJSOB.status
-    buildNav(4, 4);
+    buildNav(msonStatus, 4);
     draw();
 }
 
@@ -32,7 +32,7 @@ var options = {
             var x = nodes.get(data.from);
             var y = nodes.get(data.to);
             if (x.group == y.group) {
-                showAndDismissAlert("danger","You cannot connect the <strong>node to itself</strong>.");
+                showAndDismissAlert("danger", "You cannot connect the <strong>node to itself</strong>.");
                 end();
             }
             if (
@@ -43,7 +43,7 @@ var options = {
                     (x.group == "cc" && y.group == "cv") ||
                     (x.group == "cv" && y.group == "cc")
                     ) {
-                showAndDismissAlert("danger","You cannot connect <strong>" + x.group.toUpperCase() + "</strong> to <strong>" + y.group.toUpperCase() + "</strong>.");
+                showAndDismissAlert("danger", "You cannot connect <strong>" + x.group.toUpperCase() + "</strong> to <strong>" + y.group.toUpperCase() + "</strong>.");
             }
 
             else {
@@ -113,15 +113,38 @@ edges = new vis.DataSet();
 function draw() {
     // create a network   
     var container = document.getElementById('mynetwork');
-
-    if (nodesArray != null) {
-        for (var x = 0; x < nodesArray.length; x++) {
-            nodes.add(nodesArray[x]);
-        }
+    //for COG already created
+    if (msonStatus > 4) {
+        $.ajax({
+            type: "GET",
+            url: "GetMissionNodes",
+            data: {
+                missionID: missionID
+            },
+            success: function (missionNodes) {
+                for (var x = 0; x < missionNodes.length; x++) {
+                    nodes.add(missionNodes[x]);
+                }
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "GetMissionEdges",
+            data: {
+                missionID: missionID
+            },
+            success: function (missionEdges) {
+                for (var x = 0; x < missionEdges.length; x++) {
+                    edges.add(missionEdges[x]);
+                }
+            }
+        });
     }
-    if (edgesArray != null) {
-        for (var x = 0; x < edgesArray.length; x++) {
-            edges.add(edgesArray[x]);
+    //for COG created from PCO labels
+    else if (msonStatus == "4" && missionLabels != null) {
+        for (var x = 0; x < missionLabels.length; x++) {
+            var newId = (Math.random() * 1e7).toString(32);
+            nodes.add({id: newId, label: missionLabels[x], group: ""});
         }
     }
 
@@ -167,49 +190,60 @@ function saveData(data, callback) {
 
 function saveCOG() {
     
-     $.ajax({
+    //get CR and CVs connected to it
+    var cr = nodes.get({
+        filter: function (items) {
+            return (items.group == "cr");
+        }
+    });
+    for (var x = 0; x < cr.length; x++) {
+        var crConnected = network.getConnectedNodes(cr[x].id);
+        var cvConnectedToCr = [];
+        if (crConnected != null) {
+            for (var y = 0; y < crConnected.length; y++) {
+                if (nodes.get(crConnected[y]).group === "cv") {
+                    cvConnectedToCr.push(nodes.get(crConnected[y]));
+                }
+            }
+        }
+        $.ajax({
+            type: "GET",
+            url: "CreateCarverMatrix",
+            data: {
+                missionID: missionID,
+                cr: cr[x].id,
+                cv: cvConnectedToCr
+            }
+        });
+    }
+
+    //Save Nodes and Edges
+    var saveNodes = nodes.get({
+        fields: ['id', 'label', 'group'],
+        type: {
+            group: 'String'                 // convert the group fields to Strings
+        }
+    });
+    var saveEdges = edges.get();
+    var nodesJSON = JSON.stringify(saveNodes);
+    var edgesJSON = JSON.stringify(saveEdges);
+
+    $.ajax({
         type: "GET",
         url: "Save4COG",
+        data: {
+            missionID: missionID,
+            missionNodes: nodesJSON,
+            missionEdges: edgesJSON
+        },
         success: function (response) {
-            showAndDismissAlert("success", response);
+            showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
             setTimeout(function () {
                 window.location.assign("ANMission5TCOA")
             }, 3000);
         }
     });
-//    var saveNodes = nodes.get({
-//        fields: ['id', 'label', 'group'],
-//        type: {
-//            group: 'String'                 // convert the group fields to Strings
-//        }
-//    });
-//    var saveEdges = edges.get();
-//    var nodesJSON = JSON.stringify(saveNodes);
-//    var edgesJSON = JSON.stringify(saveEdges);
-//
-//    //get CR and CVs connected to it
-//    var cr = nodes.get({
-//        filter: function (items) {
-//            return (items.group == "cr");
-//        }
-//    })
-//
-//    for (var x = 0; x < cr.length; x++) {
-//        var crConnected = network.getConnectedNodes(cr[x].id);
-//        var cvConnectedToCr = [];
-//        alert(cr[x].id);
-//        for (var y = 0; y < crConnected.length; y++) {
-//            alert(crConnected[y]);
-//            if (nodes.get(crConnected[y]).group === "cv") {
-//                cvConnectedToCr.push(nodes.get(crConnected[y]));
-//            }
-//        }
-//        for (var z = 0; z < cvConnectedToCr.length; z++) {
-//            alert(cvConnectedToCr[z].label);
-//        }
-//    }
-//
-//    window.location.assign("LoadNextPage?nodes=" + nodesJSON + "&edges=" + edgesJSON);
+ 
 }
 
 

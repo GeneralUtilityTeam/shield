@@ -144,6 +144,18 @@
         <servlet-name>RemoveExcerptToMission</servlet-name>
         <servlet-class>servlet.ajax.RemoveExcerptFromMission</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetMissionNodes</servlet-name>
+        <servlet-class>servlet.ajax.GetMissionNodes</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetMissionEdges</servlet-name>
+        <servlet-class>servlet.ajax.GetMissionEdges</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCarverMatrix</servlet-name>
+        <servlet-class>servlet.ajax.CreateCarverMatrix</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -287,6 +299,18 @@
     <servlet-mapping>
         <servlet-name>RemoveExcerptToMission</servlet-name>
         <url-pattern>/RemoveExcerptToMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetMissionNodes</servlet-name>
+        <url-pattern>/GetMissionNodes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetMissionEdges</servlet-name>
+        <url-pattern>/GetMissionEdges</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCarverMatrix</servlet-name>
+        <url-pattern>/CreateCarverMatrix</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

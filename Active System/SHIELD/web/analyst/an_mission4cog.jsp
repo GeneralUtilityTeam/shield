@@ -31,6 +31,10 @@
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
+            var msonStatus = <%=request.getAttribute("msonStatus")%>;
+            var missionID = <%=request.getAttribute("msonID")%>;
+            
+            var missionLabels = '<%=request.getAttribute("labels")%>';
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });
