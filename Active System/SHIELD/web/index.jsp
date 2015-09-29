@@ -17,9 +17,20 @@
         <!--General Scripts-->
         <script src="js/util.js"></script>
         <script  src="js/alert.js"></script>
+        <script type="text/javascript">
+            var message = '<%=session.getAttribute("message")%>';
+            <%
+            session.removeAttribute("message");
+            %>
+            function initialize(){
+                if(message != 'null')
+                    showAndDismissAlert('warning', 'Incorrect Login Details')
+            }
+            
+            </script>
 
     </head>
-    <body style="background-image: url('images/CMOG_BG.jpg'); background-size: cover; background-repeat: no-repeat;">
+    <body style="background-image: url('images/CMOG_BG.jpg'); background-size: cover; background-repeat: no-repeat;" onload="initialize()">
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand active" href="#"><span><img src="images/SHIELD LOGO.PNG" height="25px" width="22px"></span> SHIELD</a>

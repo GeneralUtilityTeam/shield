@@ -77,7 +77,7 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         //Create return variables
         HttpSession session = request.getSession();
-        String destination = "/index.jsp";
+        String destination = "index.jsp";
         String dispatchLocation = "/index.jsp";
         String message = "";
         String login = "bad";
@@ -102,6 +102,7 @@ public class Login extends HttpServlet {
                         destination = "ADHome";
                         break;
                     case 2: //Analyst
+                        System.out.println("working");
                         destination = "ANHome";
                         break;
                     case 3: //Encoder
@@ -111,8 +112,6 @@ public class Login extends HttpServlet {
 
                 //Set Session Variables
                 login = "good";
-                //ShieldUtility su = new ShieldUtilitiy();
-                //message = 
                 session.setAttribute("classID", user.getClassID());
                 session.setAttribute("uname", user.getUname());
             }
@@ -120,9 +119,10 @@ public class Login extends HttpServlet {
 
         session.setAttribute("message", message);
         session.setAttribute("login", login);
+        request.setAttribute("destination", destination);
         //sess
         ServletContext servcont = getServletContext();
-        RequestDispatcher dispatch = servcont.getRequestDispatcher("/analyst/an_home.jsp");
+        RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
         dispatch.forward(request, response);
     }
 
