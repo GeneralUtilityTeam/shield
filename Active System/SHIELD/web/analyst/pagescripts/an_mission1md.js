@@ -1,6 +1,6 @@
 function initialize() {
     console.log(msonJSOB);
-    buildNav(msonJSOB.status, 1);
+    buildNav(missionStatus, 1);
     if (msonJSOB.title != 'undefined')
         document.getElementById('mission-title').value = msonJSOB.title;
     if (msonJSOB.lat != null && msonJSOB.lng != null) {

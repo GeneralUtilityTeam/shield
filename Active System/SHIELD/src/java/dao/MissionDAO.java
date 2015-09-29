@@ -50,15 +50,13 @@ public class MissionDAO {
                 mson.setConceptOfOperation(rs.getString(9));
                 mson.setThemeStress(rs.getString(10));
                 mson.setThemeAvoid(rs.getString(11));
+                mson.setUserID(rs.getInt(12));
                 
                 pstmt = cn.prepareStatement("CALL `shield`.`6840`(?);");
                 pstmt.setInt(1, missionID);
                 rs = pstmt.executeQuery();
                 rs.next();
-                if (rs.getRow() == 0) {
-                    cn.close();
-                    return null;
-                } else {
+                if (rs.getRow() != 0) {
                     ArrayList<Task> taskList = new ArrayList<Task>();
                     do {
                         taskList.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3)));
@@ -84,12 +82,13 @@ public class MissionDAO {
             pstmt.setInt(1, missionID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
-            
+            System.out.println("Get Mission Status" + rs.getInt(1));
             if (rs.getRow() == 0) {
                 cn.close();
                 return 0;
             } else {
                 cn.close();
+                
                 return rs.getInt(1);
             }
         } catch (SQLException ex) {

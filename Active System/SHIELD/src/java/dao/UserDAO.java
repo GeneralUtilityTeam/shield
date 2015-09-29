@@ -60,5 +60,36 @@ public class UserDAO {
         }
         return null;
     }
-    
+    public String GetFullName(int id){
+        try{
+            //Create Connection
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+            
+            //Prepare the statement which will use a stored procedure
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`5883`(?)");
+            pstmt.setInt(1, id);
+            
+            //Run statement and advance to first line
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+        
+            String fullName = null;
+            
+            if(rs.getRow() != 0){ 
+                String title = rs.getString(1);
+                String first = rs.getString(2);
+                String other = rs.getString(3);
+                String last = rs.getString(4);
+                
+                fullName = (title == null? "" : title + ". ") + (first == null ? "" : first + " ") + (other == null ? "" : other + " ") + (last == null ? "" : last + " "); 
+            }
+            cn.close();
+            return fullName;
+            
+        } catch(SQLException ex){
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

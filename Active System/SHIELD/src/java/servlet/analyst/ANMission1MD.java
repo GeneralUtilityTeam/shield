@@ -6,6 +6,8 @@
 package servlet.analyst;
 
 import dao.MissionDAO;
+import dao.UserDAO;
+import entity.Mission;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -28,9 +30,24 @@ public class ANMission1MD extends FatherServlet {
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          
+        HttpSession session = request.getSession();
+        String missionIDString = request.getParameter("id");
+         
+        if(missionIDString == null)
+            missionIDString = session.getAttribute("missionID").toString();
+        int missionID = Integer.parseInt(missionIDString);
         MissionDAO msonDAO = new MissionDAO();
-        String msonJSOB = new JSONObject(msonDAO.GetMission(Integer.parseInt(request.getParameter("id")))).toString();
+        Mission mson = msonDAO.GetMission(missionID);
+        String msonJSOB = new JSONObject(mson).toString();
         request.setAttribute("msonJSOB", msonJSOB);
+        
+        UserDAO userDAO = new UserDAO();
+        String analystName = userDAO.GetFullName(mson.getUserID());
+        session.setAttribute("missionID", missionID);
+        session.setAttribute("missionTitle", mson.getTitle());
+        session.setAttribute("missionStatus", mson.getStatus());
+        session.setAttribute("analystName", analystName);
+        
         
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission1md.jsp");

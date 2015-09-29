@@ -102,7 +102,6 @@ public class Login extends HttpServlet {
                         destination = "ADHome";
                         break;
                     case 2: //Analyst
-                        System.out.println("working");
                         destination = "ANHome";
                         break;
                     case 3: //Encoder
@@ -113,7 +112,8 @@ public class Login extends HttpServlet {
                 //Set Session Variables
                 login = "good";
                 session.setAttribute("classID", user.getClassID());
-                session.setAttribute("uname", user.getUname());
+                session.setAttribute("userUname", user.getUname());
+                session.setAttribute("userID", user.getId());
             }
         }
 

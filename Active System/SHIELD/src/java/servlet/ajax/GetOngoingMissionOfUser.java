@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -66,9 +67,10 @@ public class GetOngoingMissionOfUser extends HttpServlet {
 //        MissionDAO msonDAO = new MissionDAO();
 //        ArrayList<Mission> msonList = msonDAO.GetAllOngoingMissionOfUser(userID);
 //        String msonJSON = new JSONArray(msonList).toString();
-
+        HttpSession session = request.getSession();
+        int userID = Integer.parseInt(session.getAttribute("userID").toString());
         MissionDAO msonDAO = new MissionDAO();
-        ArrayList msonList = msonDAO.GetAllOngoingMissionOfUser(2);
+        ArrayList msonList = msonDAO.GetAllOngoingMissionOfUser(userID);
         JSONArray msonJArr = new JSONArray(msonList);
         String msonJSON = msonJArr.toString();
         

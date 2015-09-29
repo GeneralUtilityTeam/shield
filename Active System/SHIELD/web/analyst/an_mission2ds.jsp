@@ -27,6 +27,8 @@
 
         <script>
             var msonStatus = <%=request.getAttribute("msonStatus")%>;
+            var missionTitle = '<%=session.getAttribute("missionTitle")%>';
+            var analystName = '<%=session.getAttribute("analystName")%>';
             var missionID = <%=request.getAttribute("msonID")%>;
             $(function () {
                 $('#collapseTwo').collapse('hide')

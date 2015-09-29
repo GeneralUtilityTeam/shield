@@ -26,6 +26,9 @@
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script type="text/javascript">
             var msonJSOB = <%=request.getAttribute("msonJSOB")%>;
+            var missionTitle = '<%=session.getAttribute("missionTitle")%>';
+            var missionStatus = <%=session.getAttribute("missionStatus")%>;
+            var analystName = '<%=session.getAttribute("analystName")%>';
             var geocoder;
             var map;
             var marker;
