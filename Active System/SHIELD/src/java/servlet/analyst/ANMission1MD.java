@@ -5,6 +5,7 @@
  */
 package servlet.analyst;
 
+import dao.MissionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import servlet.father.FatherServlet;
 
 /**
@@ -24,7 +26,11 @@ public class ANMission1MD extends FatherServlet {
 
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+         
+        MissionDAO msonDAO = new MissionDAO();
+        String msonJSOB = new JSONArray().toString();
+        request.setAttribute("msonJSOB", this);
+        
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission1md.jsp");
         dispatch.forward(request, response);

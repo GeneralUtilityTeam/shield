@@ -21,13 +21,11 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission1md.js"></script>
         <script src="js/mission-menu-builder.js"></script>
-        <script>
-            var msonJSOB = <%=request.getParameter("id")%>;
-        </script>
 
         <!--Google Map-->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script type="text/javascript">
+            var msonJSOB = <%=request.getParameter("id")%>;
             var geocoder;
             var map;
             var marker;
