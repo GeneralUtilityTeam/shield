@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Cyril Torres
+ * @author Dan Torres
  */
-public class RemoveExcerptFromMission extends HttpServlet {
+public class Save2PCO extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +35,10 @@ public class RemoveExcerptFromMission extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RemoveExcerptToMission</title>");
+            out.println("<title>Servlet Save2PCO</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RemoveExcerptToMission at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Save2PCO at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,20 +56,9 @@ public class RemoveExcerptFromMission extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ExcerptDAO excrDAO = new ExcerptDAO();
-        int excerptID = Integer.parseInt(request.getParameter("excerptID"));
-        int missionID = Integer.parseInt(request.getParameter("missionID"));
-        boolean success = excrDAO.removeExcerptFromMission(excerptID, missionID);
-        String message = "";
-        if (success) {
-            message = "Excerpt removed from Mission";
-        } else {
-            message = "Unable to remove Excerpt from Mission";
-        }
-
-        response.setContentType("application/text");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(message);
+        response.getWriter().write("<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
     }
 
     /**

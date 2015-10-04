@@ -11,14 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
- * @author Cyril Torres
+ * @author Dan Torres
  */
-public class GetExcerpt extends HttpServlet {
+public class Save3COG extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +35,10 @@ public class GetExcerpt extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetExcerpt</title>");
+            out.println("<title>Servlet Save3COG</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GetExcerpt at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Save3COG at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,38 +56,9 @@ public class GetExcerpt extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-            //Code from SHIELD 1.1
-//        ExcerptDAO excrDAO = new ExcerptDAO();
-//        Excerpt excr = excrDAO.getExcerpt(Integer.parseInt(request.getParameter("excerptID")));
-//        SourceDAO srcDAO = new SourceDAO();
-//        excr.setSourceName(srcDAO.getSource(excr.getSourceId()).getName());
-//        String infrJSOB = new JSONObject(excr).toString();
-        
-        //Dummy Data
-        JSONArray excrArray = new JSONArray();
-        JSONArray tagsArray = new JSONArray();
-        
-        //Dummy data
-        JSONObject excr1 = new JSONObject();
-        excr1.put("id", "1");
-        excr1.put("text", "There are 10,000 people in Maguindanao");
-        excr1.put("category", "Social");
-        excr1.put("source", "Maguindanao Area Study");
-        tagsArray.put("Maguindanao");
-        tagsArray.put("Population");
-        excr1.put("tags", tagsArray);
-        excrArray.put(excr1);
-        String infrJSON = excrArray.toString();
-        
-        
-        
-        //Code from SHIELD 1.1
-        //ExcerptDAO excrDAO = new ExcerptDAO();
-        //String infrJSON = new JSONArray(excrDAO.primarySearch(request.getParameter("param"))).toString();
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(infrJSON);
+        response.getWriter().write("<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
     }
 
     /**

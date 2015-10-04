@@ -21,13 +21,20 @@
         <!--Sliding Side Bar CSS-->
         <link href="css/BootSideMenu.css" rel="stylesheet">
 
+        <!--Vis.js Plugin-->
+        <script type="text/javascript" src="js/vis.js"></script>
+        <link href="css/vis.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
         <!--Page Script-->
-        <script src="analyst/pagescripts/an_mission2ds.js"></script>
+        <script src="analyst/pagescripts/an_mission3cog.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
             var msonStatus = <%=request.getAttribute("msonStatus")%>;
             var missionID = <%=request.getAttribute("msonID")%>;
+            
+            var missionLabels = '<%=request.getAttribute("labels")%>';
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });
@@ -35,6 +42,37 @@
                 $('#collapseOne').collapse('show')
             });
         </script>
+
+        <!--Vis.js Style-->
+        <style type="text/css">
+            #mynetwork {
+                position: absolute;
+                top: 1vh;
+                margin-left: 1vw;
+                width: 74vw;
+                height: 77vh;
+                border: 1px solid #cccccc;
+            }
+
+            #operation {
+                font-size:28px;
+            }
+            #network-popUp {
+                display:none;
+                position:absolute;
+                top:150px;
+                left:170px;
+                z-index:299;
+                width:250px;
+                height:150px;
+                background-color: #f9f9f9;
+                border-style:solid;
+                border-width:3px;
+                border-color: #5394ed;
+                padding:10px;
+                text-align: center;
+            }
+        </style>
 
     </head>
 
@@ -55,109 +93,87 @@
                 </div>
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="saveDS()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Characterstics Overlay</button>
+                        <button type="button" onclick="saveCOG()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to Threat Course of Action</button>
                     </div>
-
-
-                    <div id="data-sources">
-                        <div class="col-md-9">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td width="10%"><h4>Search: </h4></td>
-                                        <td width="90%"><input type="text" id="search-field" class="form-box tt-query" autocomplete="off" spellcheck="false" placeholder="Search from All Data Sources" required></td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <hr>
-                            <table class="excerpt-list" style="width: 100%;"  id="result-table">
-
-                            </table> 
-                        </div>
-                    </div>    
+                    <div id="network-popUp">
+                        <span id="operation">node</span> <br>
+                        <table style="margin:auto;"><tr>
+                                <td>id</td><td><input id="node-id" value="new value" /></td>
+                            </tr>
+                            <tr>
+                                <td>label</td><td><input id="node-label" value="new value" /></td>
+                            </tr>
+                            <tr>
+                                <td>group</td><td>
+                                    <select id="node-group">
+                                        <option value="cog">Center of Gravity</option>
+                                        <option value="cc">Critical Capability</option>
+                                        <option value="cr">Critical Requirement</option>
+                                        <option value="cv">Critical Vulnerability</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="button" value="save" id="saveButton"/>
+                        <input type="button" value="cancel" id="cancelButton" />
+                    </div>
+                    <br />
+                    <div id="mynetwork"></div>
+                    <div class="btn-group" style="position: fixed; top:84%; margin-left: 1%;">
+                        <a class="btn btn-default" onclick="addNode('cog')"><i class="fa fa-heartbeat" style="color:#CC0000"></i> Center of Gravity</a>
+                        <a class="btn btn-default" onclick="addNode('cc')"><i class="fa fa-bomb" style="color:#202020"></i> Critical Capability</a>
+                        <a class="btn btn-default" onclick="addNode('cr')"><i class="fa fa-exclamation-circle" style="color:#FF4500"></i> Critical Requirement</a>
+                        <a class="btn btn-default" onclick="addNode('cv')"><i class="fa fa-unlock-alt" style="color:#DAA520"></i> Critical Vulnerability</a>
+                        <a class="btn btn-default" data-toggle="modal" 
+                           data-target="#clearModal"><i class="fa fa-times" style="color:black"></i> Clear All</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- View Excerpt Modal -->
-        <div class="modal" id="viewExcerpt" tabindex="-1" role="dialog" 
-             aria-labelledby="viewExcerptlabel" aria-hidden="true">
+
+        <!-- Modal -->
+        <div class="modal fade" id="clearModal" tabindex="-1" role="dialog" 
+             aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content" >
+                <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" 
                                 data-dismiss="modal" aria-hidden="true">
                             &times;
                         </button>
                         <h4 class="modal-title" id="myModalLabel">
-                            View Excerpt
+                            Center of Gravity Analysis
                         </h4>
                     </div>
-                    <div class="modal-body scroll" id="view-modal-body" style="height: 70vh; overflow: auto;">
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    Excerpt <label id='viewID'></label>
-                                </h4>
-                            </div>
-                            <div class="panel-body">
-                                <blockquote id='viewText'></blockquote>
-                                <h5>Category: <label id="viewCategory"></label></h5>
-                                <h5>Source: <label id="viewSource"></label></h5>
-                                <h5>Tags: <input type="text" data-role="tagsinput" class="form-box" disabled placeholder="Enter to Add Tag" id='viewTags'></h5>
-                                <button class="btn btn-success" id="viewAddBtn" onclick="addExcerptToMission()"><span class="glyphicon glyphicon-plus"> </span> Add to Mission</button>
-                                <button class="btn btn-danger" id="viewRemoveBtn" onclick="removeExcerptFromMission()"><span class="glyphicon glyphicon-minus"> </span> Remove from Mission</button>
-                            </div>
-
-                            <button type="button" class="btn btn-default btn-block" data-toggle="collapse" 
-                                    data-target="#related-excerpts"><span class="glyphicon glyphicon-menu-down"></span>
-                                See Related Excerpts
-                            </button>
-                            <div id="related-excerpts" class="collapse">
-                                <table class="excerpt-list" style="width: 100%;" id="related-table">
-
-                                </table> 
-                            </div>
-                        </div>
+                    <div class="modal-body">
+                        Would you like to clear all Nodes and Edges?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" 
-                                data-dismiss="modal">Close
+                        <button type="button" class="btn btn-primary" onclick="clearAll()" data-dismiss="modal">
+                            Confirm
                         </button>
-
+                        <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Cancel
+                        </button>
                     </div>
                 </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
         <!--Sliding Side Bar Menu-->
-        <div id="slidingmenu" style="width: 18vw;">
-            <div style="border: solid 1px #D3D3D3; border-radius: 5px; padding-left: 1vw; margin: 10px 10px 10px 10px; background-color: rgba(250,250,250,1);">
-                <h4 style="font-size: 1.2vw; font-weight: 600; ">Summary of Data Sources</h4>
-                <h6>Political: <label id="political"></label></h6>
-                <h6>Military/Security: <label id="military-security"></label></h6>
-                <h6>Economic: <label id="economic"></label></h6>
-                <h6>Social: <label id="social"></label></h6>
-                <h6>Information: <label id="information"></label></h6>
-                <h6>Infrastructure and Technology: <label id="infrastructure-technology"></label></h6>
-                <h6>Environment/Physical: <label id="environment-physical"></label></h6>
-            </div>
+        <div id="slidingmenu">
             <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Sources</h4>
             <div id="mission-sources">
-                <table class="excerpt-list" style="width: 18vw;" id="source-table">
+                <table class="excerpt-list" id="source-table">
                 </table>
             </div>
 
         </div>
-
-        <!--/Sliding Side Bar Menu-->
-
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-                                    $('#slidingmenu').BootSideMenu({side: "right"});
+                            $('#slidingmenu').BootSideMenu({side: "right"});
         </script>
         <script type="text/javascript">
 
@@ -176,6 +192,7 @@
             })();
 
         </script>
+        <!--/Sliding Side Bar Menu-->
 
         <!--Notification Alert-->
         <div class="alert-messages text-center">

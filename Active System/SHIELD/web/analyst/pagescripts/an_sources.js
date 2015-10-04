@@ -8,7 +8,7 @@ $(document).ready(function () {
             "url": "GetAllSources",
             "dataSrc": ""
         },
-        "lengthMenu": [[6, 10, 25, 50, -1], [6, 10, 25, 50, "All"]],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "columns": [
             {"data": "type"},
             {"data": "name"},

@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
         <!--Page Script-->
-        <script src="analyst/pagescripts/an_mission6cm.js"></script>
+        <script src="analyst/pagescripts/an_mission6po.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
@@ -59,50 +59,49 @@
                 </div>
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="saveCM()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to Mission Overview</button>
-                    </div><br>
-                    <div>
-                        <div class="scroll" style="overflow-y: auto; position: fixed; height: 75vh; width: 75vw; " id="matrix-div">
-                            
-                        </div>
-
+                        <button type="button" onclick="saveMO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Generate Operation Plan</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!--Sliding Side Bar Menu-->
-        <!--Sliding Side Bar Menu-->
-        <div id="slidingmenu" style="width: 25vw;">
-            <div id="panel-holder love"  style=" padding: 1vh 1vw 1vh 1vw;">
-                <div id=""></div>
+        <!-- Add SPO Modal -->
+        <div class="modal fade" id="addSPO" tabindex="-1" role="dialog" 
+             aria-labelledby="addSPOlabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Supporting PSYOPS Objective
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <td><h5>SPO: </h5></td>
+                                <td><textarea type="text" class="form-box" rows="4" cols="50" placeholder="Enter Supporting PSYOPS Objective" style="margin-top: 5px;"></textarea></td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" style="margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span> Add Another SPO</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-saved"> </span>
+                            Add Supporting PSYOPS Objective
+                        </button>
+                        <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Close
+                        </button>
 
-            </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
         </div>
-
-        <script src="js/BootSideMenu.js"></script>
-
-        <script type="text/javascript">
-            $('#slidingmenu').BootSideMenu({side: "right"});
-        </script>
-        <script type="text/javascript">
-
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-36251023-1']);
-            _gaq.push(['_setDomainName', 'jqueryscript.net']);
-            _gaq.push(['_trackPageview']);
-
-            (function () {
-                var ga = document.createElement('script');
-                ga.type = 'text/javascript';
-                ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(ga, s);
-            })();
-
-        </script>
-        <!--/Sliding Side Bar Menu-->
         
         <!--Notification Alert-->
         <div class="alert-messages text-center">

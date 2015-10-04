@@ -21,8 +21,13 @@
         <!--Sliding Side Bar CSS-->
         <link href="css/BootSideMenu.css" rel="stylesheet">
 
+        <!--Vis.js Plugin-->
+        <script type="text/javascript" src="js/vis.js"></script>
+        <link href="css/vis.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
         <!--Page Script-->
-        <script src="analyst/pagescripts/an_mission3pco.js"></script>
+        <script src="analyst/pagescripts/an_mission5cm.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
@@ -33,6 +38,7 @@
                 $('#collapseOne').collapse('show')
             });
         </script>
+
 
     </head>
 
@@ -51,69 +57,33 @@
                     <ul class="nav nav-pills nav-stacked affix" id="nav-shield" role="tablist">
                     </ul>
                 </div>
-                <div class="col-md-10" style="margin-left: 17vw; height: 84vh; margin-top: 1vh;">
+                <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;" onclick="savePCO()()"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to Center of Gravity</button>
-                        <button class="btn btn-warning btn-sm" style="position: fixed; right: 22vw" id="delete-button"><span class="glyphicon glyphicon-pencil"></span> Delete Selected Shape</button>
-                    </div>
-                    <div id="mission-characteristics-overlay" style="height: 79vh;">
-                        <div class="col-md-6">
-
-                            <div class="panel-body">
-                                <div id="political">
-                                    <p id="header">POLITICAL</p>
-                                </div>
-                                <div id="military-security">
-                                    <p id="header">MILITARY AND SECURITY</p>
-                                </div>
-                                <div id="economic">
-                                    <p id="header">ECONOMIC</p>
-                                </div>
-                                <div id="social">
-                                    <p id="header">SOCIAL</p>
-                                </div>
-                                <div id="information">
-                                    <p id="header">INFORMATION</p>
-                                </div>
-                                <div id="infrastructure-technology">
-                                    <p id="header">INFRASTRUCTURE AND TECHNOLOGY</p>
-                                </div>
-                                <div id="environment-physical">
-                                    <p id="header">ENVIRONMENT/PHYSICAL</p>
-                                </div>
-                            </div>
+                        <button type="button" onclick="saveCM()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to PsyOps Objective</button>
+                    </div><br>
+                    <div>
+                        <div class="scroll" style="overflow-y: auto; position: fixed; height: 75vh; width: 75vw; " id="matrix-div">
+                            
                         </div>
 
-                        <div class="col-md-6">
-                            <div id="mission-characteristics-overlay-map">
-
-                            </div> 
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!--Sliding Side Bar Menu-->
-        <div id="slidingmenu">
-            <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Sources</h4>
-            <div class="scroll" style="overflow-y: auto; position: fixed; height: 85vh; margin-top: 2vh;">
-                <div id="mission-sources">
-                    <table class="excerpt-list" id="source-table">
+        <!--Sliding Side Bar Menu-->
+        <div id="slidingmenu" style="width: 25vw;">
+            <div id="panel-holder love"  style=" padding: 1vh 1vw 1vh 1vw;">
+                <div id=""></div>
 
-                    </table>
-                </div>
             </div>
-
-            <button class="btn btn-success " style="position: fixed; top: 94vh; width: 15vw;margin-left: 1vw; margin-right: 1vw" onclick="drawOverlay()"><span class="glyphicon glyphicon-pencil"></span> Draw on Map</button>
-
         </div>
-        <!-- /Sliding Side Bar Menu-->
 
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-                $('#slidingmenu').BootSideMenu({side: "right"});
+            $('#slidingmenu').BootSideMenu({side: "right"});
         </script>
         <script type="text/javascript">
 
@@ -133,7 +103,7 @@
 
         </script>
         <!--/Sliding Side Bar Menu-->
-
+        
         <!--Notification Alert-->
         <div class="alert-messages text-center">
         </div>

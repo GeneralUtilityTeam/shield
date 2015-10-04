@@ -60,6 +60,7 @@ public class PrimaryExcerptSearch extends HttpServlet {
             throws ServletException, IOException {
         //Dummy Data
         JSONArray excrArray = new JSONArray();
+        JSONArray tagsArray = new JSONArray();
         
         //Dummy data
         JSONObject excr1 = new JSONObject();
@@ -67,7 +68,9 @@ public class PrimaryExcerptSearch extends HttpServlet {
         excr1.put("text", "There are 10,000 people in Maguindanao");
         excr1.put("category", "Social");
         excr1.put("source", "Maguindanao Area Study");
-        excr1.put("tags", "Maguindanao, Population");
+        tagsArray.put("Maguindanao");
+        tagsArray.put("Population");
+        excr1.put("tags", tagsArray);
         excrArray.put(excr1);
         String infrJSON = excrArray.toString();
         

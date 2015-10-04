@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -57,8 +58,42 @@ public class SecondaryExcerptSearch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ExcerptDAO excrDAO = new ExcerptDAO();
-        String infrJSON = new JSONArray(excrDAO.secondarySearch(Integer.parseInt(request.getParameter("param")))).toString();
+//Dummy Data
+        JSONArray excrArray = new JSONArray();
+        JSONArray tagsArray = new JSONArray();
+        JSONArray tagsArray2 = new JSONArray();
+        
+        //Dummy data
+        JSONObject excr1 = new JSONObject();
+        excr1.put("id", "1");
+        excr1.put("text", "There are 10,000 people in Maguindanao");
+        excr1.put("category", "Social");
+        excr1.put("source", "Maguindanao Area Study");
+        tagsArray.put("Maguindanao");
+        tagsArray.put("Population");
+        excr1.put("tags", tagsArray);
+        excrArray.put(excr1);
+        
+        JSONObject excr2 = new JSONObject();
+        excr2.put("id", "2");
+        excr2.put("text", "Rodrigo Duterte is the Mayor of Davao");
+        excr2.put("category", "Political");
+        excr2.put("source", "Davao Area Study");
+        tagsArray2.put("Davao");
+        tagsArray2.put("Mayor");
+        excr2.put("tags", tagsArray2);
+        excrArray.put(excr2);
+        excrArray.put(excr2);
+        excrArray.put(excr2);
+        excrArray.put(excr2);
+        excrArray.put(excr2);
+        String infrJSON = excrArray.toString();
+        
+        
+        
+        //Code from SHIELD 1.1
+        //ExcerptDAO excrDAO = new ExcerptDAO();
+        //String infrJSON = new JSONArray(excrDAO.primarySearch(request.getParameter("param"))).toString();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(infrJSON); 

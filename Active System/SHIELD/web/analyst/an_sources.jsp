@@ -36,7 +36,7 @@
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addSource" style="margin-right: 1vw; margin-bottom: 1vw;"><span class="glyphicon glyphicon-plus"></span> Add New Source</button>
 
-                    <table id="source-table" class="table table-bordered table-hover list-table">
+                    <table id="source-table" class="table table-bordered table-hover list-table" width="100%">
                         <thead style="background-color: #D3D3D3;">
                         <th>Type</th>
                         <th>Name</th>

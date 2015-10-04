@@ -141,22 +141,20 @@ div.alert-messages {
     border-color: #D3D3D3; 
     border-radius: 3px;
 }
+#mission2pco-area-map{
+    position: fixed;
+    height: 78vh;
+    width: 37vw;
+    border-style: solid; 
+    border-width: 1px; 
+    border-color: #D3D3D3; 
+    border-radius: 3px;
+    margin-left: 38vw;
+}
 #mission-details-map{
     width: 77vw; 
     height: 56vh;
     margin-top: 5px;
-    margin-bottom: 5px;
-}
-#mission-characteristics-overlay-map{
-    position: fixed;
-    width: 37vw; 
-    height: 78vh;
-    margin-bottom: 5px;
-}
-#mission-characteristics-overlay-map-2{
-    width: 37vw; 
-    height: 78vh;
-    margin-top: 1vh;
     margin-bottom: 5px;
 }
 
