@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Cyril Torres
+ * @author Dan Torres
  */
-public class AddExcerptToMission extends HttpServlet {
+public class Save5CM extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +35,10 @@ public class AddExcerptToMission extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddExcerptToMission</title>");            
+            out.println("<title>Servlet Save5CM</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddExcerptToMission at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Save5CM at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,19 +56,9 @@ public class AddExcerptToMission extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ExcerptDAO excrDAO = new ExcerptDAO();
-        int excerptID = Integer.parseInt(request.getParameter("excerptID"));
-        int missionID = Integer.parseInt(request.getParameter("missionID"));
-        boolean success = excrDAO.addExcerptToMission(excerptID, missionID);
-        String message= "";
-        if(success)
-            message = "Excerpt Added to Mission";
-        else
-            message = "Unable to add Excerpt to Mission";
-        
-        response.setContentType("application/text");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(message); 
+        response.getWriter().write("<strong>CARVER Methodology</strong> has been <strong>saved.</strong>");
     }
 
     /**

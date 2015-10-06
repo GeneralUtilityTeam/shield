@@ -1,9 +1,9 @@
 function buildNav(progress, selected) {
 
-    var hrefArray = ["ANMission1MD", "ANMission2DS", "ANMission3PCO", "ANMission4COG", "ANMission5TCOA", "ANMission6CM", "ANMission7MO"];
-    var textArray = ["<span>1 </span> Mission Details", "<span>2 </span> Data Sources", "<span>3 </span> Characteristics Overlay", "<span>4 </span> Center Of Gravity", "<span>5 </span> Threat Course Of Action", "<span>6 </span> CARVER Methodology", "<span>7 </span> Mission Overview"];
+    var hrefArray = ["ANMission1MD", "ANMission2PCO", "ANMission3COG", "ANMission4TCOA", "ANMission5CM", "ANMission6PO"];
+    var textArray = ["<span>1 </span> Mission Details", "<span>2 </span> Characteristics Overlay", "<span>3 </span> Center Of Gravity", "<span>4 </span> Threat Course Of Action", "<span>5 </span> CARVER Methodology", "<span>6 </span> PsyOps Objective"];
     var nav = document.getElementById("nav-shield");
-    for (var x = 1; x <= 7; x++) {
+    for (var x = 1; x <= 6; x++) {
         var item = document.createElement('li');
         if (x == selected)
             item.className = "active";

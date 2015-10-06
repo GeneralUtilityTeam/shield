@@ -25,6 +25,9 @@
 
         <!--Page Script-->
         <script src="analyst/pagescripts/an_sources.js"></script>
+        <script>
+            //Import Dropdown Library
+        </script>
     </head>
     <body onload="initialize()">
 
@@ -36,7 +39,7 @@
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addSource" style="margin-right: 1vw; margin-bottom: 1vw;"><span class="glyphicon glyphicon-plus"></span> Add New Source</button>
 
-                    <table id="source-table" class="table table-bordered table-hover list-table">
+                    <table id="source-table" class="table table-bordered table-hover list-table" width="100%">
                         <thead style="background-color: #D3D3D3;">
                         <th>Type</th>
                         <th>Name</th>
@@ -76,11 +79,11 @@
                             </tr>
                             <tr>
                                 <td><h5>Description: </h5></td>
-                                <td><input type="text" class="form-box" required placeholder="Enter Description"></td>
+                                <td><input type="text" id="source-description" class="form-box" required placeholder="Enter Description"></td>
                             </tr>
                             <tr>
                                 <td><h5>Date Published: </h5></td>
-                                <td><input type="date" class="form-box" required></td>
+                                <td><input type="date" id="source-date" class="form-box" required></td>
                             </tr>
                         </table>
                     </div>

@@ -21,8 +21,12 @@
         <!--Sliding Side Bar CSS-->
         <link href="css/BootSideMenu.css" rel="stylesheet">
 
+        <!--Bootstrap Tags-input-->
+        <link rel="stylesheet" href="css/bootstrap-tagsinput.css">
+        <script src="js/bootstrap-tagsinput.js"></script>
+
         <!--Page Script-->
-        <script src="analyst/pagescripts/an_mission2ds.js"></script>
+        <script src="analyst/pagescripts/an_mission2pco.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
@@ -57,12 +61,12 @@
                 </div>
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="saveDS()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Characterstics Overlay</button>
+                        <button type="button" onclick="savePCO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Characterstics Overlay</button>
                     </div>
 
 
                     <div id="data-sources">
-                        <div class="col-md-9">
+                        <div class="col-md-6">
                             <table>
                                 <tbody>
                                     <tr>
@@ -73,9 +77,11 @@
                                 </tbody>
                             </table>
                             <hr>
-                            <table class="excerpt-list" style="width: 100%;"  id="result-table">
-
+                            <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="result-table">
+                                
                             </table> 
+                        </div>
+                        <div class="col-md-6" id="mission2pco-area-map">
                         </div>
                     </div>    
                 </div>
@@ -108,18 +114,16 @@
                                 <blockquote id='viewText'></blockquote>
                                 <h5>Category: <label id="viewCategory"></label></h5>
                                 <h5>Source: <label id="viewSource"></label></h5>
-                                <h5>Tags: <input type="text" data-role="tagsinput" class="form-box" disabled placeholder="Enter to Add Tag" id='viewTags'></h5>
-                                <button class="btn btn-success" id="viewAddBtn" onclick="addExcerptToMission()"><span class="glyphicon glyphicon-plus"> </span> Add to Mission</button>
-                                <button class="btn btn-danger" id="viewRemoveBtn" onclick="removeExcerptFromMission()"><span class="glyphicon glyphicon-minus"> </span> Remove from Mission</button>
+                                <h5>Tags: <input id="viewTags" class="form-box" data-role="tagsinput" width="100%" disabled/></h5>
                             </div>
 
-                            <button type="button" class="btn btn-default btn-block" data-toggle="collapse" 
-                                    data-target="#related-excerpts"><span class="glyphicon glyphicon-menu-down"></span>
+                            <button type="button" id="viewSecondaryExcerpt" class="btn btn-default btn-block" data-toggle="collapse" 
+                                    data-target="#related-excerpts"><span class="glyphicon glyphicon-menu-down" id="secondaryExcerptMenu"></span>
                                 See Related Excerpts
                             </button>
                             <div id="related-excerpts" class="collapse">
-                                <table class="excerpt-list" style="width: 100%;" id="related-table">
-
+                                <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="related-table">
+                                   
                                 </table> 
                             </div>
                         </div>
@@ -159,7 +163,7 @@
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-                                    $('#slidingmenu').BootSideMenu({side: "right"});
+        $('#slidingmenu').BootSideMenu({side: "right"});
         </script>
         <script type="text/javascript">
 

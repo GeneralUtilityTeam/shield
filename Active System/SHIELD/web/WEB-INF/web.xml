@@ -21,28 +21,8 @@
         <servlet-class>servlet.ajax.Save1MD</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Save2DS</servlet-name>
-        <servlet-class>servlet.ajax.Save2DS</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Servlet3PCO</servlet-name>
         <servlet-class>servlet.ajax.Servlet3PCO</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Save3PCO</servlet-name>
-        <servlet-class>servlet.ajax.Save3PCO</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Save4COG</servlet-name>
-        <servlet-class>servlet.ajax.Save4COG</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Save5TCOA</servlet-name>
-        <servlet-class>servlet.ajax.Save5TCOA</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Save6CM</servlet-name>
-        <servlet-class>servlet.ajax.Save6CM</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SaveExcerpt</servlet-name>
@@ -61,28 +41,8 @@
         <servlet-class>servlet.analyst.ANMission1MD</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ANMission2DS</servlet-name>
-        <servlet-class>servlet.analyst.ANMission2DS</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ANMission3PCO</servlet-name>
-        <servlet-class>servlet.analyst.ANMission3PCO</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ANMission4COG</servlet-name>
         <servlet-class>servlet.analyst.ANMission4COG</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ANMission5TCOA</servlet-name>
-        <servlet-class>servlet.analyst.ANMission5TCOA</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ANMission6CM</servlet-name>
-        <servlet-class>servlet.analyst.ANMission6CM</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ANMission7MO</servlet-name>
-        <servlet-class>servlet.analyst.ANMission7MO</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ANMissions</servlet-name>
@@ -137,14 +97,6 @@
         <servlet-class>servlet.ajax.SecondaryExcerptSearch</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddExcerptToMission</servlet-name>
-        <servlet-class>servlet.ajax.AddExcerptToMission</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RemoveExcerptToMission</servlet-name>
-        <servlet-class>servlet.ajax.RemoveExcerptFromMission</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>GetMissionNodes</servlet-name>
         <servlet-class>servlet.ajax.GetMissionNodes</servlet-class>
     </servlet>
@@ -155,6 +107,54 @@
     <servlet>
         <servlet-name>CreateCarverMatrix</servlet-name>
         <servlet-class>servlet.ajax.CreateCarverMatrix</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ANMission2PCO</servlet-name>
+        <servlet-class>servlet.analyst.ANMission2PCO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ANMission3COG</servlet-name>
+        <servlet-class>servlet.analyst.ANMission3COG</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ANMission4TCOA</servlet-name>
+        <servlet-class>servlet.analyst.ANMission4TCOA</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ANMission5CM</servlet-name>
+        <servlet-class>servlet.analyst.ANMission5CM</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ANMission6PO</servlet-name>
+        <servlet-class>servlet.analyst.ANMission6PO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Save2PCO</servlet-name>
+        <servlet-class>servlet.ajax.Save2PCO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Save3COG</servlet-name>
+        <servlet-class>servlet.ajax.Save3COG</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Save4TCOA</servlet-name>
+        <servlet-class>servlet.ajax.Save4TCOA</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Save5CM</servlet-name>
+        <servlet-class>servlet.ajax.Save5CM</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Save6PO</servlet-name>
+        <servlet-class>servlet.ajax.Save6PO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Save6CM</servlet-name>
+        <servlet-class>servlet.ajax.Save6CM</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Save5TCOA</servlet-name>
+        <servlet-class>servlet.ajax.Save5TCOA</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -177,28 +177,8 @@
         <url-pattern>/Save1MD</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Save2DS</servlet-name>
-        <url-pattern>/Save2DS</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>Servlet3PCO</servlet-name>
         <url-pattern>/Servlet3PCO</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Save3PCO</servlet-name>
-        <url-pattern>/Save3PCO</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Save4COG</servlet-name>
-        <url-pattern>/Save4COG</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Save5TCOA</servlet-name>
-        <url-pattern>/Save5TCOA</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Save6CM</servlet-name>
-        <url-pattern>/Save6CM</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SaveExcerpt</servlet-name>
@@ -217,28 +197,8 @@
         <url-pattern>/ANMission1MD</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ANMission2DS</servlet-name>
-        <url-pattern>/ANMission2DS</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ANMission3PCO</servlet-name>
-        <url-pattern>/ANMission3PCO</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ANMission4COG</servlet-name>
         <url-pattern>/ANMission4COG</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ANMission5TCOA</servlet-name>
-        <url-pattern>/ANMission5TCOA</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ANMission6CM</servlet-name>
-        <url-pattern>/ANMission6CM</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ANMission7MO</servlet-name>
-        <url-pattern>/ANMission7MO</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ANMissions</servlet-name>
@@ -293,14 +253,6 @@
         <url-pattern>/SecondaryExcerptSearch</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddExcerptToMission</servlet-name>
-        <url-pattern>/AddExcerptToMission</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RemoveExcerptToMission</servlet-name>
-        <url-pattern>/RemoveExcerptToMission</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>GetMissionNodes</servlet-name>
         <url-pattern>/GetMissionNodes</url-pattern>
     </servlet-mapping>
@@ -311,6 +263,54 @@
     <servlet-mapping>
         <servlet-name>CreateCarverMatrix</servlet-name>
         <url-pattern>/CreateCarverMatrix</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ANMission2PCO</servlet-name>
+        <url-pattern>/ANMission2PCO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ANMission3COG</servlet-name>
+        <url-pattern>/ANMission3COG</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ANMission4TCOA</servlet-name>
+        <url-pattern>/ANMission4TCOA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ANMission5CM</servlet-name>
+        <url-pattern>/ANMission5CM</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ANMission6PO</servlet-name>
+        <url-pattern>/ANMission6PO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Save2PCO</servlet-name>
+        <url-pattern>/Save2PCO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Save3COG</servlet-name>
+        <url-pattern>/Save3COG</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Save4TCOA</servlet-name>
+        <url-pattern>/Save4TCOA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Save5CM</servlet-name>
+        <url-pattern>/Save5CM</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Save6PO</servlet-name>
+        <url-pattern>/Save6PO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Save6CM</servlet-name>
+        <url-pattern>/Save6CM</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Save5TCOA</servlet-name>
+        <url-pattern>/Save5TCOA</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

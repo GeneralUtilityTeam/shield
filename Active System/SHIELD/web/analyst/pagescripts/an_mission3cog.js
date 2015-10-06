@@ -1,6 +1,6 @@
 function initialize() {
     //replace first parameter with Mission Status - msonJSOB.status
-    buildNav(msonStatus, 4);
+    buildNav(msonStatus, 3);
     draw();
 }
 
@@ -230,7 +230,7 @@ function saveCOG() {
 
     $.ajax({
         type: "GET",
-        url: "Save4COG",
+        url: "Save3COG",
         data: {
             missionID: missionID,
             missionNodes: nodesJSON,
@@ -239,7 +239,7 @@ function saveCOG() {
         success: function (response) {
             showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
             setTimeout(function () {
-                window.location.assign("ANMission5TCOA")
+                window.location.assign("ANMission4TCOA")
             }, 3000);
         }
     });

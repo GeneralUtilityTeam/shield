@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
         <!--Page Script-->
-        <script src="analyst/pagescripts/an_mission5tcoa.js"></script>
+        <script src="analyst/pagescripts/an_mission4tcoa.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
         <script>

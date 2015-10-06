@@ -1,17 +1,17 @@
-function initialize(){
+function initialize() {
     //replace first parameter with Mission Status - msonJSOB.status
-    buildNav(3, 3);
+    buildNav(6, 6);
 }
 
-function savePCO(){
+function saveCM() {
     $.ajax({
         type: "GET",
-        url: "Save3PCO",
+        url: "Save6PO",
         success: function (response) {
             showAndDismissAlert("success", response);
-            setTimeout(function(){ window.location.assign("ANMission4COG") }, 3000);
+            setTimeout(function () {
+                window.location.assign("ANMissions")
+            }, 3000);
         }
     });
 }
-
-

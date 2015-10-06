@@ -1,16 +1,16 @@
 function initialize() {
     //replace first parameter with Mission Status - msonJSOB.status
-    buildNav(7, 7);
+    buildNav(4, 4);
 }
 
-function saveCM() {
+function saveTCOA() {
     $.ajax({
         type: "GET",
-        url: "Save6CM",
+        url: "Save4TCOA",
         success: function (response) {
             showAndDismissAlert("success", response);
             setTimeout(function () {
-                window.location.assign("ANMission7MO")
+                window.location.assign("ANMission5CM")
             }, 3000);
         }
     });
