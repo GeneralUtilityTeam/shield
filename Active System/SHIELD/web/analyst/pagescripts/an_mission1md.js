@@ -1,37 +1,29 @@
 function initialize() {
-    $.ajax({
-        type: "GET",
-        url: "Get1MD",
-        data: {
-            missionID: missionID
-        },
-        success: function (responseJSOB) {
-            msonJSOB = responseJSOB;
-            buildNav(msonJSOB.status, 1);
-            if (msonJSOB.title != 'undefined')
-                document.getElementById('mission-title').value = msonJSOB.title;
-            if (msonJSOB.area != null) {
-                document.getElementById('address').value = msonJSOB.area.Name;
-                areaJSON = msonJSOB.area;
-                initializeMap();
-            }
-            if (msonJSOB.objective != 'undefined')
-                document.getElementById('mission-objective').innerHTML = msonJSOB.objective;
-            if (msonJSOB.commanderIntent != 'undefined')
-                document.getElementById('commander-intent').innerHTML = msonJSOB.commanderIntent;
-            if (msonJSOB.conceptOfOperations != 'undefined')
-                document.getElementById('concept-of-operation').innerHTML = msonJSOB.conceptOfOperations;
-            if (msonJSOB.themesStress != 'undefined')
-                document.getElementById('theme-stress').innerHTML = msonJSOB.themesStress;
-            if (msonJSOB.themesAvoid != 'undefined')
-                document.getElementById('theme-avoid').innerHTML = msonJSOB.themesAvoid;
-            if (msonJSOB.situation != 'undefined')
-                document.getElementById('mission-situation').innerHTML = msonJSOB.situation;
-//            for (var x = 0; x < msonJSOB.taskList.length; x++) {
-//                addTask(msonJSOB.taskList[x].psyopElement, msonJSOB.taskList[x].text);
-//            }
-        }
-    });
+    console.log(msonJSOB);
+    buildNav(msonJSOB.status, 1);
+    if (msonJSOB.title != 'undefined')
+        document.getElementById('mission-title').value = msonJSOB.title;
+    if (msonJSOB.area != null) {
+        document.getElementById('address').value = msonJSOB.area.Name;
+        areaJSON = msonJSOB.area;
+        initializeMap();
+    }
+    if (msonJSOB.objective != 'undefined')
+        document.getElementById('mission-objective').innerHTML = msonJSOB.objective;
+    if (msonJSOB.commanderIntent != 'undefined')
+        document.getElementById('commander-intent').innerHTML = msonJSOB.commanderIntent;
+    if (msonJSOB.conceptOfOperation != 'undefined')
+        document.getElementById('concept-of-operation').innerHTML = msonJSOB.conceptOfOperation;
+    if (msonJSOB.themeStress != 'undefined')
+        document.getElementById('theme-stress').innerHTML = msonJSOB.themeStress;
+    if (msonJSOB.themeAvoid != 'undefined')
+        document.getElementById('theme-avoid').innerHTML = msonJSOB.themeAvoid;
+    if (msonJSOB.situation != 'undefined')
+        document.getElementById('mission-situation').innerHTML = msonJSOB.situation;
+    for (var x = 0; x < msonJSOB.taskList.length; x++) {
+        addTask(msonJSOB.taskList[x].psyopsElement, msonJSOB.taskList[x].desc);
+    }
+
 }
 function addTask(psyopElement, text) {
     var taskSection = document.getElementById("task-table");

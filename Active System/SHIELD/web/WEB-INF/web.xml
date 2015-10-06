@@ -65,10 +65,6 @@
         <servlet-class>servlet.encoder.ENSourceView</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Get1MD</servlet-name>
-        <servlet-class>servlet.ajax.Get1MD</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>GetOngoingMissionOfUser</servlet-name>
         <servlet-class>servlet.ajax.GetOngoingMissionOfUser</servlet-class>
     </servlet>
@@ -156,6 +152,10 @@
         <servlet-name>Save5TCOA</servlet-name>
         <servlet-class>servlet.ajax.Save5TCOA</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Get1MD</servlet-name>
+        <servlet-class>servlet.ajax.Get1MD</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -219,10 +219,6 @@
     <servlet-mapping>
         <servlet-name>ENSourceView</servlet-name>
         <url-pattern>/ENSourceView</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Get1MD</servlet-name>
-        <url-pattern>/Get1MD</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetOngoingMissionOfUser</servlet-name>
@@ -311,6 +307,10 @@
     <servlet-mapping>
         <servlet-name>Save5TCOA</servlet-name>
         <url-pattern>/Save5TCOA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get1MD</servlet-name>
+        <url-pattern>/Get1MD</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
