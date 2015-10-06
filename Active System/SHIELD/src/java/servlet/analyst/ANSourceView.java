@@ -24,7 +24,8 @@ public class ANSourceView extends FatherServlet {
 
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int srcID = Integer.parseInt(request.getParameter("sourceID"));
+        String srcIDString = request.getParameter("id");
+        int srcID = Integer.parseInt(srcIDString);
         //Get Source
         request.setAttribute("source", srcID);
         ServletContext context = getServletContext();
