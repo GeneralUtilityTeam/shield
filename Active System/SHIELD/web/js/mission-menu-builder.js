@@ -18,6 +18,6 @@ function buildNav(progress, selected) {
         item.appendChild(a);
         nav.appendChild(item);
     }
-//    document.getElementById('nav-mission-title-label').innerHTML = missionTitle;
-//    document.getElementById('nav-analyst-name-label').innerHTML = analystName;
+    document.getElementById('nav-mission-title-label').innerHTML = missionTitle;
+    document.getElementById('nav-analyst-name-label').innerHTML = analystName;
 }

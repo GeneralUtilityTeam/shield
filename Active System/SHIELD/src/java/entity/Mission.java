@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -28,7 +29,8 @@ public class Mission {
     private String conceptOfOperation;
     private String themeStress;
     private String themeAvoid;
-
+    private ArrayList<Task> taskList;
+    
     /**
      * @return the id
      */
@@ -251,6 +253,20 @@ public class Mission {
      */
     public void setArea(String area) {
         this.area = area;
+    }
+
+    /**
+     * @return the taskList
+     */
+    public ArrayList<Task> getTaskList() {
+        return taskList;
+    }
+
+    /**
+     * @param taskList the taskList to set
+     */
+    public void setTaskList(ArrayList<Task> taskList) {
+        this.taskList = taskList;
     }
     
     
