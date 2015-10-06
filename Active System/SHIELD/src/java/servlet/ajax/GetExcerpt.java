@@ -58,18 +58,16 @@ public class GetExcerpt extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
             //Code from SHIELD 1.1
 //        ExcerptDAO excrDAO = new ExcerptDAO();
 //        Excerpt excr = excrDAO.getExcerpt(Integer.parseInt(request.getParameter("excerptID")));
 //        SourceDAO srcDAO = new SourceDAO();
 //        excr.setSourceName(srcDAO.getSource(excr.getSourceId()).getName());
 //        String infrJSOB = new JSONObject(excr).toString();
-        
         //Dummy Data
-        JSONArray excrArray = new JSONArray();
         JSONArray tagsArray = new JSONArray();
-        
+
         //Dummy data
         JSONObject excr1 = new JSONObject();
         excr1.put("id", "1");
@@ -79,11 +77,9 @@ public class GetExcerpt extends HttpServlet {
         tagsArray.put("Maguindanao");
         tagsArray.put("Population");
         excr1.put("tags", tagsArray);
-        excrArray.put(excr1);
-        String infrJSON = excrArray.toString();
-        
-        
-        
+        excr1.put("strength", 20);
+        String infrJSON = excr1.toString();
+
         //Code from SHIELD 1.1
         //ExcerptDAO excrDAO = new ExcerptDAO();
         //String infrJSON = new JSONArray(excrDAO.primarySearch(request.getParameter("param"))).toString();

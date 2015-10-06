@@ -71,6 +71,8 @@ public class PrimaryExcerptSearch extends HttpServlet {
         tagsArray.put("Maguindanao");
         tagsArray.put("Population");
         excr1.put("tags", tagsArray);
+        excr1.put("strength", 26);
+        excr1.put("status", 1);
         excrArray.put(excr1);
         String infrJSON = excrArray.toString();
         

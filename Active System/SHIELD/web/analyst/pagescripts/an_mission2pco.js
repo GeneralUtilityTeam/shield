@@ -1,8 +1,6 @@
 var infrJSON;
 var scndJSON;
 var cartList = [];
-var selectedID;
-var selectedText;
 
 function initialize() {
     buildNav(msonStatus, 2);
@@ -17,64 +15,6 @@ function initialize() {
             loadSummary();
         }
     });
-}
-
-$(document).ready(function () {
-    var table = $('#result-table').DataTable({
-        "info": false,
-        "filter": false,
-        "bInfo": false,
-        "bLengthChange": false,
-        "ajax": {
-            "url": "PrimaryExcerptSearch",
-            "dataSrc": ""
-        },
-        "columns": [
-            {"data": "text"},
-            {"data": null,
-                "defaultContent": "<button type='button' class='btn btn-success' style='margin:auto;'><span class='glyphicon glyphicon-plus'></span>Add</button>",
-                className: "center", "bSortable": false, "bSearchable": false}
-        ]
-    });
-    $('#result-table tbody').on('click', 'tr', function () {
-        var data = table.row(this).data();
-        viewExcerpt(data);
-    });
-});
-
-function viewExcerpt(data) {
-    document.getElementById("viewID").innerHTML = data.id;
-    document.getElementById("viewText").innerHTML = data.text;
-    document.getElementById("viewCategory").innerHTML = data.category;
-    document.getElementById("viewSource").innerHTML = data.source;
-    var viewTags = $('#viewTags');
-    viewTags.tagsinput('removeAll');
-    for (var x = 0; x < data.tags.length; x++) {
-        viewTags.tagsinput('add', data.tags[x]);
-    }
-    
-    var relatedTable = $('#related-table').DataTable({
-        "info": false,
-        "filter": false,
-        "bInfo": false,
-        "bLengthChange": false,
-        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-        "ajax": {
-            "url": "SecondaryExcerptSearch",
-            "dataSrc": ""
-        },
-        "columns": [
-            {"data": "text"},
-            {"data": null,
-                "defaultContent": "<button type='button' class='btn btn-success' style='margin:auto;'><span class='glyphicon glyphicon-plus'></span>Add</button>",
-                className: "center", "bSortable": false, "bSearchable": false}
-        ]
-    });
-    $('#related-table tbody').on('click', 'tr', function () {
-        var data = relatedTable.row(this).data();
-        viewExcerpt(data);
-    });
-    $('#viewExcerpt').modal('show');
 }
 
 $(document).ready(function () {
@@ -102,6 +42,87 @@ $(document).ready(function () {
     });
 });
 
+function addRelatedRow(relatedExcerpts) {
+    var table = document.getElementById("related-table");
+    table.innerHTML = "";
+    for (var x = 0; x < relatedExcerpts.length; x++) {
+        var row = table.insertRow(x);
+        row.setAttribute('onclick', 'loadExcerpt(' + relatedExcerpts[x].id + ')');
+        row.style.cursor = "pointer";
+        row.style.borderBottom = "1px solid #DDDDDD";
+        table.appendChild(row);
+        var cell = row.insertCell(0);
+        cell.innerHTML = "<h5><b>Excerpt " + relatedExcerpts[x].id + "</b></h5><p>" + relatedExcerpts[x].text + "</p>";
+    }
+}
+
+
+function removeSourceRow(id) {
+    var row = document.getElementById("sourceRow" + id);
+    row.parentNode.removeChild(row);
+}
+
+function loadResult() {
+    var table = document.getElementById('result-table');
+    table.innerHTML = "";
+    for (var x = 0; x < infrJSON.length; x++) {
+        var row = table.insertRow(x);
+        row.setAttribute('data-toggle', 'modal');
+        row.setAttribute('data-target', '#viewExcerpt');
+        row.setAttribute('onclick', 'loadExcerpt(' + infrJSON[x].id + ')');
+        var cell = row.insertCell(0);
+        var excrText = infrJSON[x].text;
+        var excerptStatus;
+        if (infrJSON[x].status === 1)
+            excerptStatus = "glyphicon-minus";
+        else {
+            excerptStatus = "glyphicon-plus";
+        }
+        cell.innerHTML = "<h4> Excerpt - " + infrJSON[x].id + " </h4><p>" + excrText + "</p><div class='progress'><div class='progress-bar " + defineProgressBar(infrJSON[x].strength) + "' role='progressbar' aria-valuemin='0' aria-valuemax='100' style='width: " + infrJSON[x].strength + "%;'>" + infrJSON[x].strength + "% Relevance </div> </div>";
+        var cell2 = row.insertCell(1);
+        cell2.innerHTML = "<button type='button' onclick='addToPCO(" + infrJSON[x].id + ")' class='btn btn-sm btn-default'><span class='glyphicon " + excerptStatus + "'></span> </button>";
+    }
+}
+
+function loadExcerpt(id) {
+    var excr;
+    var modal = document.getElementById("view-modal-body");
+
+    modal.setAttribute('style', 'visibility : hidden');
+    $.ajax({
+        type: "GET",
+        url: "GetExcerpt",
+        data: {
+            excerptID: id
+        },
+        success: function (responseJSON) {
+            document.getElementById('viewID').innerHTML = responseJSON.id;
+            document.getElementById('viewText').innerHTML = responseJSON.text;
+            document.getElementById('viewCategory').innerHTML = responseJSON.category;
+            document.getElementById('viewSource').innerHTML = responseJSON.source;
+            var viewTags = $('#viewTags');
+            viewTags.tagsinput('removeAll');
+            for (var x = 0; x < responseJSON.tags.length; x++) {
+                viewTags.tagsinput('add', responseJSON.tags[x]);
+            }
+            document.getElementById("related-table").innerHTML = "";
+            $.ajax({
+                type: "GET",
+                url: "SecondaryExcerptSearch",
+                data: {
+                    param: responseJSON.id
+                },
+                success: function (relatedJSON) {
+                    addRelatedRow(relatedJSON);
+                }
+            });
+            loadResult();
+        }
+    });
+
+    modal.setAttribute('style', 'visibility : visible');
+
+}
 function loadSummary() {
     $.ajax({
         type: "GET",
@@ -138,6 +159,25 @@ function loadSummary() {
     });
 }
 
+function defineProgressBar(strength) {
+    var progressBar;
+    if (strength <= 25) {
+        return progressBar = "progress-bar-danger";
+    }
+    else if (strength <= 50 && strength > 25) {
+        return progressBar = "progress-bar-warning";
+    }
+    else if (strength <= 75 && strength > 50) {
+        return progressBar = "progress-bar-info";
+    }
+    else if (strength <= 100 && strength > 75) {
+        return progressBar = "progress-bar-success";
+    }
+}
+
+function addToPCO(excerpt) {
+    alert(excerpt);
+}
 
 function savePCO() {
     $.ajax({

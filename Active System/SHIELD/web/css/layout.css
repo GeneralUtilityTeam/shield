@@ -223,6 +223,7 @@ div.alert-messages {
     cursor:pointer;
 }
 
+
 /* Custom Scroll Bar  */
 #mission-view-scroll::-webkit-scrollbar {
     width: 10px;

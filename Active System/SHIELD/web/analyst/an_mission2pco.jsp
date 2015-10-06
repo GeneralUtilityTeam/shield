@@ -10,11 +10,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-        <!--Data Table-->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
-        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
-
         <!--Layout-->
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
@@ -81,15 +76,7 @@
                             </table>
                             <hr>
                             <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="result-table">
-                                <thead>
-                                    <tr>
-                                        <th width="92%">Excerpt</th>
-                                        <th width="8%"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="result-table-body">
-
-                                </tbody>
+                                
                             </table> 
                         </div>
                         <div class="col-md-6" id="mission2pco-area-map">
@@ -134,15 +121,7 @@
                             </button>
                             <div id="related-excerpts" class="collapse">
                                 <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="related-table">
-                                    <thead>
-                                        <tr>
-                                            <th width="92%">Excerpt</th>
-                                            <th width="8%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="related-table-body">
-
-                                    </tbody>
+                                   
                                 </table> 
                             </div>
                         </div>
