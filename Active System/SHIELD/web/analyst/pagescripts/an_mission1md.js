@@ -205,14 +205,14 @@ function codeAddress() {
     });
 }
 function saveElements() {
-                var mapElements = {
-                   Longitude: marker.getPosition().lng().toFixed(6),
-                    Latitude: marker.getPosition().lat().toFixed(6),
-                    Zoom: map.getZoom(),
-                    Name: marker.formatted_address
-                };
+    var mapElements = {
+        Longitude: marker.getPosition().lng().toFixed(6),
+        Latitude: marker.getPosition().lat().toFixed(6),
+        Zoom: map.getZoom(),
+        Name: marker.formatted_address
+    };
 
-                var stringElements = JSON.stringify(mapElements);
-                alert(stringElements);
-                
-            }
+    var stringElements = JSON.stringify(mapElements);
+    alert(stringElements);
+
+}
