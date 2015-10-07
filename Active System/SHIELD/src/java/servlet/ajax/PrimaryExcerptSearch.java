@@ -37,7 +37,7 @@ public class PrimaryExcerptSearch extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PrimaryExcerptSearch</title>");            
+            out.println("<title>Servlet PrimaryExcerptSearch</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet PrimaryExcerptSearch at " + request.getContextPath() + "</h1>");
@@ -61,30 +61,39 @@ public class PrimaryExcerptSearch extends HttpServlet {
         //Dummy Data
         JSONArray excrArray = new JSONArray();
         JSONArray tagsArray = new JSONArray();
-
+//var responseJSON = [
+//{
+//	id: 1,
+//	source_id: 1,
+//	category: 1,
+//	text: "This is a sample excerpt",
+//	sublocality: " ",
+//	locality: " ",
+//	administrativeAreaLevel2: " ",
+//	administrativeAreaLevel1: " ",
+//	country: " ",
+//	lat: 15,
+//	lng: 15
+//}
+//];
         //Dummy data
         JSONObject excr1 = new JSONObject();
         excr1.put("id", "1");
         excr1.put("text", "There are 10,000 people in Maguindanao");
         excr1.put("category", "social");
-        excr1.put("source", "Maguindanao Area Study");
+        excr1.put("sourceName", "Maguindanao Area Study");
         tagsArray.put("Maguindanao");
         tagsArray.put("Population");
         excr1.put("tags", tagsArray);
         excr1.put("strength", 78);
-        excr1.put("status", 1);
+        excr1.put("sublocality", "Malate");
+        excr1.put("locality", "Manila");
+        excr1.put("administrativeAreaLevel2", "");
+        excr1.put("administrativeAreaLevel1", "");
+        excr1.put("country", "Philippines");
+        excr1.put("lat", 15);
+        excr1.put("long", 15);
         excrArray.put(excr1);
-        JSONObject excr2 = new JSONObject();
-        excr2.put("id", "2");
-        excr2.put("text", "Duterte is the Mayor of Davao for 20 years");
-        excr2.put("category", "political");
-        excr2.put("source", "Davao Area Study");
-        tagsArray.put("Mayor");
-        tagsArray.put("20 years");
-        excr2.put("tags", tagsArray);
-        excr2.put("strength", 26);
-        excr2.put("status", 1);
-        excrArray.put(excr2);
         String infrJSON = excrArray.toString();
 
         //Code from SHIELD 1.1

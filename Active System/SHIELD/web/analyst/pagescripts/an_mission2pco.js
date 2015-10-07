@@ -4,17 +4,7 @@ var cartJSON = [];
 
 function initialize() { //Change this to take entities
     buildNav(msonStatus, 2);
-    $.ajax({
-        type: "GET",
-        url: "GetExcerptOfMission",
-        data: {
-            missionID: missionID,
-        },
-        success: function (responseJSON) {
-            cartJSON = responseJSON;
-            loadSummary();
-        }
-    });
+    initializeMap();
 }
 
 $(document).ready(function () {
@@ -154,6 +144,8 @@ function loadExcerpt(id) {
     modal.setAttribute('style', 'visibility : visible');
 
 }
+
+
 function loadSummary() {
 
     var political = 0, militarySecurity = 0, economic = 0, social = 0, information = 0, infrastructureTechnology = 0, environmentPhysical = 0;
@@ -208,6 +200,8 @@ function addRemove(id) {
             btn.setAttribute("onclick", "addRemove(" + id + ")");
             span.className = "glyphicon glyphicon-plus";
             cartJSON.splice(i, 1);
+            markerList = cartJSON;
+            createMarker();
             loadSummary();
             found = true;
             break;
@@ -220,8 +214,115 @@ function addRemove(id) {
         for (var x = 0; x < infrJSON.length; x++) {
             if (infrJSON[x].id == id + 1) {
                 cartJSON.splice(cartJSON.length, 0, infrJSON[x]);
+                markerList = cartJSON;
+                createMarker();
                 loadSummary();
             }
+        }
+    }
+}
+
+//MAP Script
+var map;
+var infoWindow
+var entity = [];
+var image = 'http://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png';
+var oms;
+var markerList = [];
+var markers = [];
+
+function initializeMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(14.597021, 120.986666),
+        zoom: 18,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
+    map = new google.maps.Map(document.getElementById('mission2pco-area-map'), mapOptions);
+
+    oms = new OverlappingMarkerSpiderfier(map,
+            {markersWontMove: true, markersWontHide: true});
+
+    oms.addListener('spiderfy', function (markers) {
+    });
+    oms.addListener('unspiderfy', function (markers) {
+    });
+
+    createMarker();
+}
+function resetMarker() {
+    markers = [];
+    for (var x = 0; x < markerList.length; x++) {
+        markerList[x].setIcon(null);
+    }
+}
+function createMarker() {
+    var marker;
+    var cartLength = cartJSON.length;
+    for (var x = 0; x < cartLength; x++) {
+        var pos = new google.maps.LatLng(cartJSON[x].lat, cartJSON[x].lng);
+        var text = cartJSON[x].excerpt;
+        var id = cartJSON[x].id;
+        marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            id: id,
+            icon: null,
+        });
+        oms.addMarker(marker);
+        markerList.push(marker);
+        
+        createWindowListener(marker, text);
+        createMarkerListener(marker);
+    }
+}
+
+function createMarkerListener(marker) {
+    google.maps.event.addListener(marker, 'rightclick', function (event) {
+        var proceed = true;
+        if (markers.length != 0) {
+            for (var x = 0; x < markers.length; x++) {
+                if (markers[x].id == marker.id) {
+                    proceed = false;
+                }
+            }
+            if (proceed) {
+                markers.push(marker);
+                marker.setIcon(image);
+            }
+        }
+        else {
+            markers.push(marker);
+            marker.setIcon(image);
+        }
+
+    });
+}
+
+function createWindowListener(marker, text) {
+    google.maps.event.addListener(marker, 'mouseover', function () {
+        infoWindow.setContent(text);
+        infoWindow.open(map, this);
+    });
+}
+
+function createEntity() {
+    var createdEntity = [];
+    createdEntity.id = "entity" + entity.length;
+    createdEntity.label = document.getElementById("entity-label").value;
+    for (var x = 0; x < markers.length; x++) {
+        alert(markers[x].id);
+        createdEntity.push(markers[x]);
+    }
+    entity.push(createdEntity);
+    resetMarker();
+}
+
+function showCreatedEntities() {
+    for (var x = 0; x < entity.length; x++) {
+        alert(entity[x].id + " length" + entity[x].label);
+        for (var y = 0; y < entity[x].length; y++) {
+            alert(entity[x][y].id);
         }
     }
 }

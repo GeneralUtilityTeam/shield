@@ -139,7 +139,7 @@ function draw() {
             nodes.add({id: newId, label: missionLabels[x], group: ""});
         }
     }
-
+    nodes.add({id:"123", label:"zzz", group:"cog"});
     var data = {
         nodes: nodes,
         edges: edges
@@ -182,6 +182,13 @@ function saveData(data, callback) {
 }
 
 function saveCOG() {
+    
+    //get CCs for TCOA
+    var cc = nodes.get({
+        filter: function(items) {
+            return (items.group == "cc");
+        }
+    });
 
     //get CR and CVs connected to it
     var cr = nodes.get({
@@ -189,6 +196,9 @@ function saveCOG() {
             return (items.group == "cr");
         }
     });
+    for(var x=0; x<cc.length; x++){
+        alert(cc[x].label);
+    }
     for (var x = 0; x < cr.length; x++) {
         var crConnected = network.getConnectedNodes(cr[x].id);
         var cvConnectedToCr = [];

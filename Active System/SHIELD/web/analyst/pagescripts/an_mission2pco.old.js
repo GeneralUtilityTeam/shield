@@ -1,8 +1,8 @@
 var infrJSON;
 var scndJSON;
-var cartList = [];
+var cartJSON = [];
 
-function initialize() {
+function initialize() { //Change this to take entities
     buildNav(msonStatus, 2);
     $.ajax({
         type: "GET",
@@ -66,23 +66,53 @@ function loadResult() {
     var table = document.getElementById('result-table');
     table.innerHTML = "";
     for (var x = 0; x < infrJSON.length; x++) {
-        var row = table.insertRow(x);
-        row.setAttribute('data-toggle', 'modal');
-        row.setAttribute('data-target', '#viewExcerpt');
-        row.setAttribute('onclick', 'loadExcerpt(' + infrJSON[x].id + ')');
-        var cell = row.insertCell(0);
+        var tr = document.createElement("tr");
+        tr.style.borderBottom = "solid 1px #DDDDDD";
+        var td1 = document.createElement("td");
+        td1.setAttribute('width', '90%');
+        td1.setAttribute('data-toggle', 'modal');
+        td1.setAttribute('data-target', '#viewExcerpt');
+        td1.setAttribute('onclick', 'loadExcerpt(' + infrJSON[x].id + ')');
+        td1.style.padding = "0 1vw 0 1vw";
         var excrText = infrJSON[x].text;
-        var excerptStatus;
-        if (infrJSON[x].status === 1)
-            excerptStatus = "glyphicon-minus";
-        else {
-            excerptStatus = "glyphicon-plus";
+        td1.innerHTML = "<h4> Excerpt - " + infrJSON[x].id + " </h4><p>" + excrText + "</p><div class='progress'><div class='progress-bar " + defineProgressBar(infrJSON[x].strength) + "' role='progressbar' aria-valuemin='0' aria-valuemax='100' style='width: " + infrJSON[x].strength + "%;'>" + infrJSON[x].strength + "% Relevance </div> </div>";
+
+        //Column for Add/Remove
+        var td2 = document.createElement("td");
+        td2.id = "cell" + x;
+        //Button for Add/Remove
+        var btn = document.createElement("button");
+        btn.id = "button" + x;
+        //Span for Add/Remove
+        var span = document.createElement("span");
+        span.id = "span" + x;
+        if (cartJSON.length != 0) {
+            for (var y = 0; y < cartJSON.length; y++) {
+                if (cartJSON[y].id === infrJSON[x].id) {
+                    btn.className = "btn btn-sm btn-danger";
+                    btn.setAttribute("onclick", "addRemove(" + x + ")");
+                    span.className = "glyphicon glyphicon-minus";
+                }
+                else {
+                    btn.className = "btn btn-sm btn-success";
+                    btn.setAttribute("onclick", "addRemove(" + x + ")");
+                    span.className = "glyphicon glyphicon-plus";
+                }
+            }
         }
-        cell.innerHTML = "<h4> Excerpt - " + infrJSON[x].id + " </h4><p>" + excrText + "</p><div class='progress'><div class='progress-bar " + defineProgressBar(infrJSON[x].strength) + "' role='progressbar' aria-valuemin='0' aria-valuemax='100' style='width: " + infrJSON[x].strength + "%;'>" + infrJSON[x].strength + "% Relevance </div> </div>";
-        var cell2 = row.insertCell(1);
-        cell2.innerHTML = "<button type='button' onclick='addToPCO(" + infrJSON[x].id + ")' class='btn btn-sm btn-default'><span class='glyphicon " + excerptStatus + "'></span> </button>";
+        else {
+            btn.className = "btn btn-sm btn-success";
+            btn.setAttribute("onclick", "addRemove(" + x + ")");
+            span.className = "glyphicon glyphicon-plus";
+        }
+        btn.appendChild(span);
+        td2.appendChild(btn);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        table.appendChild(tr);
     }
 }
+
 
 function loadExcerpt(id) {
     var excr;
@@ -99,6 +129,7 @@ function loadExcerpt(id) {
             document.getElementById('viewID').innerHTML = responseJSON.id;
             document.getElementById('viewText').innerHTML = responseJSON.text;
             document.getElementById('viewCategory').innerHTML = responseJSON.category;
+            document.getElementById('viewArea').innerHTML = generateFullAddress(responseJSON);
             document.getElementById('viewSource').innerHTML = responseJSON.source;
             var viewTags = $('#viewTags');
             viewTags.tagsinput('removeAll');
@@ -124,39 +155,32 @@ function loadExcerpt(id) {
 
 }
 function loadSummary() {
-    $.ajax({
-        type: "GET",
-        url: "GetExcerptOfMission",
-        data: {
-            missionID: missionID
-        },
-        success: function (responseJSON) {
-            var political = 0, militarySecurity = 0, economic = 0, social = 0, information = 0, infrastructureTechnology = 0, environmentPhysical = 0;
-            for (var x = 0; x < responseJSON.length; x++) {
-                if (responseJSON[x].category === "political")
-                    political += 1;
-                else if (responseJSON[x].category === "military/security")
-                    militarySecurity++;
-                else if (responseJSON[x].category === "economic")
-                    economic++;
-                else if (responseJSON[x].category === "social")
-                    social += 1;
-                else if (responseJSON[x].category === "information")
-                    information++;
-                else if (responseJSON[x].category === "infrastructure and Technology")
-                    infrastructureTechnology++;
-                else if (responseJSON[x].category === "environment/phyiscal")
-                    environmentPhysical++;
-            }
-            document.getElementById("political").innerHTML = political;
-            document.getElementById("military-security").innerHTML = militarySecurity;
-            document.getElementById("economic").innerHTML = economic;
-            document.getElementById("social").innerHTML = social;
-            document.getElementById("information").innerHTML = information;
-            document.getElementById("infrastructure-technology").innerHTML = infrastructureTechnology;
-            document.getElementById("environment-physical").innerHTML = environmentPhysical;
-        }
-    });
+
+    var political = 0, militarySecurity = 0, economic = 0, social = 0, information = 0, infrastructureTechnology = 0, environmentPhysical = 0;
+    for (var x = 0; x < cartJSON.length; x++) {
+        if (cartJSON[x].category === "political")
+            political++;
+        else if (cartJSON[x].category === "military/security")
+            militarySecurity++;
+        else if (cartJSON[x].category === "economic")
+            economic++;
+        else if (cartJSON[x].category === "social")
+            social++;
+        else if (cartJSON[x].category === "information")
+            information++;
+        else if (cartJSON[x].category === "infrastructure and Technology")
+            infrastructureTechnology++;
+        else if (cartJSON[x].category === "environment/phyiscal")
+            environmentPhysical++;
+    }
+    document.getElementById("political").innerHTML = political;
+    document.getElementById("military-security").innerHTML = militarySecurity;
+    document.getElementById("economic").innerHTML = economic;
+    document.getElementById("social").innerHTML = social;
+    document.getElementById("information").innerHTML = information;
+    document.getElementById("infrastructure-technology").innerHTML = infrastructureTechnology;
+    document.getElementById("environment-physical").innerHTML = environmentPhysical;
+
 }
 
 function defineProgressBar(strength) {
@@ -174,9 +198,32 @@ function defineProgressBar(strength) {
         return progressBar = "progress-bar-success";
     }
 }
-
-function addToPCO(excerpt) {
-    alert(excerpt);
+function addRemove(id) {
+    var btn = document.getElementById("button" + id);
+    var span = document.getElementById("span" + id);
+    var found = false;
+    for (var i = 0; i < cartJSON.length; i++) {
+        if (cartJSON[i].id == id + 1) {
+            btn.className = "btn btn-sm btn-success";
+            btn.setAttribute("onclick", "addRemove(" + id + ")");
+            span.className = "glyphicon glyphicon-plus";
+            cartJSON.splice(i, 1);
+            loadSummary();
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        btn.className = "btn btn-sm btn-danger";
+        btn.setAttribute("onclick", "addRemove(" + id + ")");
+        span.className = "glyphicon glyphicon-minus";
+        for (var x = 0; x < infrJSON.length; x++) {
+            if (infrJSON[x].id == id + 1) {
+                cartJSON.splice(cartJSON.length, 0, infrJSON[x]);
+                loadSummary();
+            }
+        }
+    }
 }
 
 function savePCO() {
