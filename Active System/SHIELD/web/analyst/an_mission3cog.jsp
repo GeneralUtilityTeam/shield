@@ -120,12 +120,12 @@
                     <br />
                     <div id="mynetwork"></div>
                     <div class="btn-group" style="position: fixed; top:84%; margin-left: 1%;">
-                        <a class="btn btn-default" onclick="addNode('cog')"><i class="fa fa-heartbeat" style="color:#CC0000"></i> Center of Gravity</a>
-                        <a class="btn btn-default" onclick="addNode('cc')"><i class="fa fa-bomb" style="color:#202020"></i> Critical Capability</a>
-                        <a class="btn btn-default" onclick="addNode('cr')"><i class="fa fa-exclamation-circle" style="color:#FF4500"></i> Critical Requirement</a>
-                        <a class="btn btn-default" onclick="addNode('cv')"><i class="fa fa-unlock-alt" style="color:#DAA520"></i> Critical Vulnerability</a>
+                        <a class="btn btn-default" onclick="editNode('cog')"><i class="fa fa-heartbeat" style="color:#CC0000"></i> Center of Gravity</a>
+                        <a class="btn btn-default" onclick="editNode('cc')"><i class="fa fa-bomb" style="color:#202020"></i> Critical Capability</a>
+                        <a class="btn btn-default" onclick="editNode('cr')"><i class="fa fa-exclamation-circle" style="color:#FF4500"></i> Critical Requirement</a>
+                        <a class="btn btn-default" onclick="editNode('cv')"><i class="fa fa-unlock-alt" style="color:#DAA520"></i> Critical Vulnerability</a>
                         <a class="btn btn-default" data-toggle="modal" 
-                           data-target="#clearModal"><i class="fa fa-times" style="color:black"></i> Clear All</a>
+                           data-target="#resetModal"><i class="fa fa-refresh" style="color:black"></i> Reset</a>
                     </div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="clearModal" tabindex="-1" role="dialog" 
+        <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" 
              aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -147,10 +147,10 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        Would you like to clear all Nodes and Edges?
+                        Would you like to reset all Nodes and Edges?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="clearAll()" data-dismiss="modal">
+                        <button type="button" class="btn btn-primary" onclick="resetAll()" data-dismiss="modal">
                             Confirm
                         </button>
                         <button type="button" class="btn btn-default" 

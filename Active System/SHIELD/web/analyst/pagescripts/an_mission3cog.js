@@ -1,23 +1,14 @@
 function initialize() {
     //replace first parameter with Mission Status - msonJSOB.status
-    buildNav(msonStatus, 3);
+//    buildNav(msonStatus, 3);
     draw();
 }
 
-var network, nodes, edges;
+var network, nodes, edges, activeId, activeNode;
 
 var options = {
     manipulation: {
-        addNode: function (data, callback) {
-            // filling in the popup DOM elements
-            document.getElementById('operation').innerHTML = "Add Node";
-            document.getElementById('node-id').value = data.id;
-            document.getElementById('node-label').value = data.label;
-            document.getElementById('node-group').value = data.group;
-            document.getElementById('saveButton').onclick = saveData.bind(this, data, callback);
-            document.getElementById('cancelButton').onclick = clearPopUp.bind();
-            document.getElementById('network-popUp').style.display = 'block';
-        },
+        addNode: false,
         editNode: function (data, callback) {
             // filling in the popup DOM elements
             document.getElementById('operation').innerHTML = "Edit Node";
@@ -113,6 +104,7 @@ edges = new vis.DataSet();
 function draw() {
     // create a network   
     var container = document.getElementById('mynetwork');
+
     //for COG already created
     if (msonStatus > 4) {
         $.ajax({
@@ -156,15 +148,16 @@ function draw() {
     network = new vis.Network(container, data, options);
 
 }
-function clearAll() {
-    nodes.clear();
-    edges.clear();
+function resetAll() {
     draw();
 }
-function addNode(addGroup) {
+function editNode(addGroup) {
     var nodeGroup = addGroup;
-    var newId = (Math.random() * 1e7).toString(32);
-    nodes.add({id: newId, label: "new", group: nodeGroup});
+    activeNode = network.getSelectedNodes();
+    var tempNodes = nodes.get(activeNode);
+    for (var x = 0; x < tempNodes.length; x++) {
+        nodes.update([{id: tempNodes[x].id, label: tempNodes[x].label, group: nodeGroup}]);
+    }
 }
 
 //Standard functions
@@ -189,7 +182,7 @@ function saveData(data, callback) {
 }
 
 function saveCOG() {
-    
+
     //get CR and CVs connected to it
     var cr = nodes.get({
         filter: function (items) {
@@ -243,7 +236,7 @@ function saveCOG() {
             }, 3000);
         }
     });
- 
+
 }
 
 

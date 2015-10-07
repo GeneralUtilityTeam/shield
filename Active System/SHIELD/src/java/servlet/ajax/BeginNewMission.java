@@ -66,6 +66,8 @@ public class BeginNewMission extends HttpServlet {
         String admin2 = (String)request.getParameter("administrative_area_level_2");
         String admin1 = (String)request.getParameter("administrative_area_level_1");
         String country = (String)request.getParameter("country");
+        String latStr = request.getParameter("lat");
+        String lngStr = request.getParameter("lat");
         
         HttpSession session = request.getSession();
         
