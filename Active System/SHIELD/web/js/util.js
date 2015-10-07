@@ -1,5 +1,5 @@
 // For: SHIELD
-// V 0.2 , Updated as of 3/7//15
+// V 2.2 , Updated as of 10/7/15
 
 function toTitleCase(str) //Turns string into Title case (e.g. one two three - > One Two Three)
 {
@@ -143,9 +143,13 @@ function breakString(str, breakAt)  //breaks a string at point 'breakAt' and ins
     }
     return result;
 }
-function generateFullAddress(obj)
+function generateFullAddress(obj) // Converts Address components of an object into a String that contains them 
 {
-    var sublocal = obj.sublocality;
-    var locality = obj.locality;
-    var 
+    var sublocal = (obj.sublocality != null ? obj.sublocality + ", " : "");
+    var locality = (obj.locality != null ? obj.locality + ", " : "");
+    var admin2 = (obj.administrative_area_level_2 != null ? obj.administrative_area_level_2 + ", " : "");
+    var admin1 = (obj.administrative_area_level_1 != null ? obj.administrative_area_level_1 + ", " : "");
+    var country = obj.country;
+	
+    return sublocal + locality + admin2 + admin1 + country;
 }

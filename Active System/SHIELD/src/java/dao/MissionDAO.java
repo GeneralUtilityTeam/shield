@@ -51,6 +51,7 @@ public class MissionDAO {
                 mson.setAdministrativeAreaLevel2(rs.getString(10));
                 mson.setAdministrativeAreaLevel1(rs.getString(11));
                 mson.setCountry(rs.getString(12));
+                mson.generateFullAddress();
                 
                 pstmt = cn.prepareStatement("CALL `shield`.`6840`(?);");
                 pstmt.setInt(1, missionID);
@@ -95,6 +96,47 @@ public class MissionDAO {
         }
         return 0;
     }
+    public ArrayList<Mission> GetAllMissions() {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+            
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`3072`();");
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<Mission> msonList = new ArrayList<Mission>();
+                do {
+                    Mission mson = new Mission();
+                    mson.setId(rs.getInt(1));
+                    mson.setStatus(rs.getInt(2));
+                    mson.setTitle(rs.getString(3));
+                    mson.setObjective(rs.getString(4));
+                    mson.setStartDT(rs.getDate(5));
+                    mson.setEndDT(rs.getDate(6));
+                    mson.setSublocality(rs.getString(7));
+                    mson.setLocality(rs.getString(8));
+                    mson.setAdministrativeAreaLevel2(rs.getString(9));
+                    mson.setAdministrativeAreaLevel1(rs.getString(10));
+                    mson.setCountry(rs.getString(11));
+                    mson.generateFullAddress();
+                    
+                    msonList.add(mson);
+                } while (rs.next());
+                
+                cn.close();
+                return msonList;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
     public ArrayList<Mission> GetAllOngoingMissionOfUser(int userID) {
         try {
             DBConnector db = new DBConnector();
@@ -115,9 +157,14 @@ public class MissionDAO {
                     mson.setStatus(rs.getInt(2));
                     mson.setTitle(rs.getString(3));
                     mson.setObjective(rs.getString(4));
-                    mson.setArea(rs.getString(5));
-                    mson.setStartDT(rs.getDate(6));
-                    mson.setEndDT(rs.getDate(7));
+                    mson.setStartDT(rs.getDate(5));
+                    mson.setEndDT(rs.getDate(6));
+                    mson.setSublocality(rs.getString(7));
+                    mson.setLocality(rs.getString(8));
+                    mson.setAdministrativeAreaLevel2(rs.getString(9));
+                    mson.setAdministrativeAreaLevel1(rs.getString(10));
+                    mson.setCountry(rs.getString(11));
+                    mson.generateFullAddress();
                     
                     msonList.add(mson);
                 } while (rs.next());
@@ -137,16 +184,17 @@ public class MissionDAO {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
             
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`2428`(?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`2428`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, mson.getUserID());
             pstmt.setString(2, mson.getTitle());
             pstmt.setString(3, mson.getObjective());
-            pstmt.setString(4, mson.getLocality());
-            pstmt.setString(5, mson.getAdministrativeAreaLevel2());
-            pstmt.setString(6, mson.getAdministrativeAreaLevel1());
-            pstmt.setString(7, mson.getCountry());
-            pstmt.setDouble(8, mson.getLat());
-            pstmt.setDouble(9, mson.getLng());
+            pstmt.setString(4, mson.getSublocality());
+            pstmt.setString(5, mson.getLocality());
+            pstmt.setString(6, mson.getAdministrativeAreaLevel2());
+            pstmt.setString(7, mson.getAdministrativeAreaLevel1());
+            pstmt.setString(8, mson.getCountry());
+            pstmt.setDouble(9, mson.getLat());
+            pstmt.setDouble(10, mson.getLng());
             
             ResultSet rs = pstmt.executeQuery();
             rs.next();

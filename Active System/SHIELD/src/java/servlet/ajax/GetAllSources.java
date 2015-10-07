@@ -5,6 +5,7 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -58,6 +59,8 @@ public class GetAllSources extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
         JSONArray srcArray = new JSONArray();
         
         //Dummy data

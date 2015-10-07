@@ -21,7 +21,7 @@
 
         <!--General Scripts-->
         <script src="js/util.js"></script>
-        <script  src="js/alert.js"></script>
+        <script src="js/alert.js"></script>
 
         <!--Page Script-->
         <script src="analyst/pagescripts/an_home.js"></script>
@@ -29,12 +29,16 @@
         <!--Google Map-->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
-            var geocoder;
-            var map;
-            var marker;
-            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
+            //Global Variables
             var address;
             var areaArr;
+            var latLng;
+    
+            //Map Variables
+            var geocoder = new google.maps.Geocoder();
+            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
+            var map;
+            var marker;
         </script>
 
     </head>
@@ -51,7 +55,7 @@
                         Mission Status
                     </a>
                 </li>
-                <li><a data-toggle="modal" data-target="#beginMission" onclick="initializeMap()">Begin New Mission</a></li>
+                <li><a data-toggle="modal" data-target="#beginMission">Begin New Mission</a></li>
             </ul>
             <div id="content-shield" style="border-top: none; height: 82vh;">
                 <div id="myTabContent" class="tab-content">
@@ -112,7 +116,7 @@
                                     <div class="input-group">
                                         <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" value="Search Area" onclick="geocodeString()">
+                                            <button class="btn btn-default" type="button" value="Search Area" onclick="addressSearch()">
                                                 Locate Area
                                             </button>
                                         </span>

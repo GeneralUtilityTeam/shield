@@ -26,6 +26,7 @@ public class Mission {
     private String themeStress;
     private String themeAvoid;
     private String area;
+    private String sublocality;
     private String locality;
     private String administrativeAreaLevel2;
     private String administrativeAreaLevel1;
@@ -35,6 +36,9 @@ public class Mission {
     
     private ArrayList<Task> taskList;
     
+    public void generateFullAddress(){
+        this.area = (sublocality != null ? sublocality + ", " : "") + (locality != null ? locality + ", " : "") + (administrativeAreaLevel2 != null ? administrativeAreaLevel2 + ", " : "") + (administrativeAreaLevel1 != null ? administrativeAreaLevel1 + ", " : "") + country;
+    }
     /**
      * @return the id
      */
@@ -311,6 +315,20 @@ public class Mission {
      */
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    /**
+     * @return the sublocality
+     */
+    public String getSublocality() {
+        return sublocality;
+    }
+
+    /**
+     * @param sublocality the sublocality to set
+     */
+    public void setSublocality(String sublocality) {
+        this.sublocality = sublocality;
     }
     
     

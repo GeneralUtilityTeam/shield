@@ -33,7 +33,7 @@ public class ANMission1MD extends FatherServlet {
         HttpSession session = request.getSession();
         String missionIDString = request.getParameter("id");
          
-        if(missionIDString == null)
+        if(missionIDString == null || missionIDString == "")
             missionIDString = session.getAttribute("missionID").toString();
         int missionID = Integer.parseInt(missionIDString);
         MissionDAO msonDAO = new MissionDAO();

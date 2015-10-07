@@ -63,25 +63,27 @@ public class BeginNewMission extends HttpServlet {
         
         String title = (String)request.getParameter("missionTitle");
         String objective = (String)request.getParameter("missionObjective");
+        String sublocality = (String)request.getParameter("sublocality");
         String locality = (String)request.getParameter("locality");
         String admin2 = (String)request.getParameter("administrative_area_level_2");
         String admin1 = (String)request.getParameter("administrative_area_level_1");
         String country = (String)request.getParameter("country");
         String latStr = request.getParameter("lat");
-        String lngStr = request.getParameter("lat");
+        String lngStr = request.getParameter("lng");
         
         HttpSession session = request.getSession();
         
         Mission mson = new Mission();
         mson.setTitle(title);
         mson.setObjective(objective);
+        mson.setSublocality(sublocality);
         mson.setLocality(locality);
         mson.setAdministrativeAreaLevel2(admin2);
         mson.setAdministrativeAreaLevel1(admin1);
         mson.setCountry(country);
         mson.setUserID((int)session.getAttribute("userID"));
-        mson.setLat(Integer.parseInt(latStr));
-        mson.setLng(Integer.parseInt(lngStr));
+        mson.setLat(Double.parseDouble(latStr));
+        mson.setLng(Double.parseDouble(lngStr));
         
         MissionDAO msonDAO = new MissionDAO();
         int missionID = -1;
@@ -90,10 +92,11 @@ public class BeginNewMission extends HttpServlet {
         }catch(Exception ex){
             System.out.println(ex);
         }
-
-        response.setContentType("plain/text");
+        JSONObject obj = new JSONObject();
+        obj.put("missionID", missionID);
+        response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(missionID);
+        response.getWriter().write(obj.toString());
     }
 
     /**
