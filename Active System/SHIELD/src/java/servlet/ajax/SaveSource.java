@@ -5,12 +5,21 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
+import entity.Source;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -56,6 +65,35 @@ public class SaveSource extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        int classID = Integer.parseInt(request.getParameter("class"));
+        String title = request.getParameter("title");
+        String desc = request.getParameter("desc");
+        DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        String publishedStr = request.getParameter("published");
+        Date published = null;
+        try {
+            published = format.parse(publishedStr);
+        } catch (ParseException ex) {
+            Logger.getLogger(SaveSource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Source src = new Source();
+        src.setClassID(classID);
+        src.setTitle(title);
+        src.setDesc(desc);
+        src.setPublished(published);
+        
+        HttpSession session = request.getSession();
+        int userID = (int)session.getAttribute("userID");
+        
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
+        try{
+            intlDAO.AddSource(userID, src);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>New Source</strong> has been <strong>added.</strong>");

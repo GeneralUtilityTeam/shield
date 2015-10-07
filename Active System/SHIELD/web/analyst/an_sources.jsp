@@ -27,7 +27,7 @@
         <script src="analyst/pagescripts/an_sources.js"></script>
         <script>
             var clssJSON = <%=request.getAttribute("clssJSON")%>;
-            
+            var table;
         </script>
     </head>
     <body onload="initialize()">

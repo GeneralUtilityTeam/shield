@@ -10,7 +10,7 @@ function initialize() {
 }
 //Data Table Function
 $(document).ready(function () {
-    var table = $('#source-table').DataTable({
+    table = $('#source-table').DataTable({
         "ajax": {
             "url": "GetAllSources",
             "dataSrc": ""
@@ -30,8 +30,7 @@ $(document).ready(function () {
 });
 
 function saveSource() {
-    var sourceType = document.getElementById("source-type").value;
-    var sourceTypeVal = sourceType.options[sourceType.selectedIndex].text;
+    var sourceClass = document.getElementById("source-type").value;
     var sourceName = document.getElementById("source-name").value;
     var sourceDesc = document.getElementById("source-description").value;
     var sourceDate = document.getElementById("source-date").value;
@@ -39,14 +38,15 @@ function saveSource() {
         type: "GET",
         url: "SaveSource",
         data: {
-            type : sourceTypeVal,
-            name: sourceName,
-            description: sourceDesc,
-            date: sourceDate
+            class : sourceClass,
+            title: sourceName,
+            desc: sourceDesc,
+            published: sourceDate
         },
         success: function (response) {
             $('#addSource').modal('hide');
             showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
+            table.ajax.reload();
         }
     });
 }

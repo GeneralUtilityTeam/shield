@@ -67,7 +67,7 @@ public class IntelligenceDAO {
             pstmt.setInt(2, src.getClassID());
             pstmt.setString(3, src.getTitle());
             pstmt.setString(4, src.getDesc());
-            pstmt.setDate(5, src.getPublished());
+            pstmt.setDate(5, new java.sql.Date(src.getPublished().getTime()));
             
             ResultSet rs = pstmt.executeQuery();
             rs.next();
