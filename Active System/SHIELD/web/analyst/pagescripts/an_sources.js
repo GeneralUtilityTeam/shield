@@ -1,6 +1,12 @@
 function initialize() {
     showAndDismissAlert('success', 'Data Sources of <strong>SHIELD</strong>');
-    
+    var dropdown = document.getElementById("source-type");
+    clssJSON.forEach(function(conf){
+        var option = document.createElement("option");
+        option.setAttribute("label", conf.valueText);
+        option.setAttribute("value", conf.id);
+        dropdown.appendChild(option);
+    });
 }
 //Data Table Function
 $(document).ready(function () {
@@ -11,10 +17,10 @@ $(document).ready(function () {
         },
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "columns": [
-            {"data": "type"},
-            {"data": "name"},
-            {"data": "description"},
-            {"data": "datePublish"}
+            {"data": "classDesc"},
+            {"data": "title"},
+            {"data": "desc"},
+            {"data": "published"}
         ]
     });
     $('#source-table tbody').on('click', 'tr', function () {

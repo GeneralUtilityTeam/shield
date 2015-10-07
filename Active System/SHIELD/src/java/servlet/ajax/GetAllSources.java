@@ -6,8 +6,10 @@
 package servlet.ajax;
 
 import dao.IntelligenceDAO;
+import entity.Source;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,27 +63,9 @@ public class GetAllSources extends HttpServlet {
             throws ServletException, IOException {
         
         IntelligenceDAO intlDAO = new IntelligenceDAO();
-        JSONArray srcArray = new JSONArray();
-        
-        //Dummy data
-        JSONObject src1 = new JSONObject();
-        src1.put("id", "1");
-        src1.put("type", "Area Study");
-        src1.put("name", "Davao del Sur Area Study");
-        src1.put("description", "Area study conducted on the Davao del Sur area by the 10th Infantry (AGILA) division");
-        src1.put("datePublish", "2010-01-01");
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        srcArray.put(src1);
-        
-        String srcJSON = srcArray.toString();
+        ArrayList srcList = intlDAO.GetAllSources();
+        JSONArray srcJArr= new JSONArray(srcList);
+        String srcJSON = srcJArr.toString();
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

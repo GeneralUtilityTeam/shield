@@ -26,7 +26,8 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_sources.js"></script>
         <script>
-            //Import Dropdown Library
+            var clssJSON = <%=request.getAttribute("clssJSON")%>;
+            
         </script>
     </head>
     <body onload="initialize()">

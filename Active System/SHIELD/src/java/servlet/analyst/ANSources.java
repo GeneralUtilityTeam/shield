@@ -6,6 +6,8 @@
 package servlet.analyst;
 
 import dao.IntelligenceDAO;
+import dao.SystemDAO;
+import entity.Config;
 import entity.Source;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import servlet.father.FatherServlet;
 
 /**
@@ -28,9 +31,10 @@ public class ANSources extends FatherServlet {
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        IntelligenceDAO intlDAO = new IntelligenceDAO();
-        ArrayList<Source> srcList = intlDAO.GetAllSources();
-        
+
+        ArrayList clssList = new SystemDAO().GetSourceClasses();
+        JSONArray clssJSON = new JSONArray(clssList);
+        request.setAttribute("clssJSON", clssJSON);
         
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_sources.jsp");

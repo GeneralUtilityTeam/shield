@@ -22,10 +22,11 @@ import java.util.logging.Logger;
 public class IntelligenceDAO {
     public ArrayList<Source> GetAllSources() {
         try {
+            System.out.println("Running 1");
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
             
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`3865`();");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`3685`();");
             ResultSet rs = pstmt.executeQuery();
             rs.next();
             if (rs.getRow() == 0) {
@@ -37,14 +38,15 @@ public class IntelligenceDAO {
                     Source src = new Source();
                     src.setId(rs.getInt(1));
                     src.setClassID(rs.getInt(2));
-                    src.setTitle(rs.getString(3));
-                    src.setDesc(rs.getString(4));
-                    src.setPublished(rs.getDate(5));
-                    src.setEncoded(rs.getDate(6));
+                    src.setClassDesc(rs.getString(3));
+                    src.setTitle(rs.getString(4));
+                    src.setDesc(rs.getString(5));
+                    src.setPublished(rs.getDate(6));
+                    src.setEncoded(rs.getDate(7));
                     
                     srcList.add(src);
                 } while (rs.next());
-                
+                System.out.println("Running 2");
                 cn.close();
                 return srcList;
             }
@@ -54,5 +56,31 @@ public class IntelligenceDAO {
         }
         
         return null;
+    }
+    public int AddSource(int userID, Source src){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+            
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`5688`(?, ?, ?, ?, ?);");
+            pstmt.setInt(1, userID);
+            pstmt.setInt(2, src.getClassID());
+            pstmt.setString(3, src.getTitle());
+            pstmt.setString(4, src.getDesc());
+            pstmt.setDate(5, src.getPublished());
+            
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 }

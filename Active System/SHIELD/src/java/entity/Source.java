@@ -15,6 +15,7 @@ public class Source {
      
     private int id;
     private int classID;
+    private String classDesc;
     private String title;
     private String desc;
     private Date published;
@@ -106,6 +107,20 @@ public class Source {
      */
     public void setEncoded(Date encoded) {
         this.encoded = encoded;
+    }
+
+    /**
+     * @return the classDesc
+     */
+    public String getClassDesc() {
+        return classDesc;
+    }
+
+    /**
+     * @param classDesc the classDesc to set
+     */
+    public void setClassDesc(String classDesc) {
+        this.classDesc = classDesc;
     }
 
 }
