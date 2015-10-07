@@ -5,8 +5,11 @@
  */
 package servlet.analyst;
 
+import dao.IntelligenceDAO;
+import entity.Source;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -24,6 +27,10 @@ public class ANSources extends FatherServlet {
 
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
+        ArrayList<Source> srcList = intlDAO.GetAllSources();
+        
         
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_sources.jsp");

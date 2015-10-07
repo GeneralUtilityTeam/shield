@@ -113,6 +113,7 @@
                             <div class="panel-body">
                                 <blockquote id='viewText'></blockquote>
                                 <h5>Category: <label id="viewCategory"></label></h5>
+                                <h5>Area: <label id="viewArea"></label></h5>
                                 <h5>Source: <label id="viewSource"></label></h5>
                                 <h5>Tags: <input id="viewTags" class="form-box" data-role="tagsinput" width="100%" disabled/></h5>
                             </div>

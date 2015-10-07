@@ -143,3 +143,9 @@ function breakString(str, breakAt)  //breaks a string at point 'breakAt' and ins
     }
     return result;
 }
+function generateFullAddress(obj)
+{
+    var sublocal = obj.sublocality;
+    var locality = obj.locality;
+    var 
+}

@@ -129,6 +129,7 @@ function loadExcerpt(id) {
             document.getElementById('viewID').innerHTML = responseJSON.id;
             document.getElementById('viewText').innerHTML = responseJSON.text;
             document.getElementById('viewCategory').innerHTML = responseJSON.category;
+            document.getElementById('viewArea').innerHTML = generateFullAddress(responseJSON);
             document.getElementById('viewSource').innerHTML = responseJSON.source;
             var viewTags = $('#viewTags');
             viewTags.tagsinput('removeAll');
