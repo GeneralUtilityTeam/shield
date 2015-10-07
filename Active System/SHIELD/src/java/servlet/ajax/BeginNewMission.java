@@ -5,12 +5,14 @@
  */
 package servlet.ajax;
 
+import entity.Mission;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 /**
@@ -57,26 +59,32 @@ public class BeginNewMission extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String title = (String)request.getParameter("missionTitle");
-        String area = (String)request.getParameter("missionArea");
         String objective = (String)request.getParameter("missionObjective");
+        String locality = (String)request.getParameter("locality");
+        String admin2 = (String)request.getParameter("administrative_area_level_2");
+        String admin1 = (String)request.getParameter("administrative_area_level_1");
+        String country = (String)request.getParameter("country");
         
-        JSONObject missionJSOB = new JSONObject();
-        //Create a random ID for mission
+        HttpSession session = request.getSession();
         
-        //This is for dummy data
-        missionJSOB.put("id", 3);
-        missionJSOB.put("title", title);
-        missionJSOB.put("area", area);
-        missionJSOB.put("objective", objective);
+        Mission mson = new Mission();
+        mson.setTitle(title);
+        mson.setObjective(objective);
+        mson.setLocality(locality);
+        mson.setAdministrativeAreaLevel2(admin2);
+        mson.setAdministrativeAreaLevel1(admin1);
+        mson.setCountry(country);
+        mson.setUserID((int)session.getAttribute("userID"));
+        
+        System.out.println(mson.getLocality()+mson.getAdministrativeAreaLevel2()+mson.getAdministrativeAreaLevel1()+mson.getCountry());
         
         //Save Mission to database
-        
-        String mission = missionJSOB.toString();
 
-        response.setContentType("application/json");
+        response.setContentType("plain/text");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(mission);
+        response.getWriter().write(1);
     }
 
     /**

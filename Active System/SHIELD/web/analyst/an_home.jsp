@@ -34,6 +34,7 @@
             var marker;
             var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
             var address;
+            var areaArr;
         </script>
 
     </head>
@@ -111,7 +112,7 @@
                                     <div class="input-group">
                                         <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" value="Search Area" onclick="codeAddress()">
+                                            <button class="btn btn-default" type="button" value="Search Area" onclick="geocodeString()">
                                                 Locate Area
                                             </button>
                                         </span>

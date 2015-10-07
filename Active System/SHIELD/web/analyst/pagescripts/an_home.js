@@ -1,4 +1,3 @@
-
 function initialize() {
     showAndDismissAlert('success', 'Welcome to <strong>SHIELD! </strong>');
 }
@@ -33,8 +32,28 @@ function beginMission() {
     var missionTitle = document.getElementById("mission-title").value;
     var missionArea = document.getElementById("address").value;
     var missionObjective = document.getElementById("mission-objective").value;
-
-    if (missionTitle === "" || missionArea === "" || missionObjective === "") {
+    var locality;
+    var administrative_area_level_2;
+    var administrative_area_level_1;
+    var country;
+    
+    areaArr.forEach(function(area){
+        switch(area.type){
+            case 'country':
+                country = area.name;
+                break;
+            case 'administrative_area_level_1':
+                administrative_area_level_1 = area.name;
+                break;
+            case 'administrative_area_level_2':
+                administrative_area_level_2 = area.name;
+                break;
+            case 'locality':
+                locality = area.name;
+                break;
+        }
+    });
+    if (missionTitle === "" || missionArea === "" || missionObjective === "") { //Change this back
         showAndDismissAlert("danger", "<strong>Begin Mission Failed.</strong> Please complete the form.");
     }
     else {
@@ -43,14 +62,17 @@ function beginMission() {
             url: "BeginNewMission",
             data: {
                 missionTitle: missionTitle,
-                missionArea: saveElements(),
-                missionObjective: missionObjective
+                missionObjective: missionObjective,
+                locality: locality,
+                administrative_area_level_2: administrative_area_level_2,
+                administrative_area_level_1: administrative_area_level_1,
+                country: country
             },
             success: function (response) {
                 showAndDismissAlert("success", "You have successfully created a <strong>Mission.</strong>");
-                setTimeout(function () {
-                    window.location.assign("ANMission1MD?id=" + response.id)
-                }, 3000);
+//                setTimeout(function () {
+//                    window.location.assign("ANMission1MD?id=" + response)
+//                }, 3000);
             }
         });
     }
@@ -81,18 +103,20 @@ function defineProgressPercent(status) {
 function initializeMap() {
     geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(14.5800, 121.000);
-    var mapOptions = {
-        zoom: 15,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+    if (map == null) {
+        var mapOptions = {
+            zoom: 15,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        map = new google.maps.Map(document.getElementById('mission-area-map'), mapOptions);
+        google.maps.event.addListener(map, 'click', function (event) {
+            geocodeMouseClick(event.latLng);
+        });
     }
-    map = new google.maps.Map(document.getElementById('mission-area-map'), mapOptions);
-    google.maps.event.addListener(map, 'click', function () {
-        infowindow.close();
-    });
 }
 
-function geocodePosition(pos) {
+function geocodePosition(pos) { // old code
     geocoder.geocode({
         latLng: pos
     }, function (responses) {
@@ -105,8 +129,7 @@ function geocodePosition(pos) {
         infowindow.open(map, marker);
     });
 }
-
-function codeAddress() {
+function codeAddress() { // old code
     address = document.getElementById('address').value;
     geocoder.geocode({'address': address}, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
@@ -153,3 +176,44 @@ function saveElements() {
     return area;
 }
 
+//GEOCODER FUNCTIONS
+function geocodeString() {
+    var address = document.getElementById('address').value;
+    geocoder.geocode({
+        'address': address
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            map.panTo(results[0].geometry.location); //Sets the center of the map to the result's coordinates
+            areaArr = formatAddressComponents(results[0].address_components);
+        } else {
+            alert("Google Map failed </strong>to locate the area.");
+        }
+    });
+}
+function geocodeMouseClick(pos) { // Runs a search based on a mouse click event
+    geocoder.geocode({
+        latLng: pos
+    }, function (results) {
+        if (results && results.length > 0) {
+            map.panTo(results[0].geometry.location);
+            areaArr = formatAddressComponents(results[0].address_components);
+        } else {
+            //I doubt this will ever happen, though
+        }
+    });
+}
+function formatAddressComponents(arr) { //This method takes in the address_components of either a Marker or Searchbar and shortens it into a usable array
+    var returnArr = new Array();
+    arr.forEach(function (comp) {
+        comp.types.forEach(function (type) {
+            if (type == 'locality' || type == 'administrative_area_level_2' || type == 'administrative_area_level_1' || type == 'country') {
+                var area = {
+                    name: comp.long_name,
+                    type: type
+                };
+                returnArr.push(area);
+            }
+        });
+    });
+    return returnArr;
+}

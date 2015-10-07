@@ -40,17 +40,17 @@ public class MissionDAO {
                 
                 mson.setId(missionID);
                 mson.setTitle(rs.getString(1));
-                mson.setLat(rs.getDouble(2));
-                mson.setLng(rs.getDouble(3));
-                mson.setArea(rs.getString(4));
-                mson.setScope(rs.getInt(5));
-                mson.setObjective(rs.getString(6));
-                mson.setSituation(rs.getString(7));
-                mson.setCommanderIntent(rs.getString(8));
-                mson.setConceptOfOperation(rs.getString(9));
-                mson.setThemeStress(rs.getString(10));
-                mson.setThemeAvoid(rs.getString(11));
-                mson.setUserID(rs.getInt(12));
+                mson.setObjective(rs.getString(2));
+                mson.setSituation(rs.getString(3));
+                mson.setCommanderIntent(rs.getString(4));
+                mson.setConceptOfOperation(rs.getString(5));
+                mson.setThemeStress(rs.getString(6));
+                mson.setThemeAvoid(rs.getString(7));
+                mson.setUserID(rs.getInt(8));
+                mson.setLocality(rs.getString(9));
+                mson.setAdministrativeAreaLevel2(rs.getString(10));
+                mson.setAdministrativeAreaLevel1(rs.getString(11));
+                mson.setCountry(rs.getString(12));
                 
                 pstmt = cn.prepareStatement("CALL `shield`.`6840`(?);");
                 pstmt.setInt(1, missionID);
@@ -82,7 +82,6 @@ public class MissionDAO {
             pstmt.setInt(1, missionID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
-            System.out.println("Get Mission Status" + rs.getInt(1));
             if (rs.getRow() == 0) {
                 cn.close();
                 return 0;
@@ -96,7 +95,6 @@ public class MissionDAO {
         }
         return 0;
     }
-
     public ArrayList<Mission> GetAllOngoingMissionOfUser(int userID) {
         try {
             DBConnector db = new DBConnector();
@@ -133,5 +131,34 @@ public class MissionDAO {
         }
         
         return null;
+    }
+    public int AddMission(Mission mson){
+        //2428
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+            
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`2428`(?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, mson.getUserID());
+            pstmt.setString(2, mson.getTitle());
+            pstmt.setString(3, mson.getObjective());
+            pstmt.setString(4, mson.getLocality());
+            pstmt.setString(5, mson.getAdministrativeAreaLevel2());
+            pstmt.setString(6, mson.getAdministrativeAreaLevel1());
+            pstmt.setString(7, mson.getCountry());
+            
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 }
