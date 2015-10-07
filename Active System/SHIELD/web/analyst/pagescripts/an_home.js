@@ -1,7 +1,7 @@
 function initialize() {
     showAndDismissAlert('success', 'Welcome to <strong>SHIELD! </strong>');
-	//ADDED THIS HERE SO PLEASE DELETE THE ONCLICK EVENT IN THE HTML FILE
-	initializeMap();
+    //ADDED THIS HERE SO PLEASE DELETE THE ONCLICK EVENT IN THE HTML FILE
+    initializeMap();
 }
 //Data Table Function
 $(document).ready(function () {
@@ -38,10 +38,10 @@ function beginMission() {
     var administrative_area_level_2;
     var administrative_area_level_1;
     var country;
-    
-	
-    areaArr.forEach(function(area){
-        switch(area.type){
+
+
+    areaArr.forEach(function (area) {
+        switch (area.type) {
             case 'country':
                 country = area.name;
                 break;
@@ -54,7 +54,7 @@ function beginMission() {
             case 'locality':
                 locality = area.name;
                 break;
-				
+
         }
     });
     if (missionTitle === "" || missionArea === "" || missionObjective === "") { //Change this back
@@ -71,14 +71,20 @@ function beginMission() {
                 administrative_area_level_2: administrative_area_level_2,
                 administrative_area_level_1: administrative_area_level_1,
                 country: country,
-		lat: marker.getPosition().lat,
-		lng: marker.getPosition().lng
+                lat: marker.getPosition().lat,
+                lng: marker.getPosition().lng
             },
             success: function (response) {
-                showAndDismissAlert("success", "You have successfully created a <strong>Mission.</strong>");
-//                setTimeout(function () {
-//                    window.location.assign("ANMission1MD?id=" + response)
-//                }, 3000);
+                if (response != -1) {
+                    showAndDismissAlert("success", "You have successfully created a <strong>Mission.</strong>");
+                    setTimeout(function () {
+                        window.location.assign("ANMission1MD?id=" + response)
+                    }, 3000);
+                }
+                else {
+                    showAndDismissAlert("error", "Error");
+                }
+
             }
         });
     }
@@ -116,22 +122,22 @@ function initializeMap() {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         map = new google.maps.Map(document.getElementById('mission-area-map'), mapOptions);
-		//CHANGED THIS ONE
-		marker = new google.maps.Marker({
-                            map: map,
-                            draggable: false,
-                            position: latlng
-                        });
-		google.maps.event.addListener(map, 'click', function (event) {
-			var markerPosition = event.latLng;
+        //CHANGED THIS ONE
+        marker = new google.maps.Marker({
+            map: map,
+            draggable: false,
+            position: latlng
+        });
+        google.maps.event.addListener(map, 'click', function (event) {
+            var markerPosition = event.latLng;
             marker.setPosition(markerPosition);
             geocodeMouseClick(marker.getPosition());
-		//UP TO HERE	
+            //UP TO HERE	
 
         });
     }
 
-	
+
 }
 
 
@@ -143,17 +149,17 @@ function geocodeString() {
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             map.panTo(results[0].geometry.location); //Sets the center of the map to the result's coordinates
-			
-			//CHANGED THIS DOWN HERE
-			marker.setPosition = results[0].geometry.location
-                         //UP TO HERE
+
+            //CHANGED THIS DOWN HERE
+            marker.setPosition = results[0].geometry.location
+            //UP TO HERE
             areaArr = formatAddressComponents(results[0].address_components);
-			
+
         } else {
             alert("Google Map failed </strong>to locate the area.");
         }
     });
-	
+
 }
 function geocodeMouseClick(pos) { // Runs a search based on a mouse click event
     geocoder.geocode({
@@ -168,7 +174,7 @@ function geocodeMouseClick(pos) { // Runs a search based on a mouse click event
     });
 }
 function formatAddressComponents(arr) { //This method takes in the address_components of either a Marker or Searchbar and shortens it into a usable array
-	var returnArr = new Array();
+    var returnArr = new Array();
     arr.forEach(function (comp) {
         comp.types.forEach(function (type) {
             if (type == 'locality' || type == 'administrative_area_level_2' || type == 'administrative_area_level_1' || type == 'country') {
@@ -180,11 +186,11 @@ function formatAddressComponents(arr) { //This method takes in the address_compo
             }
         });
     });
-	
-	//ADDED THIS
-	var stringed = returnArr.map(function(elem){
-		return elem.name;
-	}).join(", ");
-	document.getElementById('address').value = stringed; //UP TO HERE
+
+    //ADDED THIS
+    var stringed = returnArr.map(function (elem) {
+        return elem.name;
+    }).join(", ");
+    document.getElementById('address').value = stringed; //UP TO HERE
     return returnArr;
 }

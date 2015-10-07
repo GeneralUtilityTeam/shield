@@ -5,6 +5,7 @@
  */
 package servlet.ajax;
 
+import dao.MissionDAO;
 import entity.Mission;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,14 +80,20 @@ public class BeginNewMission extends HttpServlet {
         mson.setAdministrativeAreaLevel1(admin1);
         mson.setCountry(country);
         mson.setUserID((int)session.getAttribute("userID"));
+        mson.setLat(Integer.parseInt(latStr));
+        mson.setLng(Integer.parseInt(lngStr));
         
-        System.out.println(mson.getLocality()+mson.getAdministrativeAreaLevel2()+mson.getAdministrativeAreaLevel1()+mson.getCountry());
-        
-        //Save Mission to database
+        MissionDAO msonDAO = new MissionDAO();
+        int missionID = -1;
+        try{
+            missionID = msonDAO.AddMission(mson);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
 
         response.setContentType("plain/text");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(1);
+        response.getWriter().write(missionID);
     }
 
     /**

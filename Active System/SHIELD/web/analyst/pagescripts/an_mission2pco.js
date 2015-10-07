@@ -2,7 +2,7 @@ var infrJSON;
 var scndJSON;
 var cartJSON = [];
 
-function initialize() {
+function initialize() { //Change this to take entities
     buildNav(msonStatus, 2);
     $.ajax({
         type: "GET",
@@ -86,10 +86,9 @@ function loadResult() {
         //Span for Add/Remove
         var span = document.createElement("span");
         span.id = "span" + x;
-
         if (cartJSON.length != 0) {
             for (var y = 0; y < cartJSON.length; y++) {
-                if (cartJSON[y] === infrJSON[x]) {
+                if (cartJSON[y].id === infrJSON[x].id) {
                     btn.className = "btn btn-sm btn-danger";
                     btn.setAttribute("onclick", "addRemove(" + x + ")");
                     span.className = "glyphicon glyphicon-minus";
@@ -224,8 +223,6 @@ function addRemove(id) {
             }
         }
     }
-
-
 }
 
 function savePCO() {

@@ -133,12 +133,11 @@ public class MissionDAO {
         return null;
     }
     public int AddMission(Mission mson){
-        //2428
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
             
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`2428`(?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`2428`(?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, mson.getUserID());
             pstmt.setString(2, mson.getTitle());
             pstmt.setString(3, mson.getObjective());
@@ -146,6 +145,8 @@ public class MissionDAO {
             pstmt.setString(5, mson.getAdministrativeAreaLevel2());
             pstmt.setString(6, mson.getAdministrativeAreaLevel1());
             pstmt.setString(7, mson.getCountry());
+            pstmt.setDouble(8, mson.getLat());
+            pstmt.setDouble(9, mson.getLng());
             
             ResultSet rs = pstmt.executeQuery();
             rs.next();

@@ -62,21 +62,21 @@ public class GetExcerptOfMission extends HttpServlet {
         JSONArray excrArray = new JSONArray();
         
         //Dummy data
-        JSONObject excr1 = new JSONObject();
-        excr1.put("id", "1");
-        excr1.put("text", "There are 10,000 people in Maguindanao");
-        excr1.put("category", "social");
-        excr1.put("source", "Maguindanao Area Study");
-        excr1.put("tags", "Maguindanao, Population");
-        excrArray.put(excr1);
-        
-        JSONObject excr2 = new JSONObject();
-        excr2.put("id", "2");
-        excr2.put("text", "There are 10,000 people in Maguindanao");
-        excr2.put("category", "military/security");
-        excr2.put("source", "Maguindanao Area Study");
-        excr2.put("tags", "Maguindanao, Population");
-        excrArray.put(excr2);
+//        JSONObject excr1 = new JSONObject();
+//        excr1.put("id", "1");
+//        excr1.put("text", "There are 10,000 people in Maguindanao");
+//        excr1.put("category", "social");
+//        excr1.put("source", "Maguindanao Area Study");
+//        excr1.put("tags", "Maguindanao, Population");
+//        excrArray.put(excr1);
+//        
+//        JSONObject excr2 = new JSONObject();
+//        excr2.put("id", "2");
+//        excr2.put("text", "There are 10,000 people in Maguindanao");
+//        excr2.put("category", "military/security");
+//        excr2.put("source", "Maguindanao Area Study");
+//        excr2.put("tags", "Maguindanao, Population");
+//        excrArray.put(excr2);
         String excrJSON = excrArray.toString();
         
         
