@@ -47,10 +47,13 @@ public class MissionDAO {
                 mson.setThemeStress(rs.getString(6));
                 mson.setThemeAvoid(rs.getString(7));
                 mson.setUserID(rs.getInt(8));
-                mson.setLocality(rs.getString(9));
-                mson.setAdministrativeAreaLevel2(rs.getString(10));
-                mson.setAdministrativeAreaLevel1(rs.getString(11));
-                mson.setCountry(rs.getString(12));
+                mson.setSublocality(rs.getString(9));
+                mson.setLocality(rs.getString(10));
+                mson.setAdministrativeAreaLevel2(rs.getString(11));
+                mson.setAdministrativeAreaLevel1(rs.getString(12));
+                mson.setCountry(rs.getString(13));
+                mson.setLat(rs.getDouble(14));
+                mson.setLng(rs.getDouble(15));
                 mson.generateFullAddress();
                 
                 pstmt = cn.prepareStatement("CALL `shield`.`6840`(?);");

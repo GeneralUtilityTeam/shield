@@ -4,21 +4,20 @@ function initialize() {
     if (msonJSOB.title != 'undefined')
         document.getElementById('mission-title').value = msonJSOB.title;
     if (msonJSOB.area != null) {
-        document.getElementById('address').value = msonJSOB.area.Name;
-        areaJSON = msonJSOB.area;
+        document.getElementById('address').value = msonJSOB.area;
         initializeMap();
     }
-    if (msonJSOB.objective != 'undefined')
+    if (msonJSOB.objective != null)
         document.getElementById('mission-objective').innerHTML = msonJSOB.objective;
-    if (msonJSOB.commanderIntent != 'undefined')
+    if (msonJSOB.commanderIntent != null)
         document.getElementById('commander-intent').innerHTML = msonJSOB.commanderIntent;
-    if (msonJSOB.conceptOfOperation != 'undefined')
+    if (msonJSOB.conceptOfOperation != null)
         document.getElementById('concept-of-operation').innerHTML = msonJSOB.conceptOfOperation;
-    if (msonJSOB.themeStress != 'undefined')
+    if (msonJSOB.themeStress != null)
         document.getElementById('theme-stress').innerHTML = msonJSOB.themeStress;
-    if (msonJSOB.themeAvoid != 'undefined')
+    if (msonJSOB.themeAvoid != null)
         document.getElementById('theme-avoid').innerHTML = msonJSOB.themeAvoid;
-    if (msonJSOB.situation != 'undefined')
+    if (msonJSOB.situation != null)
         document.getElementById('mission-situation').innerHTML = msonJSOB.situation;
     for (var x = 0; x < msonJSOB.taskList.length; x++) {
         addTask(msonJSOB.taskList[x].psyopsElement, msonJSOB.taskList[x].desc);
@@ -95,7 +94,7 @@ function saveMD() {
 
 function initializeMap() {
     geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(areaJSON.Latitude, areaJSON.Longitude);
+    var latlng = new google.maps.LatLng(msonJSOB.lat, msonJSOB.lng);
     var mapOptions = {
         zoom: 13,
         center: latlng,
@@ -105,7 +104,7 @@ function initializeMap() {
     google.maps.event.addListener(map, 'click', function () {
         infowindow.close();
     });
-    savedArea = areaJSON.Name;
+    savedArea = msonJSOB.area;
     document.getElementById("address").value = savedArea;
     geocoder.geocode({'address': savedArea}, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {

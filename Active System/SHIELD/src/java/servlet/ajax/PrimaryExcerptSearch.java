@@ -5,8 +5,10 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -58,25 +60,18 @@ public class PrimaryExcerptSearch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+            //Working Code
+//        String query = request.getParameter("param");
+//        IntelligenceDAO intlDAO = new IntelligenceDAO();
+//        ArrayList excrList = intlDAO.PrimarySearch(query);
+//        JSONArray excrJArr = new JSONArray(excrList);
+//        String excrJSON = excrJArr.toString();
+        
         //Dummy Data
         JSONArray excrArray = new JSONArray();
         JSONArray tagsArray = new JSONArray();
-//var responseJSON = [
-//{
-//	id: 1,
-//	source_id: 1,
-//	category: 1,
-//	text: "This is a sample excerpt",
-//	sublocality: " ",
-//	locality: " ",
-//	administrativeAreaLevel2: " ",
-//	administrativeAreaLevel1: " ",
-//	country: " ",
-//	lat: 15,
-//	lng: 15
-//}
-//];
-        //Dummy data
+
         JSONObject excr1 = new JSONObject();
         excr1.put("id", "1");
         excr1.put("text", "There are 10,000 people in Maguindanao");
@@ -91,8 +86,8 @@ public class PrimaryExcerptSearch extends HttpServlet {
         excr1.put("administrativeAreaLevel2", "");
         excr1.put("administrativeAreaLevel1", "");
         excr1.put("country", "Philippines");
-        excr1.put("lat", 15);
-        excr1.put("long", 15);
+        excr1.put("lat", 7.190708);
+        excr1.put("lng", 125.455341);
         excrArray.put(excr1);
         String infrJSON = excrArray.toString();
 

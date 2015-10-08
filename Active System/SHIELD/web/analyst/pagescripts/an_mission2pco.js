@@ -200,9 +200,8 @@ function addRemove(id) {
             btn.setAttribute("onclick", "addRemove(" + id + ")");
             span.className = "glyphicon glyphicon-plus";
             cartJSON.splice(i, 1);
-            markerList = cartJSON;
-            createMarker();
             loadSummary();
+            createMarker();
             found = true;
             break;
         }
@@ -214,7 +213,6 @@ function addRemove(id) {
         for (var x = 0; x < infrJSON.length; x++) {
             if (infrJSON[x].id == id + 1) {
                 cartJSON.splice(cartJSON.length, 0, infrJSON[x]);
-                markerList = cartJSON;
                 createMarker();
                 loadSummary();
             }
@@ -224,12 +222,12 @@ function addRemove(id) {
 
 //MAP Script
 var map;
-var infoWindow
+var infoWindow;
 var entity = [];
 var image = 'http://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png';
 var oms;
-var markerList = [];
 var markers = [];
+var markerList = [];
 
 function initializeMap() {
     var mapOptions = {
@@ -237,9 +235,8 @@ function initializeMap() {
         zoom: 18,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
     map = new google.maps.Map(document.getElementById('mission2pco-area-map'), mapOptions);
-
+    infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
     oms = new OverlappingMarkerSpiderfier(map,
             {markersWontMove: true, markersWontHide: true});
 
@@ -248,32 +245,35 @@ function initializeMap() {
     oms.addListener('unspiderfy', function (markers) {
     });
 
-    createMarker();
 }
-function resetMarker() {
-    markers = [];
-    for (var x = 0; x < markerList.length; x++) {
-        markerList[x].setIcon(null);
-    }
-}
+//function selectMarkers() {
+//    markers = [];
+//    for (var x = 0; x < markerList.length; x++) {
+//        markerList[x].setIcon(null);
+//    }
+//
+//}
 function createMarker() {
+    alert(cartJSON.length);
     var marker;
-    var cartLength = cartJSON.length;
-    for (var x = 0; x < cartLength; x++) {
+    markerList = [];
+    for (var x = 0; x < cartJSON.length; x++) {
+        alert(cartJSON[x].lng + " " + cartJSON[x].lat);
         var pos = new google.maps.LatLng(cartJSON[x].lat, cartJSON[x].lng);
-        var text = cartJSON[x].excerpt;
-        var id = cartJSON[x].id;
+        var text = cartJSON[x].text;
+        ids = cartJSON[x].id;
         marker = new google.maps.Marker({
             position: pos,
             map: map,
-            id: id,
+            id: ids,
             icon: null,
         });
         oms.addMarker(marker);
         markerList.push(marker);
-        
+        alert(marker.id);
         createWindowListener(marker, text);
         createMarkerListener(marker);
+
     }
 }
 
@@ -305,27 +305,25 @@ function createWindowListener(marker, text) {
         infoWindow.open(map, this);
     });
 }
+//function createEntity() {
+//    var createdEntity = [];
+//    createdEntity.id = "group" + entity.length;
+//    createdEntity.label = document.getElementById("entity-label").value;
+//    for (var x = 0; x < markers.length; x++) {
+//        alert(markers[x].id);
+//        createdEntity.push(markers[x]);
+//    }
+//    entity.push(createdEntity);
+//    selectMarkers();
+//}
 
-function createEntity() {
-    var createdEntity = [];
-    createdEntity.id = "entity" + entity.length;
-    createdEntity.label = document.getElementById("entity-label").value;
-    for (var x = 0; x < markers.length; x++) {
-        alert(markers[x].id);
-        createdEntity.push(markers[x]);
-    }
-    entity.push(createdEntity);
-    resetMarker();
-}
-
-function showCreatedEntities() {
-    for (var x = 0; x < entity.length; x++) {
-        alert(entity[x].id + " length" + entity[x].label);
-        for (var y = 0; y < entity[x].length; y++) {
-            alert(entity[x][y].id);
-        }
-    }
-}
+//function showEntities() {
+//    for (var x = 0; x < entity.length; x++) {
+//        for (var y = 0; y < entity[x].length; y++) {
+//            alert(entity[x][y].id);
+//        }
+//    }
+//}
 
 function savePCO() {
     $.ajax({

@@ -21,6 +21,8 @@ public class Excerpt {
     private String country;
     private double lat;
     private double lng;
+    
+    private double strength;
 
     /**
      * @return the id
@@ -173,6 +175,20 @@ public class Excerpt {
      */
     public void setAdministrativeAreaLevel1(String administrativeAreaLevel1) {
         this.administrativeAreaLevel1 = administrativeAreaLevel1;
+    }
+
+    /**
+     * @return the strength
+     */
+    public double getStrength() {
+        return strength;
+    }
+
+    /**
+     * @param strength the strength to set
+     */
+    public void setStrength(double strength) {
+        this.strength = strength;
     }
     
 }

@@ -1,6 +1,6 @@
 function initialize() {
     //replace first parameter with Mission Status - msonJSOB.status
-//    buildNav(msonStatus, 3);
+    //buildNav(msonStatus, 3);
     draw();
 }
 

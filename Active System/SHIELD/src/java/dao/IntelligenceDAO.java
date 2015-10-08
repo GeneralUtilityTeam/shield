@@ -6,6 +6,7 @@
 package dao;
 
 import db.DBConnector;
+import entity.Excerpt;
 import entity.Source;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +23,6 @@ import java.util.logging.Logger;
 public class IntelligenceDAO {
     public ArrayList<Source> GetAllSources() {
         try {
-            System.out.println("Running 1");
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
             
@@ -46,7 +46,6 @@ public class IntelligenceDAO {
                     
                     srcList.add(src);
                 } while (rs.next());
-                System.out.println("Running 2");
                 cn.close();
                 return srcList;
             }
@@ -82,5 +81,37 @@ public class IntelligenceDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
+    }
+
+    public ArrayList<Excerpt> PrimarySearch(String query){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+            
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`7917`(?);");
+            pstmt.setString(1, query);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();
+                do {
+                    Excerpt excr = new Excerpt();
+                    excr.setId(rs.getInt(1));
+                    excr.setText(rs.getString(2));
+                    excr.setStrength(rs.getDouble(3));
+                    excrList.add(excr);
+                } while (rs.next());
+                cn.close();
+                return excrList;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
     }
 }

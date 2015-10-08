@@ -29,6 +29,10 @@
         <script src="analyst/pagescripts/an_mission2pco.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
+        <!--Map Script-->
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
+        <script src="http://jawj.github.io/OverlappingMarkerSpiderfier/bin/oms.min.js"></script>
+
         <script>
             var msonStatus = <%=request.getAttribute("msonStatus")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
@@ -51,6 +55,10 @@
 
         <div id="container-fluid">
             <div id="content-shield" style="border-top: none;">
+                <div style="position: absolute; top:12vh; right: 3vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
+                    <div id="mission2pco-area-map" style="position: fixed; height: 78vh; width: 37vw;">
+                    </div>
+                </div>
                 <div class="col-md-2" style="position: fixed;">
                     <div style="background-color: rgba(230,230,230,1.0); color: black; width: 18vw; border-radius: 5px; text-align: justify; padding: 0 15px 0 15px;">
                         <h5 style="padding-top: 20px; font-size: 15px;"><span class="glyphicon glyphicon-file" aria-hidden="true"> </span><b> MISSION:</b><br> <label id="nav-mission-title-label" style="font-size: 13px; font-weight: 100; padding-left: 20px; text-align: left;"> </label></h5>
@@ -63,7 +71,6 @@
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
                         <button type="button" onclick="savePCO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Characterstics Overlay</button>
                     </div>
-
 
                     <div id="data-sources">
                         <div class="col-md-6">
@@ -78,11 +85,10 @@
                             </table>
                             <hr>
                             <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="result-table">
-                                
+
                             </table> 
                         </div>
-                        <div class="col-md-6" id="mission2pco-area-map">
-                        </div>
+
                     </div>    
                 </div>
             </div>
@@ -124,7 +130,7 @@
                             </button>
                             <div id="related-excerpts" class="collapse">
                                 <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="related-table">
-                                   
+
                                 </table> 
                             </div>
                         </div>
@@ -164,7 +170,7 @@
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-        $('#slidingmenu').BootSideMenu({side: "right"});
+        $('#slidingmenu').BootSideMenu({side: "left"});
         </script>
         <script type="text/javascript">
 
