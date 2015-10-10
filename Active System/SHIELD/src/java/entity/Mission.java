@@ -18,27 +18,17 @@ public class Mission {
     private int userID;
     private String title;
     private String objective;
-    private Date startDT;
-    private Date endDT;
     private String situation;
     private String commanderIntent;
     private String conceptOfOperation;
     private String themeStress;
     private String themeAvoid;
-    private String area;
-    private String sublocality;
-    private String locality;
-    private String administrativeAreaLevel2;
-    private String administrativeAreaLevel1;
-    private String country;
-    private double lat;
-    private double lng;
+    private Date startDT;
+    private Date endDT;
+    private Area area;
     
     private ArrayList<Task> taskList;
-    
-    public void generateFullAddress(){
-        this.area = (sublocality != null ? sublocality + ", " : "") + (locality != null ? locality + ", " : "") + (administrativeAreaLevel2 != null ? administrativeAreaLevel2 + ", " : "") + (administrativeAreaLevel1 != null ? administrativeAreaLevel1 + ", " : "") + country;
-    }
+
     /**
      * @return the id
      */
@@ -107,33 +97,6 @@ public class Mission {
      */
     public void setObjective(String objective) {
         this.objective = objective;
-    }
-    /**
-     * @return the startDT
-     */
-    public Date getStartDT() {
-        return startDT;
-    }
-
-    /**
-     * @param startDT the startDT to set
-     */
-    public void setStartDT(Date startDT) {
-        this.startDT = startDT;
-    }
-
-    /**
-     * @return the endDT
-     */
-    public Date getEndDT() {
-        return endDT;
-    }
-
-    /**
-     * @param endDT the endDT to set
-     */
-    public void setEndDT(Date endDT) {
-        this.endDT = endDT;
     }
 
     /**
@@ -205,6 +168,49 @@ public class Mission {
     public void setThemeAvoid(String themeAvoid) {
         this.themeAvoid = themeAvoid;
     }
+
+    /**
+     * @return the startDT
+     */
+    public Date getStartDT() {
+        return startDT;
+    }
+
+    /**
+     * @param startDT the startDT to set
+     */
+    public void setStartDT(Date startDT) {
+        this.startDT = startDT;
+    }
+
+    /**
+     * @return the endDT
+     */
+    public Date getEndDT() {
+        return endDT;
+    }
+
+    /**
+     * @param endDT the endDT to set
+     */
+    public void setEndDT(Date endDT) {
+        this.endDT = endDT;
+    }
+
+    /**
+     * @return the area
+     */
+    public Area getArea() {
+        return area;
+    }
+
+    /**
+     * @param area the area to set
+     */
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
     /**
      * @return the taskList
      */
@@ -218,118 +224,4 @@ public class Mission {
     public void setTaskList(ArrayList<Task> taskList) {
         this.taskList = taskList;
     }
-
-    /**
-     * @return the locality
-     */
-    public String getLocality() {
-        return locality;
-    }
-
-    /**
-     * @param locality the locality to set
-     */
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
-    /**
-     * @return the administrativeAreaLevel2
-     */
-    public String getAdministrativeAreaLevel2() {
-        return administrativeAreaLevel2;
-    }
-
-    /**
-     * @param administrativeAreaLevel2 the administrativeAreaLevel2 to set
-     */
-    public void setAdministrativeAreaLevel2(String administrativeAreaLevel2) {
-        this.administrativeAreaLevel2 = administrativeAreaLevel2;
-    }
-
-    /**
-     * @return the administrativeAreaLevel1
-     */
-    public String getAdministrativeAreaLevel1() {
-        return administrativeAreaLevel1;
-    }
-
-    /**
-     * @param administrativeAreaLevel1 the administrativeAreaLevel1 to set
-     */
-    public void setAdministrativeAreaLevel1(String administrativeAreaLevel1) {
-        this.administrativeAreaLevel1 = administrativeAreaLevel1;
-    }
-
-    /**
-     * @return the country
-     */
-    public String getCountry() {
-        return country;
-    }
-
-    /**
-     * @param country the country to set
-     */
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    /**
-     * @return the area
-     */
-    public String getArea() {
-        return area;
-    }
-
-    /**
-     * @param area the area to set
-     */
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    /**
-     * @return the lat
-     */
-    public double getLat() {
-        return lat;
-    }
-
-    /**
-     * @param lat the lat to set
-     */
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    /**
-     * @return the lng
-     */
-    public double getLng() {
-        return lng;
-    }
-
-    /**
-     * @param lng the lng to set
-     */
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    /**
-     * @return the sublocality
-     */
-    public String getSublocality() {
-        return sublocality;
-    }
-
-    /**
-     * @param sublocality the sublocality to set
-     */
-    public void setSublocality(String sublocality) {
-        this.sublocality = sublocality;
-    }
-    
-    
 }

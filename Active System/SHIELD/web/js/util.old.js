@@ -1,5 +1,5 @@
 // For: SHIELD
-// V 2.4.1 , Updated as of 10/9/15
+// V 2.4 , Updated as of 10/9/15
 
 // -- STRING MANIUPLATION
 function toTitleCase(str){
@@ -129,21 +129,13 @@ function numbersonlydouble(myfield, e, dec) {// allows the period (.)
 }
 function checkIfEmpty(str) { //checks if the str is empty
     if (str == null || str === 'undefined')
-        return true;
-    var clearStr = str.replace(/\s/g, '');
-    if (clearStr == "")
-        return true;
-    else
         return false;
-}
-function replaceIfEmpty(str) { //checks if the str is empty
-    if (str == null || str === 'undefined')
-        return "";
+
     var clearStr = str.replace(/\s/g, '');
     if (clearStr == "")
-        return "";
+        return false;
     else
-        return str;
+        return true;
 }
 
 // -- JSON
@@ -151,30 +143,30 @@ function toJSON(obj) {  //converts and object into a JSON string
     return JSON.stringify(obj, null, 4);
 }
 
-// -- GEOCODER; requires global var geocode and function geocodeSuccess(result)
+// -- GEOCODER; requires global var geocode
 function initializeGeocoder(){
-    if(geocoder == null){
+    if(geocode == null){
         geocoder = new google.maps.Geocoder();
     }
 }
-function geocodeResultString(str) { // Takes String Address; Returns geocode results
+function geocodeString(str) { // Takes String Address; Returns geocode results
+    console.log(str);
     geocoder.geocode({
         'address': str
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-			console.log(results[0]);
-            geocodeSuccess(results[0]);
+            return results[0];
         } else {
             return null;
         }
     });
 }
-function geocodeResultLatLng(latLng) { // Runs a search based on a mouse click event
-	geocoder.geocode({
+function geocodeMouseClick(latLng) { // Runs a search based on a mouse click event
+    geocoder.geocode({
         latLng: latLng
     }, function (results) {
         if (results && results.length > 0) {
-			geocodeSuccess(results[0]);
+            return results[0];
         } else {
             return null;
         }
@@ -184,41 +176,37 @@ function generateAreaObject(result) { //This method takes in the address_compone
     var arr = result.address_components;
     if(arr != null){
         var area = new Object();
-        area.latLng = result.geometry.location;
-		area.viewport = result.geometry.viewport;
+        area.lat = result.geometry.location.lat();
+        area.lng = result.geometry.location.lng();
         arr.forEach(function (comp){
-			comp.types.forEach(function (type){
-				if(type != 'political'){
-					switch(type){
-						case 'street_number':
-							area.level8 = comp.long_name;
-							break;
-						case 'route':
-							area.level7 = comp.long_name;
-							break;
-						case 'neighborhood':
-							area.level6 = comp.long_name;
-							break;
-						case 'sublocality':
-							area.level5 = comp.long_name;
-							break;
-						case 'locality':
-							area.level4 = comp.long_name;
-							break;
-						case 'administrative_area_level_2':
-							area.level3 = comp.long_name;
-							break;
-						case 'administrative_area_level_1':
-							area.level2 = comp.long_name;
-							break;
-						case 'country':
-							area.level1 = comp.long_name;
-							break;
-					}
-				}
-			});
-            
+            switch(comp.type){
+                case 'street_number':
+                    area.level8 = comp.long_name;
+                    break;
+                case 'route':
+                    area.level7 = comp.long_name;
+                    break;
+                case 'neighborhood':
+                    area.level6 = comp.long_name;
+                    break;
+                case 'sublocality':
+                    area.level5 = comp.long_name;
+                    break;
+                case 'locality':
+                    area.level4 = comp.long_name;
+                    break;
+                case 'administrative_area_level_2':
+                    area.level3 = comp.long_name;
+                    break;
+                case 'administrative_area_level_1':
+                    area.level2 = comp.long_name;
+                    break;
+                case 'country':
+                    area.level1 = comp.long_name;
+                    break;
+            }
         });
+        
         return area;
     }
     return null;
@@ -232,6 +220,6 @@ function generateFullAddress(area){ // Converts Address components of an area in
     var level3 = (!checkIfEmpty(area.level3) ? area.level3 + ", " : "");
     var level2 = (!checkIfEmpty(area.level2) ? area.level2 + ", " : "");
     var level1 = area.level1;
-	var result = level8 + level7 + level6 + level5 + level4 + level3 + level2 + level1;
-    return result;
+	
+    return level8 + level7 + level6 + level5 + level4 + level3 + level2 + level1;
 }

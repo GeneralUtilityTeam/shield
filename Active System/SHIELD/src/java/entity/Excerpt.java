@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Franco
@@ -13,17 +15,14 @@ public class Excerpt {
     private int id;
     private int sourceID;
     private int categoryID;
+    private String categoryDesc;
     private String text;
-    private String sublocality;
-    private String locality;
-    private String administrativeAreaLevel2;
-    private String administrativeAreaLevel1;
-    private String country;
-    private double lat;
-    private double lng;
+    private Area area;
     
     private double strength;
+    private boolean eentityEnabled;
 
+    private ArrayList<String> tagList;
     /**
      * @return the id
      */
@@ -67,6 +66,20 @@ public class Excerpt {
     }
 
     /**
+     * @return the categoryDesc
+     */
+    public String getCategoryDesc() {
+        return categoryDesc;
+    }
+
+    /**
+     * @param categoryDesc the categoryDesc to set
+     */
+    public void setCategoryDesc(String categoryDesc) {
+        this.categoryDesc = categoryDesc;
+    }
+
+    /**
      * @return the text
      */
     public String getText() {
@@ -81,100 +94,17 @@ public class Excerpt {
     }
 
     /**
-     * @return the sublocality
+     * @return the area
      */
-    public String getSublocality() {
-        return sublocality;
+    public Area getArea() {
+        return area;
     }
 
     /**
-     * @param sublocality the sublocality to set
+     * @param area the area to set
      */
-    public void setSublocality(String sublocality) {
-        this.sublocality = sublocality;
-    }
-
-    /**
-     * @return the locality
-     */
-    public String getLocality() {
-        return locality;
-    }
-
-    /**
-     * @param locality the locality to set
-     */
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-    /**
-     * @return the country
-     */
-    public String getCountry() {
-        return country;
-    }
-
-    /**
-     * @param country the country to set
-     */
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    /**
-     * @return the lat
-     */
-    public double getLat() {
-        return lat;
-    }
-
-    /**
-     * @param lat the lat to set
-     */
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    /**
-     * @return the lng
-     */
-    public double getLng() {
-        return lng;
-    }
-
-    /**
-     * @param lng the lng to set
-     */
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    /**
-     * @return the administrativeAreaLevel2
-     */
-    public String getAdministrativeAreaLevel2() {
-        return administrativeAreaLevel2;
-    }
-
-    /**
-     * @param administrativeAreaLevel2 the administrativeAreaLevel2 to set
-     */
-    public void setAdministrativeAreaLevel2(String administrativeAreaLevel2) {
-        this.administrativeAreaLevel2 = administrativeAreaLevel2;
-    }
-
-    /**
-     * @return the administrativeAreaLevel1
-     */
-    public String getAdministrativeAreaLevel1() {
-        return administrativeAreaLevel1;
-    }
-
-    /**
-     * @param administrativeAreaLevel1 the administrativeAreaLevel1 to set
-     */
-    public void setAdministrativeAreaLevel1(String administrativeAreaLevel1) {
-        this.administrativeAreaLevel1 = administrativeAreaLevel1;
+    public void setArea(Area area) {
+        this.area = area;
     }
 
     /**
@@ -190,5 +120,32 @@ public class Excerpt {
     public void setStrength(double strength) {
         this.strength = strength;
     }
-    
+
+    /**
+     * @return the eentityEnabled
+     */
+    public boolean isEentityEnabled() {
+        return eentityEnabled;
+    }
+
+    /**
+     * @param eentityEnabled the eentityEnabled to set
+     */
+    public void setEentityEnabled(boolean eentityEnabled) {
+        this.eentityEnabled = eentityEnabled;
+    }
+
+    /**
+     * @return the tagList
+     */
+    public ArrayList<String> getTagList() {
+        return tagList;
+    }
+
+    /**
+     * @param tagList the tagList to set
+     */
+    public void setTagList(ArrayList<String> tagList) {
+        this.tagList = tagList;
+    }
 }
