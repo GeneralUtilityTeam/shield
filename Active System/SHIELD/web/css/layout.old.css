@@ -151,6 +151,16 @@ div.alert-messages {
     border-radius: 3px;
     margin-left: 38vw;
 }
+#mission4tcoa-area-map{
+    position: fixed;
+    height: 78vh;
+    width: 37vw;
+    border-style: solid; 
+    border-width: 1px; 
+    border-color: #D3D3D3; 
+    border-radius: 3px;
+    margin-left: 38vw;
+}
 #mission-details-map{
     width: 77vw; 
     height: 56vh;

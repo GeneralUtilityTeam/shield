@@ -24,6 +24,9 @@
         <!--Bootstrap Tags-input-->
         <link rel="stylesheet" href="css/bootstrap-tagsinput.css">
         <script src="js/bootstrap-tagsinput.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+        <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission2pco.js"></script>
@@ -71,31 +74,27 @@
 
                     <div id="data-sources">
                         <div class="col-md-6">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td width="10%"><h4>Search: </h4></td>
-                                        <td width="90%"><input type="text" id="search-field" class="form-box tt-query" autocomplete="off" spellcheck="false" placeholder="Search from All Data Sources" required></td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <hr>
-                            <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="result-table">
-
-                            </table> 
-                        </div>
-
-                        <div id="mission2pco-area-map" style="position: fixed; height: 78vh; width: 37vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
+                            <div class="inner-addon right-addon" style=" z-index: 1; position: fixed; height: 7vh; width: 28vw; margin: 1vh 0 0 1vmin; box-shadow: 5px 5px 5px #aaaaaa;">
+                                <i class="glyphicon glyphicon-search"></i>
+                                <input type="text" id="search-field" class="form-control" autocomplete="off" spellcheck="false" placeholder="Search for Excerpts" required/>
+                            </div>
+                            <div class="btn-group" style="z-index: 1; position: fixed; margin: 72vh 0 0 1vmin;">
+                                <a class="btn btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
+                                <a class="btn btn-default" onclick="editEntity()" data-toggle="tooltip" title="Right-click on Entity to edit" data-placement="bottom"><i class="fa fa-edit" style="color:#ffa419"></i> Edit Entity</a>
+                                <a class="btn btn-default" onclick="deleteEntity()" data-toggle="tooltip" title="Right-click on Entity to delete from this Mission" data-placement="bottom"><i class="fa fa-trash" style="color:#CC0000"></i> Delete Entity</a>
+                                <a class="btn btn-default" onclick="clearSelection()"><i class="fa fa-refresh" style="color:#2b2b2b"></i> Clear Selection</a>
+                            </div>
+                            <div id="mission2pco-area-map" style="height: 78vh; width: 74vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
+                            </div>
                         </div>
                     </div>    
                 </div>
             </div>
         </div>
 
-        <!-- View Excerpt Modal -->
-        <div class="modal" id="viewExcerpt" tabindex="-1" role="dialog" 
-             aria-labelledby="viewExcerptlabel" aria-hidden="true">
+        <!-- Entity Modal -->
+        <div class="modal" id="entityModal" tabindex="-1" role="dialog" 
+             aria-labelledby="entityModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" >
                     <div class="modal-header">
@@ -103,38 +102,48 @@
                                 data-dismiss="modal" aria-hidden="true">
                             &times;
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            View Excerpt
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Entity
                         </h4>
                     </div>
-                    <div class="modal-body scroll" id="view-modal-body" style="height: 70vh; overflow: auto;">
+                    <div class="modal-body scroll" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        <label style="width: 20%;">Entity Name: </label> <input type="text" id="entity-name" class="form-box" style="width: 76%"><br><br>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    Excerpt <label id='viewID'></label>
-                                </h4>
-                            </div>
-                            <div class="panel-body">
-                                <blockquote id='viewText'></blockquote>
-                                <h5>Category: <label id="viewCategory"></label></h5>
-                                <h5>Area: <label id="viewArea"></label></h5>
-                                <h5>Source: <label id="viewSource"></label></h5>
-                                <h5>Tags: <input id="viewTags" class="form-box" data-role="tagsinput" width="100%" disabled/></h5>
-                            </div>
+                        <label style="display: block; text-align: center">Set minimum Entity strength to: </label>
+                        <input type="range" id="rangeInput" name="rangeInput" step="1" min="1" max="5" style="width: 50%; margin: 0 24% 0 24%;">
+                        <label id="rangeText" style="display: block; text-align: center; font-weight: 100;"/></label><hr>
 
-                            <button type="button" id="viewSecondaryExcerpt" class="btn btn-default btn-block" data-toggle="collapse" 
-                                    data-target="#related-excerpts"><span class="glyphicon glyphicon-menu-down" id="secondaryExcerptMenu"></span>
-                                See Related Excerpts
-                            </button>
-                            <div id="related-excerpts" class="collapse">
-                                <table class="table table-hover table-bordered list-table" cellspacing="0" width="100%" id="related-table">
+                    <table id="table5" class="enable">
+                            <tr>
+                                <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable5" type="checkbox" data-toggle="toggle" data-on="Check All Very Strong Relevance Excerpts" data-off="Select Very Strong Relevance Excerpts" data-onstyle="success" data-offstyle="default" data-width="260" data-size="small"> </th>
+                            </tr>
+                        </table><hr>
+                        <table id="table4" class="enable">
+                            <tr>
+                                <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable4" type="checkbox" data-toggle="toggle" data-on="Check All Strong Relevance Excerpts" data-off="Select Strong Relevance Excerpts" data-onstyle="info" data-offstyle="default" data-width="260" data-size="small"> </th>
+                            </tr>
+                        </table><hr>
+                        <table id="table3" class="enable">
+                            <tr>
+                                <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable3" type="checkbox" data-toggle="toggle" data-on="Check All Moderate Relevance Excerpts" data-off="Select Moderate Relevance Excerpts" data-onstyle="warning" data-offstyle="default" data-width="260" data-size="small"> </th>
+                            </tr>
+                        </table><hr>
+                        <table id="table2" class="enable">
+                            <tr>
+                                <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable2" type="checkbox" data-toggle="toggle" data-on="Check All Weak Relevance Excerpts" data-off="Select Weak Relevance Excerpts" data-onstyle="danger" data-offstyle="default" data-width="260" data-size="small"> </th>
+                            </tr>
+                        </table><hr>
+                        <table id="table1" class="enable">
+                            <tr>
+                                <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable1" type="checkbox" data-toggle="toggle" data-on="Check All Very Weak Relevance Excerpts" data-off="Select Very Weak Relevance Excerpts" data-onstyle="default" data-offstyle="default" data-width="260" data-size="small"> </th>
+                            </tr>
+                        </table>
 
-                                </table> 
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="saveEntity()">
+                            <span class="glyphicon glyphicon-saved"> </span> Create Entity
+                        </button>
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Close
                         </button>
@@ -145,7 +154,7 @@
         </div>
 
         <!--Sliding Side Bar Menu-->
-        <div id="slidingmenu" style="width: 18vw;">
+        <div id="slidingmenu" style="width: 22vw;">
             <div style="border: solid 1px #D3D3D3; border-radius: 5px; padding-left: 1vw; margin: 10px 10px 10px 10px; background-color: rgba(250,250,250,1);">
                 <h4 style="font-size: 1.2vw; font-weight: 600; ">Summary of Data Sources</h4>
                 <h6>Political: <label id="political"></label></h6>
@@ -156,10 +165,9 @@
                 <h6>Infrastructure and Technology: <label id="infrastructure-technology"></label></h6>
                 <h6>Environment/Physical: <label id="environment-physical"></label></h6>
             </div>
-            <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Sources</h4>
-            <div id="mission-sources">
-                <table class="excerpt-list" style="width: 18vw;" id="source-table">
-                </table>
+            <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Entities</h4>
+            <div id="mission-entities">
+
             </div>
 
         </div>
@@ -169,7 +177,7 @@
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-        $('#slidingmenu').BootSideMenu({side: "left"});
+                            $('#slidingmenu').BootSideMenu({side: "left"});
         </script>
         <script type="text/javascript">
 

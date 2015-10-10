@@ -55,10 +55,7 @@
 
         <div id="container-fluid">
             <div id="content-shield" style="border-top: none;">
-                <div style="position: absolute; top:12vh; right: 3vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
-                    <div id="mission2pco-area-map" style="position: fixed; height: 78vh; width: 37vw;">
-                    </div>
-                </div>
+
                 <div class="col-md-2" style="position: fixed;">
                     <div style="background-color: rgba(230,230,230,1.0); color: black; width: 18vw; border-radius: 5px; text-align: justify; padding: 0 15px 0 15px;">
                         <h5 style="padding-top: 20px; font-size: 15px;"><span class="glyphicon glyphicon-file" aria-hidden="true"> </span><b> MISSION:</b><br> <label id="nav-mission-title-label" style="font-size: 13px; font-weight: 100; padding-left: 20px; text-align: left;"> </label></h5>
@@ -89,6 +86,8 @@
                             </table> 
                         </div>
 
+                        <div id="mission2pco-area-map" style="position: fixed; height: 78vh; width: 37vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
+                        </div>
                     </div>    
                 </div>
             </div>
