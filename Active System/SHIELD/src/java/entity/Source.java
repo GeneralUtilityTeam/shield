@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Franco
  */
 public class Source {
-     
+
     private int id;
     private int classID;
     private String classDesc;

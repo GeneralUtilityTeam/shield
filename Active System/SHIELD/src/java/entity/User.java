@@ -10,7 +10,7 @@ package entity;
  * @author Franco
  */
 public class User {
-    
+
     private int id;
     private int classID;
     private String uname;
@@ -18,6 +18,7 @@ public class User {
     private String nameFirst;
     private String nameOther;
     private String nameLast;
+    private String fullName;
 
     public User(int id, int classID, String uname, String nameTitle, String nameFirst, String nameOther, String nameLast) {
         this.id = id;
@@ -27,6 +28,19 @@ public class User {
         this.nameFirst = nameFirst;
         this.nameOther = nameOther;
         this.nameLast = nameLast;
+    }
+
+    public String generateFullName() {
+        String fullName = (nameTitle == null ? "" : nameTitle + ". ")
+                + (nameFirst == null ? "" : nameFirst + " ")
+                + (nameOther == null ? "" : nameOther + " ")
+                + (nameLast == null ? "" : nameLast + " ");
+        if (fullName == "") {
+            fullName = uname;
+        }
+        this.fullName = fullName;
+
+        return fullName;
     }
 
     /**
@@ -127,6 +141,11 @@ public class User {
         this.nameLast = nameLast;
     }
 
-    
-    
+    /**
+     * @return the fullName
+     */
+    public String getFullName() {
+        return fullName;
+    }
+
 }

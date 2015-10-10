@@ -5,12 +5,16 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
+import entity.Area;
+import entity.Excerpt;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -56,9 +60,57 @@ public class SaveExcerpt extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int userID = (int)session.getAttribute("userID");
+        
+        String sourceIDStr = request.getParameter("source_id");
+        String categoryIDStr = request.getParameter("category_id");
+        String text = request.getParameter("text");
+        String level8 = request.getParameter("level8");
+        String level7 = request.getParameter("level7");
+        String level6 = request.getParameter("level6");
+        String level5 = request.getParameter("level5");
+        String level4 = request.getParameter("level4");
+        String level3 = request.getParameter("level3");
+        String level2 = request.getParameter("level2");
+        String level1 = request.getParameter("level1");
+        String latStr = request.getParameter("lat");
+        String lngStr = request.getParameter("lng");
+        
+        //Tag Object
+        
+        Excerpt excr = new Excerpt();
+        Area area = new Area();
+        
+        excr.setSourceID(Integer.parseInt(sourceIDStr));
+        excr.setCategoryID(Integer.parseInt(categoryIDStr));
+        excr.setText(text);
+        area.setLevel8(level8);
+        area.setLevel7(level7);
+        area.setLevel6(level6);
+        area.setLevel5(level5);
+        area.setLevel4(level4);
+        area.setLevel3(level3);
+        area.setLevel2(level2);
+        area.setLevel1(level1);
+        area.setLat(Double.parseDouble(latStr));
+        area.setLng(Double.parseDouble(lngStr));
+        excr.setArea(area);
+        
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
+        String message = "An error occured";
+        try{
+            intlDAO.AddExcerpt(userID, excr);
+            message = "<strong>New Excerpt</strong> has been <strong>added.</strong>";
+            
+            //Tags
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("<strong>New Excerpt</strong> has been <strong>added.</strong>");
+        response.getWriter().write(message);
     }
 
     /**

@@ -20,12 +20,13 @@ import java.util.logging.Logger;
  * @author Franco
  */
 public class SystemDAO {
+
     public ArrayList<Config> GetSourceClasses() {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-            
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`8953`();");
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`sys_source_classes`();");
             ResultSet rs = pstmt.executeQuery();
             rs.next();
             if (rs.getRow() == 0) {
@@ -40,15 +41,15 @@ public class SystemDAO {
 
                     confList.add(conf);
                 } while (rs.next());
-                
+
                 cn.close();
                 return confList;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(SystemDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
 }

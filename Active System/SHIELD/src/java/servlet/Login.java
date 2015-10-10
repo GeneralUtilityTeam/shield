@@ -78,7 +78,6 @@ public class Login extends HttpServlet {
         //Create return variables
         HttpSession session = request.getSession();
         String destination = "index.jsp";
-        String dispatchLocation = "/index.jsp";
         String message = "";
         String login = "bad";
 
@@ -92,7 +91,7 @@ public class Login extends HttpServlet {
             message = "Please enter a username and a password";
         } else {
             //Try the login
-            User user = userDAO.login(uname, pword);
+            User user = userDAO.Login(uname, pword);
             if (user == null) {
                 message = "Incorrect username and password";
             } else {
@@ -113,6 +112,7 @@ public class Login extends HttpServlet {
                 login = "good";
                 session.setAttribute("classID", user.getClassID());
                 session.setAttribute("userUname", user.getUname());
+                session.setAttribute("userFullName", user.getFullName());
                 session.setAttribute("userID", user.getId());
             }
         }
@@ -120,7 +120,7 @@ public class Login extends HttpServlet {
         session.setAttribute("message", message);
         session.setAttribute("login", login);
         request.setAttribute("destination", destination);
-        //sess
+
         ServletContext servcont = getServletContext();
         RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
         dispatch.forward(request, response);

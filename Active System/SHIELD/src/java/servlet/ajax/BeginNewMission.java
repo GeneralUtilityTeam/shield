@@ -6,6 +6,7 @@
 package servlet.ajax;
 
 import dao.MissionDAO;
+import entity.Area;
 import entity.Mission;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -60,30 +61,41 @@ public class BeginNewMission extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int userID = (int)session.getAttribute("userID");
         
-        String title = (String)request.getParameter("missionTitle");
-        String objective = (String)request.getParameter("missionObjective");
-        String sublocality = (String)request.getParameter("sublocality");
-        String locality = (String)request.getParameter("locality");
-        String admin2 = (String)request.getParameter("administrative_area_level_2");
-        String admin1 = (String)request.getParameter("administrative_area_level_1");
-        String country = (String)request.getParameter("country");
+        String title = request.getParameter("missionTitle");
+        String objective = request.getParameter("missionObjective");
+        String level8 = request.getParameter("level8");
+        String level7 = request.getParameter("level7");
+        String level6 = request.getParameter("level6");
+        String level5 = request.getParameter("level5");
+        String level4 = request.getParameter("level4");
+        String level3 = request.getParameter("level3");
+        String level2 = request.getParameter("level2");
+        String level1 = request.getParameter("level1");
         String latStr = request.getParameter("lat");
         String lngStr = request.getParameter("lng");
         
-        HttpSession session = request.getSession();
+        
         
         Mission mson = new Mission();
+        Area area = new Area();
+        
+        mson.setUserID(userID);
         mson.setTitle(title);
         mson.setObjective(objective);
-        mson.setSublocality(sublocality);
-        mson.setLocality(locality);
-        mson.setAdministrativeAreaLevel2(admin2);
-        mson.setAdministrativeAreaLevel1(admin1);
-        mson.setCountry(country);
-        mson.setUserID((int)session.getAttribute("userID"));
-        mson.setLat(Double.parseDouble(latStr));
-        mson.setLng(Double.parseDouble(lngStr));
+        area.setLevel8(level8);
+        area.setLevel7(level7);
+        area.setLevel6(level6);
+        area.setLevel5(level5);
+        area.setLevel4(level4);
+        area.setLevel3(level3);
+        area.setLevel2(level2);
+        area.setLevel1(level1);
+        area.setLat(Double.parseDouble(latStr));
+        area.setLng(Double.parseDouble(lngStr));
+        mson.setArea(area);
         
         MissionDAO msonDAO = new MissionDAO();
         int missionID = -1;

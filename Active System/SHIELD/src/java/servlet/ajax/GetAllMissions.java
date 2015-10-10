@@ -5,8 +5,10 @@
  */
 package servlet.ajax;
 
+import dao.MissionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -58,41 +60,43 @@ public class GetAllMissions extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        JSONArray msonArray = new JSONArray();
+        
         
         //Dummy data
-        JSONObject op1 = new JSONObject();
-        op1.put("id", "1");
-        op1.put("title", "OPERATION PAGKAMULAT");
-        op1.put("objective", "To increase voter population");
-        op1.put("area", "Pampanga");
-        op1.put("status", "5");
-        msonArray.put(op1);
-        
-        JSONObject op2 = new JSONObject();
-        op2.put("id", "2");
-        op2.put("title", "OPERATION TIKAS");
-        op2.put("objective", "To increase voter population");
-        op2.put("area", "Dumaguete");
-        op2.put("status", "4");
-        msonArray.put(op2);
-        
-        JSONObject op3 = new JSONObject();
-        op3.put("id", "3");
-        op3.put("title", "OPERATION TIKAS");
-        op3.put("objective", "To increase voter population");
-        op3.put("area", "Dumaguete");
-        op3.put("status", "7");
-        msonArray.put(op3);
-        msonArray.put(op3);
-        msonArray.put(op3);
-        msonArray.put(op3);
-        msonArray.put(op3);
-        msonArray.put(op3);
-        msonArray.put(op3);
-        msonArray.put(op3);
-        
-        String msonJSON = msonArray.toString();
+//        JSONObject op1 = new JSONObject();
+//        op1.put("id", "1");
+//        op1.put("title", "OPERATION PAGKAMULAT");
+//        op1.put("objective", "To increase voter population");
+//        op1.put("area", "Pampanga");
+//        op1.put("status", "5");
+//        msonArray.put(op1);
+//        
+//        JSONObject op2 = new JSONObject();
+//        op2.put("id", "2");
+//        op2.put("title", "OPERATION TIKAS");
+//        op2.put("objective", "To increase voter population");
+//        op2.put("area", "Dumaguete");
+//        op2.put("status", "4");
+//        msonArray.put(op2);
+//        
+//        JSONObject op3 = new JSONObject();
+//        op3.put("id", "3");
+//        op3.put("title", "OPERATION TIKAS");
+//        op3.put("objective", "To increase voter population");
+//        op3.put("area", "Dumaguete");
+//        op3.put("status", "7");
+//        msonArray.put(op3);
+//        msonArray.put(op3);
+//        msonArray.put(op3);
+//        msonArray.put(op3);
+//        msonArray.put(op3);
+//        msonArray.put(op3);
+//        msonArray.put(op3);
+//        msonArray.put(op3);
+        MissionDAO msonDAO = new MissionDAO();
+        ArrayList msonList = msonDAO.GetAllMissions();
+        JSONArray msonJArr= new JSONArray(msonList);
+        String msonJSON = msonJArr.toString();
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -6,6 +6,7 @@
 package dao;
 
 import db.DBConnector;
+import entity.Area;
 import entity.Mission;
 import entity.Task;
 import java.sql.Connection;
@@ -21,23 +22,24 @@ import java.util.logging.Logger;
  * @author Franco
  */
 public class MissionDAO {
-    
+
     public Mission GetMission(int missionID) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-            
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`8309`(?);");
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_mission`(?);");
             pstmt.setInt(1, missionID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
-            
+
             if (rs.getRow() == 0) {
                 cn.close();
                 return null;
             } else {
                 Mission mson = new Mission();
-                
+                Area area = new Area();
+
                 mson.setId(missionID);
                 mson.setTitle(rs.getString(1));
                 mson.setObjective(rs.getString(2));
@@ -47,16 +49,19 @@ public class MissionDAO {
                 mson.setThemeStress(rs.getString(6));
                 mson.setThemeAvoid(rs.getString(7));
                 mson.setUserID(rs.getInt(8));
-                mson.setSublocality(rs.getString(9));
-                mson.setLocality(rs.getString(10));
-                mson.setAdministrativeAreaLevel2(rs.getString(11));
-                mson.setAdministrativeAreaLevel1(rs.getString(12));
-                mson.setCountry(rs.getString(13));
-                mson.setLat(rs.getDouble(14));
-                mson.setLng(rs.getDouble(15));
-                mson.generateFullAddress();
-                
-                pstmt = cn.prepareStatement("CALL `shield`.`6840`(?);");
+                area.setLevel8(rs.getString(9));
+                area.setLevel7(rs.getString(10));
+                area.setLevel6(rs.getString(11));
+                area.setLevel5(rs.getString(12));
+                area.setLevel4(rs.getString(13));
+                area.setLevel3(rs.getString(14));
+                area.setLevel2(rs.getString(15));
+                area.setLevel1(rs.getString(16));
+                area.setLat(rs.getDouble(17));
+                area.setLng(rs.getDouble(18));
+                mson.setArea(area);
+
+                pstmt = cn.prepareStatement("CALL `shield`.`get_all_task_mission`(?);");
                 pstmt.setInt(1, missionID);
                 rs = pstmt.executeQuery();
                 rs.next();
@@ -65,10 +70,10 @@ public class MissionDAO {
                     do {
                         taskList.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3)));
                     } while (rs.next());
-                    
+
                     mson.setTaskList(taskList);
                 }
-                
+
                 cn.close();
                 return mson;
             }
@@ -77,12 +82,13 @@ public class MissionDAO {
         }
         return null;
     }
+
     public int GetMissionStatus(int missionID) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-            
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`9577`(?);");
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_mission_status`(?);");
             pstmt.setInt(1, missionID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -91,7 +97,7 @@ public class MissionDAO {
                 return 0;
             } else {
                 cn.close();
-                
+
                 return rs.getInt(1);
             }
         } catch (SQLException ex) {
@@ -99,12 +105,13 @@ public class MissionDAO {
         }
         return 0;
     }
+
     public ArrayList<Mission> GetAllMissions() {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-            
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`3072`();");
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_mission`();");
             ResultSet rs = pstmt.executeQuery();
             rs.next();
             if (rs.getRow() == 0) {
@@ -114,38 +121,44 @@ public class MissionDAO {
                 ArrayList<Mission> msonList = new ArrayList<Mission>();
                 do {
                     Mission mson = new Mission();
+                    Area area = new Area();
+
                     mson.setId(rs.getInt(1));
                     mson.setStatus(rs.getInt(2));
                     mson.setTitle(rs.getString(3));
                     mson.setObjective(rs.getString(4));
                     mson.setStartDT(rs.getDate(5));
                     mson.setEndDT(rs.getDate(6));
-                    mson.setSublocality(rs.getString(7));
-                    mson.setLocality(rs.getString(8));
-                    mson.setAdministrativeAreaLevel2(rs.getString(9));
-                    mson.setAdministrativeAreaLevel1(rs.getString(10));
-                    mson.setCountry(rs.getString(11));
-                    mson.generateFullAddress();
-                    
+                    area.setLevel8(rs.getString(7));
+                    area.setLevel7(rs.getString(8));
+                    area.setLevel6(rs.getString(9));
+                    area.setLevel5(rs.getString(10));
+                    area.setLevel4(rs.getString(11));
+                    area.setLevel3(rs.getString(12));
+                    area.setLevel2(rs.getString(13));
+                    area.setLevel1(rs.getString(14));
+                    mson.setArea(area);;
+
                     msonList.add(mson);
                 } while (rs.next());
-                
+
                 cn.close();
                 return msonList;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
+
     public ArrayList<Mission> GetAllOngoingMissionOfUser(int userID) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-            
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`1698`(?);");
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_mission_ongoing_user`(?);");
             pstmt.setInt(1, userID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -156,52 +169,63 @@ public class MissionDAO {
                 ArrayList<Mission> msonList = new ArrayList<Mission>();
                 do {
                     Mission mson = new Mission();
+                    Area area = new Area();
+
                     mson.setId(rs.getInt(1));
                     mson.setStatus(rs.getInt(2));
                     mson.setTitle(rs.getString(3));
                     mson.setObjective(rs.getString(4));
                     mson.setStartDT(rs.getDate(5));
                     mson.setEndDT(rs.getDate(6));
-                    mson.setSublocality(rs.getString(7));
-                    mson.setLocality(rs.getString(8));
-                    mson.setAdministrativeAreaLevel2(rs.getString(9));
-                    mson.setAdministrativeAreaLevel1(rs.getString(10));
-                    mson.setCountry(rs.getString(11));
-                    mson.generateFullAddress();
-                    
+                    area.setLevel8(rs.getString(7));
+                    area.setLevel7(rs.getString(8));
+                    area.setLevel6(rs.getString(9));
+                    area.setLevel5(rs.getString(10));
+                    area.setLevel4(rs.getString(11));
+                    area.setLevel3(rs.getString(12));
+                    area.setLevel2(rs.getString(13));
+                    area.setLevel1(rs.getString(14));
+                    mson.setArea(area);;
+
                     msonList.add(mson);
                 } while (rs.next());
-                
+
                 cn.close();
                 return msonList;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
-    public int AddMission(Mission mson){
+
+    public int AddMission(Mission mson) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
             
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`2428`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            Area area = mson.getArea();
+            
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, mson.getUserID());
             pstmt.setString(2, mson.getTitle());
             pstmt.setString(3, mson.getObjective());
-            pstmt.setString(4, mson.getSublocality());
-            pstmt.setString(5, mson.getLocality());
-            pstmt.setString(6, mson.getAdministrativeAreaLevel2());
-            pstmt.setString(7, mson.getAdministrativeAreaLevel1());
-            pstmt.setString(8, mson.getCountry());
-            pstmt.setDouble(9, mson.getLat());
-            pstmt.setDouble(10, mson.getLng());
-            
+            pstmt.setString(4, area.getLevel8());
+            pstmt.setString(5, area.getLevel7());
+            pstmt.setString(6, area.getLevel6());
+            pstmt.setString(7, area.getLevel5());
+            pstmt.setString(8, area.getLevel4());
+            pstmt.setString(9, area.getLevel3());
+            pstmt.setString(10, area.getLevel2());
+            pstmt.setString(11, area.getLevel1());
+            pstmt.setDouble(12, area.getLat());
+            pstmt.setDouble(13, area.getLng());
+
             ResultSet rs = pstmt.executeQuery();
             rs.next();
-            
+
             if (rs.getRow() == 0) {
                 cn.close();
                 return -1;

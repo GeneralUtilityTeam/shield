@@ -5,8 +5,11 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
+import entity.Excerpt;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -69,23 +72,31 @@ public class GetExcerpt extends HttpServlet {
         JSONArray tagsArray = new JSONArray();
 
         //Dummy data
-        JSONObject excr1 = new JSONObject();
-        excr1.put("id", "1");
-        excr1.put("text", "There are 10,000 people in Maguindanao");
-        excr1.put("category", "Social");
-        excr1.put("source", "Maguindanao Area Study");
-        tagsArray.put("Maguindanao");
-        tagsArray.put("Population");
-        excr1.put("tags", tagsArray);
-        excr1.put("strength", 20);
-        String infrJSON = excr1.toString();
-
+//        JSONObject excr1 = new JSONObject();
+//        excr1.put("id", "1");
+//        excr1.put("text", "There are 10,000 people in Maguindanao");
+//        excr1.put("category", "Social");
+//        excr1.put("source", "Maguindanao Area Study");
+//        tagsArray.put("Maguindanao");
+//        tagsArray.put("Population");
+//        excr1.put("tags", tagsArray);
+//        excr1.put("strength", 20);
+//        String infrJSON = excr1.toString();
+        
         //Code from SHIELD 1.1
         //ExcerptDAO excrDAO = new ExcerptDAO();
         //String infrJSON = new JSONArray(excrDAO.primarySearch(request.getParameter("param"))).toString();
+        String idStr = request.getParameter("id");
+        int id = Integer.parseInt(idStr);
+        
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
+        Excerpt excr = intlDAO.GetExcerpt(id);
+        JSONObject excrJObj= new JSONObject(excr);
+        String excrJSON = excrJObj.toString();
+        
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(infrJSON);
+        response.getWriter().write(excrJSON);
     }
 
     /**
