@@ -173,7 +173,7 @@
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-                            $('#slidingmenu').BootSideMenu({side: "right"});
+                            $('#slidingmenu').BootSideMenu({side: "left"});
         </script>
         <script type="text/javascript">
 

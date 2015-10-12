@@ -80,7 +80,6 @@
                             </div>
                             <div class="btn-group" style="z-index: 1; position: fixed; margin: 72vh 0 0 1vmin;">
                                 <a class="btn btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
-                                <a class="btn btn-default" onclick="editEntity()" data-toggle="tooltip" title="Right-click on Entity to edit" data-placement="bottom"><i class="fa fa-edit" style="color:#ffa419"></i> Edit Entity</a>
                                 <a class="btn btn-default" onclick="deleteEntity()" data-toggle="tooltip" title="Right-click on Entity to delete from this Mission" data-placement="bottom"><i class="fa fa-trash" style="color:#CC0000"></i> Delete Entity</a>
                                 <a class="btn btn-default" onclick="clearSelection()"><i class="fa fa-refresh" style="color:#2b2b2b"></i> Clear Selection</a>
                             </div>

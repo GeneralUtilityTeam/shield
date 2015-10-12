@@ -172,6 +172,12 @@ function createEntity() {
     $(table2).find("tr:gt(0)").remove();
     $(table1).find("tr:gt(0)").remove();
 
+    $('#enable5').bootstrapToggle('off');
+    $('#enable4').bootstrapToggle('off');
+    $('#enable3').bootstrapToggle('off');
+    $('#enable2').bootstrapToggle('off');
+    $('#enable1').bootstrapToggle('off');
+
     for (var x = 0; x < excerptList.length; x++) {
         var tr, td1, td2, checkbox;
         switch (excerptList[x].strength) {
@@ -293,13 +299,7 @@ function createEntity() {
             table.style.display = "none";
     }
 
-
-
     modal.modal('show');
-}
-
-function editEntity() {
-
 }
 
 function deleteEntity() {
@@ -566,3 +566,8 @@ $(function () {
         }
     });
 });
+
+function savePCO() {
+
+    
+}

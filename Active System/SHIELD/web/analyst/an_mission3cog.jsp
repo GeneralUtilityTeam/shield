@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+        <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 
         <!--Layout-->
         <link href="css/layout.css" rel="stylesheet" type="text/css">
@@ -33,7 +35,7 @@
         <script>
             var msonStatus = <%=request.getAttribute("msonStatus")%>;
             var missionID = <%=request.getAttribute("msonID")%>;
-            
+
             var missionLabels = '<%=request.getAttribute("labels")%>';
             $(function () {
                 $('#collapseTwo').collapse('hide')
@@ -119,21 +121,16 @@
                     </div>
                     <br />
                     <div id="mynetwork"></div>
-                    <div class="btn-group" style="position: fixed; top:84%; margin-left: 1%;">
-                        <a class="btn btn-default" onclick="editNode('cog')"><i class="fa fa-heartbeat" style="color:#CC0000"></i> Center of Gravity</a>
-                        <a class="btn btn-default" onclick="editNode('cc')"><i class="fa fa-bomb" style="color:#202020"></i> Critical Capability</a>
-                        <a class="btn btn-default" onclick="editNode('cr')"><i class="fa fa-exclamation-circle" style="color:#FF4500"></i> Critical Requirement</a>
-                        <a class="btn btn-default" onclick="editNode('cv')"><i class="fa fa-unlock-alt" style="color:#DAA520"></i> Critical Vulnerability</a>
-                        <a class="btn btn-default" data-toggle="modal" 
-                           data-target="#resetModal"><i class="fa fa-refresh" style="color:black"></i> Reset</a>
+                    <div class="btn-group" style="position: fixed; top:85vh; margin-left: 1%;">
+                        <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#doesusesModal"><i class="fa fa-navicon" style="color:#202020"></i> Does/Uses Menu</a>
+
                     </div>
                 </div>
             </div>
         </div>
 
-
-        <!-- Modal -->
-        <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" 
+        <!-- Does/Uses Modal -->
+        <div class="modal fade" id="doesusesModal" tabindex="-1" role="dialog" 
              aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -143,14 +140,60 @@
                             &times;
                         </button>
                         <h4 class="modal-title" id="myModalLabel">
-                            Center of Gravity Analysis
+                            Center of Gravity Analysis - Does/Uses
                         </h4>
                     </div>
-                    <div class="modal-body">
-                        Would you like to reset all Nodes and Edges?
+                    <div class="modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+
+                        <table id="does-uses-table" width="100%">
+                            <tr>
+                                <th width="40%">Entity</th>
+                                <th widhth="30%" style="text-align: center;">Does</th>
+                                <th width="30%" style="text-align: center;">Uses</th>
+                            </tr>
+
+                        </table>
+
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="resetAll()" data-dismiss="modal">
+                        <button type="button" class="btn btn-primary" onclick="setEntityType()">
+                            <span class="glyphicon glyphicon-arrow-right"></span>
+                            Next Step
+                        </button>
+                        <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Cancel
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <!-- Critical Vulnerability Modal -->
+        <div class="modal fade" id="cvModal" tabindex="-1" role="dialog" 
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Center of Gravity Analysis - Critical Vulnerability
+                        </h4>
+                    </div>
+                    <div class="modal-body scroll">
+                        <table id="cv-table" width="100%">
+                            <tr>
+                                <th width="50%">Entity</th>
+                                <th widhth="50%" style="text-align: center;">Vulnerable to Neutralize/Attack?</th>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="setCV()">
                             Confirm
                         </button>
                         <button type="button" class="btn btn-default" 
@@ -162,10 +205,11 @@
         </div><!-- /.modal -->
 
         <!--Sliding Side Bar Menu-->
-        <div id="slidingmenu">
-            <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Sources</h4>
-            <div id="mission-sources">
-                <table class="excerpt-list" id="source-table">
+        <div id="slidingmenu" style="width: 22vw;">
+            <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Entities</h4>
+            <div id="mission-entity">
+                <table id="entity-table" style="padding: 10px; margin-left: 10px;">
+
                 </table>
             </div>
 
@@ -173,7 +217,7 @@
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-                            $('#slidingmenu').BootSideMenu({side: "left"});
+                            $('#slidingmenu').BootSideMenu({side: "left", autoClose: false});
         </script>
         <script type="text/javascript">
 
