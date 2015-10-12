@@ -149,7 +149,7 @@ public class IntelligenceDAO {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`7917`(?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`primary_search`(?);");
             pstmt.setString(1, query);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -162,7 +162,12 @@ public class IntelligenceDAO {
                     Excerpt excr = new Excerpt();
                     excr.setId(rs.getInt(1));
                     excr.setText(rs.getString(2));
-                    excr.setStrength(rs.getDouble(3));
+                    
+                    Area area = new Area();
+                    area.setLat(rs.getDouble(3));
+                    area.setLng(rs.getDouble(4));
+                    excr.setStrength(rs.getDouble(5));
+                    excr.setArea(area);
                     excrList.add(excr);
                 } while (rs.next());
                 cn.close();

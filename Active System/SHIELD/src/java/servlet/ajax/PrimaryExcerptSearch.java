@@ -62,41 +62,16 @@ public class PrimaryExcerptSearch extends HttpServlet {
             throws ServletException, IOException {
         
             //Working Code
-//        String query = request.getParameter("param");
-//        IntelligenceDAO intlDAO = new IntelligenceDAO();
-//        ArrayList excrList = intlDAO.PrimarySearch(query);
-//        JSONArray excrJArr = new JSONArray(excrList);
-//        String excrJSON = excrJArr.toString();
+        String query = request.getParameter("param");
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
+        ArrayList excrList = intlDAO.PrimarySearch(query);
+        JSONArray excrJArr = new JSONArray(excrList);
+        String excrJSON = excrJArr.toString();
+
         
-        //Dummy Data
-        JSONArray excrArray = new JSONArray();
-        JSONArray tagsArray = new JSONArray();
-
-        JSONObject excr1 = new JSONObject();
-        excr1.put("id", "1");
-        excr1.put("text", "There are 10,000 people in Maguindanao");
-        excr1.put("category", "social");
-        excr1.put("sourceName", "Maguindanao Area Study");
-        tagsArray.put("Maguindanao");
-        tagsArray.put("Population");
-        excr1.put("tags", tagsArray);
-        excr1.put("strength", 78);
-        excr1.put("sublocality", "Malate");
-        excr1.put("locality", "Manila");
-        excr1.put("administrativeAreaLevel2", "");
-        excr1.put("administrativeAreaLevel1", "");
-        excr1.put("country", "Philippines");
-        excr1.put("lat", 7.190708);
-        excr1.put("lng", 125.455341);
-        excrArray.put(excr1);
-        String infrJSON = excrArray.toString();
-
-        //Code from SHIELD 1.1
-        //ExcerptDAO excrDAO = new ExcerptDAO();
-        //String infrJSON = new JSONArray(excrDAO.primarySearch(request.getParameter("param"))).toString();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(infrJSON);
+        response.getWriter().write(excrJSON);
     }
 
     /**

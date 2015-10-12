@@ -1,3 +1,6 @@
+var excerptList;
+var searchMarker = [];
+
 function initialize() { //Change this to take entities
 //    buildNav(msonStatus, 2);
     initializeMap();
@@ -15,12 +18,12 @@ $(document).ready(function () {
                     param: $("#search-field").val()
                 },
                 success: function (responseJson) {
-                    //excerptList = responseJSON
-                    //searchMarker = []
-                    //createSearchMarker()
-                    infrJSON = responseJson;
-                    if (infrJSON.length > 0)
-                        loadMarkers();
+                    excerptList = responseJson;
+                    setMarkersOnMap(null, searchMarker);
+                    searchMarker = [];
+                    if (excerptList.length > 0) {
+                        createSearchMarker();
+                    }
                     else
                         showAndDismissAlert("danger", "<strong>No Results Found! </strong>");
                 }
@@ -30,15 +33,16 @@ $(document).ready(function () {
     });
 });
 
-var area = "Manila, Philippines";
+var area = "Davao City";// TDODO Mission area
+var mapOptions;
 var geocoder;
 var map;
 var zoom;
 var oms;
 var infoWindow;
 function initializeMap() {
-    var mapOptions = {
-        center: new google.maps.LatLng(14.597021, 120.986666),
+    mapOptions = {
+        center: new google.maps.LatLng(7.190708, 125.455341),
         zoom: 18,
         minZoom: null,
         mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -86,7 +90,7 @@ function geocodeSuccess(result) {
         //not valid anymore => return to last valid position
         map.panTo(lastValidCenter);
     });
-    map.minZoom = zoom;
+    //map.minZoom = zoom; -- TODO uncomment
     google.maps.event.addListener(map, 'zoom_changed', function () {
 
         if (map.getZoom() === zoom) {
@@ -104,9 +108,9 @@ $(document).ready(function () {
 });
 
 //Load Markers based on search
-var excerptList = [{"text": "this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1", "lat": 14.597021, "lng": 120.996666, "id": 1, "entityEnabled": false, "strength": 100}, {"text": "this is excerpt5", "lat": 14.625941, "lng": 120.958339, "id": 5, "entityEnabled": false, "strength": 30}, {"text": "this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1this is excerpt1", "lat": 14.597021, "lng": 120.986666, "id": 6, "entityEnabled": false, "strength": 100}, {"text": "this is excerpt7", "lat": 14.596956, "lng": 120.985940, "id": 7, "entityEnabled": false, "strength": 80}, {"text": "this is excerpt8", "lat": 14.596167, "lng": 120.986724, "id": 8, "entityEnabled": false, "strength": 70}, {"text": "this is excerpt9", "lat": 14.5961, "lng": 120.98673, "id": 9, "entityEnabled": false, "strength": 50}, {"text": "this is excerpt10", "lat": 14.596562, "lng": 120.985159, "id": 10, "entityEnabled": false, "strength": 30}];
-var searchMarker = [];
+
 function createSearchMarker() {
+    console.log(excerptList);
     var greenPin = "5BB85D";
     var bluePin = "5BC0DE";
     var orangePin = "EFAD4D";
@@ -115,8 +119,9 @@ function createSearchMarker() {
 
     var marker;
     var icon;
+    var ids;
     for (var x = 0; x < excerptList.length; x++) {
-        var pos = new google.maps.LatLng(excerptList[x].lat, excerptList[x].lng);
+        var pos = new google.maps.LatLng(excerptList[x].area.lat, excerptList[x].area.lng);
         var text = excerptList[x].text;
         ids = excerptList[x].id;
 
@@ -346,7 +351,7 @@ function getEntityCenter(entityExcerpt) {
     var bounds = new google.maps.LatLngBounds();
     for (var x = 0; x < entityExcerpt.length; x++) {
         if (entityExcerpt[x].entityEnabled == true) {
-            bounds.extend(new google.maps.LatLng(entityExcerpt[x].lat, entityExcerpt[x].lng));
+            bounds.extend(new google.maps.LatLng(entityExcerpt[x].area.lat, entityExcerpt[x].area.lng));
         }
     }
     var center = bounds.getCenter();
@@ -369,7 +374,7 @@ function createEntityExcerptMarker(entityExcerpt) {
     var entityExcerptMarker = [];
     for (var x = 0; x < entityExcerpt.length; x++) {
         if (entityExcerpt[x].entityEnabled == true) {
-            var pos = new google.maps.LatLng(entityExcerpt[x].lat, entityExcerpt[x].lng);
+            var pos = new google.maps.LatLng(entityExcerpt[x].area.lat, entityExcerpt[x].area.lng);
             var excerptMarker = new google.maps.Marker({
                 position: pos,
                 map: map,
@@ -569,5 +574,5 @@ $(function () {
 
 function savePCO() {
 
-    
+
 }
