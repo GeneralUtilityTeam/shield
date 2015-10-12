@@ -162,7 +162,6 @@ function geocodeResultString(str) { // Takes String Address; Returns geocode res
         'address': str
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-			console.log(results[0]);
             geocodeSuccess(results[0]);
         } else {
             return null;

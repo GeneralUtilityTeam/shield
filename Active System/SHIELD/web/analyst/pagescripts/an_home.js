@@ -18,10 +18,13 @@ function initialize() {
         map = new google.maps.Map(document.getElementById('mission-area-map'), mapOptions);
         google.maps.event.addListener(map, 'click', function (event) {
             latLng = event.latLng;
-            positionMarker();
-            geocodeMouseClick(marker.getPosition());
+            switchString = false;
+            geocodeResultLatLng(latLng);
         });
     }
+    
+    //Geocoder Initialization
+    initializeGeocoder();
 }
 
 //Data Table Function
@@ -37,6 +40,17 @@ $(document).ready(function () {
             {"data": "objective"},
             {"data": "area"},
             {"data": "status"}
+        ],
+        "columnDefs" : [
+            {
+                // The `data` parameter refers to the data for the cell (defined by the
+                // `data` option, which defaults to the column being worked with, in
+                // this case `data: 0`.
+                "render": function ( data, type, row ) {
+                    return generateFullAddress(data);
+                },
+                "targets": 2
+            }
         ],
         "fnRowCallback": function (nRow, data) {
             /* Turn the fourt row -- progress -- into a progressbar with bootstrap */
@@ -56,32 +70,7 @@ function beginMission() {
     var missionTitle = document.getElementById("mission-title").value;
     var missionArea = document.getElementById("address").value;
     var missionObjective = document.getElementById("mission-objective").value;
-    var sublocality;
-    var locality;
-    var administrative_area_level_2;
-    var administrative_area_level_1;
-    var country;
 
-    //areaArr is a global variable in the jsp. It is set by the function geocoderSuccess
-    areaArr.forEach(function (area) {
-        switch (area.type) {
-            case 'country':
-                country = area.name;
-                break;
-            case 'administrative_area_level_1':
-                administrative_area_level_1 = area.name;
-                break;
-            case 'administrative_area_level_2':
-                administrative_area_level_2 = area.name;
-                break;
-            case 'locality':
-                locality = area.name;
-                break;
-            case 'sublocality':
-                sublocality = area.name;
-                break;       
-        }
-    });
     if (missionTitle === "" || missionArea === "" || missionObjective === "") { //Change this back
         showAndDismissAlert("danger", "<strong>Begin Mission Failed.</strong> Please complete the form.");
     }
@@ -92,16 +81,18 @@ function beginMission() {
             data: {
                 missionTitle: missionTitle,
                 missionObjective: missionObjective,
-                sublocality: sublocality,
-                locality: locality,
-                administrative_area_level_2: administrative_area_level_2,
-                administrative_area_level_1: administrative_area_level_1,
-                country: country,
+                level8: area.level8,
+                level7: area.level7,
+                level6: area.level6,
+                level5: area.level5,
+                level4: area.level4,
+                level3: area.level3,
+                level2: area.level2,
+                level1: area.level1,
                 lat: latLng.lat(),
                 lng: latLng.lng()
             },
             success: function (response) {
-                console.log(response);
                 if (response.missionID != -1) {
                     showAndDismissAlert("success", "You have successfully created a <strong>Mission.</strong>");
                     setTimeout(function () {
@@ -115,6 +106,40 @@ function beginMission() {
             }
         });
     }
+}
+
+
+//Searching Function
+function addressSearch(){
+    switchString = true;
+    var address = document.getElementById('address').value;
+    geocodeResultString(address);
+}
+
+//Map Functions
+function positionMarker(){
+    if(marker == null){
+        marker = new google.maps.Marker({
+            map: map,
+            draggable: false,
+            position: latLng
+        });
+    }
+    else{
+        marker.setPosition(latLng);
+    }
+}
+
+
+function geocodeSuccess(result){ // This function is specific to this page
+    area = generateAreaObject(result);
+    if(switchString){
+        latLng = new google.maps.LatLng(area.latLng.lat(), area.latLng.lng());
+        positionMarker();
+    }
+    //set the address bard to the result
+    var stringed = generateFullAddress(area);
+    document.getElementById('address').value = stringed; //UP TO HERE
 }
 
 //UI Functions
@@ -136,82 +161,4 @@ function defineProgressBar(status) {
 function defineProgressPercent(status) {
     var statusInt = parseInt(status);
     return statusInt * 14.28;
-}
-
-//Searching Function
-function addressSearch(){
-    var address = document.getElementById('address').value;
-    geocodeString(address);
-}
-
-//Map Functions
-function positionMarker(){
-    if(marker == null){
-        marker = new google.maps.Marker({
-            map: map,
-            draggable: false,
-            position: latLng
-        });
-    }
-    else{
-        marker.setPosition(latLng);
-    }
-    console.log(latLng);
-}
-//Geocoder Functions V1.0 - 10/7/2015
-function geocodeSuccess(arr){ // This function is specific to this page
-    //set global array to the results
-    areaArr = arr;
-    //set the address bard to the result
-    var stringed = areaArr.map(function (elem) {
-        return elem.name;
-    }).join(", ");
-    document.getElementById('address').value = stringed; //UP TO HERE
-}
-function geocodeString(str) { // Runs a search based on the contents of #address
-    console.log(str);
-    geocoder.geocode({
-        'address': str
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            latLng = results[0].geometry.location;
-            //Map Pan
-            map.panTo(latLng); 
-            //Marker Set
-            positionMarker();
-            //Formatted Arr
-            var formattedArr = formatAddressComponents(results[0].address_components);
-
-            geocodeSuccess(formattedArr);
-        } else {
-            //I doubt this will ever happen, though
-        }
-    });
-}
-function geocodeMouseClick(pos) { // Runs a search based on a mouse click event
-    geocoder.geocode({
-        latLng: pos
-    }, function (results) {
-        if (results && results.length > 0) {
-            var formattedArr = formatAddressComponents(results[0].address_components);
-            geocodeSuccess(formattedArr);
-        } else {
-            //I doubt this will ever happen, though
-        }
-    });
-}
-function formatAddressComponents(arr) { //This method takes in the address_components of either a Marker or Searchbar and shortens it into a usable array
-    var returnArr = new Array();
-    arr.forEach(function (comp) {
-        comp.types.forEach(function (type) {
-            if (type == 'sublocality' || type == 'locality' || type == 'administrative_area_level_2' || type == 'administrative_area_level_1' || type == 'country') {
-                var area = {
-                    name: comp.long_name,
-                    type: type
-                };
-                returnArr.push(area);
-            }
-        });
-    });
-    return returnArr;
 }

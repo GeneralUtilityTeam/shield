@@ -31,8 +31,9 @@
         <script>
             //Global Variables
             var address;
-            var areaArr;
+            var area;
             var latLng;
+            var switchString; //boolean; true if a string was used, false if a click was used
     
             //Map Variables
             var geocoder = new google.maps.Geocoder();
