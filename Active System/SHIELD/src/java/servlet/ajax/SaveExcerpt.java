@@ -97,13 +97,15 @@ public class SaveExcerpt extends HttpServlet {
         area.setLng(Double.parseDouble(lngStr));
         excr.setArea(area);
         
+        //tags 
+        
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         String message = "An error occured";
         try{
             intlDAO.AddExcerpt(userID, excr);
             message = "<strong>New Excerpt</strong> has been <strong>added.</strong>";
             
-            //Tags
+            
         }catch(Exception ex){
             System.out.println(ex);
         }

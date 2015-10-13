@@ -5,6 +5,10 @@
  */
 package servlet.ajax;
 
+import dao.MissionDAO;
+import entity.Area;
+import entity.Mission;
+import entity.Task;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 
 /**
  *
@@ -59,15 +64,48 @@ public class Save1MD extends HttpServlet {
             throws ServletException, IOException {
         
         //Save Mission Details from SHIELD 1
-//        Mission mson = new Mission();
-//        mson.setTitle(request.getParameter("title"));
-//        mson.setObjective(request.getParameter("objective"));
-//        mson.setAreaName(request.getParameter("area"));
-//        mson.setSituation(request.getParameter("situation"));
-//        mson.setCommanderIntent(request.getParameter("commander-intent"));
-//        mson.setConceptOfOperations(request.getParameter("concept-of-operation"));
-//        mson.setThemesStressed(request.getParameter("theme-stress"));
-//        mson.setThemesAvoid(request.getParameter("theme-avoid"));
+        String editorIDStr = request.getParameter("editor-id");
+        String level8 = request.getParameter("level8");
+        String level7 = request.getParameter("level7");
+        String level6 = request.getParameter("level6");
+        String level5 = request.getParameter("level5");
+        String level4 = request.getParameter("level4");
+        String level3 = request.getParameter("level3");
+        String level2 = request.getParameter("level2");
+        String level1 = request.getParameter("level1");
+        String latStr = request.getParameter("lat");
+        String lngStr = request.getParameter("lng");
+        
+        Mission mson = new Mission();
+        Area area = new Area();
+        mson.setId(Integer.parseInt(request.getParameter("id")));
+        mson.setUserID(Integer.parseInt(request.getParameter("user-id")));
+        mson.setTitle(request.getParameter("title"));
+        mson.setObjective(request.getParameter("objective"));
+        mson.setSituation(request.getParameter("situation"));
+        mson.setCommanderIntent(request.getParameter("commander-intent"));
+        mson.setConceptOfOperation(request.getParameter("concept-of-operation"));
+        mson.setThemeStress(request.getParameter("theme-stress"));
+        mson.setThemeAvoid(request.getParameter("theme-avoid"));
+        area.setLevel8(level8);
+        area.setLevel7(level7);
+        area.setLevel6(level6);
+        area.setLevel5(level5);
+        area.setLevel4(level4);
+        area.setLevel3(level3);
+        area.setLevel2(level2);
+        area.setLevel1(level1);
+        area.setLat(Double.parseDouble(latStr));
+        area.setLng(Double.parseDouble(lngStr));
+        mson.setArea(area);
+        
+        //Tasks
+        ArrayList<Task> taskList = new ArrayList<Task>();
+        //TODO loop here
+        mson.setTaskList(taskList);
+        
+        MissionDAO msonDAO = new MissionDAO();
+        boolean success = msonDAO.UpdateMission(Integer.parseInt(editorIDStr), mson);
 //        int x = 0;
 //        ArrayList<Task> taskList = new ArrayList<Task>();
 //        Task tk;
@@ -89,6 +127,11 @@ public class Save1MD extends HttpServlet {
 //            }
 //        } while (x != -1);
 //        mson.setTaskList(taskList);
+        JSONObject obj = new JSONObject();
+        obj.put("success", success);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(obj.toString());
     }
 
     /**

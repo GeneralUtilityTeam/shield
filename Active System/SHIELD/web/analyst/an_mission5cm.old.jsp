@@ -57,37 +57,13 @@
                     <ul class="nav nav-pills nav-stacked affix" id="nav-shield" role="tablist">
                     </ul>
                 </div>
-                <div class="col-md-10" style="margin-left: 19vw; width: 76vw;">
+                <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
                         <button type="button" onclick="saveCM()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to PsyOps Objective</button>
                     </div><br>
                     <div>
-                        <div id="matrix-div">
-                            <table class="table table-bordered">
-                                <caption class="matrix-caption">POPULACE COOPERATION: CR</caption>
-                                
-                                <tr>
-                                    <td class="CV">Target Component (Critical Vulnerability)</td>
-                                    <td class="CARVER">Criticality</td>
-                                    <td class="CARVER">Accessibility</td>
-                                    <td class="CARVER">Recuperability</td>
-                                    <td class="CARVER">Vulnerability</td>
-                                    <td class="CARVER">Effect</td>
-                                    <td class="CARVER">Recognizability</td>
-                                    <td class="CARVER">Total</td>
-                                </tr>
-                                <tr>
-                                    <td>Insurgent Cell</td>
-                                    <td class="CARVER"><input id="c1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="a1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="r11" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="v1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="e1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="r12" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="total1" type="number" max="60"></td>
-                                </tr>
-                                
-                            </table>
+                        <div class="scroll" style="overflow-y: auto; position: fixed; height: 75vh; width: 75vw; " id="matrix-div">
+                            
                         </div>
 
                     </div>

@@ -5,10 +5,22 @@
  */
 package utility;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Franco
  */
 public class ShieldUtility {
-    
+
+    public boolean ListIsNullOrEmpty(ArrayList list) {
+        if (list == null) {
+            return true;
+        }
+        else if (list.size() == 0) {
+            return true;
+        }
+        else
+            return false;
+    }
 }

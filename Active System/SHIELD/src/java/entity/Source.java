@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -20,6 +21,7 @@ public class Source {
     private String desc;
     private Date published;
     private Date encoded;
+    private ArrayList<Excerpt> excrList;
 
     /**
      * Get the value of id
@@ -121,6 +123,20 @@ public class Source {
      */
     public void setClassDesc(String classDesc) {
         this.classDesc = classDesc;
+    }
+
+    /**
+     * @return the excrList
+     */
+    public ArrayList<Excerpt> getExcrList() {
+        return excrList;
+    }
+
+    /**
+     * @param excrList the excrList to set
+     */
+    public void setExcrList(ArrayList<Excerpt> excrList) {
+        this.excrList = excrList;
     }
 
 }

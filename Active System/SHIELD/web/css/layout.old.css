@@ -121,6 +121,24 @@ div.alert-messages {
     width: 100%;
 }
 
+.inner-addon { 
+    position: fixed;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.right-addon .glyphicon { right: 0px; font-size: 3vh;}
+
+/* add padding  */
+.right-addon input { padding-right: 30px; height: 7vh; border-radius: 0px; color: #2c2c2c;}
+.right-addon input:focus {border: solid 1px #D3D3D3; box-shadow: 0 0 0 transparent;}
+
 /*MAPS*/
 #mission-area-map{
     height: 30vh; 
@@ -142,14 +160,12 @@ div.alert-messages {
     border-radius: 3px;
 }
 #mission2pco-area-map{
-    position: fixed;
     height: 78vh;
     width: 37vw;
     border-style: solid; 
     border-width: 1px; 
     border-color: #D3D3D3; 
     border-radius: 3px;
-    margin-left: 38vw;
 }
 #mission4tcoa-area-map{
     position: fixed;
@@ -231,6 +247,10 @@ div.alert-messages {
 }
 .list-table tbody tr:hover{
     cursor:pointer;
+}
+
+.enable{
+    width: 100%;
 }
 
 

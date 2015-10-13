@@ -97,22 +97,18 @@
                     </div>
                     <div class="modal-body">
                         <table id="begin-mission-table" style="width: 100%;">
-                            <tr>
+                            <tr">
+                                <td style="width: 100px;" >
+                                    <h5 style="margin-bottom: 10px;">Mission Title:  </h5>
+                                </td>
                                 <td>
-                                    <h5>Mission Title:  </h5>
+                                    <input style="margin-bottom: 10px;" type="text" id="mission-title" class="form-box" placeholder="Enter Mission Title"required>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" id="mission-title" class="form-box" placeholder="Enter Mission Title"required>
-                                </td>
-                            </tr> 
                             <tr>
                                 <td>
                                     <h5>Mission Area:  </h5>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td>
                                     <div class="input-group">
                                         <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
@@ -125,9 +121,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <div id="mission-area-map">
-
+                                <td colspan="2">
+                                    <div id="mission-area-map" style="margin-bottom: 10px;">
                                     </div>
                                 </td>
                             </tr>
@@ -135,8 +130,6 @@
                                 <td>
                                     <h5>Mission Objective:  </h5>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td>
                                     <textarea rows="4" id="mission-objective" cols="50" class="form-box" placeholder="Enter Mission Objective" style="height: 70px; margin-top: 5px;" required></textarea>
                                 </td>

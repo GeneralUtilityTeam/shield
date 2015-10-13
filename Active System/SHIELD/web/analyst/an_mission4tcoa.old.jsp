@@ -30,19 +30,9 @@
         <script src="analyst/pagescripts/an_mission4tcoa.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
-        <script>
-            $(function () {
-                $('#collapseTwo').collapse('hide')
-            });
-            $(function () {
-                $('#collapseOne').collapse('show')
-            });
-        </script>
-
-
     </head>
 
-    <body onload="initialize()">
+    <body onload="initialize()" style="overflow: hidden;">
 
         <!--Navigation Bar-->
         <script src="js/navigation.js"></script>
@@ -63,50 +53,15 @@
                     </div>
                     <div id="mission-threat-courses-of-action" style="height: 79vh;">
                         <div id="tcoa-list" class="col-md-6">
-                            <button class="btn btn-success" data-toggle="modal" data-target="#addTCOA" style="margin-bottom: 1vh;"><span class="glyphicon glyphicon-plus"></span> Add Threat Course of Action</button>  
+                            <div class="panel-group" id="accordion">
+                                
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <div id="mission-characteristics-overlay-map"style="width: 36vw; border: solid 1px #D3D3D3">
-
-                            </div> 
+                        <div class="col-md-6" id="mission4tcoa-area-map">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Add TCOA Modal -->
-        <div class="modal fade" id="addTCOA" tabindex="-1" role="dialog" 
-             aria-labelledby="addTCOAlabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" 
-                                data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            Add New Threat Course of Action
-                        </h4>
-                    </div>
-                    <form action="AddThreatCoa" method="GET">                        
-                        <div class="modal-body">
-                            <h5>Course of Action: </h5>
-                            <textarea name="add-tcoa" type="text" class="form-box" rows="4" cols="50" placeholder="Enter Course of Action"style="margin-top: 5px;"></textarea>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button name="save-tcoa" type="Submit" class="btn btn-success"><span class="glyphicon glyphicon-saved"> </span>
-                                Add Threat Course of Action
-                            </button>
-                            <button name="close-tcoa" type="Submit" class="btn btn-default" 
-                                    data-dismiss="modal">Close
-                            </button>
-                        </div>
-                    </form>
-
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
         </div>
 
         <!--Sliding Side Bar Menu-->
@@ -115,31 +70,6 @@
 
             </div>
         </div>
-        <!-- /Sliding Side Bar Menu-->
-
-        <script src="js/BootSideMenu.js"></script>
-
-        <script type="text/javascript">
-        $('#slidingmenu').BootSideMenu({side: "right"});
-        </script>
-        <script type="text/javascript">
-
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-36251023-1']);
-            _gaq.push(['_setDomainName', 'jqueryscript.net']);
-            _gaq.push(['_trackPageview']);
-
-            (function () {
-                var ga = document.createElement('script');
-                ga.type = 'text/javascript';
-                ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(ga, s);
-            })();
-
-        </script>
-        <!--/Sliding Side Bar Menu-->
 
         <!--Notification Alert-->
         <div class="alert-messages text-center">

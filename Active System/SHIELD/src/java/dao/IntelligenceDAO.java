@@ -24,6 +24,39 @@ import java.util.logging.Logger;
 public class IntelligenceDAO {
 
     // -- SOURCES
+    public Source GetSource(int sourceID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_source`(?);");
+            pstmt.setInt(1, sourceID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                Source src = new Source();
+
+                src.setId(sourceID);
+                src.setClassID(rs.getInt(1));
+                src.setClassDesc(rs.getString(2));
+                src.setTitle(rs.getString(3));
+                src.setDesc(rs.getString(4));
+                src.setPublished(rs.getDate(5));
+                src.setEncoded(rs.getDate(6));
+
+                cn.close();
+                return src;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public ArrayList<Source> GetAllSources() {
         try {
             DBConnector db = new DBConnector();
@@ -136,14 +169,103 @@ public class IntelligenceDAO {
                 return excr;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
-    public int AddExcerpt(int userID, Excerpt excr){
+    public ArrayList<Excerpt> GetExcerptOfSource(int sourceID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_excerpt_source`(?)");
+            pstmt.setInt(1, sourceID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();
+                do {
+                    Excerpt excr = new Excerpt();
+                    Area area = new Area();
+
+                    excr.setId(rs.getInt(1));
+                    excr.setCategoryID(rs.getInt(2));
+                    excr.setCategoryDesc(rs.getString(3));
+                    excr.setText(rs.getString(4));
+                    area.setLevel8(rs.getString(5));
+                    area.setLevel7(rs.getString(6));
+                    area.setLevel6(rs.getString(7));
+                    area.setLevel5(rs.getString(8));
+                    area.setLevel4(rs.getString(9));
+                    area.setLevel3(rs.getString(10));
+                    area.setLevel2(rs.getString(11));
+                    area.setLevel1(rs.getString(12));
+                    excr.setArea(area);
+                    excrList.add(excr);
+                    
+                } while (rs.next());
+
+                cn.close();
+                return excrList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public int AddExcerpt(int userID, Excerpt excr) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            Area area = excr.getArea();
+            
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_excerpt`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, userID);
+            pstmt.setInt(2, excr.getSourceID());
+            pstmt.setInt(3, excr.getCategoryID());
+            pstmt.setString(4, excr.getText());
+            pstmt.setString(5, area.getLevel8());
+            pstmt.setString(6, area.getLevel7());
+            pstmt.setString(7, area.getLevel6());
+            pstmt.setString(8, area.getLevel5());
+            pstmt.setString(9, area.getLevel4());
+            pstmt.setString(10, area.getLevel3());
+            pstmt.setString(11, area.getLevel2());
+            pstmt.setString(12, area.getLevel1());
+            pstmt.setDouble(13, area.getLat());
+            pstmt.setDouble(14, area.getLng());
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                int excerptID = rs.getInt(1);
+                
+                ArrayList<String> tagList = excr.getTagList();
+                pstmt = cn.prepareStatement("CALL `shield`.`link_excerpt_tag`(?, ?);");
+                pstmt.setInt(1, excerptID);
+                for(String s : tagList){
+                    pstmt.setString(2, s);
+                    pstmt.execute();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return -1;
     }
+
     public ArrayList<Excerpt> PrimarySearch(String query) {
         try {
             DBConnector db = new DBConnector();
@@ -162,7 +284,7 @@ public class IntelligenceDAO {
                     Excerpt excr = new Excerpt();
                     excr.setId(rs.getInt(1));
                     excr.setText(rs.getString(2));
-                    
+
                     Area area = new Area();
                     area.setLat(rs.getDouble(3));
                     area.setLng(rs.getDouble(4));

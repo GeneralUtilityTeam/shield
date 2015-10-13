@@ -170,12 +170,12 @@ div.alert-messages {
 #mission4tcoa-area-map{
     position: fixed;
     height: 78vh;
-    width: 37vw;
+    width: 43vw;
     border-style: solid; 
     border-width: 1px; 
     border-color: #D3D3D3; 
     border-radius: 3px;
-    margin-left: 38vw;
+    margin-left: 32vw;
 }
 #mission-details-map{
     width: 77vw; 

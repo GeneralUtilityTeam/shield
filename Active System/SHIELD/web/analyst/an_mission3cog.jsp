@@ -156,7 +156,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="setEntityType()">
+                        <button type="button" class="btn btn-success" onclick="setEntityType()">
                             <span class="glyphicon glyphicon-arrow-right"></span>
                             Next Step
                         </button>
@@ -193,8 +193,8 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="setCV()">
-                            Confirm
+                        <button type="button" class="btn btn-success" onclick="setCV()">
+                            <span class="glyphicon glyphicon-saved"></span> Confirm
                         </button>
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Cancel

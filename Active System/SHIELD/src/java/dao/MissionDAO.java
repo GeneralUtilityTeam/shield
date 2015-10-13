@@ -16,12 +16,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utility.ShieldUtility;
 
 /**
  *
  * @author Franco
  */
 public class MissionDAO {
+    
+    ShieldUtility su = new ShieldUtility();
 
     public Mission GetMission(int missionID) {
         try {
@@ -205,9 +208,9 @@ public class MissionDAO {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-            
+
             Area area = mson.getArea();
-            
+
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, mson.getUserID());
             pstmt.setString(2, mson.getTitle());
@@ -236,5 +239,67 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
+    }
+
+    public boolean UpdateMission(int editorID, Mission mson) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            Area area = mson.getArea();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, mson.getUserID());
+            pstmt.setInt(2, mson.getId());
+            pstmt.setString(3, mson.getTitle());
+            pstmt.setString(4, mson.getObjective());
+            pstmt.setString(5, mson.getSituation());
+            pstmt.setString(6, mson.getCommanderIntent());
+            pstmt.setString(7, mson.getConceptOfOperation());
+            pstmt.setString(8, mson.getThemeStress());
+            pstmt.setString(9, mson.getThemeAvoid());
+            pstmt.setString(10, area.getLevel8());
+            pstmt.setString(11, area.getLevel7());
+            pstmt.setString(12, area.getLevel6());
+            pstmt.setString(13, area.getLevel5());
+            pstmt.setString(14, area.getLevel4());
+            pstmt.setString(15, area.getLevel3());
+            pstmt.setString(16, area.getLevel2());
+            pstmt.setString(17, area.getLevel1());
+            pstmt.setDouble(18, area.getLat());
+            pstmt.setDouble(19, area.getLng());
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return false;
+            } else {
+                //Tasks\
+                
+                pstmt = cn.prepareStatement("CALL `shield`.`delete_all_task_mission`(?);");
+                pstmt.setInt(1, mson.getId());
+                pstmt.execute();
+                
+                ArrayList<Task> taskList = mson.getTaskList();
+                if(!su.ListIsNullOrEmpty(taskList)){
+                     pstmt = cn.prepareStatement("CALL `shield`.`add_task`(?, ?, ?, ?);");
+                     pstmt.setInt(1, editorID);
+                     pstmt.setInt(2, mson.getId());
+                     for(Task t : taskList){
+                         pstmt.setString(3, t.getPsyopsElement());
+                         pstmt.setString(4, t.getDesc());
+                         pstmt.executeUpdate();
+                     }
+                }
+                    
+                cn.close();
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

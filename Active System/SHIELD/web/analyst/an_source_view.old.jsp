@@ -18,34 +18,10 @@
         <script src="js/util.js"></script>
         <script  src="js/alert.js"></script>
 
-        <!--Data Table-->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
-        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
-        
         <!--Page Script-->
         <script src="analyst/pagescripts/an_source_view.js"></script>
         <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
         <script  src="js/bootstrap-tagsinput.min.js"></script>
-        
-        <!--Google Map-->
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-        <script>
-            //Global Variables
-            var srcJSON = <%=request.getAttribute("srcJSON")%>;
-            var excrJSON;
-            var address;
-            var area;
-            var latLng;
-            var switchString; //boolean; true if a string was used, false if a click was used
-    
-            //Map Variables
-            var geocoder = new google.maps.Geocoder();
-            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
-            var map;
-            var marker;
-        </script>
-
     </head>
     <body onload="initialize()">
 
@@ -69,16 +45,9 @@
                         </tbody>
                     </table>
 
-                    <table id="src-excerpts" class="table table-bordered table-hover list-table" width="100%">
-                        <thead style="background-color: #D3D3D3;">
-                        <th>ID</th>
-                        <th>Category</th>
-                        <th>Text</th>
-                        <th>Tags</th>
-                        </thead>
-                        <tbody id="src-excerpts-body">
-                        </tbody>
-                    </table>
+                    <table id="src-excerpts" class="excerpt-list" style="width: 100%;">
+
+                    </table> 
                 </div>
             </div>
         </div>       
@@ -113,33 +82,9 @@
                                     <h5>Excerpt Text:  </h5>
                                 </td>
                                 <td>
-                                    <textarea rows="4" cols="50" class="form-box" style="height: 70px; margin-top: 5px;" required placeholder="Enter Excerpt Text"></textarea>
+                                    <textarea rows="4" cols="50" class="form-box" style="height: 70px;" required placeholder="Enter Excerpt Text"></textarea>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <h5>Excerpt Area:  </h5>
-                                </td>
-                                <td>
-                                    <div class="input-group" style="width: 100%; margin-bottom: 5px;" >
-                                        <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
-                                        
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" value="Search Area" onclick="addressSearch()">
-                                                Locate Area
-                                            </button>
-                                        </span>
-                                    </div><!-- /input-group -->
-                                </td>
-                            </tr>
-                            <tr>
-                                
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div style="height: 300px; width: 550px; margin-bottom: 10px;" id="source-view-map">
-                                    </div></td>
-                            </tr>                            
                             <tr>
                                 <td>
                                     <h5>Tags:  </h5>

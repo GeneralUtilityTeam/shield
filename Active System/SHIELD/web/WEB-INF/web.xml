@@ -152,6 +152,10 @@
         <servlet-name>Save5TCOA</servlet-name>
         <servlet-class>servlet.ajax.Save5TCOA</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetExcerptOfSource</servlet-name>
+        <servlet-class>servlet.ajax.GetExcerptOfSource</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -303,6 +307,10 @@
     <servlet-mapping>
         <servlet-name>Save5TCOA</servlet-name>
         <url-pattern>/Save5TCOA</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetExcerptOfSource</servlet-name>
+        <url-pattern>/GetExcerptOfSource</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
