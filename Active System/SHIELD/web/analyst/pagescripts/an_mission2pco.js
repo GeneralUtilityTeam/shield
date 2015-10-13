@@ -19,6 +19,19 @@ function initialize() { //Change this to take entities
 }
 
 $(document).ready(function () {
+    $.ajax({
+            type: "GET",
+            url: "GetEEntityOfMission",
+            data: {
+                missionID: missionID
+
+            },
+            success: function (responseJSON) {
+                entity = responseJSON;
+                console.log(responseJSON);
+                initialize();
+            }
+        });
     $("#search-field").keydown(function () {
 
         if (event.keyCode == 13) {
@@ -340,6 +353,7 @@ function saveEntity() {
 
 //Load existing entities
 function loadEntity() {
+    console.log(entity);
     for (var x = 0; x < entity.length; x++) {
         var entityExcerpt = [];
         for (var y = 0; y < entity[x].excerpt.length; y++) {
@@ -596,6 +610,7 @@ function savePCO() {
     else if (entity.length < 4)
         showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
     else {
+        console.log(entity);
         $.ajax({
             type: "GET",
             url: "Save2PCO",

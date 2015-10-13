@@ -57,7 +57,7 @@ public class Save2PCO extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("Working");
         HttpSession session = request.getSession();
         int editorID = (int)session.getAttribute("userID");
         int missionID = (int)session.getAttribute("missionID");

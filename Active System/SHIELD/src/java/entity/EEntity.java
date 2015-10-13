@@ -18,7 +18,7 @@ public class EEntity {
     private int classID;
     private String classDesc;
     private Area area;
-    private ArrayList<Integer> excrIDList;
+    private ArrayList<Excerpt> excrList;
     
     //CC properties
     private Date dateStart;
@@ -234,16 +234,6 @@ public class EEntity {
     /**
      * @return the excrIDList
      */
-    public ArrayList<Integer> getExcrIDList() {
-        return excrIDList;
-    }
-
-    /**
-     * @param excrIDList the excrIDList to set
-     */
-    public void setExcrIDList(ArrayList<Integer> excrIDList) {
-        this.excrIDList = excrIDList;
-    }
 
     /**
      * @return the ccParentID
@@ -257,5 +247,19 @@ public class EEntity {
      */
     public void setCcParentID(int ccParentID) {
         this.ccParentID = ccParentID;
+    }
+
+    /**
+     * @return the excrList
+     */
+    public ArrayList<Excerpt> getExcrList() {
+        return excrList;
+    }
+
+    /**
+     * @param excrList the excrList to set
+     */
+    public void setExcrList(ArrayList<Excerpt> excrList) {
+        this.excrList = excrList;
     }
 }

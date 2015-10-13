@@ -39,9 +39,10 @@
         <script>
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
+            var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
-            var missionID = <%=session.getAttribute("msonID")%>;
-            
+
+
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });
@@ -52,7 +53,7 @@
 
     </head>
 
-    <body onload="initialize()">
+    <body>
 
         <!--Navigation Bar-->
         <script src="js/navigation.js"></script>
@@ -112,7 +113,7 @@
                         <input type="range" id="rangeInput" name="rangeInput" step="1" min="1" max="5" style="width: 50%; margin: 0 24% 0 24%;">
                         <label id="rangeText" style="display: block; text-align: center; font-weight: 100;"/></label><hr>
 
-                    <table id="table5" class="enable">
+                        <table id="table5" class="enable">
                             <tr>
                                 <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable5" type="checkbox" data-toggle="toggle" data-on="Check All Very Strong Relevance Excerpts" data-off="Select Very Strong Relevance Excerpts" data-onstyle="success" data-offstyle="default" data-width="260" data-size="small"> </th>
                             </tr>
