@@ -5,6 +5,7 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -62,6 +63,7 @@ public class Save2PCO extends HttpServlet {
         int missionID = (int)session.getAttribute("missionID");
         String entityJSON = request.getParameter("entityArr");
         System.out.println(entityJSON);
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
         
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");

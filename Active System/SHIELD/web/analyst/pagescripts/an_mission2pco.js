@@ -78,7 +78,7 @@ function initializeMap() {
     map = new google.maps.Map(document.getElementById('mission2pco-area-map'), mapOptions);
     infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
     geocoder = new google.maps.Geocoder();
-    geocodeString(area);
+    //geocodeString(area); -- NOt working
 
     oms = new OverlappingMarkerSpiderfier(map,
             {markersWontMove: true, markersWontHide: true});
@@ -88,16 +88,8 @@ function initializeMap() {
     oms.addListener('unspiderfy', function (markers) {
     });
 }
-function geocodeString(string) {
-    geocoder.geocode({
-        'address': string
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            geocodeSuccess(results[0]);
-        } else {
-            return null;
-        }
-    });
+function geocodeSuccess(result) {
+    map.fitBounds(result.geometry.viewport);
 }
 
 function geocodeSuccess(result) {
@@ -625,10 +617,10 @@ $(function () {
 function savePCO() {
     if (entityArr.length == 0)
         showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
-//    else if (entityArr.length < 4)
-//        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
+    else if (entityArr.length < 4)
+        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
     else {
-        console.log(entityArr);
+        console.log(toJSON(entityArr));
         $.ajax({
             type: "GET",
             url: "Save2PCO",

@@ -5,6 +5,8 @@
  */
 package servlet.analyst;
 
+import dao.MissionDAO;
+import entity.Mission;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -22,15 +24,32 @@ import servlet.father.FatherServlet;
  */
 public class ANMission2PCO extends FatherServlet {
 
-     protected void servletAction(HttpServletRequest request, HttpServletResponse response)
+    protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        MissionDAO msonDAO = new MissionDAO();
+        HttpSession session = request.getSession();
+        String missionIDString = session.getAttribute("missionID").toString();
+        int missionID = Integer.parseInt(missionIDString);
+        Mission mson = msonDAO.GetMission(missionID);
+
+        request.setAttribute("level8", mson.getArea().getLevel8());
+        request.setAttribute("level7", mson.getArea().getLevel7());
+        request.setAttribute("level6", mson.getArea().getLevel6());
+        request.setAttribute("level5", mson.getArea().getLevel5());
+        request.setAttribute("level4", mson.getArea().getLevel4());
+        request.setAttribute("level3", mson.getArea().getLevel3());
+        request.setAttribute("level2", mson.getArea().getLevel2());
+        request.setAttribute("level1", mson.getArea().getLevel1());
         
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission2pco.jsp");
         dispatch.forward(request, response);
 
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -68,6 +87,5 @@ public class ANMission2PCO extends FatherServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

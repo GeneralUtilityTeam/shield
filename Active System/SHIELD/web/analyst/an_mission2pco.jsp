@@ -42,7 +42,15 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
 
-
+            var level8 = '<%=request.getAttribute("level8")%>';
+            var level7 = '<%=request.getAttribute("level7")%>';
+            var level6 = '<%=request.getAttribute("level6")%>';
+            var level5 = '<%=request.getAttribute("level5")%>';
+            var level4 = '<%=request.getAttribute("level4")%>';
+            var level3 = '<%=request.getAttribute("level3")%>';
+            var level2 = '<%=request.getAttribute("level2")%>';
+            var level1 = '<%=request.getAttribute("level1")%>';
+            
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });
