@@ -35,7 +35,7 @@ public class ANMission3COG extends FatherServlet {
         int missionID = Integer.parseInt(missionIDString);
         COG cog = msonDAO.GetCOGOfMission(missionID);
 
-        if (cog.getNodeJSON() == null) {
+        if (cog.getNodeJSON() == null) { // cog is probably null
             String eentJSON = new JSONArray(cog.getEentList()).toString();
             request.setAttribute("entity", eentJSON);
         } else {

@@ -396,7 +396,7 @@ public class IntelligenceDAO {
             pstmt.setInt(1, missionID);
             pstmt.executeUpdate();
 
-            pstmt = cn.prepareStatement("CALL `shield`.`add_eentity`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );");
+            pstmt = cn.prepareStatement("CALL `shield`.`add_eentity`(?, ?, ?, ? );");
             PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_eentity_excerpt`(?, ?);");
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, missionID);
@@ -405,16 +405,6 @@ public class IntelligenceDAO {
             for (EEntity e : eentList) {
                 Area area = e.getArea();
                 pstmt.setString(4, e.getName());
-                pstmt.setString(5, area.getLevel8());
-                pstmt.setString(6, area.getLevel7());
-                pstmt.setString(7, area.getLevel6());
-                pstmt.setString(8, area.getLevel5());
-                pstmt.setString(9, area.getLevel4());
-                pstmt.setString(10, area.getLevel3());
-                pstmt.setString(11, area.getLevel2());
-                pstmt.setString(12, area.getLevel1());
-                pstmt.setDouble(13, area.getLat());
-                pstmt.setDouble(14, area.getLng());
 
                 ResultSet rs = pstmt.executeQuery();
                 rs.next();

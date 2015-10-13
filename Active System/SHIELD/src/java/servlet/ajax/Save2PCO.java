@@ -6,13 +6,20 @@
 package servlet.ajax;
 
 import dao.IntelligenceDAO;
+import dao.MissionDAO;
+import entity.EEntity;
+import entity.Excerpt;
+import entity.Task;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -63,8 +70,32 @@ public class Save2PCO extends HttpServlet {
         int missionID = (int)session.getAttribute("missionID");
         String entityJSON = request.getParameter("entityArr");
         System.out.println(entityJSON);
-        IntelligenceDAO intlDAO = new IntelligenceDAO();
         
+        ArrayList<EEntity> eentList = new ArrayList<EEntity>();
+        JSONArray entityJArr = new JSONArray(request.getParameter("entityArr"));
+        
+        for(Object j : entityJArr){
+            JSONObject jsob = new JSONObject(j.toString());
+            EEntity eent = new EEntity();
+            eent.setName(jsob.getString("name"));
+            ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();
+            for(Object id : jsob.getJSONArray("excrList")){
+                Excerpt excr = new Excerpt();
+                int x = (int)id;
+                excr.setId(x);
+                excrList.add(excr);
+            }
+            eent.setExcrList(excrList);
+            eentList.add(eent);
+        }
+        MissionDAO msonDAO = new MissionDAO();
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
+        boolean success = intlDAO.AddEEntitiesToMission(missionID, editorID, eentList);
+        int missionStatus = (int)session.getAttribute("missionStatus");
+        if(missionStatus == 2){
+            missionStatus = msonDAO.AdvanceMissionStatus(missionID);
+            session.setAttribute("missionStatus", missionStatus);
+        }
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");

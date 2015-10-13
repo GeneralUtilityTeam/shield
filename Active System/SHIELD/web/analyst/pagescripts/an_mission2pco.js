@@ -90,6 +90,46 @@ function initializeMap() {
 }
 function geocodeSuccess(result) {
     map.fitBounds(result.geometry.viewport);
+    minZoom = map.getZoom();
+    var northEast = new google.maps.LatLng(15.308989769453019, 124.84801562500002);
+    var southWest = new google.maps.LatLng(10.211353315454545, 118.62150781249989);
+    var philBounds = new google.maps.LatLngBounds(southWest, northEast);
+    google.maps.event.addListener(map, 'zoom_changed', function () {
+
+        if (map.getZoom() < minZoom) {
+            zoomChanged(philBounds);
+        }
+    });
+
+}
+
+function zoomChanged(philBounds) {
+    // Listen for the dragend event
+    google.maps.event.addListener(map, 'center_changed', function () {
+        if (philBounds.contains(map.getCenter()))
+            return;
+
+        // We're out of bounds - Move the map back within the bounds
+
+        var c = map.getCenter(),
+                x = c.lng(),
+                y = c.lat(),
+                maxX = philBounds.getNorthEast().lng(),
+                maxY = philBounds.getNorthEast().lat(),
+                minX = philBounds.getSouthWest().lng(),
+                minY = philBounds.getSouthWest().lat();
+
+        if (x < minX)
+            x = minX;
+        if (x > maxX)
+            x = maxX;
+        if (y < minY)
+            y = minY;
+        if (y > maxY)
+            y = maxY;
+
+        map.setCenter(new google.maps.LatLng(y, x));
+    });
 }
 
 function geocodeSuccess(result) {
