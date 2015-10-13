@@ -26,6 +26,8 @@ public class MissionDAO {
     
     ShieldUtility su = new ShieldUtility();
 
+    //Mission
+    
     public Mission GetMission(int missionID) {
         try {
             DBConnector db = new DBConnector();

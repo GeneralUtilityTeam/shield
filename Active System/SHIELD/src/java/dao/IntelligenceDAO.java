@@ -7,6 +7,7 @@ package dao;
 
 import db.DBConnector;
 import entity.Area;
+import entity.EEntity;
 import entity.Excerpt;
 import entity.Source;
 import java.sql.Connection;
@@ -206,7 +207,7 @@ public class IntelligenceDAO {
                     area.setLevel1(rs.getString(12));
                     excr.setArea(area);
                     excrList.add(excr);
-                    
+
                 } while (rs.next());
 
                 cn.close();
@@ -226,7 +227,7 @@ public class IntelligenceDAO {
             Connection cn = db.getConnection();
 
             Area area = excr.getArea();
-            
+
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_excerpt`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, userID);
             pstmt.setInt(2, excr.getSourceID());
@@ -251,11 +252,11 @@ public class IntelligenceDAO {
                 return -1;
             } else {
                 int excerptID = rs.getInt(1);
-                
+
                 ArrayList<String> tagList = excr.getTagList();
                 pstmt = cn.prepareStatement("CALL `shield`.`link_excerpt_tag`(?, ?);");
                 pstmt.setInt(1, excerptID);
-                for(String s : tagList){
+                for (String s : tagList) {
                     pstmt.setString(2, s);
                     pstmt.execute();
                 }
@@ -301,5 +302,103 @@ public class IntelligenceDAO {
         }
 
         return null;
+    }
+
+    // -- EENTITY
+    public ArrayList<EEntity> GetAllEEntityOfMission(int missionID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_eentity_mission`(?);");
+            pstmt.setInt(1, missionID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<EEntity> eentList = new ArrayList<EEntity>();
+                do {
+                    EEntity eent = new EEntity();
+                    Area area = new Area();
+
+                    eent.setId(rs.getInt(1));
+                    eent.setClassID(rs.getInt(2));
+                    eent.setClassDesc(rs.getString(3));
+                    eent.setName(rs.getString(4));
+                    area.setLevel8(rs.getString(5));
+                    area.setLevel7(rs.getString(6));
+                    area.setLevel6(rs.getString(7));
+                    area.setLevel5(rs.getString(8));
+                    area.setLevel4(rs.getString(9));
+                    area.setLevel3(rs.getString(10));
+                    area.setLevel2(rs.getString(11));
+                    area.setLevel1(rs.getString(12));
+                    eent.setArea(area);
+                    eentList.add(eent);
+
+                } while (rs.next());
+                
+                cn.close();
+                return eentList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public boolean AddEEntitiesToMission(int missionID, int editorID, ArrayList<EEntity> eentList) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`delete_all_eentity_mission`(?);");
+            pstmt.setInt(1, missionID);
+            pstmt.executeUpdate();
+
+            pstmt = cn.prepareStatement("CALL `shield`.`add_eentity`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );");
+            PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_eentity_excerpt`(?, ?);");
+            pstmt.setInt(1, editorID);
+            pstmt.setInt(2, missionID);
+            pstmt.setInt(3, 1);
+
+            for (EEntity e : eentList) {
+                Area area = e.getArea();
+                pstmt.setString(4, e.getName());
+                pstmt.setString(5, area.getLevel8());
+                pstmt.setString(6, area.getLevel7());
+                pstmt.setString(7, area.getLevel6());
+                pstmt.setString(8, area.getLevel5());
+                pstmt.setString(9, area.getLevel4());
+                pstmt.setString(10, area.getLevel3());
+                pstmt.setString(11, area.getLevel2());
+                pstmt.setString(12, area.getLevel1());
+                pstmt.setDouble(13, area.getLat());
+                pstmt.setDouble(14, area.getLng());
+
+                ResultSet rs = pstmt.executeQuery();
+                rs.next();
+
+                int eentityID = rs.getInt(1);
+                if (eentityID != -1) {
+                    pstmt2.setInt(1, eentityID);
+                    for (int i : e.getExcrIDList()) {
+                        pstmt2.setInt(2, i);
+                        pstmt2.execute();
+                    }
+                }
+
+            }
+            
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

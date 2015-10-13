@@ -18,7 +18,8 @@ public class EEntity {
     private int classID;
     private String classDesc;
     private Area area;
-
+    private ArrayList<Integer> excrIDList;
+    
     //CC
     private Date dateStart;
     private Date dateEnd;
@@ -227,5 +228,19 @@ public class EEntity {
      */
     public void setReco(int reco) {
         this.reco = reco;
+    }
+
+    /**
+     * @return the excrIDList
+     */
+    public ArrayList<Integer> getExcrIDList() {
+        return excrIDList;
+    }
+
+    /**
+     * @param excrIDList the excrIDList to set
+     */
+    public void setExcrIDList(ArrayList<Integer> excrIDList) {
+        this.excrIDList = excrIDList;
     }
 }

@@ -1,9 +1,16 @@
 var excerptList;
 var searchMarker = [];
+var entity = [{"id": 1, "name": "Intelligence", "excerpt": [{"id": 1, "text": "Fast internet connection", "entityEnabled": true, "area": {"lat": 6.766268699999999, "lng": 125.32842690000007}}, {"id": 2, "text": "Public library is open 24 hours", "entityEnabled": true, "area": {"lat": 6.7431794, "lng": 125.35808559999998}}], "type": null},
+    {"id": 2, "name": "Propaganda", "excerpt": [{"id": 3, "text": "Flyers against government officials are posted on streets", "entityEnabled": true, "area": {"lat": 6.7417283, "lng": 125.3570052}}, {"id": 4, "text": "Rallies against the government occur often", "entityEnabled": true, "area": {"lat": 6.738792999999999, "lng": 125.35126000000002}}], "type": null},
+    {"id": 3, "name": "Command and Control", "excerpt": [{"id": 5, "text": "Some police officers accept bribery", "entityEnabled": true, "area": {"lat": 6.73794160, "lng": 125.36708939}}, {"id": 6, "text": "Forces are not seen as authority", "entityEnabled": false, "area": {"lat": 6.73061119, "lng": 125.37095729}}], "type": null}];
 
 function initialize() { //Change this to take entities
 //    buildNav(msonStatus, 2);
+    entityCounter = entity.length;
+    console.log(entity);
+    //set entity array to the mission entity
     initializeMap();
+    loadEntity();
     $('#search-field').focus();
 }
 
@@ -156,8 +163,7 @@ function createSearchMarker() {
 
 }
 //Create Entity Function
-var entity = [];
-var entityCounter = 0;
+var entityCounter;
 var selectedEntity;
 function createEntity() {
     var modal = $('#entityModal');
@@ -334,6 +340,25 @@ function saveEntity() {
     setMarkersOnMap(null, searchMarker);
     var modal = $('#entityModal');
     modal.modal('hide');
+}
+
+//Load existing entities
+function loadEntity() {
+    console.log(entity);
+    for (var x = 0; x < entity.length; x++) {
+        var entityExcerpt = [];
+        for (var y = 0; y < entity[x].excerpt.length; y++) {
+            if (entity[x].excerpt[y].entityEnabled == true) {
+                entityExcerpt.push(entity[x].excerpt[y]);
+            }
+        }
+        console.log(entityExcerpt);
+        var entityMarkerTemp = createEntityMarker(getEntityCenter(entityExcerpt));
+        console.log(entityMarkerTemp);
+        setEntityWindowListener(entityMarkerTemp, "<b>" + entity[x].name + "</b><br>", entityExcerpt);
+        var entityExcerptMarkerTemp = createEntityExcerptMarker(entityExcerpt);
+        setEntityAppearListener(entityMarkerTemp, entityExcerptMarkerTemp);
+    }
 }
 
 function checkEnabled() {
