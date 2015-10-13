@@ -81,9 +81,7 @@
                                 <input type="text" id="search-field" class="form-control" autocomplete="off" spellcheck="false" placeholder="Search for Excerpts" required/>
                             </div>
                             <div class="btn-group" style="z-index: 1; position: fixed; margin: 72vh 0 0 1vmin;">
-                                <a class="btn btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
-                                <a class="btn btn-default" onclick="deleteEntity()" data-toggle="tooltip" title="Right-click on Entity to delete from this Mission" data-placement="bottom"><i class="fa fa-trash" style="color:#CC0000"></i> Delete Entity</a>
-                            </div>
+                                <a class="btn btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a></div>
                             <div id="mission2pco-area-map" style="height: 78vh; width: 74vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
                             </div>
                         </div>
@@ -117,22 +115,22 @@
                             <tr>
                                 <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable5" type="checkbox" data-toggle="toggle" data-on="Check All Very Strong Relevance Excerpts" data-off="Select Very Strong Relevance Excerpts" data-onstyle="success" data-offstyle="default" data-width="260" data-size="small"> </th>
                             </tr>
-                        </table><hr>
+                        </table>
                         <table id="table4" class="enable">
                             <tr>
                                 <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable4" type="checkbox" data-toggle="toggle" data-on="Check All Strong Relevance Excerpts" data-off="Select Strong Relevance Excerpts" data-onstyle="info" data-offstyle="default" data-width="260" data-size="small"> </th>
                             </tr>
-                        </table><hr>
+                        </table>
                         <table id="table3" class="enable">
                             <tr>
                                 <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable3" type="checkbox" data-toggle="toggle" data-on="Check All Moderate Relevance Excerpts" data-off="Select Moderate Relevance Excerpts" data-onstyle="warning" data-offstyle="default" data-width="260" data-size="small"> </th>
                             </tr>
-                        </table><hr>
+                        </table>
                         <table id="table2" class="enable">
                             <tr>
                                 <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable2" type="checkbox" data-toggle="toggle" data-on="Check All Weak Relevance Excerpts" data-off="Select Weak Relevance Excerpts" data-onstyle="danger" data-offstyle="default" data-width="260" data-size="small"> </th>
                             </tr>
-                        </table><hr>
+                        </table>
                         <table id="table1" class="enable">
                             <tr>
                                 <th style="padding: 0 22% 10px 22%;" colspan="2"><input id="enable1" type="checkbox" data-toggle="toggle" data-on="Check All Very Weak Relevance Excerpts" data-off="Select Very Weak Relevance Excerpts" data-onstyle="default" data-offstyle="default" data-width="260" data-size="small"> </th>

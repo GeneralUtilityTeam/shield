@@ -1,9 +1,11 @@
 var excerptList;
 var searchMarker = [];
 var entity;
+var entityArr = [];
 
 function initialize() { //Change this to take entities
     buildNav(missionStatus, 2);
+    initializeMap();
     if (entity == null) {
         entity = new Array();
         entityCounter = 0;
@@ -13,25 +15,25 @@ function initialize() { //Change this to take entities
         loadEntity();
     }
     //set entity array to the mission entity
-    initializeMap();
+
 
     $('#search-field').focus();
 }
 
 $(document).ready(function () {
     $.ajax({
-            type: "GET",
-            url: "GetEEntityOfMission",
-            data: {
-                missionID: missionID
+        type: "GET",
+        url: "GetEEntityOfMission",
+        data: {
+            missionID: missionID
 
-            },
-            success: function (responseJSON) {
-                entity = responseJSON;
-                console.log(responseJSON);
-                initialize();
-            }
-        });
+        },
+        success: function (responseJSON) {
+            entity = responseJSON;
+            console.log(responseJSON);
+            initialize();
+        }
+    });
     $("#search-field").keydown(function () {
 
         if (event.keyCode == 13) {
@@ -280,9 +282,15 @@ function createEntity() {
             case 50:
                 //create TR
                 tr = document.createElement("tr");
+                tr.style.borderBottom = "solid 1px #D3D3D3";
+                tr.style.padding = "5px";
+                tr.style.margin = "10px";
                 //create TD
                 td1 = document.createElement("td");
                 td2 = document.createElement("td");
+
+                td1.style.paddingBottom = "10px";
+                td2.style.paddingBottom = "10px";
                 //add content to TD
                 checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
@@ -336,35 +344,45 @@ function saveEntity() {
     var entityObject;
     var entityName = document.getElementById("entity-name").value;
     var entityExcerpt = checkEnabled();
+    var entityExcerptId = [];
+    for (var x = 0; x < entityExcerpt.length; x++) {
+        entityExcerptId.push(entityExcerpt[x].id);
+    }
     var entityMarkerTemp = createEntityMarker(getEntityCenter(entityExcerpt));
     setEntityWindowListener(entityMarkerTemp, "<b>" + entityName + "</b><br>", entityExcerpt);
     var entityExcerptMarkerTemp = createEntityExcerptMarker(entityExcerpt);
     setEntityAppearListener(entityMarkerTemp, entityExcerptMarkerTemp);
-    var entityMarker = {id: entityCounter, entityMarker: entityMarkerTemp, excerptMarker: entityExcerptMarkerTemp};
-    entityObject = {id: entityCounter, name: entityName, excerpt: entityExcerpt, marker: entityMarker};
+    entityObject = {id: entityCounter, name: entityName, excrList: entityExcerptId};
 
-    entity.push(entityObject);
+    entityArr.push(entityObject);
     entityCounter++;
     //hide all search markers
     setMarkersOnMap(null, searchMarker);
+    $('#search-field').val("");
     var modal = $('#entityModal');
     modal.modal('hide');
+    $('#search-field').focus();
 }
 
 //Load existing entities
 function loadEntity() {
     console.log(entity);
     for (var x = 0; x < entity.length; x++) {
+        var entityObject;
+        var entityExcerptId = [];
         var entityExcerpt = [];
-        for (var y = 0; y < entity[x].excerpt.length; y++) {
-            if (entity[x].excerpt[y].entityEnabled == true) {
-                entityExcerpt.push(entity[x].excerpt[y]);
+        for (var y = 0; y < entity[x].excrList.length; y++) {
+            if (entity[x].excrList[y].eentityEnabled == true) {
+                entityExcerpt.push(entity[x].excrList[y]);
+                entityExcerptId.push(entity[x].excrList[y].id);
             }
         }
         var entityMarkerTemp = createEntityMarker(getEntityCenter(entityExcerpt));
         setEntityWindowListener(entityMarkerTemp, "<b>" + entity[x].name + "</b><br>", entityExcerpt);
         var entityExcerptMarkerTemp = createEntityExcerptMarker(entityExcerpt);
         setEntityAppearListener(entityMarkerTemp, entityExcerptMarkerTemp);
+        entityObject = {id: x, name: entity[x].name, excrList: entityExcerptId};
+        entityArr.push(entityObject);
     }
 }
 
@@ -372,7 +390,7 @@ function checkEnabled() {
     var entityExcerpt = [];
     for (var x = 0; x < excerptList.length; x++) {
         if ($('#excerptEnabled' + excerptList[x].id).prop('checked') == true) {
-            excerptList[x].entityEnabled = true;
+            excerptList[x].eentityEnabled = true;
         }
         entityExcerpt.push(excerptList[x]);
     }
@@ -382,7 +400,7 @@ function checkEnabled() {
 function getEntityCenter(entityExcerpt) {
     var bounds = new google.maps.LatLngBounds();
     for (var x = 0; x < entityExcerpt.length; x++) {
-        if (entityExcerpt[x].entityEnabled == true) {
+        if (entityExcerpt[x].eentityEnabled == true) {
             bounds.extend(new google.maps.LatLng(entityExcerpt[x].area.lat, entityExcerpt[x].area.lng));
         }
     }
@@ -405,7 +423,7 @@ function createEntityExcerptMarker(entityExcerpt) {
     var icon = "http://maps.google.com/mapfiles/kml/pal4/icon57.png";
     var entityExcerptMarker = [];
     for (var x = 0; x < entityExcerpt.length; x++) {
-        if (entityExcerpt[x].entityEnabled == true) {
+        if (entityExcerpt[x].eentityEnabled == true) {
             var pos = new google.maps.LatLng(entityExcerpt[x].area.lat, entityExcerpt[x].area.lng);
             var excerptMarker = new google.maps.Marker({
                 position: pos,
@@ -464,7 +482,7 @@ function setWindowListener(marker, text) {
 function setEntityWindowListener(marker, text, excerptList) {
     var excerptText = " Excerpts included: <br>";
     for (var x = 0; x < excerptList.length; x++) {
-        if (excerptList[x].entityEnabled == true) {
+        if (excerptList[x].eentityEnabled == true) {
             excerptText += "Excerpt " + excerptList[x].id + "<br>";
         }
     }
@@ -605,20 +623,20 @@ $(function () {
 });
 
 function savePCO() {
-    if (entity.length == 0)
+    if (entityArr.length == 0)
         showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
-    else if (entity.length < 4)
-        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
+//    else if (entityArr.length < 4)
+//        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
     else {
-        console.log(entity);
+        console.log(entityArr);
         $.ajax({
             type: "GET",
             url: "Save2PCO",
             data: {
-                entityArr: entity
-
+                entityArr: toJSON(entityArr)
             },
             success: function (response) {
+                console.log("success");
                 showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
                 setTimeout(function () {
                     window.location.assign("ANMission3COG?id=" + missionID)

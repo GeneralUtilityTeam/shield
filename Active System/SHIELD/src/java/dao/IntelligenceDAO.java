@@ -363,6 +363,8 @@ public class IntelligenceDAO {
                             area2.setLat(rs2.getDouble(11));
                             area2.setLng(rs2.getDouble(12));
                             
+                            excr.setEentityEnabled(true);
+                            
                             excr.setArea(area2);
                             
                             excrList.add(excr);

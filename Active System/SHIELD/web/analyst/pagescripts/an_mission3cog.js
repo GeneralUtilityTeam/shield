@@ -409,8 +409,8 @@ function saveCOG() {
             missionID: missionID,
             missionNodes: nodesJSON,
             missionEdges: edgesJSON,
-            missionTCOA: toJSON(ccArr),
-            missionCARVER: toJSON(crArr)
+            missionTCOA: toJSON(ccArr), //list of cc objects {id, name, class NOT group
+            missionCARVER: toJSON(crArr) //list of cr object {id, name, class, cvarray}
         },
         success: function (response) {
             showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
