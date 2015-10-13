@@ -17,10 +17,11 @@
 //    {"id": 17, "name": "Perception of Government as Public Regime", "excerpt": [{"id": 33, "text": "The public believes that the local government is being controlled"}, {"id": 34, "text": "The area was brutally affected during the Marcos rule"}], "type": null},
 //    {"id": 18, "name": "Will to resist Against Government", "excerpt": [{"id": 35, "text": "Government has been wearing down the populace with charity work"}, {"id": 36, "text": "Government has been increasing donations to charities"}], "type": null},
 //    {"id": 19, "name": "Political and Economic Strife", "excerpt": [{"id": 31, "text": "Majority of the populace are poor"}, {"id": 2, "text": "Political Dynasties are present in the area"}], "type": null}];
+
 function initialize() {
-    buildNav(msonStatus, 3);
+    buildNav(missionStatus, 3);
     //for COG already created
-    if (msonStatus > 4) {
+    if (missionStatus > 3) {
 
         if (nodesArray != null) {
             for (var x = 0; x < nodesArray.length; x++) {
@@ -35,13 +36,29 @@ function initialize() {
 
     }
     //for COG created from PCO entities
-    else if (msonStatus == 4 && entity != null) {
+    else if (missionStatus == 3 && entity != null) {
+        console.log(entity);
         assignDoesUses();
     }
 
     loadSideBar();
 
 }
+
+$(document).ready(function () {
+    $.ajax({
+        type: "GET",
+        url: "GetEEntityOfMission",
+        data: {
+            missionID: missionID
+        },
+        success: function (responseJSON) {
+            entity = responseJSON;
+            console.log(entity);
+            initialize();
+        }
+    });
+});
 
 var network, nodes, edges, activeId, activeNode;
 
@@ -173,6 +190,17 @@ function assignDoesUses() {
         input1.type = "checkbox";
         input1.setAttribute("data-toggle", "toggle");
         td2.appendChild(input1);
+        $(function () {
+                $(input1).bootstrapToggle({
+                    on: 'Yes',
+                    off: 'No',
+                    onstyle: "success",
+                    offstyle: "default",
+                    width: "70",
+                    size: "small"
+                });
+
+            });
 
         //td3
         input2 = document.createElement("input");
@@ -180,13 +208,23 @@ function assignDoesUses() {
         input2.type = "checkbox";
         input2.setAttribute("data-toggle", "toggle");
         td3.appendChild(input2);
+        $(function () {
+                $(input2).bootstrapToggle({
+                    on: 'Yes',
+                    off: 'No',
+                    onstyle: "success",
+                    offstyle: "default",
+                    width: "70",
+                    size: "small"
+                });
+
+            });
 
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
         table.appendChild(tr);
     }
-    activateToggle();
     $('#doesusesModal').modal('show');
 }
 
@@ -421,30 +459,6 @@ function saveCOG() {
     });
 
 }
-function activateToggle() {
-    for (var x = 1; x <= entity.length; x++) {
-        $(function () {
-            $('#does' + x).bootstrapToggle({
-                on: 'Yes',
-                off: 'No',
-                onstyle: "success",
-                offstyle: "default",
-                width: "70",
-                size: "small"
-            });
-            $('#uses' + x).bootstrapToggle({
-                on: 'Yes',
-                off: 'No',
-                onstyle: "success",
-                offstyle: "default",
-                width: "70",
-                size: "small"
-            });
-
-        });
-    }
-
-}
 
 function loadSideBar() {
     var table = document.getElementById("entity-table");
@@ -455,15 +469,17 @@ function loadSideBar() {
         trEntity.style.borderBottom = "solid 1px #D3D3D3";
         trEntity.style.padding = "5px";
         trEntity.style.margin = "10px";
-        for (var y = 0; y < entity[x].excerpt.length; y++) {
-            var trExcerpt = document.createElement("tr");
-            var tdExcerpt = document.createElement("td");
-            tdExcerpt.style.paddingLeft = "25px";
-            tdExcerpt.style.paddingBottom = "5px";
-            tdExcerpt.style.color = "#202020";
-            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excerpt[y].id + ":</b> " + entity[x].excerpt[y].text;
-            trExcerpt.appendChild(tdExcerpt);
-            trEntity.appendChild(trExcerpt);
+        if (entity[x].excrList.length != 0) {
+            for (var y = 0; y < entity[x].excrList.length; y++) {
+                var trExcerpt = document.createElement("tr");
+                var tdExcerpt = document.createElement("td");
+                tdExcerpt.style.paddingLeft = "25px";
+                tdExcerpt.style.paddingBottom = "5px";
+                tdExcerpt.style.color = "#202020";
+                tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
+                trExcerpt.appendChild(tdExcerpt);
+                trEntity.appendChild(trExcerpt);
+            }
         }
         table.appendChild(trEntity);
     }

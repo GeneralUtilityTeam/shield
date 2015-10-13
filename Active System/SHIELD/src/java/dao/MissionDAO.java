@@ -335,7 +335,7 @@ public class MissionDAO {
 
             if (rs.getRow() == 0) {
                 //New Cog
-                pstmt = cn.prepareStatement("CALL `shield`.`get_all_eentity_mission(?)");
+                pstmt = cn.prepareStatement("CALL `shield`.`get_all_eentity_mission`(?)");
                 pstmt.setInt(1, missionID);
                 rs = pstmt.executeQuery();
                 rs.next();
@@ -352,6 +352,7 @@ public class MissionDAO {
                 }
                 else{
                     cn.close();
+                    System.out.println("null1");
                     return null;
                 }
             } else {
@@ -366,6 +367,7 @@ public class MissionDAO {
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("null2");
         return null;
     }
 }

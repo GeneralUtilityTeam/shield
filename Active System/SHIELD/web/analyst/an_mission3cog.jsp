@@ -33,14 +33,13 @@
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
-            var msonStatus = <%=session.getAttribute("msonStatus")%>;
+            var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
+            var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
-            var missionID = <%=session.getAttribute("msonID")%>;
             
             var nodesArray = <%=request.getAttribute("nodeJSON")%>;
             var edgesArray = <%=request.getAttribute("edgeJSON")%>;
-            var entity = <%=request.getAttribute("entity")%>;
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });
@@ -82,7 +81,7 @@
 
     </head>
 
-    <body onload="initialize()">
+    <body>
 
         <!--Navigation Bar-->
         <script src="js/navigation.js"></script>

@@ -9,6 +9,7 @@ import dao.MissionDAO;
 import entity.COG;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -36,7 +37,8 @@ public class ANMission3COG extends FatherServlet {
         COG cog = msonDAO.GetCOGOfMission(missionID);
 
         if (cog.getNodeJSON() == null) { // cog is probably null
-            String eentJSON = new JSONArray(cog.getEentList()).toString();
+            ArrayList eentList = cog.getEentList();
+            String eentJSON = new JSONArray(eentList).toString();
             request.setAttribute("entity", eentJSON);
         } else {
             request.setAttribute("nodeJSON", cog.getNodeJSON());
