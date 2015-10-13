@@ -5,6 +5,8 @@
  */
 package servlet.analyst;
 
+import dao.MissionDAO;
+import entity.COG;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import servlet.father.FatherServlet;
 
 /**
@@ -22,15 +26,31 @@ import servlet.father.FatherServlet;
  */
 public class ANMission3COG extends FatherServlet {
 
-     protected void servletAction(HttpServletRequest request, HttpServletResponse response)
+    protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        MissionDAO msonDAO = new MissionDAO();
+        HttpSession session = request.getSession();
+        String missionIDString = session.getAttribute("missionID").toString();
+        int missionID = Integer.parseInt(missionIDString);
+        COG cog = msonDAO.GetCOGOfMission(missionID);
+
+        if (cog.getNodeJSON() == null) {
+            String eentJSON = new JSONArray(cog.getEentList()).toString();
+            request.setAttribute("entity", eentJSON);
+        } else {
+            request.setAttribute("nodeJSON", cog.getNodeJSON());
+            request.setAttribute("edgeJSON", cog.getEdgeJSON());
+        }
+
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission3cog.jsp");
         dispatch.forward(request, response);
 
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -68,6 +88,5 @@ public class ANMission3COG extends FatherServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

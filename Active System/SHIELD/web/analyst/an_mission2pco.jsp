@@ -37,10 +37,11 @@
         <script src="http://jawj.github.io/OverlappingMarkerSpiderfier/bin/oms.min.js"></script>
 
         <script>
-            var msonStatus = <%=request.getAttribute("msonStatus")%>;
+            var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var analystName = '<%=session.getAttribute("analystName")%>';
-            var missionID = <%=request.getAttribute("msonID")%>;
+            var missionID = <%=session.getAttribute("msonID")%>;
+            
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });

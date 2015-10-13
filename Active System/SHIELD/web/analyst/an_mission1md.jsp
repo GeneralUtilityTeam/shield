@@ -22,8 +22,7 @@
         <script src="analyst/pagescripts/an_mission1md.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
-        <!--Google Map-->
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        
         <script type="text/javascript">
             var msonJSOB = <%=request.getAttribute("msonJSOB")%>;
             var missionID = <%=request.getAttribute("missionID")%>;
@@ -31,9 +30,6 @@
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var geocoder;
-            var map;
-            var marker;
-            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
             var address;
             var areaJSON;
             var savedArea;

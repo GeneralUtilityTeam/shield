@@ -20,11 +20,12 @@ public class EEntity {
     private Area area;
     private ArrayList<Integer> excrIDList;
     
-    //CC
+    //CC properties
     private Date dateStart;
     private Date dateEnd;
     
     //CR properties
+    private int ccParentID;
     private ArrayList<EEntity> cvList;
     
     //CV properties
@@ -242,5 +243,19 @@ public class EEntity {
      */
     public void setExcrIDList(ArrayList<Integer> excrIDList) {
         this.excrIDList = excrIDList;
+    }
+
+    /**
+     * @return the ccParentID
+     */
+    public int getCcParentID() {
+        return ccParentID;
+    }
+
+    /**
+     * @param ccParentID the ccParentID to set
+     */
+    public void setCcParentID(int ccParentID) {
+        this.ccParentID = ccParentID;
     }
 }

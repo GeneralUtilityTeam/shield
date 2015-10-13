@@ -7,6 +7,8 @@ package dao;
 
 import db.DBConnector;
 import entity.Area;
+import entity.COG;
+import entity.EEntity;
 import entity.Mission;
 import entity.Task;
 import java.sql.Connection;
@@ -23,11 +25,10 @@ import utility.ShieldUtility;
  * @author Franco
  */
 public class MissionDAO {
-    
+
     ShieldUtility su = new ShieldUtility();
 
     //Mission
-    
     public Mission GetMission(int missionID) {
         try {
             DBConnector db = new DBConnector();
@@ -244,7 +245,7 @@ public class MissionDAO {
         return -1;
     }
 
-    public int AdvanceMissionStatus(int missionID){
+    public int AdvanceMissionStatus(int missionID) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
@@ -266,6 +267,7 @@ public class MissionDAO {
         }
         return -1;
     }
+
     public boolean UpdateMission(int editorID, Mission mson) {
         try {
             DBConnector db = new DBConnector();
@@ -296,19 +298,19 @@ public class MissionDAO {
                 pstmt = cn.prepareStatement("CALL `shield`.`delete_all_task_mission`(?);");
                 pstmt.setInt(1, mson.getId());
                 pstmt.execute();
-                
+
                 ArrayList<Task> taskList = mson.getTaskList();
-                if(!su.ListIsNullOrEmpty(taskList)){
-                     pstmt = cn.prepareStatement("CALL `shield`.`add_task`(?, ?, ?, ?);");
-                     pstmt.setInt(1, editorID);
-                     pstmt.setInt(2, mson.getId());
-                     for(Task t : taskList){
-                         pstmt.setString(3, t.getPsyopsElement());
-                         pstmt.setString(4, t.getDesc());
-                         pstmt.executeUpdate();
-                     }
+                if (!su.ListIsNullOrEmpty(taskList)) {
+                    pstmt = cn.prepareStatement("CALL `shield`.`add_task`(?, ?, ?, ?);");
+                    pstmt.setInt(1, editorID);
+                    pstmt.setInt(2, mson.getId());
+                    for (Task t : taskList) {
+                        pstmt.setString(3, t.getPsyopsElement());
+                        pstmt.setString(4, t.getDesc());
+                        pstmt.executeUpdate();
+                    }
                 }
-                    
+
                 cn.close();
                 return true;
             }
@@ -316,5 +318,54 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    // COG 
+    public COG GetCOGOfMission(int missionID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_cog_mission`(?);");
+            pstmt.setInt(1, missionID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            COG cog = new COG();
+
+            if (rs.getRow() == 0) {
+                //New Cog
+                pstmt = cn.prepareStatement("CALL `shield`.`get_all_eentity_mission(?)");
+                pstmt.setInt(1, missionID);
+                rs = pstmt.executeQuery();
+                rs.next();
+                if (rs.getRow() != 0) {
+                    ArrayList<EEntity> eentList = new ArrayList<EEntity>();
+                    do {
+                        EEntity eent = new EEntity();
+                        eent.setId(rs.getInt(1));
+                        eent.setName(rs.getString(2));
+                        eentList.add(eent);
+                    } while (rs.next());
+                    
+                    cog.setEentList(eentList);
+                }
+                else{
+                    cn.close();
+                    return null;
+                }
+            } else {
+                //Cog already exists
+                cog.setMissionID(missionID);
+                cog.setNodeJSON(rs.getString(1));
+                cog.setEdgeJSON(rs.getString(2));
+
+            }
+            cn.close();
+            return cog;
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

@@ -302,8 +302,8 @@ function setCV() {
         $('#cvModal').modal('hide');
         $('#slidingmenu').find(".toggler").trigger("click");
     }
-    else{
-        
+    else {
+
     }
 }
 function createNodes() {
@@ -360,7 +360,7 @@ function saveCOG() {
             return (items.group == "cc");
         }
     });
-
+    console.log(cc);
     //get CR and CVs connected to it
     var cr = nodes.get({
         filter: function (items) {
@@ -371,10 +371,14 @@ function saveCOG() {
     for (var x = 0; x < cr.length; x++) {
         var crConnected = network.getConnectedNodes(cr[x].id);
         var cvConnectedToCr = [];
+        var ccConnectedToCr = [];
         if (crConnected != null) {
             for (var y = 0; y < crConnected.length; y++) {
                 if (nodes.get(crConnected[y]).group === "cv") {
                     cvConnectedToCr.push(nodes.get(crConnected[y]));
+                }
+                if (nodes.get(crConnected[y]).group === "cc") {
+                    ccConnectedToCr.push(nodes.get(crConnected[y]));
                 }
             }
             $.ajax({
@@ -386,36 +390,39 @@ function saveCOG() {
                     cv: cvConnectedToCr
                 }
             });
+            console.log(cr[x]);
+            console.log(cvConnectedToCr);
+            console.log(ccConnectedToCr);
         }
 
     }
-
+    
     //Save Nodes and Edges
-    var saveNodes = nodes.get({
-        fields: ['id', 'label', 'group'],
-        type: {
-            group: 'String'                 // convert the group fields to Strings
-        }
-    });
-    var saveEdges = edges.get();
-    var nodesJSON = JSON.stringify(saveNodes);
-    var edgesJSON = JSON.stringify(saveEdges);
-
-    $.ajax({
-        type: "GET",
-        url: "Save3COG",
-        data: {
-            missionID: missionID,
-            missionNodes: nodesJSON,
-            missionEdges: edgesJSON
-        },
-        success: function (response) {
-            showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
-            setTimeout(function () {
-                window.location.assign("ANMission4TCOA")
-            }, 3000);
-        }
-    });
+//    var saveNodes = nodes.get({
+//        fields: ['id', 'label', 'group'],
+//        type: {
+//            group: 'String'                 // convert the group fields to Strings
+//        }
+//    });
+//    var saveEdges = edges.get();
+//    var nodesJSON = JSON.stringify(saveNodes);
+//    var edgesJSON = JSON.stringify(saveEdges);
+//
+//    $.ajax({
+//        type: "GET",
+//        url: "Save3COG",
+//        data: {
+//            missionID: missionID,
+//            missionNodes: nodesJSON,
+//            missionEdges: edgesJSON
+//        },
+//        success: function (response) {
+//            showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
+//            setTimeout(function () {
+//                window.location.assign("ANMission4TCOA")
+//            }, 3000);
+//        }
+//    });
 
 }
 function activateToggle() {

@@ -1,16 +1,20 @@
 var excerptList;
 var searchMarker = [];
-var entity = [{"id": 1, "name": "Intelligence", "excerpt": [{"id": 1, "text": "Fast internet connection", "entityEnabled": true, "area": {"lat": 6.766268699999999, "lng": 125.32842690000007}}, {"id": 2, "text": "Public library is open 24 hours", "entityEnabled": true, "area": {"lat": 6.7431794, "lng": 125.35808559999998}}], "type": null},
-    {"id": 2, "name": "Propaganda", "excerpt": [{"id": 3, "text": "Flyers against government officials are posted on streets", "entityEnabled": true, "area": {"lat": 6.7417283, "lng": 125.3570052}}, {"id": 4, "text": "Rallies against the government occur often", "entityEnabled": true, "area": {"lat": 6.738792999999999, "lng": 125.35126000000002}}], "type": null},
-    {"id": 3, "name": "Command and Control", "excerpt": [{"id": 5, "text": "Some police officers accept bribery", "entityEnabled": true, "area": {"lat": 6.73794160, "lng": 125.36708939}}, {"id": 6, "text": "Forces are not seen as authority", "entityEnabled": false, "area": {"lat": 6.73061119, "lng": 125.37095729}}], "type": null}];
+var entity;
 
 function initialize() { //Change this to take entities
-//    buildNav(msonStatus, 2);
-    entityCounter = entity.length;
-    console.log(entity);
+    buildNav(missionStatus, 2);
+    if (entity == null) {
+        entity = new Array();
+        entityCounter = 0;
+    }
+    else {
+        entityCounter = entity.length;
+        loadEntity();
+    }
     //set entity array to the mission entity
     initializeMap();
-    loadEntity();
+
     $('#search-field').focus();
 }
 
@@ -83,7 +87,10 @@ function geocodeString(string) {
 
 function geocodeSuccess(result) {
     map.fitBounds(result.geometry.viewport);
-    zoom = map.getZoom();
+    zoom = map.getZoom() + 1;
+    map.setZoom(zoom);
+
+    map.minZoom = zoom;
     var allowedBounds = new google.maps.LatLngBounds(result.geometry.viewport.getSouthWest(), result.geometry.viewport.getNorthEast());
     lastValidCenter = map.getCenter();
 
@@ -97,11 +104,11 @@ function geocodeSuccess(result) {
         //not valid anymore => return to last valid position
         map.panTo(lastValidCenter);
     });
-    //map.minZoom = zoom; -- TODO uncomment
+
     google.maps.event.addListener(map, 'zoom_changed', function () {
 
-        if (map.getZoom() === zoom) {
-            map.panTo(mapOptions.center);
+        if (map.getZoom() < zoom) {
+            map.fitBounds(result.geometry.viewport);
             map.setOptions({draggable: false});
 
         } else {
@@ -117,7 +124,6 @@ $(document).ready(function () {
 //Load Markers based on search
 
 function createSearchMarker() {
-    console.log(excerptList);
     var greenPin = "5BB85D";
     var bluePin = "5BC0DE";
     var orangePin = "EFAD4D";
@@ -313,16 +319,6 @@ function createEntity() {
     modal.modal('show');
 }
 
-function deleteEntity() {
-    for (var x = 0; x < entity.length; x++) {
-        if (entity[x].marker.id == selectedEntity.id) {
-            setEntityMarkerOnMap(null, entity[x].marker.entityMarker);
-            setMarkersOnMap(null, entity[x].marker.excerptMarker);
-            entity.splice(x, 1);
-        }
-    }
-}
-
 function saveEntity() {
     var entityObject;
     var entityName = document.getElementById("entity-name").value;
@@ -344,7 +340,6 @@ function saveEntity() {
 
 //Load existing entities
 function loadEntity() {
-    console.log(entity);
     for (var x = 0; x < entity.length; x++) {
         var entityExcerpt = [];
         for (var y = 0; y < entity[x].excerpt.length; y++) {
@@ -352,9 +347,7 @@ function loadEntity() {
                 entityExcerpt.push(entity[x].excerpt[y]);
             }
         }
-        console.log(entityExcerpt);
         var entityMarkerTemp = createEntityMarker(getEntityCenter(entityExcerpt));
-        console.log(entityMarkerTemp);
         setEntityWindowListener(entityMarkerTemp, "<b>" + entity[x].name + "</b><br>", entityExcerpt);
         var entityExcerptMarkerTemp = createEntityExcerptMarker(entityExcerpt);
         setEntityAppearListener(entityMarkerTemp, entityExcerptMarkerTemp);
@@ -438,8 +431,8 @@ function setEntityAppearListener(entityMarker, entityExcerpt) {
         }
     });
     google.maps.event.addListener(entityMarker, 'rightclick', function (event) {
-        selectedEntity = entityMarker;
-
+        setMarkersOnMap(null, entityExcerpt);
+        setEntityMarkerOnMap(null, entityMarker);
     });
 }
 
@@ -598,6 +591,25 @@ $(function () {
 });
 
 function savePCO() {
+    if (entity.length == 0)
+        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
+    else if (entity.length < 4)
+        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
+    else {
+        $.ajax({
+            type: "GET",
+            url: "Save2PCO",
+            data: {
+                entityArr: entity
 
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
+                setTimeout(function () {
+                    window.location.assign("ANMission3COG?id=" + missionID)
+                }, 3000);
+            }
+        });
+    }
 
 }
