@@ -88,12 +88,12 @@ function saveTCOA() {
             for(var y=0; y<entityCC.length; y++){
                 if(entity[x].id == entity[y].id){
                     entity[x].from = document.getElementById("from" + y).value;
-                    alert(entity[x].name);
                     entity[x].to = document.getElementById("to" + y).value;
-                    alert(document.getElementById("to" + y).value);
                 }
             }
         }
+        
+        //Call AJAX here
     }
 
 }
