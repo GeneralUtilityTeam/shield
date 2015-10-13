@@ -87,7 +87,7 @@ function geocodeString(string) {
 
 function geocodeSuccess(result) {
     map.fitBounds(result.geometry.viewport);
-    zoom = map.getZoom() + 1;
+    zoom = map.getZoom() - 1;
     map.setZoom(zoom);
 
     map.minZoom = zoom;
