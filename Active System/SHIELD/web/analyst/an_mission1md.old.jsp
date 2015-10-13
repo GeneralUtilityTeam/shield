@@ -86,8 +86,21 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" id="mission-address" class="form-box" placeholder="Mission Area" required disabled>
+                                        <div class="input-group">
+                                            <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" value="Search Area" onclick="codeAddress()">
+                                                    Locate Area
+                                                </button>
+                                            </span>
+                                        </div><!-- /input-group -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div id="mission1md-area-map">
 
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

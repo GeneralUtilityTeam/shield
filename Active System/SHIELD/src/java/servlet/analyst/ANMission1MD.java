@@ -45,7 +45,7 @@ public class ANMission1MD extends FatherServlet {
         String analystName = userDAO.GetFullName(mson.getUserID());
         session.setAttribute("missionID", missionID);
         session.setAttribute("missionTitle", mson.getTitle());
-        session.setAttribute("missionStatus", mson.getStatus());
+        session.setAttribute("missionStatus", msonDAO.GetMissionStatus(missionID));
         session.setAttribute("analystName", analystName);
         
         

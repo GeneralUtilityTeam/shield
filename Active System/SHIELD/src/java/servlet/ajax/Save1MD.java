@@ -16,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -64,69 +66,42 @@ public class Save1MD extends HttpServlet {
             throws ServletException, IOException {
         
         //Save Mission Details from SHIELD 1
-        String editorIDStr = request.getParameter("editor-id");
-        String level8 = request.getParameter("level8");
-        String level7 = request.getParameter("level7");
-        String level6 = request.getParameter("level6");
-        String level5 = request.getParameter("level5");
-        String level4 = request.getParameter("level4");
-        String level3 = request.getParameter("level3");
-        String level2 = request.getParameter("level2");
-        String level1 = request.getParameter("level1");
-        String latStr = request.getParameter("lat");
-        String lngStr = request.getParameter("lng");
+        HttpSession session = request.getSession();
+        int editorID = (int)session.getAttribute("userID");
         
         Mission mson = new Mission();
-        Area area = new Area();
         mson.setId(Integer.parseInt(request.getParameter("id")));
-        mson.setUserID(Integer.parseInt(request.getParameter("user-id")));
+        mson.setUserID(editorID);
         mson.setTitle(request.getParameter("title"));
         mson.setObjective(request.getParameter("objective"));
         mson.setSituation(request.getParameter("situation"));
-        mson.setCommanderIntent(request.getParameter("commander-intent"));
-        mson.setConceptOfOperation(request.getParameter("concept-of-operation"));
-        mson.setThemeStress(request.getParameter("theme-stress"));
-        mson.setThemeAvoid(request.getParameter("theme-avoid"));
-        area.setLevel8(level8);
-        area.setLevel7(level7);
-        area.setLevel6(level6);
-        area.setLevel5(level5);
-        area.setLevel4(level4);
-        area.setLevel3(level3);
-        area.setLevel2(level2);
-        area.setLevel1(level1);
-        area.setLat(Double.parseDouble(latStr));
-        area.setLng(Double.parseDouble(lngStr));
-        mson.setArea(area);
+        mson.setCommanderIntent(request.getParameter("commanderintent"));
+        mson.setConceptOfOperation(request.getParameter("conceptofoperation"));
+        mson.setThemeStress(request.getParameter("themestress"));
+        mson.setThemeAvoid(request.getParameter("themeavoid"));
         
-        //Tasks
         ArrayList<Task> taskList = new ArrayList<Task>();
-        //TODO loop here
+        JSONArray taskJArr = new JSONArray(request.getParameter("tasklist"));
+        
+        for(Object j : taskJArr){
+            JSONObject jsob = new JSONObject(j.toString());
+            String element = jsob.getString("psyopsElement");
+            String desc = jsob.getString("desc");
+            Task task = new Task(0, element, desc);
+            taskList.add(task);
+        }
         mson.setTaskList(taskList);
         
         MissionDAO msonDAO = new MissionDAO();
-        boolean success = msonDAO.UpdateMission(Integer.parseInt(editorIDStr), mson);
-//        int x = 0;
-//        ArrayList<Task> taskList = new ArrayList<Task>();
-//        Task tk;
-//        String element, task;
-//        do {
-//            element = request.getParameter("element" + x);
-//            if (element != null) {
-//                if (element != "") {
-//                    System.out.println("Making new task " + x);
-//                    tk = new Task();
-//                    tk.setId(x + 1);
-//                    tk.setPsyopElement(element);
-//                    tk.setText(request.getParameter("task" + x));
-//                    taskList.add(tk);
-//                    x++;
-//                }
-//            } else {
-//                x = -1;
-//            }
-//        } while (x != -1);
-//        mson.setTaskList(taskList);
+        boolean success = msonDAO.UpdateMission(editorID, mson);
+        
+        int missionStatus = (int)session.getAttribute("missionStatus");
+        System.out.println(missionStatus);
+        if(missionStatus == 1){
+            missionStatus = msonDAO.AdvanceMissionStatus(mson.getId());
+            session.setAttribute("missionStatus", missionStatus);
+        }
+        
         JSONObject obj = new JSONObject();
         obj.put("success", success);
         response.setContentType("application/json");
