@@ -67,7 +67,6 @@
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
                                     <th>Mission Title</th>
-                                    <th>Mission Objective</th>
                                     <th>Area of Operation</th>
                                     <th>Progress</th>
                                 </tr>
@@ -126,15 +125,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <h5>Mission Objective:  </h5>
-                                </td>
-                                <td>
-                                    <textarea rows="4" id="mission-objective" cols="50" class="form-box" placeholder="Enter Mission Objective" style="height: 70px; margin-top: 5px;" required></textarea>
-                                </td>
-                            </tr>
-
 
                         </table>
                     </div>

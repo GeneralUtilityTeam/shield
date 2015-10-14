@@ -317,46 +317,45 @@ public class MissionDAO {
                 pstmt = cn.prepareStatement("CALL `shield`.`unlink_all_keyword_mission`(?);");
                 pstmt.setInt(1, mson.getId());
                 pstmt.execute();
-                pstmt = cn.prepareStatement("CALL `shield`.`link_keyword_mission`(?, ?, ?, ?);");
-                pstmt.setInt(1, editorID);
-                pstmt.setInt(2, mson.getId());
+                pstmt = cn.prepareStatement("CALL `shield`.`link_keyword_mission`(?, ?, ?);");
+                pstmt.setInt(1, mson.getId());
                 ArrayList<String> keyList = mson.getObjectiveKeywordList();
                 if (!su.ListIsNullOrEmpty(keyList)) {
-                    pstmt.setInt(3, 1);
+                    pstmt.setInt(2, 1);
                     for (String s : keyList) {
-                        pstmt.setString(4, s);
+                        pstmt.setString(3, s);
                         pstmt.executeUpdate();
                     }
                 }
                 keyList = mson.getSituationKeywordList();
                 if (!su.ListIsNullOrEmpty(keyList)) {
-                    pstmt.setInt(3, 2);
+                    pstmt.setInt(2, 2);
                     for (String s : keyList) {
-                        pstmt.setString(4, s);
+                        pstmt.setString(3, s);
                         pstmt.executeUpdate();
                     }
                 }
                 keyList = mson.getExecutionKeywordList();
                 if (!su.ListIsNullOrEmpty(keyList)) {
-                    pstmt.setInt(3, 3);
+                    pstmt.setInt(2, 3);
                     for (String s : keyList) {
-                        pstmt.setString(4, s);
+                        pstmt.setString(3, s);
                         pstmt.executeUpdate();
                     }
                 }
                 keyList = mson.getAdminAndLogisticsKeywordList();
                 if (!su.ListIsNullOrEmpty(keyList)) {
-                    pstmt.setInt(3, 4);
+                    pstmt.setInt(2, 4);
                     for (String s : keyList) {
-                        pstmt.setString(4, s);
+                        pstmt.setString(3, s);
                         pstmt.executeUpdate();
                     }
                 }
                 keyList = mson.getCommandAndSignalKeywordList();
                 if (!su.ListIsNullOrEmpty(keyList)) {
-                    pstmt.setInt(3, 5);
+                    pstmt.setInt(2, 5);
                     for (String s : keyList) {
-                        pstmt.setString(4, s);
+                        pstmt.setString(3, s);
                         pstmt.executeUpdate();
                     }
                 }

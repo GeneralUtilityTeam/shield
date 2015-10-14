@@ -75,6 +75,7 @@ public class Save1MD extends HttpServlet {
         mson.setId(Integer.parseInt(request.getParameter("id")));
         mson.setUserID(editorID);
         mson.setTitle(request.getParameter("title"));
+        mson.setThreat(request.getParameter("threat"));
         mson.setObjective(request.getParameter("objective"));
         mson.setObjectiveKeywordList(su.jsKeywordStringToList(request.getParameter("objectiveKeywordList")));
         mson.setSituation(request.getParameter("situation"));

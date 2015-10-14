@@ -37,7 +37,6 @@ $(document).ready(function () {
         "lengthMenu": [[6, 10, 25, 50, -1], [6, 10, 25, 50, "All"]],
         "columns": [
             {"data": "title"},
-            {"data": "objective"},
             {"data": "area"},
             {"data": "status"}
         ],
@@ -49,7 +48,7 @@ $(document).ready(function () {
                 "render": function ( data, type, row ) {
                     return generateFullAddress(data);
                 },
-                "targets": 2
+                "targets": 1
             }
         ],
         "fnRowCallback": function (nRow, data) {
@@ -69,9 +68,8 @@ $(document).ready(function () {
 function beginMission() {
     var missionTitle = document.getElementById("mission-title").value;
     var missionArea = document.getElementById("address").value;
-    var missionObjective = document.getElementById("mission-objective").value;
 
-    if (missionTitle === "" || missionArea === "" || missionObjective === "") { //Change this back
+    if (missionTitle === "" || missionArea === "") { //Change this back
         showAndDismissAlert("danger", "<strong>Begin Mission Failed.</strong> Please complete the form.");
     }
     else {
@@ -80,7 +78,6 @@ function beginMission() {
             url: "BeginNewMission",
             data: {
                 missionTitle: missionTitle,
-                missionObjective: missionObjective,
                 level8: area.level8,
                 level7: area.level7,
                 level6: area.level6,

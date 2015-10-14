@@ -18,31 +18,31 @@ function initialize() {
         document.getElementById('command-signal').innerHTML = msonJSOB.commandAndSignal;
 
     //Load Keyword
-    if (msonJSOB.objectiveKeywordList.length != 0) {
+    if (msonJSOB.objectiveKeywordList != null) {
         var objectiveKeyword = msonJSOB.objectiveKeywordList;
         for (var x = 0; x < objectiveKeyword.length; x++) {
             $('#objective-keyword').tagsinput('add', objectiveKeyword[x]);
         }
     }
-    if (msonJSOB.situationKeywordList.length != 0) {
+    if (msonJSOB.situationKeywordList != null) {
         var situationKeyword = msonJSOB.situationKeywordList;
         for (var x = 0; x < situationKeyword.length; x++) {
             $('#situation-keyword').tagsinput('add', situationKeyword[x]);
         }
     }
-    if (msonJSOB.executionKeywordList.length != 0) {
+    if (msonJSOB.executionKeywordList != null) {
         var executionKeyword = msonJSOB.executionKeywordList;
         for (var x = 0; x < executionKeyword.length; x++) {
             $('#execution-keyword').tagsinput('add', executionKeyword[x]);
         }
     }
-    if (msonJSOB.adminAndLogisticsKeywordList.length != 0) {
+    if (msonJSOB.adminAndLogisticsKeywordList != null) {
         var adminAndLogisticsKeyword = msonJSOB.adminAndLogisticsKeywordList;
         for (var x = 0; x < adminAndLogisticsKeyword.length; x++) {
             $('#admin-logistics-keyword').tagsinput('add', adminAndLogisticsKeyword[x]);
         }
     }
-    if (msonJSOB.commandAndSignalKeywordList.length != 0) {
+    if (msonJSOB.commandAndSignalKeywordList != null) {
         var commandAndSignalKeyword = msonJSOB.commandAndSignalKeywordList;
         for (var x = 0; x < commandAndSignalKeyword.length; x++) {
             $('#command-signal-keyword').tagsinput('add', commandAndSignalKeyword[x]);
@@ -72,6 +72,7 @@ function saveMD() {
         showAndDismissAlert("danger", "<strong>Save Mission Details failed.</strong> Please complete the form.");
     }
     else {
+        console.log(objectiveKeywordList);
         $.ajax({
             type: "GET",
             url: "Save1MD",
@@ -84,11 +85,11 @@ function saveMD() {
                 execution: execution,
                 adminAndLogistics: adminAndLogistics,
                 commandAndSignal: commandAndSignal,
-                objectiveKeywordList: objectiveKeywordList,
-                situationKeywordList: situationKeywordList,
-                executionKeywordList: executionKeywordList,
-                adminAndLogisticsKeywordList: adminAndLogisticsKeywordList,
-                commandAndSignalKeywordList: commandAndSignalKeywordList,
+                objectiveKeywordList: toJSON(objectiveKeywordList),
+                situationKeywordList: toJSON(situationKeywordList),
+                executionKeywordList: toJSON(executionKeywordList),
+                adminAndLogisticsKeywordList: toJSON(adminAndLogisticsKeywordList),
+                commandAndSignalKeywordList: toJSON(commandAndSignalKeywordList)
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
