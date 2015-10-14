@@ -272,7 +272,7 @@ public class IntelligenceDAO {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`primary_search`(?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`search_excerpts`(?);");
             pstmt.setString(1, query);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
