@@ -1,89 +1,74 @@
 function initialize() {
     buildNav(missionStatus, 1);
-    if (msonJSOB.title != 'undefined')
-        document.getElementById('mission-title').value = msonJSOB.title;
-    if (msonJSOB.area != null) {
-        document.getElementById('mission-address').value = generateFullAddress(msonJSOB.area);
-    }
+    if (msonJSOB.title != null)
+        document.getElementById('title').value = msonJSOB.title;
+    if (msonJSOB.area != null)
+        document.getElementById('address').value = generateFullAddress(msonJSOB.area);
+    if (msonJSOB.threat != null)
+        document.getElementById('address').value = msonJSOB.threat;
     if (msonJSOB.objective != null)
-        document.getElementById('mission-objective').innerHTML = msonJSOB.objective;
-    if (msonJSOB.commanderIntent != null)
-        document.getElementById('commander-intent').innerHTML = msonJSOB.commanderIntent;
-    if (msonJSOB.conceptOfOperation != null)
-        document.getElementById('concept-of-operation').innerHTML = msonJSOB.conceptOfOperation;
-    if (msonJSOB.themeStress != null)
-        document.getElementById('theme-stress').innerHTML = msonJSOB.themeStress;
-    if (msonJSOB.themeAvoid != null)
-        document.getElementById('theme-avoid').innerHTML = msonJSOB.themeAvoid;
+        document.getElementById('objective').innerHTML = msonJSOB.objective;
     if (msonJSOB.situation != null)
-        document.getElementById('mission-situation').innerHTML = msonJSOB.situation;
-    if (msonJSOB.taskList != null) {
-        for (var x = 0; x < msonJSOB.taskList.length; x++) {
-            addTask(msonJSOB.taskList[x].psyopsElement, msonJSOB.taskList[x].desc);
+        document.getElementById('situation').innerHTML = msonJSOB.situation;
+    if (msonJSOB.execution != null)
+        document.getElementById('execution').innerHTML = msonJSOB.execution;
+    if (msonJSOB.adminAndLogistics != null)
+        document.getElementById('admin-logistics').innerHTML = msonJSOB.adminAndLogistics;
+    if (msonJSOB.commandAndSignal != null)
+        document.getElementById('command-signal').innerHTML = msonJSOB.commandAndSignal;
+
+    //Load Keyword
+    if (msonJSOB.objectiveKeywordList.length != 0) {
+        var objectiveKeyword = msonJSOB.objectiveKeywordList;
+        for (var x = 0; x < objectiveKeyword.length; x++) {
+            $('#objective-keyword').tagsinput('add', objectiveKeyword[x]);
         }
     }
-}
-var taskCount = 0;
-function addTask(psyopElement, text) {
-    var taskSection = document.getElementById("task-table");
-    var row = document.createElement("tr");
-    var cell = row.insertCell(0);
-    var elementArea = document.createElement('textarea');
-    elementArea.id = "element" + taskCount;
-    elementArea.setAttribute("type", "text");
-    elementArea.setAttribute("class", "form-box");
-    elementArea.setAttribute("rows", 4);
-    elementArea.setAttribute("cols", 50);
-    elementArea.setAttribute("placeholder", "PSYOP Element");
-    elementArea.setAttribute("name", "element" + taskSection.rows.length);
-    elementArea.setAttribute("style", "margin-top: 5px; margin-bottom: 5px; width: 20%; resize: none; height: 7vh;");
-    elementArea.innerHTML = psyopElement;
-    cell.appendChild(elementArea);
-    var taskArea = document.createElement('textarea');
-    taskArea.id = "task" + taskCount;
-    taskArea.setAttribute("type", "text;");
-    taskArea.setAttribute("class", "form-box");
-    taskArea.setAttribute("rows", 4);
-    taskArea.setAttribute("cols", 50);
-    taskArea.setAttribute("placeholder", "Task");
-    taskArea.setAttribute("name", "task" + taskSection.rows.length);
-    taskArea.setAttribute("style", "margin-top: 5px; margin-bottom: 5px; width: 80%; resize: none; height: 7vh;");
-    taskArea.innerHTML = text;
-    cell.appendChild(taskArea);
-    taskSection.appendChild(row);
-    $('html, body').scrollTop($(document).height());
-    taskCount++;
-    
-}
-function saveTask(){
-    var taskList = [];
-    for(var x=0; x< taskCount; x++){
-        var taskObject;
-        var psyopsElement = document.getElementById("element" + x).value;
-        var task = document.getElementById("task" + x).value;
-        if(psyopsElement != "" && task != ""){
-            taskObject = {"psyopsElement": psyopsElement, "desc": task};
-            taskList.push(taskObject);
+    if (msonJSOB.situationKeywordList.length != 0) {
+        var situationKeyword = msonJSOB.situationKeywordList;
+        for (var x = 0; x < situationKeyword.length; x++) {
+            $('#situation-keyword').tagsinput('add', situationKeyword[x]);
         }
     }
-    return taskList;
+    if (msonJSOB.executionKeywordList.length != 0) {
+        var executionKeyword = msonJSOB.executionKeywordList;
+        for (var x = 0; x < executionKeyword.length; x++) {
+            $('#execution-keyword').tagsinput('add', executionKeyword[x]);
+        }
+    }
+    if (msonJSOB.adminAndLogisticsKeywordList.length != 0) {
+        var adminAndLogisticsKeyword = msonJSOB.adminAndLogisticsKeywordList;
+        for (var x = 0; x < adminAndLogisticsKeyword.length; x++) {
+            $('#admin-logistics-keyword').tagsinput('add', adminAndLogisticsKeyword[x]);
+        }
+    }
+    if (msonJSOB.commandAndSignalKeywordList.length != 0) {
+        var commandAndSignalKeyword = msonJSOB.commandAndSignalKeywordList;
+        for (var x = 0; x < commandAndSignalKeyword.length; x++) {
+            $('#command-signal-keyword').tagsinput('add', commandAndSignalKeyword[x]);
+        }
+    }
     
 }
 
 function saveMD() {
-    var missionTitle = document.getElementById("mission-title").value;
-    var missionObjective = document.getElementById("mission-objective").value;
-    var missionSituation = document.getElementById("mission-situation").value;
-    var commanderIntent = document.getElementById("commander-intent").value;
-    var conceptOfOperation = document.getElementById("concept-of-operation").value;
-    var themeStress = document.getElementById("theme-stress").value;
-    var themeAvoid = document.getElementById("theme-avoid").value;
-    var taskList = saveTask();
-    //Please create variable for Task
+    var title = document.getElementById("title").value;
+    var threat = document.getElementById("threat").value;
+    var objective = document.getElementById("objective").value;
+    var situation = document.getElementById("situation").value;
+    var execution = document.getElementById("execution").value;
+    var adminAndLogistics = document.getElementById("admin-logistics").value;
+    var commandAndSignal = document.getElementById("command-signal").value;
 
-    if (missionTitle === "" ||  missionObjective === "" ||
-            missionSituation === "" || commanderIntent === "" || conceptOfOperation === "" ||
-            themeStress === "" || themeAvoid === "") {
+    var objectiveKeywordList = $('#objective-keyword').tagsinput('items');
+    var situationKeywordList = $('#situation-keyword').tagsinput('items');
+    var executionKeywordList = $('#execution-keyword').tagsinput('items');
+    var adminAndLogisticsKeywordList = $('#admin-logistics-keyword').tagsinput('items');
+    var commandAndSignalKeywordList = $('#command-signal-keyword').tagsinput('items');
+
+    if (title === "" || threat === "" ||
+            objective === "" || situation === "" || execution === "" ||
+            adminAndLogistics === "" || commandAndSignal === "") {
         showAndDismissAlert("danger", "<strong>Save Mission Details failed.</strong> Please complete the form.");
     }
     else {
@@ -92,14 +77,18 @@ function saveMD() {
             url: "Save1MD",
             data: {
                 id: msonJSOB.id,
-                title: missionTitle,
-                objective: missionObjective,
-                situation: missionSituation,
-                commanderintent: commanderIntent,
-                conceptofoperation: conceptOfOperation,
-                themestress: themeStress,
-                themeavoid: themeAvoid,
-                tasklist: toJSON(taskList)
+                title: title,
+                threat: threat,
+                objective: objective,
+                situation: situation,
+                execution: execution,
+                adminAndLogistics: adminAndLogistics,
+                commandAndSignal: commandAndSignal,
+                objectiveKeywordList: objectiveKeywordList,
+                situationKeywordList: situationKeywordList,
+                executionKeywordList: executionKeywordList,
+                adminAndLogisticsKeywordList: adminAndLogisticsKeywordList,
+                commandAndSignalKeywordList: commandAndSignalKeywordList,
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");

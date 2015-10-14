@@ -21,11 +21,13 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission1md.js"></script>
         <script src="js/mission-menu-builder.js"></script>
+        <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
+        <script  src="js/bootstrap-tagsinput.js"></script>
 
         
         <script type="text/javascript">
             var msonJSOB = <%=request.getAttribute("msonJSOB")%>;
-            var missionID = <%=request.getAttribute("missionID")%>;
+            var missionID = <%=session.getAttribute("missionID")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
@@ -67,98 +69,109 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Mission Title:  </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <input name="title"id="mission-title" type="text"  class="form-box" placeholder="Enter Mission Title" required>
+                                        <h5><b>Mission Title:  </b></h5>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Mission Area:  </h5>
+                                        <input name="title"id="title" type="text"  class="form-box" placeholder="Enter Mission Title" required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" id="mission-address" class="form-box" placeholder="Mission Area" required disabled>
+                                        <h5><b>Mission Area:  </b></h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" id="address" class="form-box" placeholder="Mission Area" required disabled>
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Mission Objective:  </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <textarea name="objective" id="mission-objective" rows="4" cols="50" class="form-box" placeholder="Enter Mission Objective" style="height: 70px; margin-top: 5px;" required></textarea>
+                                        <h5><b>Mission Threat:  </b></h5>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Situation:  </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <textarea name="situation" id="mission-situation" rows="4" cols="50" class="form-box" placeholder="Enter Situation" style="height: 70px; margin-top: 5px;" required ></textarea>
+                                        <input type="text" id="threat" class="form-box" placeholder="Enter Mission Threat" required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h4><b>Execution</b></h4>
+                                        <h5><b>Mission Objective:  </b></h5>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>a. Commander's Intent </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <textarea name="commander-intent" id="commander-intent" rows="4" cols="50" class="form-box" placeholder="Enter Commander's Intent" style="height: 70px; margin-top: 5px;" required></textarea>
+                                        <textarea name="objective" id="objective" rows="4" cols="50" class="form-box" placeholder="Enter Mission Objective" style="height: 70px; margin-top: 5px;" required></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>b. Concept of Operations</h5>
+                                        <label data-toggle="tooltip" title="Press Enter to Add Keyword" style="width: 9%; font-weight: 100; font-size: 12px;">Keywords: </label> <input style="width: 40vw;" id="objective-keyword" type="text" data-role="tagsinput" class="form-box" >
                                     </td>
                                 </tr>
+                                
                                 <tr>
-                                    <td colspan="3">
-                                        <textarea name="concept-of-operation" id="concept-of-operation" rows="4" cols="50" class="form-box" placeholder="Enter Concept of Operations" style="height: 70px; margin-top: 5px;" required></textarea>
+                                    <td>
+                                        <h5><b>Situation:  </b></h5>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Themes to Stress:  </h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <textarea name="theme-stress" id="theme-stress" rows="4" cols="50" class="form-box" placeholder="Enter Themes to Stress" style="height: 70px; margin-top: 5px;" required></textarea>
+                                        <textarea id="situation" rows="4" cols="50" class="form-box" placeholder="Enter Mission Situation" style="height: 70px; margin-top: 5px;" required></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h5>Themes to Avoid:  </h5>
+                                        <label data-toggle="tooltip" title="Press Enter to Add Keyword" style="width: 9%; font-weight: 100; font-size: 12px;">Keywords: </label> <input style="width: 40vw;" id="situation-keyword" type="text" data-role="tagsinput" class="form-box" >
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">
-                                        <textarea name="theme-avoid" id="theme-avoid" rows="4" cols="50" class="form-box" placeholder="Enter Themes to Avoid" style="height: 70px; margin-top: 5px;" required></textarea>
+                                    <td>
+                                        <h5><b>Execution:  </b></h5>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><h5>Task/s: <label class="btn btn-primary btn-sm" style="margin-left: 5px;" onclick="addTask('', '')"><span class="glyphicon glyphicon-plus"></span> Add Task</label></h5></td>
+                                    <td>
+                                        <textarea id="execution" rows="4" cols="50" class="form-box" placeholder="Enter Mission Execution" style="height: 70px; margin-top: 5px;" required></textarea>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td colspan ="2">
-                                        <table id="task-table">
-
-                                        </table>
+                                    <td>
+                                        <label data-toggle="tooltip" title="Press Enter to Add Keyword" style="width: 9%; font-weight: 100; font-size: 12px;">Keywords: </label> <input style="width: 40vw;" id="execution-keyword" type="text" data-role="tagsinput" class="form-box" >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5><b>Admin and Logistics:  </b></h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <textarea id="admin-logistics" rows="4" cols="50" class="form-box" placeholder="Enter Mission Admin and Logistics" style="height: 70px; margin-top: 5px;" required></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label data-toggle="tooltip" title="Press Enter to Add Keyword" style="width: 9%; font-weight: 100; font-size: 12px;">Keywords: </label> <input style="width: 40vw;" id="admin-logistics-keyword" type="text" data-role="tagsinput" class="form-box" >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5><b>Command and Signal:  </b></h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <textarea name="objective" id="command-signal" rows="4" cols="50" class="form-box" placeholder="Enter Mission Command and Signal" style="height: 70px; margin-top: 5px;" required></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label data-toggle="tooltip" title="Press Enter to Add Keyword" style="width: 9%; font-weight: 100; font-size: 12px;">Keywords: </label> <input style="width: 40vw;" id="command-signal-keyword" type="text" data-role="tagsinput" class="form-box" >
                                     </td>
                                 </tr>
                             </table>

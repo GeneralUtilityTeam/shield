@@ -29,7 +29,7 @@ public class MissionDAO {
     ShieldUtility su = new ShieldUtility();
 
     //Mission
-    public Mission GetMission(int missionID) {
+    public Mission GetMission(int missionID) { //Clear
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
@@ -45,15 +45,20 @@ public class MissionDAO {
             } else {
                 Mission mson = new Mission();
                 Area area = new Area();
+                ArrayList<String> objectiveKeywordList = new ArrayList<String>();
+                ArrayList<String> situationKeywordList = new ArrayList<String>();
+                ArrayList<String> executionKeywordList = new ArrayList<String>();
+                ArrayList<String> adminAndLogisticsKeywordList = new ArrayList<String>();
+                ArrayList<String> commandAndSignalKeywordList = new ArrayList<String>();
 
                 mson.setId(missionID);
                 mson.setTitle(rs.getString(1));
-                mson.setObjective(rs.getString(2));
-                mson.setSituation(rs.getString(3));
-                mson.setCommanderIntent(rs.getString(4));
-                mson.setConceptOfOperation(rs.getString(5));
-                mson.setThemeStress(rs.getString(6));
-                mson.setThemeAvoid(rs.getString(7));
+                mson.setThreat(rs.getString(2));
+                mson.setObjective(rs.getString(3));
+                mson.setSituation(rs.getString(4));
+                mson.setExecution(rs.getString(5));
+                mson.setAdminAndLogistics(rs.getString(6));
+                mson.setCommandAndSignal(rs.getString(7));
                 mson.setUserID(rs.getInt(8));
                 area.setLevel8(rs.getString(9));
                 area.setLevel7(rs.getString(10));
@@ -67,17 +72,38 @@ public class MissionDAO {
                 area.setLng(rs.getDouble(18));
                 mson.setArea(area);
 
-                pstmt = cn.prepareStatement("CALL `shield`.`get_all_task_mission`(?);");
+                //get keywords
+                pstmt = cn.prepareStatement("CALL `shield`.`get_all_keyword_mission`(?);");
                 pstmt.setInt(1, missionID);
                 rs = pstmt.executeQuery();
                 rs.next();
                 if (rs.getRow() != 0) {
-                    ArrayList<Task> taskList = new ArrayList<Task>();
                     do {
-                        taskList.add(new Task(rs.getInt(1), rs.getString(2), rs.getString(3)));
+                        int classID = rs.getInt(2);
+                        switch (classID) {
+                            case 1:
+                                objectiveKeywordList.add(rs.getString(3));
+                                break;
+                            case 2:
+                                situationKeywordList.add(rs.getString(3));
+                                break;
+                            case 3:
+                                executionKeywordList.add(rs.getString(3));
+                                break;
+                            case 4:
+                                adminAndLogisticsKeywordList.add(rs.getString(3));
+                                break;
+                            case 5:
+                                commandAndSignalKeywordList.add(rs.getString(3));
+                                break;
+                        }
                     } while (rs.next());
 
-                    mson.setTaskList(taskList);
+                    mson.setObjectiveKeywordList(objectiveKeywordList);
+                    mson.setSituationKeywordList(situationKeywordList);
+                    mson.setExecutionKeywordList(executionKeywordList);
+                    mson.setAdminAndLogisticsKeywordList(adminAndLogisticsKeywordList);
+                    mson.setCommandAndSignalKeywordList(commandAndSignalKeywordList);
                 }
 
                 cn.close();
@@ -111,7 +137,7 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
-    }
+    } //Clear
 
     public ArrayList<Mission> GetAllMissions() {
         try {
@@ -133,17 +159,16 @@ public class MissionDAO {
                     mson.setId(rs.getInt(1));
                     mson.setStatus(rs.getInt(2));
                     mson.setTitle(rs.getString(3));
-                    mson.setObjective(rs.getString(4));
-                    mson.setStartDT(rs.getDate(5));
-                    mson.setEndDT(rs.getDate(6));
-                    area.setLevel8(rs.getString(7));
-                    area.setLevel7(rs.getString(8));
-                    area.setLevel6(rs.getString(9));
-                    area.setLevel5(rs.getString(10));
-                    area.setLevel4(rs.getString(11));
-                    area.setLevel3(rs.getString(12));
-                    area.setLevel2(rs.getString(13));
-                    area.setLevel1(rs.getString(14));
+                    mson.setStartDT(rs.getDate(4));
+                    mson.setEndDT(rs.getDate(5));
+                    area.setLevel8(rs.getString(6));
+                    area.setLevel7(rs.getString(7));
+                    area.setLevel6(rs.getString(8));
+                    area.setLevel5(rs.getString(9));
+                    area.setLevel4(rs.getString(10));
+                    area.setLevel3(rs.getString(11));
+                    area.setLevel2(rs.getString(12));
+                    area.setLevel1(rs.getString(13));
                     mson.setArea(area);;
 
                     msonList.add(mson);
@@ -158,7 +183,7 @@ public class MissionDAO {
         }
 
         return null;
-    }
+    } //Clear
 
     public ArrayList<Mission> GetAllOngoingMissionOfUser(int userID) {
         try {
@@ -181,18 +206,17 @@ public class MissionDAO {
                     mson.setId(rs.getInt(1));
                     mson.setStatus(rs.getInt(2));
                     mson.setTitle(rs.getString(3));
-                    mson.setObjective(rs.getString(4));
-                    mson.setStartDT(rs.getDate(5));
-                    mson.setEndDT(rs.getDate(6));
-                    area.setLevel8(rs.getString(7));
-                    area.setLevel7(rs.getString(8));
-                    area.setLevel6(rs.getString(9));
-                    area.setLevel5(rs.getString(10));
-                    area.setLevel4(rs.getString(11));
-                    area.setLevel3(rs.getString(12));
-                    area.setLevel2(rs.getString(13));
-                    area.setLevel1(rs.getString(14));
-                    mson.setArea(area);;
+                    mson.setStartDT(rs.getDate(4));
+                    mson.setEndDT(rs.getDate(5));
+                    area.setLevel8(rs.getString(6));
+                    area.setLevel7(rs.getString(7));
+                    area.setLevel6(rs.getString(8));
+                    area.setLevel5(rs.getString(9));
+                    area.setLevel4(rs.getString(10));
+                    area.setLevel3(rs.getString(11));
+                    area.setLevel2(rs.getString(12));
+                    area.setLevel1(rs.getString(13));
+                    mson.setArea(area);
 
                     msonList.add(mson);
                 } while (rs.next());
@@ -206,7 +230,7 @@ public class MissionDAO {
         }
 
         return null;
-    }
+    } // Clear
 
     public int AddMission(Mission mson) {
         try {
@@ -215,20 +239,19 @@ public class MissionDAO {
 
             Area area = mson.getArea();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, mson.getUserID());
             pstmt.setString(2, mson.getTitle());
-            pstmt.setString(3, mson.getObjective());
-            pstmt.setString(4, area.getLevel8());
-            pstmt.setString(5, area.getLevel7());
-            pstmt.setString(6, area.getLevel6());
-            pstmt.setString(7, area.getLevel5());
-            pstmt.setString(8, area.getLevel4());
-            pstmt.setString(9, area.getLevel3());
-            pstmt.setString(10, area.getLevel2());
-            pstmt.setString(11, area.getLevel1());
-            pstmt.setDouble(12, area.getLat());
-            pstmt.setDouble(13, area.getLng());
+            pstmt.setString(3, area.getLevel8());
+            pstmt.setString(4, area.getLevel7());
+            pstmt.setString(5, area.getLevel6());
+            pstmt.setString(6, area.getLevel5());
+            pstmt.setString(7, area.getLevel4());
+            pstmt.setString(8, area.getLevel3());
+            pstmt.setString(9, area.getLevel2());
+            pstmt.setString(10, area.getLevel1());
+            pstmt.setDouble(11, area.getLat());
+            pstmt.setDouble(12, area.getLng());
 
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -243,7 +266,7 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
-    }
+    } //Clear
 
     public int AdvanceMissionStatus(int missionID) {
         try {
@@ -266,25 +289,23 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
-    }
+    } //Clear
 
     public boolean UpdateMission(int editorID, Mission mson) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            Area area = mson.getArea();
-
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, mson.getUserID());
             pstmt.setInt(2, mson.getId());
             pstmt.setString(3, mson.getTitle());
-            pstmt.setString(4, mson.getObjective());
-            pstmt.setString(5, mson.getSituation());
-            pstmt.setString(6, mson.getCommanderIntent());
-            pstmt.setString(7, mson.getConceptOfOperation());
-            pstmt.setString(8, mson.getThemeStress());
-            pstmt.setString(9, mson.getThemeAvoid());
+            pstmt.setString(4, mson.getThreat());
+            pstmt.setString(5, mson.getObjective());
+            pstmt.setString(6, mson.getSituation());
+            pstmt.setString(7, mson.getExecution());
+            pstmt.setString(8, mson.getAdminAndLogistics());
+            pstmt.setString(9, mson.getCommandAndSignal());
 
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -293,20 +314,49 @@ public class MissionDAO {
                 cn.close();
                 return false;
             } else {
-                //Tasks\
-
-                pstmt = cn.prepareStatement("CALL `shield`.`delete_all_task_mission`(?);");
+                pstmt = cn.prepareStatement("CALL `shield`.`unlink_all_keyword_mission`(?);");
                 pstmt.setInt(1, mson.getId());
                 pstmt.execute();
-
-                ArrayList<Task> taskList = mson.getTaskList();
-                if (!su.ListIsNullOrEmpty(taskList)) {
-                    pstmt = cn.prepareStatement("CALL `shield`.`add_task`(?, ?, ?, ?);");
-                    pstmt.setInt(1, editorID);
-                    pstmt.setInt(2, mson.getId());
-                    for (Task t : taskList) {
-                        pstmt.setString(3, t.getPsyopsElement());
-                        pstmt.setString(4, t.getDesc());
+                pstmt = cn.prepareStatement("CALL `shield`.`link_keyword_mission`(?, ?, ?, ?);");
+                pstmt.setInt(1, editorID);
+                pstmt.setInt(2, mson.getId());
+                ArrayList<String> keyList = mson.getObjectiveKeywordList();
+                if (!su.ListIsNullOrEmpty(keyList)) {
+                    pstmt.setInt(3, 1);
+                    for (String s : keyList) {
+                        pstmt.setString(4, s);
+                        pstmt.executeUpdate();
+                    }
+                }
+                keyList = mson.getSituationKeywordList();
+                if (!su.ListIsNullOrEmpty(keyList)) {
+                    pstmt.setInt(3, 2);
+                    for (String s : keyList) {
+                        pstmt.setString(4, s);
+                        pstmt.executeUpdate();
+                    }
+                }
+                keyList = mson.getExecutionKeywordList();
+                if (!su.ListIsNullOrEmpty(keyList)) {
+                    pstmt.setInt(3, 3);
+                    for (String s : keyList) {
+                        pstmt.setString(4, s);
+                        pstmt.executeUpdate();
+                    }
+                }
+                keyList = mson.getAdminAndLogisticsKeywordList();
+                if (!su.ListIsNullOrEmpty(keyList)) {
+                    pstmt.setInt(3, 4);
+                    for (String s : keyList) {
+                        pstmt.setString(4, s);
+                        pstmt.executeUpdate();
+                    }
+                }
+                keyList = mson.getCommandAndSignalKeywordList();
+                if (!su.ListIsNullOrEmpty(keyList)) {
+                    pstmt.setInt(3, 5);
+                    for (String s : keyList) {
+                        pstmt.setString(4, s);
                         pstmt.executeUpdate();
                     }
                 }
@@ -318,7 +368,7 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    }
+    } //Clear
 
     // COG 
     public COG GetCOGOfMission(int missionID) {
@@ -347,10 +397,9 @@ public class MissionDAO {
                         eent.setName(rs.getString(2));
                         eentList.add(eent);
                     } while (rs.next());
-                    
+
                     cog.setEentList(eentList);
-                }
-                else{
+                } else {
                     cn.close();
                     System.out.println("null1");
                     return null;

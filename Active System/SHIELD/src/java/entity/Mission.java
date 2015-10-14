@@ -17,17 +17,23 @@ public class Mission {
     private int status;
     private int userID;
     private String title;
+    private String threat;
+    
     private String objective;
+    private ArrayList<String> objectiveKeywordList; 
     private String situation;
-    private String commanderIntent;
-    private String conceptOfOperation;
-    private String themeStress;
-    private String themeAvoid;
+    private ArrayList<String> situationKeywordList; 
+    private String execution;
+    private ArrayList<String> executionKeywordList; 
+    private String adminAndLogistics;
+    private ArrayList<String> adminAndLogisticsKeywordList; 
+    private String commandAndSignal;
+    private ArrayList<String> commandAndSignalKeywordList; 
+    
     private Date startDT;
     private Date endDT;
+
     private Area area;
-    
-    private ArrayList<Task> taskList;
 
     /**
      * @return the id
@@ -100,6 +106,20 @@ public class Mission {
     }
 
     /**
+     * @return the objectiveKeywordList
+     */
+    public ArrayList<String> getObjectiveKeywordList() {
+        return objectiveKeywordList;
+    }
+
+    /**
+     * @param objectiveKeywordList the objectiveKeywordList to set
+     */
+    public void setObjectiveKeywordList(ArrayList<String> objectiveKeywordList) {
+        this.objectiveKeywordList = objectiveKeywordList;
+    }
+
+    /**
      * @return the situation
      */
     public String getSituation() {
@@ -114,59 +134,101 @@ public class Mission {
     }
 
     /**
-     * @return the commanderIntent
+     * @return the situationKeywordList
      */
-    public String getCommanderIntent() {
-        return commanderIntent;
+    public ArrayList<String> getSituationKeywordList() {
+        return situationKeywordList;
     }
 
     /**
-     * @param commanderIntent the commanderIntent to set
+     * @param situationKeywordList the situationKeywordList to set
      */
-    public void setCommanderIntent(String commanderIntent) {
-        this.commanderIntent = commanderIntent;
+    public void setSituationKeywordList(ArrayList<String> situationKeywordList) {
+        this.situationKeywordList = situationKeywordList;
     }
 
     /**
-     * @return the conceptOfOperation
+     * @return the execution
      */
-    public String getConceptOfOperation() {
-        return conceptOfOperation;
+    public String getExecution() {
+        return execution;
     }
 
     /**
-     * @param conceptOfOperation the conceptOfOperation to set
+     * @param execution the execution to set
      */
-    public void setConceptOfOperation(String conceptOfOperation) {
-        this.conceptOfOperation = conceptOfOperation;
+    public void setExecution(String execution) {
+        this.execution = execution;
     }
 
     /**
-     * @return the themeStress
+     * @return the executionKeywordList
      */
-    public String getThemeStress() {
-        return themeStress;
+    public ArrayList<String> getExecutionKeywordList() {
+        return executionKeywordList;
     }
 
     /**
-     * @param themeStress the themeStress to set
+     * @param executionKeywordList the executionKeywordList to set
      */
-    public void setThemeStress(String themeStress) {
-        this.themeStress = themeStress;
+    public void setExecutionKeywordList(ArrayList<String> executionKeywordList) {
+        this.executionKeywordList = executionKeywordList;
     }
 
     /**
-     * @return the themeAvoid
+     * @return the adminAndLogistics
      */
-    public String getThemeAvoid() {
-        return themeAvoid;
+    public String getAdminAndLogistics() {
+        return adminAndLogistics;
     }
 
     /**
-     * @param themeAvoid the themeAvoid to set
+     * @param adminAndLogistics the adminAndLogistics to set
      */
-    public void setThemeAvoid(String themeAvoid) {
-        this.themeAvoid = themeAvoid;
+    public void setAdminAndLogistics(String adminAndLogistics) {
+        this.adminAndLogistics = adminAndLogistics;
+    }
+
+    /**
+     * @return the adminAndLogisticsKeywordList
+     */
+    public ArrayList<String> getAdminAndLogisticsKeywordList() {
+        return adminAndLogisticsKeywordList;
+    }
+
+    /**
+     * @param adminAndLogisticsKeywordList the adminAndLogisticsKeywordList to set
+     */
+    public void setAdminAndLogisticsKeywordList(ArrayList<String> adminAndLogisticsKeywordList) {
+        this.adminAndLogisticsKeywordList = adminAndLogisticsKeywordList;
+    }
+
+    /**
+     * @return the commandAndSignal
+     */
+    public String getCommandAndSignal() {
+        return commandAndSignal;
+    }
+
+    /**
+     * @param commandAndSignal the commandAndSignal to set
+     */
+    public void setCommandAndSignal(String commandAndSignal) {
+        this.commandAndSignal = commandAndSignal;
+    }
+
+    /**
+     * @return the commandAndSignalKeywordList
+     */
+    public ArrayList<String> getCommandAndSignalKeywordList() {
+        return commandAndSignalKeywordList;
+    }
+
+    /**
+     * @param commandAndSignalKeywordList the commandAndSignalKeywordList to set
+     */
+    public void setCommandAndSignalKeywordList(ArrayList<String> commandAndSignalKeywordList) {
+        this.commandAndSignalKeywordList = commandAndSignalKeywordList;
     }
 
     /**
@@ -212,16 +274,17 @@ public class Mission {
     }
 
     /**
-     * @return the taskList
+     * @return the threat
      */
-    public ArrayList<Task> getTaskList() {
-        return taskList;
+    public String getThreat() {
+        return threat;
     }
 
     /**
-     * @param taskList the taskList to set
+     * @param threat the threat to set
      */
-    public void setTaskList(ArrayList<Task> taskList) {
-        this.taskList = taskList;
+    public void setThreat(String threat) {
+        this.threat = threat;
     }
+
 }

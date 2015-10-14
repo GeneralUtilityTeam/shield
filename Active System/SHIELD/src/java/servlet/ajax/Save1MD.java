@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import utility.ShieldUtility;
 
 /**
  *
@@ -66,6 +67,7 @@ public class Save1MD extends HttpServlet {
             throws ServletException, IOException {
         
         //Save Mission Details from SHIELD 1
+        ShieldUtility su = new ShieldUtility();
         HttpSession session = request.getSession();
         int editorID = (int)session.getAttribute("userID");
         
@@ -74,23 +76,15 @@ public class Save1MD extends HttpServlet {
         mson.setUserID(editorID);
         mson.setTitle(request.getParameter("title"));
         mson.setObjective(request.getParameter("objective"));
+        mson.setObjectiveKeywordList(su.jsKeywordStringToList(request.getParameter("objectiveKeywordList")));
         mson.setSituation(request.getParameter("situation"));
-        mson.setCommanderIntent(request.getParameter("commanderintent"));
-        mson.setConceptOfOperation(request.getParameter("conceptofoperation"));
-        mson.setThemeStress(request.getParameter("themestress"));
-        mson.setThemeAvoid(request.getParameter("themeavoid"));
-        
-        ArrayList<Task> taskList = new ArrayList<Task>();
-        JSONArray taskJArr = new JSONArray(request.getParameter("tasklist"));
-        
-        for(Object j : taskJArr){
-            JSONObject jsob = new JSONObject(j.toString());
-            String element = jsob.getString("psyopsElement");
-            String desc = jsob.getString("desc");
-            Task task = new Task(0, element, desc);
-            taskList.add(task);
-        }
-        mson.setTaskList(taskList);
+        mson.setSituationKeywordList(su.jsKeywordStringToList(request.getParameter("situationKeywordList")));
+        mson.setExecution(request.getParameter("execution"));
+        mson.setExecutionKeywordList(su.jsKeywordStringToList(request.getParameter("executionKeywordList")));
+        mson.setAdminAndLogistics(request.getParameter("adminAndLogistics"));
+        mson.setAdminAndLogisticsKeywordList(su.jsKeywordStringToList(request.getParameter("adminAndLogisticsKeywordList")));
+        mson.setCommandAndSignal(request.getParameter("commandAndSignal"));
+        mson.setCommandAndSignalKeywordList(su.jsKeywordStringToList(request.getParameter("commandAndSignalKeywordList")));
         
         MissionDAO msonDAO = new MissionDAO();
         boolean success = msonDAO.UpdateMission(editorID, mson);

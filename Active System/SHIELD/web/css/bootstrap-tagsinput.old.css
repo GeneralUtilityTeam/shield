@@ -9,7 +9,6 @@
   vertical-align: middle;
   border-radius: 4px;
   max-width: 100%;
-  min-width: 40%;
   line-height: 22px;
   cursor: text;
 }
@@ -20,6 +19,8 @@
   background-color: transparent;
   padding: 0;
   margin: 0;
+  width: auto !important;
+  max-width: inherit;
 }
 .bootstrap-tagsinput input:focus {
   border: none;
@@ -28,7 +29,6 @@
 .bootstrap-tagsinput .tag {
   margin-right: 2px;
   color: white;
-  font-size: 12px;
 }
 .bootstrap-tagsinput .tag [data-role="remove"] {
   margin-left: 8px;

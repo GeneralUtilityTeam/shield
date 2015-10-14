@@ -22,8 +22,7 @@
         <script src="analyst/pagescripts/an_mission1md.js"></script>
         <script src="js/mission-menu-builder.js"></script>
 
-        <!--Google Map-->
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        
         <script type="text/javascript">
             var msonJSOB = <%=request.getAttribute("msonJSOB")%>;
             var missionID = <%=request.getAttribute("missionID")%>;
@@ -31,9 +30,6 @@
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var geocoder;
-            var map;
-            var marker;
-            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
             var address;
             var areaJSON;
             var savedArea;
@@ -86,21 +82,8 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div class="input-group">
-                                            <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" value="Search Area" onclick="codeAddress()">
-                                                    Locate Area
-                                                </button>
-                                            </span>
-                                        </div><!-- /input-group -->
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div id="mission1md-area-map">
+                                        <input type="text" id="mission-address" class="form-box" placeholder="Mission Area" required disabled>
 
-                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
