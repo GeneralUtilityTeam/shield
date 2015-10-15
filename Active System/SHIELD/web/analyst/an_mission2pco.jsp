@@ -48,6 +48,7 @@
             var analystName = '<%=session.getAttribute("analystName")%>';
 
             var keywordList = <%=request.getAttribute("keywordList")%>;
+            var threat = '<%=request.getAttribute("threat")%>';
             var level8 = '<%=request.getAttribute("level8")%>';
             var level7 = '<%=request.getAttribute("level7")%>';
             var level6 = '<%=request.getAttribute("level6")%>';

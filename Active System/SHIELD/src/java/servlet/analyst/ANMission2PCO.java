@@ -38,6 +38,7 @@ public class ANMission2PCO extends FatherServlet {
         ArrayList keywordList = mson.getKeywordList();        
         JSONArray keywordJArr = new JSONArray(keywordList);
         request.setAttribute("keywordList", keywordJArr.toString());
+        request.setAttribute("threat", mson.getThreat());
         request.setAttribute("level8", mson.getArea().getLevel8());
         request.setAttribute("level7", mson.getArea().getLevel7());
         request.setAttribute("level6", mson.getArea().getLevel6());
