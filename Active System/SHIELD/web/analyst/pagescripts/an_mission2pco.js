@@ -1,8 +1,10 @@
 var excerptList;
 var searchMarker = [];
 var entity;
+var entityCounter = 0;
 var entityArr = [];
-var missionKeywords = ['phill'];
+var usedKeywords = [], unusedKeywords = [];
+var selectedMarker = [];
 
 function initialize() { //Change this to take entities
     buildNav(missionStatus, 2);
@@ -18,9 +20,6 @@ function initialize() { //Change this to take entities
         loadEntity();
     }
     //set entity array to the mission entity
-
-
-    $('#search-field').focus();
 }
 
 $(document).ready(function () {
@@ -37,42 +36,19 @@ $(document).ready(function () {
             initialize();
         }
     });
-    var objectiveKeywordList = ['phill', 'Philippines', 'HI'];
-    if (objectiveKeywordList.length != 0) {
-        $.each(objectiveKeywordList, function (i, el) {
-            if ($.inArray(el, missionKeywords) === -1)
-                missionKeywords.push(el);
-        });
+
+    if (keywordList != null) {
+        unusedKeywords = keywordList;
+        for (var x = 0; x < unusedKeywords.length; x++) {
+            $('#unused-keyword').tagsinput('add', unusedKeywords[x]);
+        }
     }
-//    if (situationKeywordList.length != 0) {
-//        $.each(situationKeywordList, function (i, el) {
-//            if ($.inArray(el, missionKeywords) === -1)
-//                missionKeywords.push(el);
-//        });
-//    }
-//    if (executionKeywordList.length != 0) {
-//        $.each(executionKeywordList, function (i, el) {
-//            if ($.inArray(el, missionKeywords) === -1)
-//                missionKeywords.push(el);
-//        });
-//    }
-//    if (adminAndLogisticsKeywordList.length != 0) {
-//        $.each(adminAndLogisticsKeywordList, function (i, el) {
-//            if ($.inArray(el, missionKeywords) === -1)
-//                missionKeywords.push(el);
-//        });
-//    }
-//    if (commandAndSignalKeywordList.length != 0) {
-//        $.each(commandAndSignalKeywordList, function (i, el) {
-//            if ($.inArray(el, missionKeywords) === -1)
-//                missionKeywords.push(el);
-//        });
-//    }
 
     $('#search-field').autocomplete({
         minChars: 0,
-        lookup: missionKeywords,
+        lookup: keywordList,
         onSelect: function (suggestion) {
+            displayKeywords(suggestion.value);
             $.ajax({
                 type: "GET",
                 url: "PrimaryExcerptSearch",
@@ -81,6 +57,7 @@ $(document).ready(function () {
                 },
                 success: function (responseJson) {
                     excerptList = responseJson;
+                    mc.clearMarkers();
                     setMarkersOnMap(null, searchMarker);
                     searchMarker = [];
                     if (excerptList.length > 0) {
@@ -103,6 +80,7 @@ $(document).ready(function () {
                 },
                 success: function (responseJson) {
                     excerptList = responseJson;
+                    mc.clearMarkers();
                     setMarkersOnMap(null, searchMarker);
                     searchMarker = [];
                     if (excerptList.length > 0) {
@@ -117,59 +95,98 @@ $(document).ready(function () {
     });
 });
 
-var area = "Davao City";// TDODO Mission area
 var mapOptions;
 var geocoder;
 var map;
 var zoom;
 var oms;
 var infoWindow;
+var mc;
+var minClusterZoom = 19;
 function initializeMap() {
     mapOptions = {
         center: new google.maps.LatLng(7.190708, 125.455341),
-        zoom: 18,
+        zoom: 10,
         minZoom: 6,
         mapTypeId: google.maps.MapTypeId.ROADMAP
 
     };
-
+    var clusterStyles = [
+        {
+            textColor: 'black',
+            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
+            height: 52,
+            width: 52
+        },
+        {
+            textColor: 'black',
+            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
+            height: 52,
+            width: 52
+        },
+        {
+            textColor: 'black',
+            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
+            height: 52,
+            width: 52
+        }
+    ];
+    var mcOptions = {gridSize: 50, maxZoom: minClusterZoom, zoomOnClick: true, styles: clusterStyles};
     map = new google.maps.Map(document.getElementById('mission2pco-area-map'), mapOptions);
     infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
     geocoder = new google.maps.Geocoder();
     //geocodeString(area); -- NOt working
-
+    mc = new MarkerClusterer(map, searchMarker, mcOptions);
     oms = new OverlappingMarkerSpiderfier(map,
             {markersWontMove: true, markersWontHide: true});
+    google.maps.event.addListener(mc, 'clusterclick', function (cluster) {
 
+        if (cluster.getMarkers().length === 2) {
+            map.fitBounds(cluster.getBounds()); // Fit the bounds of the cluster clicked on
+            if (map.getZoom() > minClusterZoom + 1) // If zoomed in past 15 (first level without clustering), zoom out to 15
+                map.setZoom(minClusterZoom + 1);
+
+
+        }
+    });
     oms.addListener('spiderfy', function (markers) {
     });
     oms.addListener('unspiderfy', function (markers) {
+    });
+
+    google.maps.event.addListener(map, 'zoom_changed', function () {
+        var northEast = new google.maps.LatLng(19.648699380876213, 126.63329394531274);
+        var southWest = new google.maps.LatLng(5.344441440480007, 115.39702050781239);
+        var philBounds = new google.maps.LatLngBounds(southWest, northEast);
+        if (map.getZoom() === 6) {
+            zoomChanged(philBounds);
+        }
     });
 }
 
 function geocodeSuccess(result) {
     map.fitBounds(result.geometry.viewport);
-    minZoom = map.getZoom();
-    var northEast = new google.maps.LatLng(15.308989769453019, 124.84801562500002);
-    var southWest = new google.maps.LatLng(10.211353315454545, 118.62150781249989);
+    var northEast = new google.maps.LatLng(19.648699380876213, 126.63329394531274);
+    var southWest = new google.maps.LatLng(5.344441440480007, 115.39702050781239);
     var philBounds = new google.maps.LatLngBounds(southWest, northEast);
     google.maps.event.addListener(map, 'zoom_changed', function () {
 
-        if (map.getZoom() < minZoom) {
+        if (map.getZoom() === 6) {
             zoomChanged(philBounds);
         }
     });
-
 }
 
 function zoomChanged(philBounds) {
     // Listen for the dragend event
+    var northEast = new google.maps.LatLng(19.648699380876213, 126.63329394531274);
+    var southWest = new google.maps.LatLng(5.344441440480007, 115.39702050781239);
+    philBounds = new google.maps.LatLngBounds(southWest, northEast);
+    // Listen for the dragend event
     google.maps.event.addListener(map, 'center_changed', function () {
         if (philBounds.contains(map.getCenter()))
             return;
-
         // We're out of bounds - Move the map back within the bounds
-
         var c = map.getCenter(),
                 x = c.lng(),
                 y = c.lat(),
@@ -199,10 +216,9 @@ $(document).ready(function () {
 
 function createSearchMarker() {
     var greenPin = "5BB85D";
-    var bluePin = "5BC0DE";
+    var yellowPin = "E6E600";
     var orangePin = "EFAD4D";
     var redPin = "D9544F";
-    var grayPin = "CFCFCF";
 
     var marker;
     var icon;
@@ -214,19 +230,13 @@ function createSearchMarker() {
 
         switch (excerptList[x].strength) {
             case 100:
-                icon = setMarkerColor(greenPin);
-                break;
-            case 80:
-                icon = setMarkerColor(bluePin);
-                break;
-            case 70:
-                icon = setMarkerColor(orangePin);
-                break;
-            case 50:
                 icon = setMarkerColor(redPin);
                 break;
-            case 30:
-                icon = setMarkerColor(grayPin);
+            case 60:
+                icon = setMarkerColor(orangePin);
+                break;
+            case 40:
+                icon = setMarkerColor(yellowPin);
                 break;
         }
 
@@ -238,163 +248,55 @@ function createSearchMarker() {
         });
         setWindowListener(marker, "Excerpt " + excerptList[x].id + ": " + excerptList[x].text);
         oms.addMarker(marker);
+        mc.addMarker(marker);
+        setMarkerListener(marker);
         searchMarker.push(marker);
     }
-
 }
+
+function setMarkerListener(marker) {
+    var greenPin = "5BB85D";
+    google.maps.event.addListener(marker, 'rightclick', function (event) {
+        selectedMarker.push(marker);
+        marker.setIcon(setMarkerColor(greenPin));
+    });
+}
+
 //Create Entity Function
-var entityCounter;
-var selectedEntity;
+
+function loadEntity() {
+    var missionEntities = document.getElementById("mission-entities");
+    var table = document.createElement("table");
+    for (var x = 0; x < entity.length; x++) {
+        var trEntity = document.createElement("tr");
+        trEntity.innerHTML = "<h5><b>" + entity[x].name + "</b></h5>";
+        trEntity.style.borderBottom = "solid 1px #D3D3D3";
+        trEntity.style.padding = "5px";
+        trEntity.style.margin = "10px";
+        if (entity[x].excrList.length != 0) {
+            for (var y = 0; y < entity[x].excrList.length; y++) {
+                var trExcerpt = document.createElement("tr");
+                var tdExcerpt = document.createElement("td");
+                tdExcerpt.style.paddingLeft = "25px";
+                tdExcerpt.style.paddingBottom = "5px";
+                tdExcerpt.style.color = "#202020";
+                tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
+                trExcerpt.appendChild(tdExcerpt);
+                trEntity.appendChild(trExcerpt);
+            }
+        }
+        table.appendChild(trEntity);
+        missionEntities.appendChild(table);
+    }
+}
 function createEntity() {
     var modal = $('#entityModal');
     document.getElementById("entityModalLabel").innerHTML = "Create Entity";
-    document.getElementById("entity-name").value = document.getElementById("search-field").value;
-
-    //create table for each strength
-    var table5 = document.getElementById("table5");
-    var table4 = document.getElementById("table4");
-    var table3 = document.getElementById("table3");
-    var table2 = document.getElementById("table2");
-    var table1 = document.getElementById("table1");
-
-    $(table5).find("tr:gt(0)").remove();
-    $(table4).find("tr:gt(0)").remove();
-    $(table3).find("tr:gt(0)").remove();
-    $(table2).find("tr:gt(0)").remove();
-    $(table1).find("tr:gt(0)").remove();
-
-    $('#enable5').bootstrapToggle('off');
-    $('#enable4').bootstrapToggle('off');
-    $('#enable3').bootstrapToggle('off');
-    $('#enable2').bootstrapToggle('off');
-    $('#enable1').bootstrapToggle('off');
 
     for (var x = 0; x < excerptList.length; x++) {
-        var tr, td1, td2, checkbox;
-        switch (excerptList[x].strength) {
-
-            case 100:
-                //create TR
-                tr = document.createElement("tr");
-                //create TD
-                td1 = document.createElement("td");
-                td2 = document.createElement("td");
-                //add content to TD
-                checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = "excerptEnabled" + excerptList[x].id;
-                checkbox.className = "checkbox5";
-                td1.appendChild(checkbox);
-                td1.style.paddingRight = "10px";
-                td2.innerHTML = "<b>Excerpt " + excerptList[x].id + "</b>: " + excerptList[x].text;
-                td2.style.textAlign = "justify";
-                //add TR to table
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                table5.appendChild(tr);
-                break;
-
-            case 80:
-                //create TR
-                tr = document.createElement("tr");
-                //create TD
-                td1 = document.createElement("td");
-                td2 = document.createElement("td");
-                //add content to TD
-                checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = "excerptEnabled" + excerptList[x].id;
-                checkbox.className = "checkbox4";
-                td1.appendChild(checkbox);
-                td1.style.paddingRight = "10px";
-                td1.style.width = "5%";
-                td2.innerHTML = "<b>Excerpt " + excerptList[x].id + "</b>: " + excerptList[x].text;
-                td2.style.textAlign = "justify";
-                td1.style.width = "95%";
-                //add TR to table
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                table4.appendChild(tr);
-                break;
-
-            case 70:
-                //create TR
-                tr = document.createElement("tr");
-                //create TD
-                td1 = document.createElement("td");
-                td2 = document.createElement("td");
-                //add content to TD
-                checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = "excerptEnabled" + excerptList[x].id;
-                checkbox.className = "checkbox3";
-                td1.appendChild(checkbox);
-                td1.style.paddingRight = "10px";
-                td2.innerHTML = "<b>Excerpt " + excerptList[x].id + "</b>: " + excerptList[x].text;
-                td2.style.textAlign = "justify";
-                //add TR to table
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                table3.appendChild(tr);
-                break;
-
-            case 50:
-                //create TR
-                tr = document.createElement("tr");
-                tr.style.borderBottom = "solid 1px #D3D3D3";
-                tr.style.padding = "5px";
-                tr.style.margin = "10px";
-                //create TD
-                td1 = document.createElement("td");
-                td2 = document.createElement("td");
-
-                td1.style.paddingBottom = "10px";
-                td2.style.paddingBottom = "10px";
-                //add content to TD
-                checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = "excerptEnabled" + excerptList[x].id;
-                checkbox.className = "checkbox2";
-                td1.appendChild(checkbox);
-                td1.style.paddingRight = "10px";
-                td2.innerHTML = "<b>Excerpt " + excerptList[x].id + "</b>: " + excerptList[x].text;
-                td2.style.textAlign = "justify";
-                //add TR to table
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                table2.appendChild(tr);
-                break;
-
-            case 30:
-                //create TR
-                tr = document.createElement("tr");
-                //create TD
-                td1 = document.createElement("td");
-                td2 = document.createElement("td");
-                //add content to TD
-                checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = "excerptEnabled" + excerptList[x].id;
-                checkbox.className = "checkbox1";
-                td1.appendChild(checkbox);
-                td1.style.paddingRight = "10px";
-                td2.innerHTML = "<b>Excerpt " + excerptList[x].id + "</b>: " + excerptList[x].text;
-                td2.style.textAlign = "justify";
-                //add TR to table
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                table1.appendChild(tr);
-                break;
-        }
 
     }
 
-    //show table for strength that has strength
-    for (var x = 1; x < 6; x++) {
-        var table = document.getElementById("table" + x);
-        if (table.rows.length < 2)
-            table.style.display = "none";
-    }
 
     modal.modal('show');
 }
@@ -423,108 +325,11 @@ function saveEntity() {
     $('#search-field').focus();
 }
 
-//Load existing entities
-function loadEntity() {
-    console.log(entity);
-    for (var x = 0; x < entity.length; x++) {
-        var entityObject;
-        var entityExcerptId = [];
-        var entityExcerpt = [];
-        for (var y = 0; y < entity[x].excrList.length; y++) {
-            if (entity[x].excrList[y].eentityEnabled == true) {
-                entityExcerpt.push(entity[x].excrList[y]);
-                entityExcerptId.push(entity[x].excrList[y].id);
-            }
-        }
-        var entityMarkerTemp = createEntityMarker(getEntityCenter(entityExcerpt));
-        setEntityWindowListener(entityMarkerTemp, "<b>" + entity[x].name + "</b><br>", entityExcerpt);
-        var entityExcerptMarkerTemp = createEntityExcerptMarker(entityExcerpt);
-        setEntityAppearListener(entityMarkerTemp, entityExcerptMarkerTemp);
-        entityObject = {id: x, name: entity[x].name, excrList: entityExcerptId};
-        entityArr.push(entityObject);
-    }
-}
-
-function checkEnabled() {
-    var entityExcerpt = [];
-    for (var x = 0; x < excerptList.length; x++) {
-        if ($('#excerptEnabled' + excerptList[x].id).prop('checked') == true) {
-            excerptList[x].eentityEnabled = true;
-        }
-        entityExcerpt.push(excerptList[x]);
-    }
-    return entityExcerpt;
-}
-
-function getEntityCenter(entityExcerpt) {
-    var bounds = new google.maps.LatLngBounds();
-    for (var x = 0; x < entityExcerpt.length; x++) {
-        if (entityExcerpt[x].eentityEnabled == true) {
-            bounds.extend(new google.maps.LatLng(entityExcerpt[x].area.lat, entityExcerpt[x].area.lng));
-        }
-    }
-    var center = bounds.getCenter();
-    return center;
-}
-
-function createEntityMarker(latlng) {
-    var icon = "http://maps.google.com/mapfiles/kml/shapes/target.png";
-    var entityMarker = new google.maps.Marker({
-        position: latlng,
-        map: map,
-        icon: icon,
-        id: entityCounter
-    });
-    oms.addMarker(entityMarker);
-    return entityMarker;
-}
-function createEntityExcerptMarker(entityExcerpt) {
-    var icon = "http://maps.google.com/mapfiles/kml/pal4/icon57.png";
-    var entityExcerptMarker = [];
-    for (var x = 0; x < entityExcerpt.length; x++) {
-        if (entityExcerpt[x].eentityEnabled == true) {
-            var pos = new google.maps.LatLng(entityExcerpt[x].area.lat, entityExcerpt[x].area.lng);
-            var excerptMarker = new google.maps.Marker({
-                position: pos,
-                map: map,
-                icon: icon
-            });
-            setWindowListener(excerptMarker, "Excerpt " + entityExcerpt[x].id + ": " + entityExcerpt[x].text);
-            oms.addMarker(excerptMarker);
-            entityExcerptMarker.push(excerptMarker);
-        }
-
-    }
-    return entityExcerptMarker;
-}
-
 function setMarkersOnMap(map, excerptMarker) {
 
     for (var x = 0; x < excerptMarker.length; x++) {
         excerptMarker[x].setMap(map);
     }
-}
-
-function setEntityMarkerOnMap(map, entityMarker) {
-    entityMarker.setMap(map);
-}
-
-function setEntityAppearListener(entityMarker, entityExcerpt) {
-    var hits = 0;
-    google.maps.event.addListener(entityMarker, 'dblclick', function (event) {
-        if (hits % 2 !== 0) {
-            setMarkersOnMap(map, entityExcerpt);
-            hits++;
-        }
-        else {
-            setMarkersOnMap(null, entityExcerpt);
-            hits++;
-        }
-    });
-    google.maps.event.addListener(entityMarker, 'rightclick', function (event) {
-        setMarkersOnMap(null, entityExcerpt);
-        setEntityMarkerOnMap(null, entityMarker);
-    });
 }
 
 function setWindowListener(marker, text) {
@@ -538,22 +343,6 @@ function setWindowListener(marker, text) {
     });
 }
 
-function setEntityWindowListener(marker, text, excerptList) {
-    var excerptText = " Excerpts included: <br>";
-    for (var x = 0; x < excerptList.length; x++) {
-        if (excerptList[x].eentityEnabled == true) {
-            excerptText += "Excerpt " + excerptList[x].id + "<br>";
-        }
-    }
-    google.maps.event.addListener(marker, 'mouseover', function () {
-        infoWindow.setContent("<p>" + text + excerptText + "</p>");
-        infoWindow.open(map, this);
-    });
-    google.maps.event.addListener(marker, 'mouseout', function () {
-        infoWindow.setContent(text);
-        infoWindow.close(map, this);
-    });
-}
 
 function setMarkerColor(color) {
     var iconColor = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color,
@@ -563,146 +352,29 @@ function setMarkerColor(color) {
     return iconColor;
 }
 
-// define a lookup for what text should be displayed for each value in your range
-var rangeValues =
-        {
-            "1": "Very Weak Relevance",
-            "2": "Weak Relevance",
-            "3": "Moderate Relevance",
-            "4": "Strong Relevance",
-            "5": "Very Strong Relevance"
-        };
-$(function () {
-    // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
-    $('#rangeInput').change(function () {
-        $('#rangeText').text(rangeValues[$('#rangeInput').val()]);
-
-        switch ($('#rangeInput').val()) {
-            case '1':
-                $('#enable5').bootstrapToggle('off');
-                $('#enable4').bootstrapToggle('off');
-                $('#enable3').bootstrapToggle('off');
-                $('#enable2').bootstrapToggle('off');
-                $('#enable1').bootstrapToggle('off');
-
-                $('#enable5').bootstrapToggle('on');
-                $('#enable4').bootstrapToggle('on');
-                $('#enable3').bootstrapToggle('on');
-                $('#enable2').bootstrapToggle('on');
-                $('#enable1').bootstrapToggle('on');
-                break;
-            case '2':
-                $('#enable5').bootstrapToggle('off');
-                $('#enable4').bootstrapToggle('off');
-                $('#enable3').bootstrapToggle('off');
-                $('#enable2').bootstrapToggle('off');
-                $('#enable1').bootstrapToggle('off');
-
-                $('#enable5').bootstrapToggle('on');
-                $('#enable4').bootstrapToggle('on');
-                $('#enable3').bootstrapToggle('on');
-                $('#enable2').bootstrapToggle('on');
-                break;
-            case '3':
-                $('#enable5').bootstrapToggle('off');
-                $('#enable4').bootstrapToggle('off');
-                $('#enable3').bootstrapToggle('off');
-                $('#enable2').bootstrapToggle('off');
-                $('#enable1').bootstrapToggle('off');
-
-                $('#enable5').bootstrapToggle('on');
-                $('#enable4').bootstrapToggle('on');
-                $('#enable3').bootstrapToggle('on');
-                break;
-            case '4':
-                $('#enable5').bootstrapToggle('off');
-                $('#enable4').bootstrapToggle('off');
-                $('#enable3').bootstrapToggle('off');
-                $('#enable2').bootstrapToggle('off');
-                $('#enable1').bootstrapToggle('off');
-
-                $('#enable5').bootstrapToggle('on');
-                $('#enable4').bootstrapToggle('on');
-                break;
-            case '5':
-                $('#enable5').bootstrapToggle('off');
-                $('#enable4').bootstrapToggle('off');
-                $('#enable3').bootstrapToggle('off');
-                $('#enable2').bootstrapToggle('off');
-                $('#enable1').bootstrapToggle('off');
-
-                $('#enable5').bootstrapToggle('on');
-                break;
-        }
-    });
-
-});
-
-$(function () {
-    $('#enable5').change(function () {
-        if ($(this).prop('checked') == true) {
-            $('.checkbox5').prop("checked", true);
-        }
-        else {
-            $('.checkbox5').prop("checked", false);
-        }
-    });
-    $('#enable4').change(function () {
-        if ($(this).prop('checked') == true) {
-            $('.checkbox4').prop("checked", true);
-        }
-        else {
-            $('.checkbox4').prop("checked", false);
-        }
-    });
-    $('#enable3').change(function () {
-        if ($(this).prop('checked') == true) {
-            $('.checkbox3').prop("checked", true);
-        }
-        else {
-            $('.checkbox3').prop("checked", false);
-        }
-    });
-    $('#enable2').change(function () {
-        if ($(this).prop('checked') == true) {
-            $('.checkbox2').prop("checked", true);
-        }
-        else {
-            $('.checkbox2').prop("checked", false);
-        }
-    });
-    $('#enable1').change(function () {
-        if ($(this).prop('checked') == true) {
-            $('.checkbox1').prop("checked", true);
-        }
-        else {
-            $('.checkbox1').prop("checked", false);
-        }
-    });
-});
-
 function savePCO() {
-    if (entityArr.length == 0)
-        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
-    else if (entityArr.length < 4)
-        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
-    else {
-        console.log(toJSON(entityArr));
-        $.ajax({
-            type: "GET",
-            url: "Save2PCO",
-            data: {
-                entityArr: toJSON(entityArr)
-            },
-            success: function (response) {
-                console.log("success");
-                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
-                setTimeout(function () {
-                    window.location.assign("ANMission3COG?id=" + missionID)
-                }, 3000);
-            }
-        });
-    }
+    console.log(selectedMarker);
+//    if (entityArr.length == 0)
+//        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
+//    else if (entityArr.length < 4)
+//        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
+//    else {
+//        console.log(toJSON(entityArr));
+//        $.ajax({
+//            type: "GET",
+//            url: "Save2PCO",
+//            data: {
+//                entityArr: toJSON(entityArr)
+//            },
+//            success: function (response) {
+//                console.log("success");
+//                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
+//                setTimeout(function () {
+//                    window.location.assign("ANMission3COG?id=" + missionID)
+//                }, 3000);
+//            }
+//        });
+//    }
 
 }
 
@@ -770,4 +442,24 @@ function loadAreaSlider() {
         });
 
     });
+}
+
+function displayKeywords(value) {
+    $('#unused-keyword').tagsinput('removeAll');
+    $('#used-keyword').tagsinput('removeAll');
+
+    for (var x = 0; x < unusedKeywords.length; x++) {
+        if (unusedKeywords[x] == value) {
+            unusedKeywords.splice(x, 1);
+            usedKeywords.push(value);
+        }
+    }
+    for (var x = 0; x < unusedKeywords.length; x++) {
+        $('#unused-keyword').tagsinput('add', unusedKeywords[x]);
+    }
+    for (var x = 0; x < usedKeywords.length; x++) {
+        $('#used-keyword').tagsinput('add', usedKeywords[x]);
+    }
+
+
 }

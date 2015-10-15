@@ -43,6 +43,7 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
 
+            var keywordList = <%=request.getAttribute("keywordList")%>;
             var level8 = '<%=request.getAttribute("level8")%>';
             var level7 = '<%=request.getAttribute("level7")%>';
             var level6 = '<%=request.getAttribute("level6")%>';
@@ -60,10 +61,12 @@
             });
         </script>
         <style>
-            .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
-            .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
-            .autocomplete-selected { background: #f0f0f0; }
-            .autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
+            .autocomplete-suggestions { border: 1px solid #D3D3D3; background: #FFF; opacity: .8; overflow: auto;  box-shadow: 5px 5px 5px #aaaaaa; margin-top: 3px;}
+            .autocomplete-suggestion { padding: 2vh 0 2vh 2vh; overflow: hidden; height: 7vh;}
+            .autocomplete-selected { background: #F5F5F5; }
+            .autocomplete-suggestions strong { font-weight: 700; color: #009900; }
+            .autocomplete-group { padding: 5px 0 5px 10px; }
+            .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
         </style>
 
     </head>
