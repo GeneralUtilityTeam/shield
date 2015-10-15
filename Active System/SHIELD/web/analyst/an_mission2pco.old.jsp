@@ -50,7 +50,7 @@
             var level3 = '<%=request.getAttribute("level3")%>';
             var level2 = '<%=request.getAttribute("level2")%>';
             var level1 = '<%=request.getAttribute("level1")%>';
-            
+
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });
@@ -89,7 +89,12 @@
                                 <input type="text" id="search-field" class="form-control" autocomplete="off" spellcheck="false" placeholder="Search for Excerpts" required/>
                             </div>
                             <div class="btn-group" style="z-index: 1; position: fixed; margin: 72vh 0 0 1vmin;">
-                                <a class="btn btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a></div>
+                                <a class="btn btn-md btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
+                            </div>
+                            <div class="" style="z-index: 1; position: fixed; margin: 73vh 0 0 10vw; width: 15vw;">
+                                <input type="range" id="areaRangeInput" name="rangeInput" step="1" min="1" max="8" style="width: 100%; color: #111111">
+                                <label id="areaRangeText" style="display: block; text-align: center; font-weight: 100;"/></label><hr>
+                            </div>
                             <div id="mission2pco-area-map" style="height: 78vh; width: 74vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
                             </div>
                         </div>

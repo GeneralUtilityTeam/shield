@@ -2,11 +2,13 @@ var excerptList;
 var searchMarker = [];
 var entity;
 var entityArr = [];
+var missionKeywords = ['phill'];
 
 function initialize() { //Change this to take entities
     buildNav(missionStatus, 2);
     loadAreaSlider();
     initializeMap();
+
     if (entity == null) {
         entity = new Array();
         entityCounter = 0;
@@ -35,15 +37,69 @@ $(document).ready(function () {
             initialize();
         }
     });
-    $("#search-field").keydown(function () {
+    var objectiveKeywordList = ['phill', 'Philippines', 'HI'];
+    if (objectiveKeywordList.length != 0) {
+        $.each(objectiveKeywordList, function (i, el) {
+            if ($.inArray(el, missionKeywords) === -1)
+                missionKeywords.push(el);
+        });
+    }
+    if (situationKeywordList.length != 0) {
+        $.each(situationKeywordList, function (i, el) {
+            if ($.inArray(el, missionKeywords) === -1)
+                missionKeywords.push(el);
+        });
+    }
+    if (executionKeywordList.length != 0) {
+        $.each(executionKeywordList, function (i, el) {
+            if ($.inArray(el, missionKeywords) === -1)
+                missionKeywords.push(el);
+        });
+    }
+    if (adminAndLogisticsKeywordList.length != 0) {
+        $.each(adminAndLogisticsKeywordList, function (i, el) {
+            if ($.inArray(el, missionKeywords) === -1)
+                missionKeywords.push(el);
+        });
+    }
+    if (commandAndSignalKeywordList.length != 0) {
+        $.each(commandAndSignalKeywordList, function (i, el) {
+            if ($.inArray(el, missionKeywords) === -1)
+                missionKeywords.push(el);
+        });
+    }
 
-        if (event.keyCode == 13) {
-            alert($('#areaRangeInput').val());
+    $('#search-field').autocomplete({
+        minChars: 0,
+        lookup: missionKeywords,
+        onSelect: function (suggestion) {
             $.ajax({
                 type: "GET",
                 url: "PrimaryExcerptSearch",
                 data: {
-                    param: $("#search-field").val()
+                    param: suggestion.value,
+                },
+                success: function (responseJson) {
+                    excerptList = responseJson;
+                    setMarkersOnMap(null, searchMarker);
+                    searchMarker = [];
+                    if (excerptList.length > 0) {
+                        createSearchMarker();
+                    }
+                    else
+                        showAndDismissAlert("danger", "<strong>No Results Found! </strong>");
+                }
+            });
+        }
+    });
+    $("#search-field").keydown(function () {
+
+        if (event.keyCode == 13) {
+            $.ajax({
+                type: "GET",
+                url: "PrimaryExcerptSearch",
+                data: {
+                    param: $("#search-field").val(),
                 },
                 success: function (responseJson) {
                     excerptList = responseJson;

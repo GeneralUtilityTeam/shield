@@ -5,6 +5,7 @@ var entityArr = [];
 
 function initialize() { //Change this to take entities
     buildNav(missionStatus, 2);
+    loadAreaSlider();
     initializeMap();
     if (entity == null) {
         entity = new Array();
@@ -37,6 +38,7 @@ $(document).ready(function () {
     $("#search-field").keydown(function () {
 
         if (event.keyCode == 13) {
+            alert($('#areaRangeInput').val());
             $.ajax({
                 type: "GET",
                 url: "PrimaryExcerptSearch",
@@ -88,6 +90,7 @@ function initializeMap() {
     oms.addListener('unspiderfy', function (markers) {
     });
 }
+
 function geocodeSuccess(result) {
     map.fitBounds(result.geometry.viewport);
     minZoom = map.getZoom();
@@ -131,7 +134,6 @@ function zoomChanged(philBounds) {
         map.setCenter(new google.maps.LatLng(y, x));
     });
 }
-
 //For Tooltip of Edit and Delete Entity
 $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
@@ -646,4 +648,70 @@ function savePCO() {
         });
     }
 
+}
+
+function loadAreaSlider() {
+    // define a lookup for what text should be displayed for each value in your range
+    var lastLevel;
+    var proceed = true;
+    if (level1 == "null" && proceed) {
+        lastLevel = 1;
+        proceed = false;
+    }
+    if (level2 == "null" && proceed) {
+        lastLevel = 2;
+        proceed = false;
+    }
+    if (level3 == "null" && proceed) {
+        lastLevel = 3;
+        proceed = false;
+    }
+    if (level4 == "null" && proceed) {
+        lastLevel = 4;
+        proceed = false;
+    }
+    if (level5 == "null" && proceed) {
+        lastLevel = 5;
+        proceed = false;
+    }
+    if (level6 == "null" && proceed) {
+        lastLevel = 6;
+        proceed = false;
+    }
+    if (level7 == "null" && proceed) {
+        lastLevel = 7;
+        proceed = false;
+    }
+    if (level8 == "null" && proceed) {
+        lastLevel = 8;
+        proceed = false;
+    }
+
+    var rangeValues =
+            {
+                "1": level1,
+                "2": level2,
+                "3": level3,
+                "4": level4,
+                "5": level5,
+                "6": level6,
+                "7": level7,
+                "8": level8
+            };
+
+    $('#areaRangeInput').attr("value", lastLevel - 1);
+    $(function () {
+        $('#areaRangeInput').attr("value", lastLevel - 1);
+        $('#areaRangeText').text("Search Area Range: " + rangeValues[$('#areaRangeInput').val()]);
+        // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
+        $('#areaRangeInput').change(function () {
+            if (rangeValues[$('#areaRangeInput').val()] != "null")
+                $('#areaRangeText').text("Search Area Range: " + rangeValues[$('#areaRangeInput').val()]);
+            else {
+                $('#areaRangeText').text("No Area Level Found");
+            }
+
+        });
+
+    });
 }
