@@ -77,10 +77,6 @@
         <servlet-class>servlet.ajax.GetAllSources</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetExcerptOfMission</servlet-name>
-        <servlet-class>servlet.ajax.GetExcerptOfMission</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>PrimaryExcerptSearch</servlet-name>
         <servlet-class>servlet.ajax.PrimaryExcerptSearch</servlet-class>
     </servlet>
@@ -235,10 +231,6 @@
     <servlet-mapping>
         <servlet-name>GetAllSources</servlet-name>
         <url-pattern>/GetAllSources</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetExcerptOfMission</servlet-name>
-        <url-pattern>/GetExcerptOfMission</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PrimaryExcerptSearch</servlet-name>

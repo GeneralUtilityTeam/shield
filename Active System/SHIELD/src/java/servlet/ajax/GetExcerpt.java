@@ -62,38 +62,13 @@ public class GetExcerpt extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-            //Code from SHIELD 1.1
-//        ExcerptDAO excrDAO = new ExcerptDAO();
-//        Excerpt excr = excrDAO.getExcerpt(Integer.parseInt(request.getParameter("excerptID")));
-//        SourceDAO srcDAO = new SourceDAO();
-//        excr.setSourceName(srcDAO.getSource(excr.getSourceId()).getName());
-//        String infrJSOB = new JSONObject(excr).toString();
-        //Dummy Data
-        JSONArray tagsArray = new JSONArray();
-
-        //Dummy data
-//        JSONObject excr1 = new JSONObject();
-//        excr1.put("id", "1");
-//        excr1.put("text", "There are 10,000 people in Maguindanao");
-//        excr1.put("category", "Social");
-//        excr1.put("source", "Maguindanao Area Study");
-//        tagsArray.put("Maguindanao");
-//        tagsArray.put("Population");
-//        excr1.put("tags", tagsArray);
-//        excr1.put("strength", 20);
-//        String infrJSON = excr1.toString();
-        
-        //Code from SHIELD 1.1
-        //ExcerptDAO excrDAO = new ExcerptDAO();
-        //String infrJSON = new JSONArray(excrDAO.primarySearch(request.getParameter("param"))).toString();
+           
         String idStr = request.getParameter("id");
         int id = Integer.parseInt(idStr);
-        
-        IntelligenceDAO intlDAO = new IntelligenceDAO();
-        Excerpt excr = intlDAO.GetExcerpt(id);
+        Excerpt excr = new IntelligenceDAO().GetExcerpt(id);
         JSONObject excrJObj= new JSONObject(excr);
         String excrJSON = excrJObj.toString();
-        
+        System.out.println(excrJSON);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(excrJSON);

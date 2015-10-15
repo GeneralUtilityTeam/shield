@@ -33,11 +33,15 @@
         <script>
             //Global Variables
             var srcJSON = <%=request.getAttribute("srcJSON")%>;
+            var ctgyJSON = <%=request.getAttribute("ctgyJSON")%>;
+            var sourceID = <%=session.getAttribute("sourceID")%>;
             var excrJSON;
             var address;
             var area;
             var latLng;
             var switchString; //boolean; true if a string was used, false if a click was used
+            var excrTable;
+            var srcTable;
     
             //Map Variables
             var geocoder = new google.maps.Geocoder();
@@ -74,7 +78,6 @@
                         <th>ID</th>
                         <th>Category</th>
                         <th>Text</th>
-                        <th>Tags</th>
                         </thead>
                         <tbody id="src-excerpts-body">
                         </tbody>
@@ -104,7 +107,7 @@
                                     <h5>Category:  </h5>
                                 </td>
                                 <td>
-                                    <select class="form-box" required>
+                                    <select id="input-excerpt-category" class="form-box" required>
                                     </select>
                                 </td>
                             </tr>
@@ -113,7 +116,7 @@
                                     <h5>Excerpt Text:  </h5>
                                 </td>
                                 <td>
-                                    <textarea rows="4" cols="50" class="form-box" style="height: 70px; margin-top: 5px;" required placeholder="Enter Excerpt Text"></textarea>
+                                    <textarea id="input-excerpt-text" rows="4" cols="50" class="form-box" style="height: 70px; margin-top: 5px;" required placeholder="Enter Excerpt Text"></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -145,7 +148,7 @@
                                     <h5>Tags:  </h5>
                                 </td>
                                 <td>
-                                    <input type="text" data-role="tagsinput" class="form-box" required placeholder="Press Enter to Add Tag">
+                                    <input id="input-excerpt-tags" type="text" data-role="tagsinput" class="form-box" required placeholder="Press Enter to Add Tag">
                                 </td>
                             </tr>
                         </table>

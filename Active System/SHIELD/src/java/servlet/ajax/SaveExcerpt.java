@@ -10,11 +10,14 @@ import entity.Area;
 import entity.Excerpt;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONObject;
+import utility.ShieldUtility;
 
 /**
  *
@@ -60,12 +63,16 @@ public class SaveExcerpt extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ShieldUtility su = new ShieldUtility();
+        
         HttpSession session = request.getSession();
         int userID = (int)session.getAttribute("userID");
         
-        String sourceIDStr = request.getParameter("source_id");
-        String categoryIDStr = request.getParameter("category_id");
+        int sourceID = (int)session.getAttribute("sourceID");
+        String categoryIDStr = request.getParameter("categoryID");
         String text = request.getParameter("text");
+        String tagListStr = request.getParameter("tagList");
+        ArrayList tagList = su.jsKeywordStringToList(tagListStr);
         String level8 = request.getParameter("level8");
         String level7 = request.getParameter("level7");
         String level6 = request.getParameter("level6");
@@ -76,15 +83,15 @@ public class SaveExcerpt extends HttpServlet {
         String level1 = request.getParameter("level1");
         String latStr = request.getParameter("lat");
         String lngStr = request.getParameter("lng");
-        
-        //Tag Object
+
         
         Excerpt excr = new Excerpt();
         Area area = new Area();
         
-        excr.setSourceID(Integer.parseInt(sourceIDStr));
+        excr.setSourceID(sourceID);
         excr.setCategoryID(Integer.parseInt(categoryIDStr));
         excr.setText(text);
+        excr.setTagList(tagList);
         area.setLevel8(level8);
         area.setLevel7(level7);
         area.setLevel6(level6);
@@ -97,15 +104,11 @@ public class SaveExcerpt extends HttpServlet {
         area.setLng(Double.parseDouble(lngStr));
         excr.setArea(area);
         
-        //tags 
-        
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         String message = "An error occured";
         try{
             intlDAO.AddExcerpt(userID, excr);
             message = "<strong>New Excerpt</strong> has been <strong>added.</strong>";
-            
-            
         }catch(Exception ex){
             System.out.println(ex);
         }

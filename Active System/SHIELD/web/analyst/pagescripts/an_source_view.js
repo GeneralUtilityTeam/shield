@@ -1,8 +1,7 @@
 function initialize() {
     showAndDismissAlert('success', 'Excerpts of <strong>' + srcJSON.title + '</strong>');
 
-    var srcTable = document.getElementById('src-table');
-    var excrTable = document.getElementById('src-excerpts');
+    srcTable = document.getElementById('src-table');
 
     var row = srcTable.insertRow(0);
     var srcType = row.insertCell(0);
@@ -14,7 +13,7 @@ function initialize() {
     var srcDatePub = row.insertCell(3);
     srcDatePub.innerHTML = srcJSON.published;
 
-    
+
 
     if (map == null) {
         var latlng = new google.maps.LatLng(14.5800, 121.000)
@@ -32,24 +31,31 @@ function initialize() {
             geocodeResultLatLng(latLng);
         });
     }
+
+    var dropdown = document.getElementById("input-excerpt-category");
+    ctgyJSON.forEach(function (conf) {
+        var option = document.createElement("option");
+        option.setAttribute("label", conf.valueText);
+        option.setAttribute("value", conf.id);
+        dropdown.appendChild(option);
+    });
 }
 $(document).ready(function () {
     excrTable = $('#src-excerpts').DataTable({
         "ajax": {
-            "url": "GetExcerptOfSource"
+            "url": "GetExcerptOfSource",
+            "dataSrc": ""
         },
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "columns": [
             {"data": "id"},
             {"data": "categoryDesc"},
-            {"data": "text"},
-            {"data": "categoryID"}
+            {"data": "text"}
         ]
     });
     $('#src-excerpts tbody').on('click', 'tr', function () {
-        var data = table.row(this).data();
-        console.log(data);
-        //row.setAttribute('onclick', "viewExcerpt(" + excrJSON[x].id + ")");
+        var data = excrTable.row(this).data();
+        viewExcerpt(data.id);
     });
 });
 
@@ -84,35 +90,56 @@ function geocodeSuccess(result) { // This function is specific to this page
 }
 
 function viewExcerpt(id) {
-    for (var x = 0; x < excrJSON.length; x++) {
-        if (id == excrJSON[x].id) {
-
-            document.getElementById('view-excerpttext').innerHTML = excrJSON[x].text;
-            document.getElementById('category').innerHTML = excrJSON[x].categoryName;
-            document.getElementById('source').innerHTML = srcJSON.name;
-            document.getElementById('enter-tags').innerHTML = excrJSON[x].tags; //add TAGTEXT PLEASE DON'T FORGET DON'T
-            document.getElementById('excerpt-num').innerHTML = "Excerpt " + excrJSON[x].id;
+    $('#viewExcerpt').modal('show');
+    $.ajax({
+        type: "GET",
+        url: "GetExcerpt",
+        data: {
+            id: id
+        },
+        success: function (responseJson) {
+            var excerpt = responseJson;
+            document.getElementById('view-excerpt-text').innerHTML = excerpt.text;
+            document.getElementById('category').innerHTML = excerpt.categoryDesc;
+            //document.getElementById('enter-tags').innerHTML = 
+            var tagList = excerpt.tagList;
+            $('#enter-tags').tagsinput('clearAll');
+            if (tagList != null) {
+                tagList.forEach(function (conf) {
+                    $('#enter-tags').tagsinput('add', conf);
+                });
+            }
+            document.getElementById('excerpt-num').innerHTML = "Excerpt " + excerpt.id;
         }
-    }
+    });
 }
 
 function saveExcerpt() {
+    var text = document.getElementById("input-excerpt-text").value;
+    var categoryID = document.getElementById("input-excerpt-category").value;
+    var tagList = $('#input-excerpt-tags').tagsinput('items');
     $.ajax({
         type: "GET",
         url: "SaveExcerpt",
+        data: {
+            categoryID: categoryID,
+            text: text,
+            tagList: toJSON(tagList),
+            level8: area.level8,
+            level7: area.level7,
+            level6: area.level6,
+            level5: area.level5,
+            level4: area.level4,
+            level3: area.level3,
+            level2: area.level2,
+            level1: area.level1,
+            lat: latLng.lat(),
+            lng: latLng.lng()
+        },
         success: function (response) {
-            $('#addExcerpt').modal('hide');
-            showAndDismissAlert("success", response);
-//            $.ajax({
-//                type: "GET",
-//                url: "GetSources",
-//                success: function (response) {
-//                    showAndDismissAlert("success", response);
-//                    setTimeout(function () {
-//                        window.location.assign("ANMission2DS")
-//                    }, 3000);
-//                }
-//            });
+            $('#addSource').modal('hide');
+            showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
+            excrTable.ajax.reload();
         }
     });
 }

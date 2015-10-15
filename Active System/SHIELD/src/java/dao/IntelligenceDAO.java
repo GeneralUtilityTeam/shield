@@ -252,11 +252,11 @@ public class IntelligenceDAO {
                 return -1;
             } else {
                 int excerptID = rs.getInt(1);
-
                 ArrayList<String> tagList = excr.getTagList();
                 pstmt = cn.prepareStatement("CALL `shield`.`link_excerpt_tag`(?, ?);");
                 pstmt.setInt(1, excerptID);
                 for (String s : tagList) {
+                    System.out.println("Linking excerpt id " + excerptID + " string " + s);
                     pstmt.setString(2, s);
                     pstmt.execute();
                 }
