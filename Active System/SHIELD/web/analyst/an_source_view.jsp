@@ -26,7 +26,7 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_source_view.js"></script>
         <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
-        <script  src="js/bootstrap-tagsinput.min.js"></script>
+        <script  src="js/bootstrap-tagsinput.js"></script>
         
         <!--Google Map-->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>

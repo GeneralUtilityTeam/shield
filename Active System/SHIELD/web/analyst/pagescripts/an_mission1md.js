@@ -5,7 +5,7 @@ function initialize() {
     if (msonJSOB.area != null)
         document.getElementById('address').value = generateFullAddress(msonJSOB.area);
     if (msonJSOB.threat != null)
-        document.getElementById('address').value = msonJSOB.threat;
+        document.getElementById('threat').value = msonJSOB.threat;
     if (msonJSOB.objective != null)
         document.getElementById('objective').innerHTML = msonJSOB.objective;
     if (msonJSOB.situation != null)

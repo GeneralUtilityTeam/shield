@@ -7,6 +7,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import utility.ShieldUtility;
 
 /**
  *
@@ -29,12 +30,37 @@ public class Mission {
     private ArrayList<String> adminAndLogisticsKeywordList; 
     private String commandAndSignal;
     private ArrayList<String> commandAndSignalKeywordList; 
+    private ArrayList<String> keywordList;
     
     private Date startDT;
     private Date endDT;
 
     private Area area;
 
+    public void generateFullKeywordList(){
+        ShieldUtility su = new ShieldUtility();
+        keywordList = new ArrayList<String>();
+        if(!su.ListIsNullOrEmpty(objectiveKeywordList))
+            for(String s : objectiveKeywordList)
+                if(!keywordList.contains(s))
+                    keywordList.add(s);
+        if(!su.ListIsNullOrEmpty(situationKeywordList))
+            for(String s : situationKeywordList)
+                if(!keywordList.contains(s))
+                    keywordList.add(s);
+        if(!su.ListIsNullOrEmpty(executionKeywordList))
+            for(String s : executionKeywordList)
+                if(!keywordList.contains(s))
+                    keywordList.add(s);
+        if(!su.ListIsNullOrEmpty(adminAndLogisticsKeywordList))
+            for(String s : adminAndLogisticsKeywordList)
+                if(!keywordList.contains(s))
+                    keywordList.add(s);
+        if(!su.ListIsNullOrEmpty(commandAndSignalKeywordList))
+            for(String s : commandAndSignalKeywordList)
+                if(!keywordList.contains(s))
+                    keywordList.add(s);
+    }
     /**
      * @return the id
      */
@@ -285,6 +311,20 @@ public class Mission {
      */
     public void setThreat(String threat) {
         this.threat = threat;
+    }
+
+    /**
+     * @return the keywordList
+     */
+    public ArrayList<String> getKeywordList() {
+        return keywordList;
+    }
+
+    /**
+     * @param keywordList the keywordList to set
+     */
+    public void setKeywordList(ArrayList<String> keywordList) {
+        this.keywordList = keywordList;
     }
 
 }

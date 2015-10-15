@@ -327,17 +327,6 @@ public class IntelligenceDAO {
                     eent.setClassID(rs.getInt(2));
                     eent.setClassDesc(rs.getString(3));
                     eent.setName(rs.getString(4));
-                    area.setLevel8(rs.getString(5));
-                    area.setLevel7(rs.getString(6));
-                    area.setLevel6(rs.getString(7));
-                    area.setLevel5(rs.getString(8));
-                    area.setLevel4(rs.getString(9));
-                    area.setLevel3(rs.getString(10));
-                    area.setLevel2(rs.getString(11));
-                    area.setLevel1(rs.getString(12));
-                    area.setLat(rs.getDouble(13));
-                    area.setLng(rs.getDouble(14));
-                    eent.setArea(area);
 
                     PreparedStatement pstmt2 = cn.prepareStatement("CALL shield.get_all_excerpt_eentity(?);");
                     pstmt2.setInt(1, eent.getId());
@@ -403,7 +392,6 @@ public class IntelligenceDAO {
             pstmt.setInt(3, 1);
 
             for (EEntity e : eentList) {
-                Area area = e.getArea();
                 pstmt.setString(4, e.getName());
 
                 ResultSet rs = pstmt.executeQuery();

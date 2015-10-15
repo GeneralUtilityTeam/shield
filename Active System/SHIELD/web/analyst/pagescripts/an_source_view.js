@@ -43,7 +43,7 @@ $(document).ready(function () {
             {"data": "id"},
             {"data": "categoryDesc"},
             {"data": "text"},
-            {"data": "level8"}
+            {"data": "categoryID"}
         ]
     });
     $('#src-excerpts tbody').on('click', 'tr', function () {

@@ -9,6 +9,7 @@ import dao.MissionDAO;
 import entity.Mission;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import servlet.father.FatherServlet;
 
 /**
@@ -32,7 +34,10 @@ public class ANMission2PCO extends FatherServlet {
         String missionIDString = session.getAttribute("missionID").toString();
         int missionID = Integer.parseInt(missionIDString);
         Mission mson = msonDAO.GetMission(missionID);
-
+        mson.generateFullKeywordList();
+        ArrayList keywordList = mson.getKeywordList();        
+        JSONArray keywordJArr = new JSONArray(keywordList);
+        request.setAttribute("keywordList", keywordJArr.toString());
         request.setAttribute("level8", mson.getArea().getLevel8());
         request.setAttribute("level7", mson.getArea().getLevel7());
         request.setAttribute("level6", mson.getArea().getLevel6());

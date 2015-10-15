@@ -53,8 +53,8 @@ $(document).ready(function () {
         ],
         "fnRowCallback": function (nRow, data) {
             /* Turn the fourt row -- progress -- into a progressbar with bootstrap */
-            progressString = '<div class="progress active"><div class="progress-bar ' + defineProgressBar(data.status) + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: ' + data.status * 14.28 + '%;">' + data.status + ' of 7 Steps</div></div>';
-            $('td:eq(3)', nRow).html(progressString);
+            progressString = '<div class="progress active"><div class="progress-bar ' + defineProgressBar(data.status) + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: ' + data.status * 16.66 + '%;">' + data.status + ' of 6 Steps</div></div>';
+            $('td:eq(2)', nRow).html(progressString);
             return nRow;
         }
     });
@@ -149,13 +149,10 @@ function defineProgressBar(status) {
         return progressBar = "progress-bar-warning";
     }
     else if (status == 5 || status == 6) {
-        return progressBar = "progress-bar-info";
-    }
-    else if (status == 7) {
         return progressBar = "progress-bar-success";
     }
 }
 function defineProgressPercent(status) {
     var statusInt = parseInt(status);
-    return statusInt * 14.28;
+    return statusInt * 16.66;
 }

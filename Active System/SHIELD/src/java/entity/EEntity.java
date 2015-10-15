@@ -17,7 +17,6 @@ public class EEntity {
     private String name;
     private int classID;
     private String classDesc;
-    private Area area;
     private ArrayList<Excerpt> excrList;
     
     //CC properties
@@ -91,19 +90,6 @@ public class EEntity {
         this.classDesc = classDesc;
     }
 
-    /**
-     * @return the area
-     */
-    public Area getArea() {
-        return area;
-    }
-
-    /**
-     * @param area the area to set
-     */
-    public void setArea(Area area) {
-        this.area = area;
-    }
 
     /**
      * @return the dateStart

@@ -44,30 +44,30 @@ $(document).ready(function () {
                 missionKeywords.push(el);
         });
     }
-    if (situationKeywordList.length != 0) {
-        $.each(situationKeywordList, function (i, el) {
-            if ($.inArray(el, missionKeywords) === -1)
-                missionKeywords.push(el);
-        });
-    }
-    if (executionKeywordList.length != 0) {
-        $.each(executionKeywordList, function (i, el) {
-            if ($.inArray(el, missionKeywords) === -1)
-                missionKeywords.push(el);
-        });
-    }
-    if (adminAndLogisticsKeywordList.length != 0) {
-        $.each(adminAndLogisticsKeywordList, function (i, el) {
-            if ($.inArray(el, missionKeywords) === -1)
-                missionKeywords.push(el);
-        });
-    }
-    if (commandAndSignalKeywordList.length != 0) {
-        $.each(commandAndSignalKeywordList, function (i, el) {
-            if ($.inArray(el, missionKeywords) === -1)
-                missionKeywords.push(el);
-        });
-    }
+//    if (situationKeywordList.length != 0) {
+//        $.each(situationKeywordList, function (i, el) {
+//            if ($.inArray(el, missionKeywords) === -1)
+//                missionKeywords.push(el);
+//        });
+//    }
+//    if (executionKeywordList.length != 0) {
+//        $.each(executionKeywordList, function (i, el) {
+//            if ($.inArray(el, missionKeywords) === -1)
+//                missionKeywords.push(el);
+//        });
+//    }
+//    if (adminAndLogisticsKeywordList.length != 0) {
+//        $.each(adminAndLogisticsKeywordList, function (i, el) {
+//            if ($.inArray(el, missionKeywords) === -1)
+//                missionKeywords.push(el);
+//        });
+//    }
+//    if (commandAndSignalKeywordList.length != 0) {
+//        $.each(commandAndSignalKeywordList, function (i, el) {
+//            if ($.inArray(el, missionKeywords) === -1)
+//                missionKeywords.push(el);
+//        });
+//    }
 
     $('#search-field').autocomplete({
         minChars: 0,

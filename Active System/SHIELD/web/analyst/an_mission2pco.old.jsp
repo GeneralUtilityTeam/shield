@@ -31,6 +31,7 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission2pco.js"></script>
         <script src="js/mission-menu-builder.js"></script>
+        <script src="js/jquery.autocomplete.js"></script>
 
         <!--Map Script-->
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
@@ -58,6 +59,12 @@
                 $('#collapseOne').collapse('show')
             });
         </script>
+        <style>
+            .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
+            .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
+            .autocomplete-selected { background: #f0f0f0; }
+            .autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
+        </style>
 
     </head>
 
@@ -86,8 +93,9 @@
                         <div class="col-md-6">
                             <div class="inner-addon right-addon" style=" z-index: 1; position: fixed; height: 7vh; width: 28vw; margin: 1vh 0 0 1vmin; box-shadow: 5px 5px 5px #aaaaaa;">
                                 <i class="glyphicon glyphicon-search"></i>
-                                <input type="text" id="search-field" class="form-control" autocomplete="off" spellcheck="false" placeholder="Search for Excerpts" required/>
+                                <input type="text" name="country" id="search-field" class="form-control" style="width: 28vw;"/>
                             </div>
+
                             <div class="btn-group" style="z-index: 1; position: fixed; margin: 72vh 0 0 1vmin;">
                                 <a class="btn btn-md btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
                             </div>
@@ -167,14 +175,8 @@
         <!--Sliding Side Bar Menu-->
         <div id="slidingmenu" style="width: 22vw;">
             <div style="border: solid 1px #D3D3D3; border-radius: 5px; padding-left: 1vw; margin: 10px 10px 10px 10px; background-color: rgba(250,250,250,1);">
-                <h4 style="font-size: 1.2vw; font-weight: 600; ">Summary of Data Sources</h4>
-                <h6>Political: <label id="political"></label></h6>
-                <h6>Military/Security: <label id="military-security"></label></h6>
-                <h6>Economic: <label id="economic"></label></h6>
-                <h6>Social: <label id="social"></label></h6>
-                <h6>Information: <label id="information"></label></h6>
-                <h6>Infrastructure and Technology: <label id="infrastructure-technology"></label></h6>
-                <h6>Environment/Physical: <label id="environment-physical"></label></h6>
+                <h4 style="font-size: 1.2vw; font-weight: 600; ">Mission Keywords</h4>
+                <input id="mission-keyword" type="text" data-role="tagsinput" class="form-box" disabled>
             </div>
             <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Entities</h4>
             <div id="mission-entities">
