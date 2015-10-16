@@ -226,9 +226,21 @@ public class IntelligenceDAO {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_excerpt_eentity`(?)");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_class_eentity`(?)");
             pstmt.setInt(1, eentID);
             ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            }
+            
+            int eentityClass = rs.getInt(1);
+            
+            pstmt = cn.prepareStatement("CALL `shield`.`get_all_excerpt_eentity`(?)");
+            pstmt.setInt(1, eentID);
+            rs = pstmt.executeQuery();
             rs.next();
             if (rs.getRow() == 0) {
                 cn.close();
@@ -245,6 +257,7 @@ public class IntelligenceDAO {
                     area.setLng(rs.getDouble(12));
                     excr.setArea(area);
                     excrList.add(excr);
+                    excr.setEentityClassID(eentityClass);
 
                 } while (rs.next());
 

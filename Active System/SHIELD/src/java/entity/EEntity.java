@@ -20,8 +20,10 @@ public class EEntity {
     private ArrayList<Excerpt> excrList;
     
     //CC properties
-    private Date dateStart;
-    private Date dateEnd;
+    private Date dateFrom;
+    private Date dateTo;
+    private double lat;
+    private double lng;
     
     //CR properties
     private ArrayList<EEntity> ccList;
@@ -91,34 +93,7 @@ public class EEntity {
     }
 
 
-    /**
-     * @return the dateStart
-     */
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    /**
-     * @param dateStart the dateStart to set
-     */
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    /**
-     * @return the dateEnd
-     */
-    public Date getDateEnd() {
-        return dateEnd;
-    }
-
-    /**
-     * @param dateEnd the dateEnd to set
-     */
-    public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-
+    
     /**
      * @return the cvList
      */
@@ -247,5 +222,61 @@ public class EEntity {
      */
     public void setCcList(ArrayList<EEntity> ccList) {
         this.ccList = ccList;
+    }
+
+    /**
+     * @return the dateFrom
+     */
+    public Date getDateFrom() {
+        return dateFrom;
+    }
+
+    /**
+     * @param dateFrom the dateFrom to set
+     */
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    /**
+     * @return the dateTo
+     */
+    public Date getDateTo() {
+        return dateTo;
+    }
+
+    /**
+     * @param dateTo the dateTo to set
+     */
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
+    }
+
+    /**
+     * @return the lat
+     */
+    public double getLat() {
+        return lat;
+    }
+
+    /**
+     * @param lat the lat to set
+     */
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    /**
+     * @return the lng
+     */
+    public double getLng() {
+        return lng;
+    }
+
+    /**
+     * @param lng the lng to set
+     */
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }

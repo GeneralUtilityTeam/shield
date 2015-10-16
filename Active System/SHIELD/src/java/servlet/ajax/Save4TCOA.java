@@ -5,12 +5,24 @@
  */
 package servlet.ajax;
 
+import dao.MissionDAO;
+import entity.EEntity;
+import entity.IntTuple;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -35,7 +47,7 @@ public class Save4TCOA extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Save4TCOA</title>");            
+            out.println("<title>Servlet Save4TCOA</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Save4TCOA at " + request.getContextPath() + "</h1>");
@@ -56,6 +68,34 @@ public class Save4TCOA extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        JSONArray ccJArr = new JSONArray(request.getParameter("ccList"));
+
+        ArrayList<EEntity> ccList = new ArrayList<EEntity>();
+        DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+
+        for (Object obj : ccJArr) {
+            EEntity cc = new EEntity();
+            JSONObject jsob = new JSONObject(obj.toString());
+            cc.setId(jsob.getInt("id"));
+            cc.setLat(jsob.getDouble("lat"));
+            cc.setLng(jsob.getDouble("lng"));
+            String dateFromStr = jsob.getString("from");
+            String dateToStr = jsob.getString("to");
+            Date dateFrom = null;
+            Date dateTo = null;
+            try {
+                dateFrom = format.parse(dateFromStr);
+                dateTo = format.parse(dateToStr);
+            } catch (ParseException ex) {
+                Logger.getLogger(SaveSource.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            cc.setDateFrom(dateFrom);
+            cc.setDateTo(dateTo);
+            ccList.add(cc);
+        }
+        MissionDAO msonDAO = new MissionDAO();
+        //msonDAO.UpdateCCOfMision(ccList);
+
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");

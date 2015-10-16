@@ -22,6 +22,7 @@ public class Excerpt {
     
     private double strength;
     private boolean eentityEnabled;
+    private int eentityClassID;
 
     private ArrayList<String> tagList;
     
@@ -165,5 +166,19 @@ public class Excerpt {
      */
     public void setPublished(Date published) {
         this.published = published;
+    }
+
+    /**
+     * @return the eentityClassID
+     */
+    public int getEentityClassID() {
+        return eentityClassID;
+    }
+
+    /**
+     * @param eentityClassID the eentityClassID to set
+     */
+    public void setEentityClassID(int eentityClassID) {
+        this.eentityClassID = eentityClassID;
     }
 }
