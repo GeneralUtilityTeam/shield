@@ -48,7 +48,7 @@ function initialize() {
             $('#command-signal-keyword').tagsinput('add', commandAndSignalKeyword[x]);
         }
     }
-    
+
 }
 
 function saveMD() {
@@ -93,9 +93,8 @@ function saveMD() {
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
-                setTimeout(function () {
-                    window.location.assign("ANMission2PCO?id=" + missionID)
-                }, 3000);
+                window.location.assign("ANMission2PCO?id=" + missionID)
+
             }
         });
     }

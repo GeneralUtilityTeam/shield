@@ -5,13 +5,19 @@
  */
 package servlet.ajax;
 
+import entity.COG;
+import entity.EEntity;
+import entity.Excerpt;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -60,6 +66,28 @@ public class Save3COG extends HttpServlet {
         HttpSession session = request.getSession();
         int editorID = (int)session.getAttribute("userID");
         int missionID = (int)session.getAttribute("missionID");
+        
+        String nodeJSON = request.getParameter("nodeJSON");
+        String edgeJSON = request.getParameter("edgeJSON");
+        //JSONArray ccArr = new JSONArray(request.getParameter("ccArr"));
+        JSONArray crArr = new JSONArray(request.getParameter("crArr"));
+        
+        //System.out.println("CC Array: " + ccArr.toString());
+        System.out.println("CR Array: " + crArr.toString());
+        ArrayList<EEntity> crList = new ArrayList<EEntity>();
+        for(Object j : crArr){
+            JSONObject jsob = new JSONObject(j.toString());
+            EEntity eent = new EEntity();
+            eent.setName(jsob.getString("name"));
+            eent.setClassID(jsob.getInt("class"));
+            
+            crList.add(eent);
+        }
+        
+        COG cog = new COG();
+        cog.setNodeJSON(nodeJSON);
+        cog.setEdgeJSON(edgeJSON);
+        
         
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");

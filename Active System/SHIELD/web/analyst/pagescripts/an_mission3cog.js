@@ -195,28 +195,6 @@ function saveData(data, callback) {
 
 function saveCOG() {
 
-    //get CCs for TCOA
-    var cc = nodes.get({
-        filter: function (items) {
-            return (items.group == 3);
-        }
-    });
-    var ccArr = [];
-    for (var x = 0; x < cc.length; x++) {
-        var ccConnected = network.getConnectedNodes(cc[x].id);
-        var crConnectedToCc = [];
-        if (ccConnected != null) {
-            for (var y = 0; y < crConnected.length; y++) {
-                if (nodes.get(ccConnected[y]).group === 4) {
-                    crConnectedToCc.push(nodes.get(ccConnected[y]));
-                }
-            }
-        }
-        if (crConnectedToCc.length > 0) {
-            var ccObject = {cc: cc[x], cr: crConnectedToCc};
-            ccArr.push(ccObject);
-        }
-    }
     //get CR and CVs connected to it
     var cr = nodes.get({
         filter: function (items) {
@@ -227,17 +205,19 @@ function saveCOG() {
     for (var x = 0; x < cr.length; x++) {
         var crConnected = network.getConnectedNodes(cr[x].id);
         var cvConnectedToCr = [];
+        var ccConnectedToCr = [];
         if (crConnected != null) {
             for (var y = 0; y < crConnected.length; y++) {
                 if (nodes.get(crConnected[y]).group === 5) {
-                    cvConnectedToCr.push(nodes.get(crConnected[y]));
+                    cvConnectedToCr.push(crConnected[y]);
+                }
+                if (nodes.get(crConnected[y]).group === 3) {
+                    ccConnectedToCr.push(crConnected[y]);
                 }
             }
         }
-        if (cvConnectedToCr.length > 0) {
-            var crObject = {cr: cr[x], cv: cvConnectedToCr};
-            crArr.push(crObject);
-        }
+        var crObject = {cr: cr[x].id, cc: ccConnectedToCr, cv: cvConnectedToCr};
+        crArr.push(crObject);
 
     }
     //Save Nodes and Edges
@@ -247,21 +227,19 @@ function saveCOG() {
     var saveEdges = edges.get();
     var nodesJSON = JSON.stringify(saveNodes);
     var edgesJSON = JSON.stringify(saveEdges);
-
+console.log(crArr);
     $.ajax({
         type: "GET",
         url: "Save3COG",
         data: {
             nodesJSON: nodesJSON,
             edgesJSON: edgesJSON,
-            missionTCOA: toJSON(ccArr), //list of cc objects {id, name, class NOT group
-            missionCARVER: toJSON(crArr) //list of cr object {id, name, class, cvarray}
+            //ccArr: toJSON(ccArr), //list of cc objects {id, name, class NOT group
+            crArr: toJSON(crArr) //list of cr object {id, name, class, cvarray}
         },
         success: function (response) {
             showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
-            setTimeout(function () {
-                window.location.assign("ANMission4TCOA")
-            }, 3000);
+                window.location.assign("ANMission4TCOA");
         }
     });
 
