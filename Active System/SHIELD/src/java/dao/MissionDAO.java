@@ -424,34 +424,41 @@ public class MissionDAO {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            Area area = mson.getArea();
+            
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-            pstmt.setInt(1, mson.getUserID());
-            pstmt.setString(2, mson.getTitle());
-            pstmt.setString(3, area.getLevel8());
-            pstmt.setString(4, area.getLevel7());
-            pstmt.setString(5, area.getLevel6());
-            pstmt.setString(6, area.getLevel5());
-            pstmt.setString(7, area.getLevel4());
-            pstmt.setString(8, area.getLevel3());
-            pstmt.setString(9, area.getLevel2());
-            pstmt.setString(10, area.getLevel1());
-            pstmt.setDouble(11, area.getLat());
-            pstmt.setDouble(12, area.getLng());
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`delete_all_eentity_ext_mission`(?);");
+            pstmt.setInt(1, cog.getMissionID());
+            pstmt.execute();
+            pstmt = cn.prepareStatement("CALL `shield`.`add_cog`(?, ?, ?);");
+            pstmt.setInt(1, cog.getMissionID());
+            pstmt.setString(2, cog.getNodeJSON());
+            pstmt.setString(3, cog.getEdgeJSON());
+            pstmt.execute();
+            
+            pstmt = cn.prepareStatement("CALL `shield`.`add_eentity_ext`(<{IN in_eentity_id INT}>, <{IN in_mission_id INT}>, <{IN in_class_id INT}>);");
+            //CC
+            
+            //CR
+            
+            //CC-CR
+            
+            //CV
+            
+            //CR-
+
 
             ResultSet rs = pstmt.executeQuery();
             rs.next();
 
             if (rs.getRow() == 0) {
                 cn.close();
-                return -1;
+                return false;
             } else {
-                return rs.getInt(1);
+                return true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return -1;
+        return false;
     }
 }
