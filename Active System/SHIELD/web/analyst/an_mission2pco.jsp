@@ -110,7 +110,7 @@
                 </div>
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="savePCO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Center of Gravity</button>
+                        <button type="button" onclick="assignCrCv()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Center of Gravity</button>
                     </div>
 
                     <div id="data-sources">
@@ -153,7 +153,7 @@
                         <label style="width: 20%;">Entity Name: </label> <input type="text" id="entity-name" class="form-box" style="width: 76%"><br><br>
 
                         <table id="excerpt-list">
-                            <tr><label>Excerpts Selected: </label></tr>
+                            <tr style="border-bottom: solid 1px #D3D3D3;"><td><label>Excerpts Selected: </label></td></tr>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -275,9 +275,10 @@
                 <h5>Unused Keywords</h5>
                 <input id="unused-keyword" type="text" data-role="tagsinput" class="form-box unused" disabled style="padding-right: 1vw;">
             </div>
-            <table id="mission-entities">
-                <tr><h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Entities</h4></tr>
-            </table>
+            <h5 style="text-align: center;"><b>Mission Entities</b></h5>
+            <div class="panel-group" id="accordion" style="margin: 10px 10px 10px 10px; ">
+
+            </div>
 
         </div>
 

@@ -66,7 +66,7 @@
 
         <!--Sliding Side Bar Menu-->
         <div id="slidingmenu" style="width: 40vw;">
-            <div id="mission-center-of-gravity" style="height: 97vh; border: solid 1px #D3D3D3; margin: 1vh 1vw 1vh 1vw;">
+            <div id="mission-threat-course-of-action" style="height: 97vh; border: solid 1px #D3D3D3; margin: 1vh 1vw 1vh 1vw;">
 
             </div>
         </div>

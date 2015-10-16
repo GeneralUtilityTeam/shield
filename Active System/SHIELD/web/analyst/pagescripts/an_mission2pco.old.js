@@ -32,7 +32,6 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entity = responseJSON;
-            console.log(responseJSON);
             initialize();
         }
     });
@@ -103,6 +102,7 @@ var oms;
 var infoWindow;
 var mc;
 var minClusterZoom = 19;
+
 function initializeMap() {
     mapOptions = {
         center: new google.maps.LatLng(7.190708, 125.455341),
@@ -257,73 +257,273 @@ function createSearchMarker() {
 function setMarkerListener(marker) {
     var greenPin = "5BB85D";
     google.maps.event.addListener(marker, 'rightclick', function (event) {
-        selectedMarker.push(marker);
-        marker.setIcon(setMarkerColor(greenPin));
+        var add = true;
+        for (var x = 0; x < selectedMarker.length; x++) {
+            if (selectedMarker[x].id == marker.id)
+                add = false;
+        }
+        if (add) {
+            selectedMarker.push(marker);
+            marker.setIcon(setMarkerColor(greenPin));
+        }
     });
 }
 
 //Create Entity Function
 
 function loadEntity() {
-    var missionEntities = document.getElementById("mission-entities");
-    var table = document.createElement("table");
+    console.log(entity);
+    var table = document.getElementById("mission-entities");
+    $(table).find("tr:gt(0)").remove();
     for (var x = 0; x < entity.length; x++) {
         var trEntity = document.createElement("tr");
-        trEntity.innerHTML = "<h5><b>" + entity[x].name + "</b></h5>";
+        trEntity.innerHTML = "<h5 style='padding-left:1vw'><b>" + entity[x].name + "</b></h5>";
         trEntity.style.borderBottom = "solid 1px #D3D3D3";
         trEntity.style.padding = "5px";
         trEntity.style.margin = "10px";
-        if (entity[x].excrList.length != 0) {
-            for (var y = 0; y < entity[x].excrList.length; y++) {
-                var trExcerpt = document.createElement("tr");
-                var tdExcerpt = document.createElement("td");
-                tdExcerpt.style.paddingLeft = "25px";
-                tdExcerpt.style.paddingBottom = "5px";
-                tdExcerpt.style.color = "#202020";
-                tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
-                trExcerpt.appendChild(tdExcerpt);
-                trEntity.appendChild(trExcerpt);
-            }
+        for (var y = 0; y < entity[x].excrList.length; y++) {
+            var trExcerpt = document.createElement("tr");
+            var tdExcerpt = document.createElement("td");
+            tdExcerpt.style.paddingLeft = "25px";
+            tdExcerpt.style.paddingBottom = "5px";
+            tdExcerpt.style.color = "#202020";
+            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
+            trExcerpt.appendChild(tdExcerpt);
+            trEntity.appendChild(trExcerpt);
         }
         table.appendChild(trEntity);
-        missionEntities.appendChild(table);
     }
 }
+var entityExcerptList = [];
 function createEntity() {
     var modal = $('#entityModal');
     document.getElementById("entityModalLabel").innerHTML = "Create Entity";
+    $('#entity-name').val("");
+    entityExcerptList = [];
 
-    for (var x = 0; x < excerptList.length; x++) {
+    var table = document.getElementById("excerpt-list");
+    $(table).find("tr:gt(0)").remove();
 
+
+    for (var x = 0; x < selectedMarker.length; x++) {
+        for (var y = 0; y < excerptList.length; y++) {
+            if (selectedMarker[x].id == excerptList[y].id)
+                entityExcerptList.push(excerptList[y]);
+        }
     }
-
-
+    console.log(entityExcerptList);
+    for (var x = 0; x < entityExcerptList.length; x++) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "Excerpt " + entityExcerptList[x].id + ": " + entityExcerptList[x].text;
+        table.appendChild(tr);
+    }
     modal.modal('show');
+    $("#cancel-entity-btn").click(function () {
+        setMarkersOnMap(null, searchMarker);
+        setMarkersOnMap(null, selectedMarker);
+        mc.clearMarkers();
+        selectedMarker = new Array();
+        createSearchMarker();
+        modal.modal('hide');
+    });
 }
 
 function saveEntity() {
-    var entityObject;
-    var entityName = document.getElementById("entity-name").value;
-    var entityExcerpt = checkEnabled();
-    var entityExcerptId = [];
-    for (var x = 0; x < entityExcerpt.length; x++) {
-        entityExcerptId.push(entityExcerpt[x].id);
+    $('#entityModal').modal('hide');
+    if (entityExcerptList.length != 0) {
+        var entityObject = {id: entityCounter, name: $('#entity-name').val(), class: 1, excrList: entityExcerptList};
+        entity.push(entityObject);
+        entityCounter++;
+        setMarkersOnMap(null, searchMarker);
+        setMarkersOnMap(null, selectedMarker);
+        mc.clearMarkers();
+        selectedMarker = new Array();
+        createSearchMarker();
+        loadEntity();
+        assignDoesUses(entityObject.id);
     }
-    var entityMarkerTemp = createEntityMarker(getEntityCenter(entityExcerpt));
-    setEntityWindowListener(entityMarkerTemp, "<b>" + entityName + "</b><br>", entityExcerpt);
-    var entityExcerptMarkerTemp = createEntityExcerptMarker(entityExcerpt);
-    setEntityAppearListener(entityMarkerTemp, entityExcerptMarkerTemp);
-    entityObject = {id: entityCounter, name: entityName, excrList: entityExcerptId};
-
-    entityArr.push(entityObject);
-    entityCounter++;
-    //hide all search markers
-    setMarkersOnMap(null, searchMarker);
-    $('#search-field').val("");
-    var modal = $('#entityModal');
-    modal.modal('hide');
-    $('#search-field').focus();
+    else {
+        showAndDismissAlert("danger", "<strong>Failed! </strong> You do not have any excerpts to this Entity");
+    }
 }
+
+function assignDoesUses(id) {
+    var modal = $('#doesUsesModal');
+    var table = document.getElementById("does-uses-table");
+    $(table).find("tr:gt(0)").remove();
+
+    var tr1, tr2, td1, td2, td3, td4;
+    var label1, input1, label2, input2;
+
+    //Does
+    tr1 = document.createElement("tr");
+    td1 = document.createElement("td");
+    td2 = document.createElement("td");
+
+    label1 = document.createElement("label");
+    label1.innerHTML = "Does the <b>" + missionThreat + "</b> execute/practice/conduct <b>" + entity[id].name + "</b>?";
+    label1.style.fontWeight = "100";
+    td1.appendChild(label1);
+    input1 = document.createElement("input");
+    input1.id = "does" + entity[id].id;
+    input1.type = "checkbox";
+    input1.setAttribute("data-toggle", "toggle");
+    td2.appendChild(input1);
+    $(function () {
+        $(input1).bootstrapToggle({
+            on: 'Yes',
+            off: 'No',
+            onstyle: "success",
+            offstyle: "default",
+            width: "70",
+            size: "small"
+        });
+
+    });
+    tr1.appendChild(td1);
+    tr1.appendChild(td2);
+
+    //Uses
+    tr2 = document.createElement("tr");
+    td3 = document.createElement("td");
+    td3.style.marginTop = "10px";
+    td4 = document.createElement("td");
+    td4.style.marginTop = "10px";
+    label2 = document.createElement("label");
+    label2.innerHTML = "Does the <b>" + missionThreat + "</b> make use of/utilize/take advantage of <b>" + entity[id].name + "</b>?";
+    label2.style.fontWeight = "100";
+    td3.appendChild(label2);
+    input2 = document.createElement("input");
+    input2.id = "uses" + entity[id].id;
+    input2.type = "checkbox";
+    input2.setAttribute("data-toggle", "toggle");
+    td4.appendChild(input2);
+    $(function () {
+        $(input2).bootstrapToggle({
+            on: 'Yes',
+            off: 'No',
+            onstyle: "success",
+            offstyle: "default",
+            width: "70",
+            size: "small"
+        });
+
+    });
+    tr2.appendChild(td3);
+    tr2.appendChild(td4);
+
+    table.appendChild(tr1);
+    table.appendChild(tr2);
+    modal.modal('show');
+}
+
+function saveDoesUses() {
+    alert($('#does' + (entityCounter - 1)).prop('checked'));
+    alert($('#uses' + (entityCounter - 1)).prop('checked'));
+    if ($('#does' + (entityCounter - 1)).prop('checked') == true && $('#uses' + (entityCounter - 1)).prop('checked') == true) {
+        entity[entityCounter - 1].class = 2;
+        $('#doesUsesModal').modal('hide');
+    }
+    else if ($('#does' + (entityCounter - 1)).prop('checked') == true && $('#uses' + (entityCounter - 1)).prop('checked') == false) {
+        entity[entityCounter - 1].class = 3;
+        $('#doesUsesModal').modal('hide');
+    }
+    else if ($('#does' + (entityCounter - 1)).prop('checked') == false && $('#uses' + (entityCounter - 1)).prop('checked') == true) {
+        entity[entityCounter - 1].class = 4;
+        $('#doesUsesModal').modal('hide');
+    }
+    else if ($('#does' + (entityCounter - 1)).prop('checked') == false && $('#uses' + (entityCounter - 1)).prop('checked') == false) {
+        proceed = false;
+        showAndDismissAlert("danger", "Please complete Does/Uses for <strong>" + entity[entityCounter - 1].name + "</strong>");
+    }
+    console.log(entity);
+}
+
+function assignCrCv(id) {
+    var modal = $('#crcvModal');
+    var table = document.getElementById("cr-cv-table");
+    $(table).find("tr:gt(0)").remove();
+    var crCounter = 0;
+    for (var x = 0; x < entity.length; x++) {
+        if (entity[x].class == 4) {
+            var tr, td1, td2, input1;
+            //create TR
+            tr = document.createElement("tr");
+            tr.style.borderBottom = "solid 1px #D3D3D3";
+            tr.style.padding = "5px";
+            tr.style.margin = "3px";
+
+            //create TD
+            td1 = document.createElement("td");
+            td2 = document.createElement("td");
+
+            //center toggle buttons
+            td2.style.textAlign = "center";
+            td2.style.padding = "5px";
+
+            //content for each td
+            //td1
+            td1.innerHTML = entity[x].name;
+
+            //td2
+            input1 = document.createElement("input");
+            input1.id = "vulnerable" + entity[x].id;
+            input1.type = "checkbox";
+            input1.setAttribute("data-toggle", "toggle");
+            td2.appendChild(input1);
+            $(function () {
+                $(input1).bootstrapToggle({
+                    on: 'Yes',
+                    off: 'No',
+                    onstyle: "success",
+                    offstyle: "default",
+                    width: "70",
+                    size: "small"
+                });
+
+            });
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            table.appendChild(tr);
+            crCounter++;
+        }
+    }
+    if (crCounter > 0)
+        modal.modal('show');
+    else {
+        showAndDismissAlert("danger", "You do not have a <strong>Critical Requirement</strong>. Please look for more data.")
+    }
+}
+
+function saveCrCv() {
+    for (var x = 0; x < entity.length; x++) {
+        if (entity[x].class == 4) {
+            if ($('#vulnerable' + entity[x].id).prop('checked') == true) {
+                entity[x].class = 5;
+            }
+        }
+    }
+    var proceed = false;
+    for (var x = 0; x < entity.length; x++) {
+        if (entity[x].class == 5) {
+            proceed = true;
+        }
+    }
+    if(!proceed)
+        showAndDismissAlert("danger", "You cannot proceed without a <strong> Critical Vulnerability </strong> ");
+    else{
+        if(unusedKeywords.length != 0){
+            $('#keywordModal').modal('show');
+        }
+        else{
+            $('#crcvModal').modal('hide');
+            savePCO();
+        }
+    }
+    
+}
+
 
 function setMarkersOnMap(map, excerptMarker) {
 
@@ -353,28 +553,26 @@ function setMarkerColor(color) {
 }
 
 function savePCO() {
-    console.log(selectedMarker);
-//    if (entityArr.length == 0)
-//        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
-//    else if (entityArr.length < 4)
-//        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more entities.");
-//    else {
-//        console.log(toJSON(entityArr));
-//        $.ajax({
-//            type: "GET",
-//            url: "Save2PCO",
-//            data: {
-//                entityArr: toJSON(entityArr)
-//            },
-//            success: function (response) {
-//                console.log("success");
-//                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
-//                setTimeout(function () {
-//                    window.location.assign("ANMission3COG?id=" + missionID)
-//                }, 3000);
-//            }
-//        });
-//    }
+    if (entity.length == 0)
+        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
+    else if (entity.length < 4)
+        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
+    else {
+        $.ajax({
+            type: "GET",
+            url: "Save2PCO",
+            data: {
+                entityArr: "working"//toJSON(entity)
+            },
+            success: function (response) {
+                console.log("success");
+                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
+                setTimeout(function () {
+                    window.location.assign("ANMission3COG?id=" + missionID)
+                }, 3000);
+            }
+        });
+    }
 
 }
 

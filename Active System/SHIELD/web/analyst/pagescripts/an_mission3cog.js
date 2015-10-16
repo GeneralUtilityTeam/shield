@@ -163,7 +163,7 @@ function createNodes() {
     nodes.clear();
     edges.clear();
     for (var x = 0; x < entity.length; x++) {
-        nodes.add([{id: entity[x].id, label: entity[x].name, group: entity[x].class}]);
+        nodes.add([{id: entity[x].id, label: entity[x].name, group: entity[x].classID}]);
     }
 
     var cc = nodes.get({
@@ -196,11 +196,27 @@ function saveData(data, callback) {
 function saveCOG() {
 
     //get CCs for TCOA
-    var ccArr = nodes.get({
+    var cc = nodes.get({
         filter: function (items) {
             return (items.group == 3);
         }
     });
+    var ccArr = [];
+    for (var x = 0; x < cc.length; x++) {
+        var ccConnected = network.getConnectedNodes(cc[x].id);
+        var crConnectedToCc = [];
+        if (ccConnected != null) {
+            for (var y = 0; y < crConnected.length; y++) {
+                if (nodes.get(ccConnected[y]).group === 4) {
+                    crConnectedToCc.push(nodes.get(ccConnected[y]));
+                }
+            }
+        }
+        if (crConnectedToCc.length > 0) {
+            var ccObject = {cc: cc[x], cr: crConnectedToCc};
+            ccArr.push(ccObject);
+        }
+    }
     //get CR and CVs connected to it
     var cr = nodes.get({
         filter: function (items) {
@@ -211,19 +227,15 @@ function saveCOG() {
     for (var x = 0; x < cr.length; x++) {
         var crConnected = network.getConnectedNodes(cr[x].id);
         var cvConnectedToCr = [];
-        var ccConnectedToCr = [];
         if (crConnected != null) {
             for (var y = 0; y < crConnected.length; y++) {
                 if (nodes.get(crConnected[y]).group === 5) {
                     cvConnectedToCr.push(nodes.get(crConnected[y]));
                 }
-                if (nodes.get(crConnected[y]).group === 3) {
-                    ccConnectedToCr.push(nodes.get(crConnected[y]));
-                }
             }
         }
         if (cvConnectedToCr.length > 0) {
-            var crObject = {cr: cr[x], cc: ccConnectedToCr, cv: cvConnectedToCr};
+            var crObject = {cr: cr[x], cv: cvConnectedToCr};
             crArr.push(crObject);
         }
 
@@ -240,9 +252,8 @@ function saveCOG() {
         type: "GET",
         url: "Save3COG",
         data: {
-            missionID: missionID,
-            missionNodes: nodesJSON,
-            missionEdges: edgesJSON,
+            nodesJSON: nodesJSON,
+            edgesJSON: edgesJSON,
             missionTCOA: toJSON(ccArr), //list of cc objects {id, name, class NOT group
             missionCARVER: toJSON(crArr) //list of cr object {id, name, class, cvarray}
         },
@@ -257,26 +268,49 @@ function saveCOG() {
 }
 
 function loadSideBar() {
-    var table = document.getElementById("entity-table");
-
+    var collapse = $('#accordion');
+    collapse.empty();
+    collapse.add("<h5 style='text-align:center;'>Mission Entities</h5>");
     for (var x = 0; x < entity.length; x++) {
-        var trEntity = document.createElement("tr");
-        trEntity.innerHTML = "<h5><b>" + entity[x].name + "</b></h5>";
-        trEntity.style.borderBottom = "solid 1px #D3D3D3";
-        trEntity.style.padding = "5px";
-        trEntity.style.margin = "10px";
-        if (entity[x].excrList.length != 0) {
-            for (var y = 0; y < entity[x].excrList.length; y++) {
-                var trExcerpt = document.createElement("tr");
-                var tdExcerpt = document.createElement("td");
-                tdExcerpt.style.paddingLeft = "25px";
-                tdExcerpt.style.paddingBottom = "5px";
-                tdExcerpt.style.color = "#202020";
-                tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
-                trExcerpt.appendChild(tdExcerpt);
-                trEntity.appendChild(trExcerpt);
-            }
+        //Panel Element
+        var panel = document.createElement("div");
+        panel.className = "panel panel-default";
+        panel.id = "panel" + x;
+
+        //Panel Header
+        var panelHead = document.createElement("div");
+        panelHead.className = "panel-heading";
+        panelHead.id = "panelHead" + x;
+        panelHead.setAttribute("data-toggle", "collapse");
+        panelHead.setAttribute("href", "#collapse" + x);
+        panelHead.innerHTML = "<h5><b>" + toTitleCase(entity[x].name) + "</b></h5>";
+
+        //Panel Collapse
+        var panelCollapse = document.createElement("div");
+        panelCollapse.className = "panel-collapse collapse";
+        panelCollapse.id = "collapse" + x;
+
+        //Panel Body
+        var panelBody = document.createElement("div");
+        panelBody.className = "panel-body";
+        panelBody.id = "panelBody" + x;
+        var table = document.createElement("table");
+        for (var y = 0; y < entity[x].excrList.length; y++) {
+            var trExcerpt = document.createElement("tr");
+            var tdExcerpt = document.createElement("td");
+            tdExcerpt.style.paddingBottom = "5px";
+            tdExcerpt.style.color = "#202020";
+            tdExcerpt.style.textAlign = "justify";
+            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + " - " + entity[x].excrList[y].categoryDesc + ":</b> " + entity[x].excrList[y].text;
+            trExcerpt.appendChild(tdExcerpt);
+            table.appendChild(trExcerpt);
         }
-        table.appendChild(trEntity);
+
+        panelBody.appendChild(table);
+        panelCollapse.appendChild(panelBody);
+        panel.appendChild(panelHead);
+        panel.appendChild(panelCollapse);
+        collapse.append(panel);
+
     }
 }

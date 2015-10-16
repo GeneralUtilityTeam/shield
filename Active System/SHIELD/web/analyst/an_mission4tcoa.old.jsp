@@ -52,12 +52,12 @@
                         <button type="button" onclick="saveTCOA()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to CARVER Methodology</button>
                     </div>
                     <div id="mission-threat-courses-of-action" style="height: 79vh;">
-                        <div id="tcoa-list" class="col-md-6">
+                        <div id="tcoa-list" class="col-md-5">
                             <div class="panel-group" id="accordion">
                                 
                             </div>
                         </div>
-                        <div class="col-md-6" id="mission4tcoa-area-map">
+                        <div class="col-md-7" id="mission4tcoa-area-map">
                         </div>
                     </div>
                 </div>

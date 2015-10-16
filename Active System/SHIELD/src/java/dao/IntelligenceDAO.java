@@ -392,9 +392,10 @@ public class IntelligenceDAO {
             PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_eentity_excerpt`(?, ?);");
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, missionID);
-            pstmt.setInt(3, 1);
+            
 
             for (EEntity e : eentList) {
+                pstmt.setInt(3, e.getClassID());
                 pstmt.setString(4, e.getName());
 
                 ResultSet rs = pstmt.executeQuery();

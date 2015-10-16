@@ -113,18 +113,16 @@
 
         <!--Sliding Side Bar Menu-->
         <div id="slidingmenu" style="width: 22vw;">
-            <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Entities</h4>
-            <div id="mission-entity">
-                <table id="entity-table" style="padding: 10px; margin-left: 10px;">
+            <h5 style="text-align: center;"><b>Mission Entities</b></h5>
+            <div class="panel-group" id="accordion" style="margin: 10px 10px 10px 10px; ">
 
-                </table>
             </div>
 
         </div>
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-                            $('#slidingmenu').BootSideMenu({side: "left", autoClose: false});
+                            $('#slidingmenu').BootSideMenu({side: "left", autoClose: true});
         </script>
         <script type="text/javascript">
 
