@@ -151,7 +151,9 @@
                     </div>
                     <div class="modal-body scroll" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
                         <label style="width: 20%;">Entity Name: </label> <input type="text" id="entity-name" class="form-box" style="width: 76%"><br><br>
-
+                        <table id="does-uses-table" style="width: 100%;">
+                            <tr><td></td><td></td></tr>
+                        </table>
                         <table id="excerpt-list">
                             <tr style="border-bottom: solid 1px #D3D3D3;"><td><label>Excerpts Selected: </label></td></tr>
                         </table>
@@ -159,38 +161,6 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" onclick="saveEntity()"> 
                             <span class="glyphicon glyphicon-saved"> </span> Create Entity
-                        </button>
-                        <button type="button" class="btn btn-default"
-                                data-dismiss="modal">Close
-                        </button>
-
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-
-        <!-- Does/Uses Modal -->
-        <div class="modal" id="doesUsesModal" tabindex="-1" role="dialog" 
-             aria-labelledby="doesUsesModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content" >
-                    <div class="modal-header">
-                        <button type="button" class="close" 
-                                data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="entityModalLabel">
-                            Does/Uses
-                        </h4>
-                    </div>
-                    <div class="modal-body scroll" id="does-uses-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
-                        <table id="does-uses-table">
-                            <tr></tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="saveDoesUses()"> 
-                            <span class="glyphicon glyphicon-saved"> </span> Save Does/Uses
                         </button>
                         <button type="button" class="btn btn-default"
                                 data-dismiss="modal">Close

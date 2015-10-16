@@ -17,6 +17,7 @@ function initialize() { //Change this to take entities
     }
     else {
         entityCounter = entity.length;
+
         loadEntity();
     }
     //set entity array to the mission entity
@@ -102,7 +103,6 @@ var oms;
 var infoWindow;
 var mc;
 var minClusterZoom = 19;
-
 function initializeMap() {
     mapOptions = {
         center: new google.maps.LatLng(7.190708, 125.455341),
@@ -133,7 +133,7 @@ function initializeMap() {
     ];
     var mcOptions = {gridSize: 50, maxZoom: minClusterZoom, zoomOnClick: true, styles: clusterStyles};
     map = new google.maps.Map(document.getElementById('mission2pco-area-map'), mapOptions);
-    infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
+    infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50), disableAutoPan: true});
     geocoder = new google.maps.Geocoder();
     //geocodeString(area); -- NOt working
     mc = new MarkerClusterer(map, searchMarker, mcOptions);
@@ -272,33 +272,59 @@ function setMarkerListener(marker) {
 //Create Entity Function
 
 function loadEntity() {
-    console.log(entity);
-    var table = document.getElementById("mission-entities");
-    $(table).find("tr:gt(0)").remove();
+
+    var collapse = $('#accordion');
+    collapse.empty();
+    collapse.add("<h5 style='text-align:center;'>Mission Entities</h5>");
     for (var x = 0; x < entity.length; x++) {
-        var trEntity = document.createElement("tr");
-        trEntity.innerHTML = "<h5 style='padding-left:1vw'><b>" + entity[x].name + "</b></h5>";
-        trEntity.style.borderBottom = "solid 1px #D3D3D3";
-        trEntity.style.padding = "5px";
-        trEntity.style.margin = "10px";
+        //Panel Element
+        var panel = document.createElement("div");
+        panel.className = "panel panel-default";
+        panel.id = "panel" + x;
+
+        //Panel Header
+        var panelHead = document.createElement("div");
+        panelHead.className = "panel-heading";
+        panelHead.id = "panelHead" + x;
+        panelHead.setAttribute("data-toggle", "collapse");
+        panelHead.setAttribute("href", "#collapse" + x);
+        panelHead.innerHTML = "<h5><b>" + toTitleCase(entity[x].name) + "</b></h5>";
+
+        //Panel Collapse
+        var panelCollapse = document.createElement("div");
+        panelCollapse.className = "panel-collapse collapse";
+        panelCollapse.id = "collapse" + x;
+
+        //Panel Body
+        var panelBody = document.createElement("div");
+        panelBody.className = "panel-body";
+        panelBody.id = "panelBody" + x;
+        var table = document.createElement("table");
         for (var y = 0; y < entity[x].excrList.length; y++) {
             var trExcerpt = document.createElement("tr");
             var tdExcerpt = document.createElement("td");
-            tdExcerpt.style.paddingLeft = "25px";
             tdExcerpt.style.paddingBottom = "5px";
             tdExcerpt.style.color = "#202020";
-            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
+            tdExcerpt.style.textAlign = "justify";
+            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + " - " + entity[x].excrList[y].categoryDesc + ":</b> " + entity[x].excrList[y].text;
             trExcerpt.appendChild(tdExcerpt);
-            trEntity.appendChild(trExcerpt);
+            table.appendChild(trExcerpt);
         }
-        table.appendChild(trEntity);
+
+        panelBody.appendChild(table);
+        panelCollapse.appendChild(panelBody);
+        panel.appendChild(panelHead);
+        panel.appendChild(panelCollapse);
+        collapse.append(panel);
+
     }
 }
+
 var entityExcerptList = [];
 function createEntity() {
     var modal = $('#entityModal');
     document.getElementById("entityModalLabel").innerHTML = "Create Entity";
-    $('#entity-name').val("");
+    $('#entity-name').val($('#search-field').val());
     entityExcerptList = [];
 
     var table = document.getElementById("excerpt-list");
@@ -311,10 +337,14 @@ function createEntity() {
                 entityExcerptList.push(excerptList[y]);
         }
     }
-    console.log(entityExcerptList);
     for (var x = 0; x < entityExcerptList.length; x++) {
         var tr = document.createElement("tr");
-        tr.innerHTML = "Excerpt " + entityExcerptList[x].id + ": " + entityExcerptList[x].text;
+        var td = document.createElement("td");
+        td.style.borderBottom = "solid 1px #D3D3D3";
+        td.style.paddingTop = "1vh";
+        td.style.paddingBottom = "1vh";
+        td.innerHTML = "<b>Excerpt " + entityExcerptList[x].id + " - " + entityExcerptList[x].categoryDesc + ":</b> " + entityExcerptList[x].text;
+        tr.appendChild(td);
         table.appendChild(tr);
     }
     modal.modal('show');
@@ -358,10 +388,14 @@ function assignDoesUses(id) {
     //Does
     tr1 = document.createElement("tr");
     td1 = document.createElement("td");
+    td1.style.marginTop = "10px";
+    td1.style.paddingTop = "10px";
     td2 = document.createElement("td");
+    td2.style.marginTop = "10px";
+    td2.style.padding = "10px";
 
     label1 = document.createElement("label");
-    label1.innerHTML = "Does the <b>" + missionThreat + "</b> execute/practice/conduct <b>" + entity[id].name + "</b>?";
+    label1.innerHTML = "Does the <b>"+ missionThreat +"</b> execute/practice/conduct <b>" + entity[id].name + "</b>?";
     label1.style.fontWeight = "100";
     td1.appendChild(label1);
     input1 = document.createElement("input");
@@ -387,8 +421,10 @@ function assignDoesUses(id) {
     tr2 = document.createElement("tr");
     td3 = document.createElement("td");
     td3.style.marginTop = "10px";
+    td3.style.paddingTop = "10px";
     td4 = document.createElement("td");
     td4.style.marginTop = "10px";
+    td4.style.padding = "10px";
     label2 = document.createElement("label");
     label2.innerHTML = "Does the <b>" + missionThreat + "</b> make use of/utilize/take advantage of <b>" + entity[id].name + "</b>?";
     label2.style.fontWeight = "100";
@@ -418,8 +454,6 @@ function assignDoesUses(id) {
 }
 
 function saveDoesUses() {
-    alert($('#does' + (entityCounter - 1)).prop('checked'));
-    alert($('#uses' + (entityCounter - 1)).prop('checked'));
     if ($('#does' + (entityCounter - 1)).prop('checked') == true && $('#uses' + (entityCounter - 1)).prop('checked') == true) {
         entity[entityCounter - 1].class = 2;
         $('#doesUsesModal').modal('hide');
@@ -436,10 +470,9 @@ function saveDoesUses() {
         proceed = false;
         showAndDismissAlert("danger", "Please complete Does/Uses for <strong>" + entity[entityCounter - 1].name + "</strong>");
     }
-    console.log(entity);
 }
 
-function assignCrCv(id) {
+function assignCrCv() {
     var modal = $('#crcvModal');
     var table = document.getElementById("cr-cv-table");
     $(table).find("tr:gt(0)").remove();
@@ -510,18 +543,19 @@ function saveCrCv() {
             proceed = true;
         }
     }
-    if(!proceed)
+    if (!proceed)
         showAndDismissAlert("danger", "You cannot proceed without a <strong> Critical Vulnerability </strong> ");
-    else{
-        if(unusedKeywords.length != 0){
+    else {
+        if (unusedKeywords.length != 0) {
+            $('#crcvModal').modal('hide');
             $('#keywordModal').modal('show');
         }
-        else{
+        else {
             $('#crcvModal').modal('hide');
             savePCO();
         }
     }
-    
+
 }
 
 
@@ -558,14 +592,22 @@ function savePCO() {
     else if (entity.length < 4)
         showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
     else {
+        for (var x = 0; x < entity.length; x++) {
+            var entityObject;
+            var entityExcerptId = [];
+            for (var y = 0; y < entity[x].excrList.length; y++) {
+                entityExcerptId.push(entity[x].excrList[y].id);
+            }
+            entityObject = {id: entity[x].id, name: entity[x].name, class: entity[x].class, excrList: entityExcerptId};
+            entityArr.push(entityObject);
+        }
         $.ajax({
             type: "GET",
             url: "Save2PCO",
             data: {
-                entityArr: "working"//toJSON(entity)
+                entityArr: toJSON(entityArr)
             },
             success: function (response) {
-                console.log("success");
                 showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
                 setTimeout(function () {
                     window.location.assign("ANMission3COG?id=" + missionID)

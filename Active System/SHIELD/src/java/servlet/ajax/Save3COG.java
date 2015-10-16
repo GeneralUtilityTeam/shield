@@ -5,6 +5,7 @@
  */
 package servlet.ajax;
 
+import dao.MissionDAO;
 import entity.COG;
 import entity.EEntity;
 import entity.Excerpt;
@@ -67,26 +68,45 @@ public class Save3COG extends HttpServlet {
         int editorID = (int)session.getAttribute("userID");
         int missionID = (int)session.getAttribute("missionID");
         
-        String nodeJSON = request.getParameter("nodeJSON");
-        String edgeJSON = request.getParameter("edgeJSON");
-        //JSONArray ccArr = new JSONArray(request.getParameter("ccArr"));
+        String nodeJSON = request.getParameter("nodesJSON");
+        String edgeJSON = request.getParameter("edgesJSON");
         JSONArray crArr = new JSONArray(request.getParameter("crArr"));
         
-        //System.out.println("CC Array: " + ccArr.toString());
-        System.out.println("CR Array: " + crArr.toString());
         ArrayList<EEntity> crList = new ArrayList<EEntity>();
         for(Object j : crArr){
             JSONObject jsob = new JSONObject(j.toString());
-            EEntity eent = new EEntity();
-            eent.setName(jsob.getString("name"));
-            eent.setClassID(jsob.getInt("class"));
             
-            crList.add(eent);
+            EEntity cr = new EEntity();
+            cr.setId(jsob.getInt("cr"));
+            System.out.println("CR: " + cr.getId());
+            ArrayList<EEntity> ccList = new ArrayList<EEntity>();
+            for(Object ccObj : jsob.getJSONArray("cc")){
+                EEntity cc = new EEntity();
+                cc.setId((int)ccObj);
+                ccList.add(cc);
+                System.out.println("    CC: " + cc.getId());
+            }
+            cr.setCcList(ccList);
+            
+            ArrayList<EEntity> cvList = new ArrayList<EEntity>();
+            for(Object cvObj : jsob.getJSONArray("cv")){
+                EEntity cv = new EEntity();
+                cv.setId((int)cvObj);
+                ccList.add(cv);
+                System.out.println("    CV: " + cv.getId());
+            }
+            cr.setCvList(cvList);
+            
+            crList.add(cr);
         }
         
         COG cog = new COG();
         cog.setNodeJSON(nodeJSON);
         cog.setEdgeJSON(edgeJSON);
+        cog.setCrList(crList);
+        cog.setMissionID(missionID);
+        
+        MissionDAO msonDAO = new MissionDAO();
         
         
         response.setContentType("text/plain");

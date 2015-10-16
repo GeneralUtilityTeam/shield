@@ -282,13 +282,21 @@ function loadEntity() {
         panel.className = "panel panel-default";
         panel.id = "panel" + x;
 
+        var classType = "";
+        if (entity[x].classID == 2)
+            classType = "Center of Gravity";
+        else if (entity[x].classID == 3)
+            classType = "Critical Capability";
+        else if (entity[x].classID == 4)
+            classType = "Critical Requirement";
+
         //Panel Header
         var panelHead = document.createElement("div");
         panelHead.className = "panel-heading";
         panelHead.id = "panelHead" + x;
         panelHead.setAttribute("data-toggle", "collapse");
         panelHead.setAttribute("href", "#collapse" + x);
-        panelHead.innerHTML = "<h5><b>" + toTitleCase(entity[x].name) + "</b></h5>";
+        panelHead.innerHTML = "<h5><b>" + toTitleCase(entity[x].name) + "</b> - " + classType + "</h5>";
 
         //Panel Collapse
         var panelCollapse = document.createElement("div");
@@ -311,13 +319,24 @@ function loadEntity() {
             table.appendChild(trExcerpt);
         }
 
+//        var removeBtn = document.createElement("button");
+//        removeBtn.className = "btn btn-danger";
+//        removeBtn.id = "remove" + entity[x].id;
+//        var span = document.createElement("span");
+//        span.className = "glyphicon glyphicon-trash";
+//        removeBtn.appendChild(span);
+//        removeBtn.innerHTML += " Remove Entity";
+//        removeBtn.setAttribute("disabled", true);
+
         panelBody.appendChild(table);
+//        panelBody.appendChild(removeBtn);
         panelCollapse.appendChild(panelBody);
         panel.appendChild(panelHead);
         panel.appendChild(panelCollapse);
         collapse.append(panel);
 
     }
+//    setRemoveEntityListener();
 }
 
 var entityExcerptList = [];
@@ -325,62 +344,9 @@ function createEntity() {
     var modal = $('#entityModal');
     document.getElementById("entityModalLabel").innerHTML = "Create Entity";
     $('#entity-name').val($('#search-field').val());
-    entityExcerptList = [];
 
-    var table = document.getElementById("excerpt-list");
-    $(table).find("tr:gt(0)").remove();
-
-
-    for (var x = 0; x < selectedMarker.length; x++) {
-        for (var y = 0; y < excerptList.length; y++) {
-            if (selectedMarker[x].id == excerptList[y].id)
-                entityExcerptList.push(excerptList[y]);
-        }
-    }
-    for (var x = 0; x < entityExcerptList.length; x++) {
-        var tr = document.createElement("tr");
-        var td = document.createElement("td");
-        td.style.borderBottom = "solid 1px #D3D3D3";
-        td.style.paddingTop = "1vh";
-        td.style.paddingBottom = "1vh";
-        td.innerHTML = "<b>Excerpt " + entityExcerptList[x].id + " - " + entityExcerptList[x].categoryDesc + ":</b> " + entityExcerptList[x].text;
-        tr.appendChild(td);
-        table.appendChild(tr);
-    }
-    modal.modal('show');
-    $("#cancel-entity-btn").click(function () {
-        setMarkersOnMap(null, searchMarker);
-        setMarkersOnMap(null, selectedMarker);
-        mc.clearMarkers();
-        selectedMarker = new Array();
-        createSearchMarker();
-        modal.modal('hide');
-    });
-}
-
-function saveEntity() {
-    $('#entityModal').modal('hide');
-    if (entityExcerptList.length != 0) {
-        var entityObject = {id: entityCounter, name: $('#entity-name').val(), class: 1, excrList: entityExcerptList};
-        entity.push(entityObject);
-        entityCounter++;
-        setMarkersOnMap(null, searchMarker);
-        setMarkersOnMap(null, selectedMarker);
-        mc.clearMarkers();
-        selectedMarker = new Array();
-        createSearchMarker();
-        loadEntity();
-        assignDoesUses(entityObject.id);
-    }
-    else {
-        showAndDismissAlert("danger", "<strong>Failed! </strong> You do not have any excerpts to this Entity");
-    }
-}
-
-function assignDoesUses(id) {
-    var modal = $('#doesUsesModal');
-    var table = document.getElementById("does-uses-table");
-    $(table).find("tr:gt(0)").remove();
+    var doesUsesTable = document.getElementById("does-uses-table");
+    $(doesUsesTable).find("tr:gt(0)").remove();
 
     var tr1, tr2, td1, td2, td3, td4;
     var label1, input1, label2, input2;
@@ -395,11 +361,11 @@ function assignDoesUses(id) {
     td2.style.padding = "10px";
 
     label1 = document.createElement("label");
-    label1.innerHTML = "Does the <b>"+ missionThreat +"</b> execute/practice/conduct <b>" + entity[id].name + "</b>?";
+    label1.innerHTML = "Is this executed/practiced/conducted by the <b>" + toTitleCase(missionThreat) + "</b>?";
     label1.style.fontWeight = "100";
     td1.appendChild(label1);
     input1 = document.createElement("input");
-    input1.id = "does" + entity[id].id;
+    input1.id = "does" + entityCounter;
     input1.type = "checkbox";
     input1.setAttribute("data-toggle", "toggle");
     td2.appendChild(input1);
@@ -426,11 +392,11 @@ function assignDoesUses(id) {
     td4.style.marginTop = "10px";
     td4.style.padding = "10px";
     label2 = document.createElement("label");
-    label2.innerHTML = "Does the <b>" + missionThreat + "</b> make use of/utilize/take advantage of <b>" + entity[id].name + "</b>?";
+    label2.innerHTML = "Is this used/utilized/taken advantage of by the <b>" + toTitleCase(missionThreat) + "</b>?";
     label2.style.fontWeight = "100";
     td3.appendChild(label2);
     input2 = document.createElement("input");
-    input2.id = "uses" + entity[id].id;
+    input2.id = "uses" + entityCounter;
     input2.type = "checkbox";
     input2.setAttribute("data-toggle", "toggle");
     td4.appendChild(input2);
@@ -448,29 +414,86 @@ function assignDoesUses(id) {
     tr2.appendChild(td3);
     tr2.appendChild(td4);
 
-    table.appendChild(tr1);
-    table.appendChild(tr2);
+    doesUsesTable.appendChild(tr1);
+    doesUsesTable.appendChild(tr2);
+
+    entityExcerptList = [];
+
+    var excrListTable = document.getElementById("excerpt-list");
+    $(excrListTable).find("tr:gt(0)").remove();
+
+
+    for (var x = 0; x < selectedMarker.length; x++) {
+        for (var y = 0; y < excerptList.length; y++) {
+            if (selectedMarker[x].id == excerptList[y].id)
+                entityExcerptList.push(excerptList[y]);
+        }
+    }
+    for (var x = 0; x < entityExcerptList.length; x++) {
+        var excrListTr = document.createElement("tr");
+        var excrListTd = document.createElement("td");
+        excrListTd.style.borderBottom = "solid 1px #D3D3D3";
+        excrListTd.style.paddingTop = "1vh";
+        excrListTd.style.paddingBottom = "1vh";
+        excrListTd.innerHTML = "<b>Excerpt " + entityExcerptList[x].id + " - " + entityExcerptList[x].categoryDesc + ":</b> " + entityExcerptList[x].text;
+        excrListTr.appendChild(excrListTd);
+        excrListTable.appendChild(excrListTr);
+    }
     modal.modal('show');
+    $("#cancel-entity-btn").click(function () {
+        setMarkersOnMap(null, searchMarker);
+        setMarkersOnMap(null, selectedMarker);
+        mc.clearMarkers();
+        selectedMarker = new Array();
+        createSearchMarker();
+        modal.modal('hide');
+    });
 }
 
-function saveDoesUses() {
-    if ($('#does' + (entityCounter - 1)).prop('checked') == true && $('#uses' + (entityCounter - 1)).prop('checked') == true) {
-        entity[entityCounter - 1].class = 2;
-        $('#doesUsesModal').modal('hide');
+function saveEntity() {
+    var classID = 0;
+    var proceed = true;
+    if ($('#does' + entityCounter).prop('checked') == true && $('#uses' + entityCounter).prop('checked') == true) {
+        if (entity.length != 0) {
+            for (var x = 0; x < entity.length; x++) {
+                if (entity[x].classID == 2) {
+                    proceed = false;
+                    showAndDismissAlert("danger", "You already have a <strong>Center of Gravity</strong>.");
+                }
+            }
+        }
+        if (proceed)
+            classID = 2;
     }
-    else if ($('#does' + (entityCounter - 1)).prop('checked') == true && $('#uses' + (entityCounter - 1)).prop('checked') == false) {
-        entity[entityCounter - 1].class = 3;
-        $('#doesUsesModal').modal('hide');
+    else if ($('#does' + entityCounter).prop('checked') == true && $('#uses' + entityCounter).prop('checked') == false) {
+        classID = 3;
     }
-    else if ($('#does' + (entityCounter - 1)).prop('checked') == false && $('#uses' + (entityCounter - 1)).prop('checked') == true) {
-        entity[entityCounter - 1].class = 4;
-        $('#doesUsesModal').modal('hide');
+    else if ($('#does' + entityCounter).prop('checked') == false && $('#uses' + entityCounter).prop('checked') == true) {
+        classID = 4;
     }
-    else if ($('#does' + (entityCounter - 1)).prop('checked') == false && $('#uses' + (entityCounter - 1)).prop('checked') == false) {
+    else if ($('#does' + entityCounter).prop('checked') == false && $('#uses' + entityCounter).prop('checked') == false) {
         proceed = false;
-        showAndDismissAlert("danger", "Please complete Does/Uses for <strong>" + entity[entityCounter - 1].name + "</strong>");
+        showAndDismissAlert("danger", "Please complete Does/Uses for <strong>" + $('#entity-name').val() + "</strong>");
+    }
+
+
+    if (entityExcerptList.length != 0 && proceed) {
+        var entityObject = {id: entityCounter, name: $('#entity-name').val(), classID: classID, excrList: entityExcerptList};
+        entity.push(entityObject);
+        entityCounter++;
+        setMarkersOnMap(null, searchMarker);
+        setMarkersOnMap(null, selectedMarker);
+        mc.clearMarkers();
+        selectedMarker = new Array();
+        createSearchMarker();
+        loadEntity();
+        $('#entityModal').modal('hide');
+    }
+    else if (entityExcerptList.length != 0 && proceed) {
+        showAndDismissAlert("danger", "<strong>Failed! </strong> You do not have any excerpts to this Entity");
     }
 }
+
 
 function assignCrCv() {
     var modal = $('#crcvModal');
@@ -478,7 +501,7 @@ function assignCrCv() {
     $(table).find("tr:gt(0)").remove();
     var crCounter = 0;
     for (var x = 0; x < entity.length; x++) {
-        if (entity[x].class == 4) {
+        if (entity[x].classID == 4) {
             var tr, td1, td2, input1;
             //create TR
             tr = document.createElement("tr");
@@ -531,21 +554,50 @@ function assignCrCv() {
 
 function saveCrCv() {
     for (var x = 0; x < entity.length; x++) {
-        if (entity[x].class == 4) {
+        if (entity[x].classID == 4) {
             if ($('#vulnerable' + entity[x].id).prop('checked') == true) {
-                entity[x].class = 5;
+                entity[x].classID = 5;
             }
         }
     }
-    var proceed = false;
+    var proceed = true;
+
+    var cogCounter, ccCounter, crCounter, cvCounter;
     for (var x = 0; x < entity.length; x++) {
-        if (entity[x].class == 5) {
-            proceed = true;
+        if (entity[x].classID == 2) {
+            cogCounter++;
+        }
+        else if (entity[x].classID == 3) {
+            ccCounter++;
+        }
+        else if (entity[x].classID == 4) {
+            crCounter++;
+        }
+        else if (entity[x].classID == 5) {
+            cvCounter++;
         }
     }
-    if (!proceed)
-        showAndDismissAlert("danger", "You cannot proceed without a <strong> Critical Vulnerability </strong> ");
-    else {
+    if (entity.length < 4) {
+        proceed = false;
+        showAndDismissAlert("danger", "You cannot do not have enough <strong> Entities </strong>");
+    }
+    if (cogCounter == 0) {
+        proceed = false;
+        showAndDismissAlert("danger", "You cannot proceed <strong> without a Center of Gravity </strong>");
+    }
+    if (crCounter == 0) {
+        proceed = false;
+        showAndDismissAlert("danger", "You do not have a <strong> Critical Requirement  </strong>");
+    }
+    if (cogCounter > 1) {
+        proceed = false;
+        showAndDismissAlert("danger", "You cannot have <strong> multiple Centers of Gravity </strong>");
+    }
+    if (cvCounter == 0) {
+        proceed = false;
+        showAndDismissAlert("danger", "You do not have a <strong> Critical Vulnerability  </strong>");
+    }
+    if (proceed) {
         if (unusedKeywords.length != 0) {
             $('#crcvModal').modal('hide');
             $('#keywordModal').modal('show');
@@ -598,7 +650,7 @@ function savePCO() {
             for (var y = 0; y < entity[x].excrList.length; y++) {
                 entityExcerptId.push(entity[x].excrList[y].id);
             }
-            entityObject = {id: entity[x].id, name: entity[x].name, class: entity[x].class, excrList: entityExcerptId};
+            entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId};
             entityArr.push(entityObject);
         }
         $.ajax({
@@ -703,3 +755,23 @@ function displayKeywords(value) {
 
 
 }
+
+function deleteEntity(id) {
+    var entityDelete;
+    for (var x = 0; x < entity.length; x++) {
+        if (entity[x].id == id)
+            entityDelete = entity.indexOf(entity[x].id);
+    }
+    entity.splice(entityDelete, 1);
+    loadEntity();
+    console.log(entity);
+}
+
+//function setRemoveEntityListener(){
+//    alert("zzz");
+//    for(var x=0; x<entity.length; x++){
+//        var btn = document.getElementById("remove" + entity[x].id);
+//        btn.setAttribute("disabled", false);
+////        document.getElementById("remove" + entity[x].id).setAttribute("onclick", deleteEntity(entity[x].id));
+//    }
+//}

@@ -24,7 +24,7 @@ public class EEntity {
     private Date dateEnd;
     
     //CR properties
-    private int ccParentID;
+    private ArrayList<EEntity> ccList;
     private ArrayList<EEntity> cvList;
     
     //CV properties
@@ -222,20 +222,6 @@ public class EEntity {
      */
 
     /**
-     * @return the ccParentID
-     */
-    public int getCcParentID() {
-        return ccParentID;
-    }
-
-    /**
-     * @param ccParentID the ccParentID to set
-     */
-    public void setCcParentID(int ccParentID) {
-        this.ccParentID = ccParentID;
-    }
-
-    /**
      * @return the excrList
      */
     public ArrayList<Excerpt> getExcrList() {
@@ -247,5 +233,19 @@ public class EEntity {
      */
     public void setExcrList(ArrayList<Excerpt> excrList) {
         this.excrList = excrList;
+    }
+
+    /**
+     * @return the ccList
+     */
+    public ArrayList<EEntity> getCcList() {
+        return ccList;
+    }
+
+    /**
+     * @param ccList the ccList to set
+     */
+    public void setCcList(ArrayList<EEntity> ccList) {
+        this.ccList = ccList;
     }
 }

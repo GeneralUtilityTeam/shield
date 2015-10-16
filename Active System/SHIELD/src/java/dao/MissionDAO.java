@@ -418,4 +418,40 @@ public class MissionDAO {
         System.out.println("null2");
         return null;
     }
+
+    public boolean AddCOG(COG cog){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            Area area = mson.getArea();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, mson.getUserID());
+            pstmt.setString(2, mson.getTitle());
+            pstmt.setString(3, area.getLevel8());
+            pstmt.setString(4, area.getLevel7());
+            pstmt.setString(5, area.getLevel6());
+            pstmt.setString(6, area.getLevel5());
+            pstmt.setString(7, area.getLevel4());
+            pstmt.setString(8, area.getLevel3());
+            pstmt.setString(9, area.getLevel2());
+            pstmt.setString(10, area.getLevel1());
+            pstmt.setDouble(11, area.getLat());
+            pstmt.setDouble(12, area.getLng());
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
 }

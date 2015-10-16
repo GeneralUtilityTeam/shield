@@ -227,19 +227,17 @@ function saveCOG() {
     var saveEdges = edges.get();
     var nodesJSON = JSON.stringify(saveNodes);
     var edgesJSON = JSON.stringify(saveEdges);
-console.log(crArr);
     $.ajax({
         type: "GET",
         url: "Save3COG",
         data: {
             nodesJSON: nodesJSON,
             edgesJSON: edgesJSON,
-            //ccArr: toJSON(ccArr), //list of cc objects {id, name, class NOT group
             crArr: toJSON(crArr) //list of cr object {id, name, class, cvarray}
         },
         success: function (response) {
             showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
-                window.location.assign("ANMission4TCOA");
+            //    window.location.assign("ANMission4TCOA");
         }
     });
 
