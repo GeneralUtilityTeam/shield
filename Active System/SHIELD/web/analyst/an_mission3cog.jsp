@@ -38,14 +38,8 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             
-            var nodesArray = <%=request.getAttribute("nodeJSON")%>;
-            var edgesArray = <%=request.getAttribute("edgeJSON")%>;
-            $(function () {
-                $('#collapseTwo').collapse('hide')
-            });
-            $(function () {
-                $('#collapseOne').collapse('show')
-            });
+            var nodesArray = <%=request.getAttribute("nodesJSON")%>;
+            var edgesArray = <%=request.getAttribute("edgesJSON")%>;
         </script>
 
         <!--Vis.js Style-->

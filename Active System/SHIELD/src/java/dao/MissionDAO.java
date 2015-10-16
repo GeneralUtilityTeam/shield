@@ -9,6 +9,7 @@ import db.DBConnector;
 import entity.Area;
 import entity.COG;
 import entity.EEntity;
+import entity.IntTuple;
 import entity.Mission;
 import entity.Task;
 import java.sql.Connection;
@@ -435,27 +436,47 @@ public class MissionDAO {
             pstmt.setString(3, cog.getEdgeJSON());
             pstmt.execute();
             
-            pstmt = cn.prepareStatement("CALL `shield`.`add_eentity_ext`(<{IN in_eentity_id INT}>, <{IN in_mission_id INT}>, <{IN in_class_id INT}>);");
+            pstmt = cn.prepareStatement("CALL `shield`.`add_eentity_ext`(?, ?, ?);");
+            pstmt.setInt(2, cog.getMissionID());
+       
             //CC
+            pstmt.setInt(3, 3);
+            for(EEntity cc : cog.getCcList()){
+                pstmt.setInt(1, cc.getId());
+                pstmt.execute();
+            }
             
             //CR
+            pstmt.setInt(3, 4);
+            for(EEntity cr : cog.getCrList()){
+                pstmt.setInt(1, cr.getId());
+                pstmt.execute();
+            }
+            
+             //CV
+            pstmt.setInt(3, 5);
+            for(EEntity cv : cog.getCvList()){
+                pstmt.setInt(1, cv.getId());
+                pstmt.execute();
+            }
             
             //CC-CR
-            
-            //CV
-            
-            //CR-
-
-
-            ResultSet rs = pstmt.executeQuery();
-            rs.next();
-
-            if (rs.getRow() == 0) {
-                cn.close();
-                return false;
-            } else {
-                return true;
+            PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_cc_cr`(?, ?);");
+            for(IntTuple it : cog.getRelCRList()){
+                pstmt2.setInt(1, it.getX());
+                pstmt2.setInt(2, it.getY());
+                pstmt2.execute();
             }
+            
+            //CR-CV
+            pstmt2 = cn.prepareStatement("CALL `shield`.`link_cr_cv`(?, ?);");
+            for(IntTuple it : cog.getRelRVList()){
+                pstmt2.setInt(1, it.getX());
+                pstmt2.setInt(2, it.getY());
+                pstmt2.execute();
+            }
+
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

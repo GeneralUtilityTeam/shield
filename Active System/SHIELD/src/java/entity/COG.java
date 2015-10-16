@@ -18,6 +18,10 @@ public class COG {
     
     private ArrayList<EEntity> ccList;
     private ArrayList<EEntity> crList;
+    private ArrayList<EEntity> cvList;
+    
+    private ArrayList<IntTuple> relCRList;
+    private ArrayList<IntTuple> relRVList;
     
     private ArrayList<EEntity> eentList; //for initial creation
 
@@ -103,6 +107,48 @@ public class COG {
      */
     public void setEentList(ArrayList<EEntity> eentList) {
         this.eentList = eentList;
+    }
+
+    /**
+     * @return the relCRList
+     */
+    public ArrayList<IntTuple> getRelCRList() {
+        return relCRList;
+    }
+
+    /**
+     * @param relCRList the relCRList to set
+     */
+    public void setRelCRList(ArrayList<IntTuple> relCRList) {
+        this.relCRList = relCRList;
+    }
+
+    /**
+     * @return the relRVList
+     */
+    public ArrayList<IntTuple> getRelRVList() {
+        return relRVList;
+    }
+
+    /**
+     * @param relRVList the relRVList to set
+     */
+    public void setRelRVList(ArrayList<IntTuple> relRVList) {
+        this.relRVList = relRVList;
+    }
+
+    /**
+     * @return the cvList
+     */
+    public ArrayList<EEntity> getCvList() {
+        return cvList;
+    }
+
+    /**
+     * @param cvList the cvList to set
+     */
+    public void setCvList(ArrayList<EEntity> cvList) {
+        this.cvList = cvList;
     }
     
 }

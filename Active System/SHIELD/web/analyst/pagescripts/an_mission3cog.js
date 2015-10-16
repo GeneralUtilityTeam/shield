@@ -2,7 +2,7 @@ function initialize() {
     buildNav(missionStatus, 3);
     //for COG already created
     if (missionStatus > 3) {
-
+        console.log(nodesArray);
         if (nodesArray != null) {
             for (var x = 0; x < nodesArray.length; x++) {
                 nodes.add(nodesArray[x]);
@@ -13,7 +13,7 @@ function initialize() {
                 edges.add(edgesArray[x]);
             }
         }
-
+        draw();
     }
     //for COG created from PCO entities
     else if (missionStatus == 3 && entity != null) {
@@ -176,29 +176,56 @@ function saveData(data, callback) {
 function saveCOG() {
 
     //get CR and CVs connected to it
-    var cr = nodes.get({
+    var tempCc = nodes.get({
+        filter: function (items) {
+            return (items.group == 3);
+        }
+    });
+    var cc = [];
+    for (var x = 0; x < tempCc.length; x++) {
+        cc.push(tempCc[x].id);
+    }
+    var tempCr = nodes.get({
         filter: function (items) {
             return (items.group == 4);
         }
     });
-    var crArr = [];
-    for (var x = 0; x < cr.length; x++) {
-        var crConnected = network.getConnectedNodes(cr[x].id);
-        var cvConnectedToCr = [];
-        var ccConnectedToCr = [];
-        if (crConnected != null) {
-            for (var y = 0; y < crConnected.length; y++) {
-                if (nodes.get(crConnected[y]).group === 5) {
-                    cvConnectedToCr.push(crConnected[y]);
-                }
-                if (nodes.get(crConnected[y]).group === 3) {
-                    ccConnectedToCr.push(crConnected[y]);
+    var cr = [];
+    for (var x = 0; x < tempCr.length; x++) {
+        cr.push(tempCr[x].id);
+    }
+    var tempCv = nodes.get({
+        filter: function (items) {
+            return (items.group == 5);
+        }
+    });
+    var cv = [];
+    for (var x = 0; x < tempCv.length; x++) {
+        cv.push(tempCv[x].id);
+    }
+    var ccArr = [];
+    for (var x = 0; x < tempCc.length; x++) {
+        var ccConnected = network.getConnectedNodes(tempCc[x].id);
+        if (ccConnected != null) {
+            for (var y = 0; y < ccConnected.length; y++) {
+                if (nodes.get(ccConnected[y]).group == 4) {
+                    var ccObject = {cc: tempCc[x].id, cr: ccConnected[y]};
+                    ccArr.push(ccObject);
                 }
             }
         }
-        var crObject = {cr: cr[x].id, cc: ccConnectedToCr, cv: cvConnectedToCr};
-        crArr.push(crObject);
-
+    }
+    var crArr = [];
+    for (var x = 0; x < tempCr.length; x++) {
+        var crConnected = network.getConnectedNodes(tempCr[x].id);
+        if (crConnected != null) {
+            for (var y = 0; y < crConnected.length; y++) {
+                if (nodes.get(crConnected[y]).group == 5) {
+                    var crObject = {cr: tempCr[x].id, cv: crConnected[y]};
+                    crArr.push(crObject);
+                }
+            }
+        }
     }
     //Save Nodes and Edges
     var saveNodes = nodes.get({
@@ -207,17 +234,22 @@ function saveCOG() {
     var saveEdges = edges.get();
     var nodesJSON = JSON.stringify(saveNodes);
     var edgesJSON = JSON.stringify(saveEdges);
+
     $.ajax({
         type: "GET",
         url: "Save3COG",
         data: {
             nodesJSON: nodesJSON,
             edgesJSON: edgesJSON,
-            crArr: toJSON(crArr) //list of cr object {id, name, class, cvarray}
+            cc: toJSON(cc),
+            cr: toJSON(cr),
+            cv: toJSON(cv),
+            crArr: toJSON(ccArr),
+            rvArr: toJSON(crArr) //list of cr object {id, name, class, cvarray}
         },
         success: function (response) {
             showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
-            //    window.location.assign("ANMission4TCOA");
+            window.location.assign("ANMission4TCOA");
         }
     });
 
@@ -257,7 +289,7 @@ function loadSideBar() {
             tdExcerpt.style.paddingBottom = "5px";
             tdExcerpt.style.color = "#202020";
             tdExcerpt.style.textAlign = "justify";
-            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + " - " + entity[x].excrList[y].categoryDesc + ":</b> " + entity[x].excrList[y].text;
+            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
             trExcerpt.appendChild(tdExcerpt);
             table.appendChild(trExcerpt);
         }

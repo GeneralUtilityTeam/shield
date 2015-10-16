@@ -289,6 +289,8 @@ function loadEntity() {
             classType = "Critical Capability";
         else if (entity[x].classID == 4)
             classType = "Critical Requirement";
+        else if (entity[x].classID == 5)
+            classType = "Critical Vulnerability";
 
         //Panel Header
         var panelHead = document.createElement("div");
@@ -314,7 +316,7 @@ function loadEntity() {
             tdExcerpt.style.paddingBottom = "5px";
             tdExcerpt.style.color = "#202020";
             tdExcerpt.style.textAlign = "justify";
-            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + " - " + entity[x].excrList[y].categoryDesc + ":</b> " + entity[x].excrList[y].text;
+            tdExcerpt.innerHTML = "<b>Excerpt " + entity[x].excrList[y].id + ":</b> " + entity[x].excrList[y].text;
             trExcerpt.appendChild(tdExcerpt);
             table.appendChild(trExcerpt);
         }

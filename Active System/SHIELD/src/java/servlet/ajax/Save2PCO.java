@@ -68,7 +68,6 @@ public class Save2PCO extends HttpServlet {
         HttpSession session = request.getSession();
         int editorID = (int)session.getAttribute("userID");
         int missionID = (int)session.getAttribute("missionID");
-        String entityJSON = request.getParameter("entityArr");
         
         ArrayList<EEntity> eentList = new ArrayList<EEntity>();
         JSONArray entityJArr = new JSONArray(request.getParameter("entityArr"));

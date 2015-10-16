@@ -9,6 +9,7 @@ import dao.MissionDAO;
 import entity.COG;
 import entity.EEntity;
 import entity.Excerpt;
+import entity.IntTuple;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -70,44 +71,61 @@ public class Save3COG extends HttpServlet {
         
         String nodeJSON = request.getParameter("nodesJSON");
         String edgeJSON = request.getParameter("edgesJSON");
-        JSONArray crArr = new JSONArray(request.getParameter("crArr"));
+        JSONArray ccArr = new JSONArray(request.getParameter("cc"));
+        JSONArray crArr = new JSONArray(request.getParameter("cr"));
+        JSONArray cvArr = new JSONArray(request.getParameter("cv"));
+        JSONArray relCRArr = new JSONArray(request.getParameter("crArr"));
+        JSONArray relRVArr = new JSONArray(request.getParameter("rvArr"));
         
+        ArrayList<EEntity> ccList = new ArrayList<EEntity>();
         ArrayList<EEntity> crList = new ArrayList<EEntity>();
-        for(Object j : crArr){
-            JSONObject jsob = new JSONObject(j.toString());
-            
-            EEntity cr = new EEntity();
-            cr.setId(jsob.getInt("cr"));
-            System.out.println("CR: " + cr.getId());
-            ArrayList<EEntity> ccList = new ArrayList<EEntity>();
-            for(Object ccObj : jsob.getJSONArray("cc")){
+        ArrayList<EEntity> cvList = new ArrayList<EEntity>();
+        ArrayList<IntTuple> relCRList = new ArrayList<IntTuple>();
+        ArrayList<IntTuple> relRVList = new ArrayList<IntTuple>();
+        for(Object obj : ccArr){
                 EEntity cc = new EEntity();
-                cc.setId((int)ccObj);
+                cc.setId((int)obj);
                 ccList.add(cc);
-                System.out.println("    CC: " + cc.getId());
-            }
-            cr.setCcList(ccList);
-            
-            ArrayList<EEntity> cvList = new ArrayList<EEntity>();
-            for(Object cvObj : jsob.getJSONArray("cv")){
-                EEntity cv = new EEntity();
-                cv.setId((int)cvObj);
-                ccList.add(cv);
-                System.out.println("    CV: " + cv.getId());
-            }
-            cr.setCvList(cvList);
-            
-            crList.add(cr);
         }
+        for(Object obj : crArr){
+                EEntity cc = new EEntity();
+                cc.setId((int)obj);
+                crList.add(cc);
+        }
+        for(Object obj : cvArr){
+                EEntity cc = new EEntity();
+                cc.setId((int)obj);
+                cvList.add(cc);
+        }
+        for(Object obj : relCRArr){
+                IntTuple it = new IntTuple();
+                JSONObject jsob = new JSONObject(obj.toString());
+                it.setX(jsob.getInt("cc"));
+                it.setY(jsob.getInt("cr"));
+                relCRList.add(it);
+        }
+        for(Object obj : relRVArr){
+                IntTuple it = new IntTuple();
+                JSONObject jsob = new JSONObject(obj.toString());
+                it.setX(jsob.getInt("cr"));
+                it.setY(jsob.getInt("cv"));
+                relRVList.add(it);
+        }
+        
         
         COG cog = new COG();
         cog.setNodeJSON(nodeJSON);
         cog.setEdgeJSON(edgeJSON);
+        cog.setCcList(ccList);
         cog.setCrList(crList);
+        cog.setCvList(cvList);
+        cog.setRelCRList(relCRList);
+        cog.setRelRVList(relRVList);
+        
         cog.setMissionID(missionID);
         
         MissionDAO msonDAO = new MissionDAO();
-        
+        msonDAO.AddCOG(cog);
         
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");

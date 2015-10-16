@@ -29,10 +29,18 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission4tcoa.js"></script>
         <script src="js/mission-menu-builder.js"></script>
+        
+        <script>
+            var missionStatus = <%=session.getAttribute("missionStatus")%>;
+            var missionTitle = '<%=session.getAttribute("missionTitle")%>';
+            var missionID = <%=session.getAttribute("missionID")%>;
+            var analystName = '<%=session.getAttribute("analystName")%>';
+            
+        </script>
 
     </head>
 
-    <body onload="initialize()" style="overflow: hidden;">
+    <body style="overflow: hidden;">
 
         <!--Navigation Bar-->
         <script src="js/navigation.js"></script>
