@@ -284,12 +284,15 @@ public class IntelligenceDAO {
                 do {
                     Excerpt excr = new Excerpt();
                     excr.setId(rs.getInt(1));
-                    excr.setText(rs.getString(2));
-
+                    excr.setCategoryID(rs.getInt(2));
+                    excr.setCategoryDesc(rs.getString(3));
+                    excr.setText(rs.getString(4));
+                    excr.setPublished(rs.getDate(5));
+                    
                     Area area = new Area();
-                    area.setLat(rs.getDouble(3));
-                    area.setLng(rs.getDouble(4));
-                    excr.setStrength(rs.getDouble(5));
+                    area.setLat(rs.getDouble(6));
+                    area.setLng(rs.getDouble(7));
+                    excr.setStrength(rs.getDouble(8));
                     excr.setArea(area);
                     excrList.add(excr);
                 } while (rs.next());

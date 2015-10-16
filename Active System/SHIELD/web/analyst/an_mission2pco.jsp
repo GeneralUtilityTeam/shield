@@ -47,8 +47,8 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
 
+            var missionThreat = '<%=request.getAttribute("missionThreat")%>';
             var keywordList = <%=request.getAttribute("keywordList")%>;
-            var threat = '<%=request.getAttribute("threat")%>';
             var level8 = '<%=request.getAttribute("level8")%>';
             var level7 = '<%=request.getAttribute("level7")%>';
             var level6 = '<%=request.getAttribute("level6")%>';
@@ -152,13 +152,113 @@
                     <div class="modal-body scroll" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
                         <label style="width: 20%;">Entity Name: </label> <input type="text" id="entity-name" class="form-box" style="width: 76%"><br><br>
 
+                        <table id="excerpt-list">
+                            <tr><label>Excerpts Selected: </label></tr>
+                        </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="saveEntity()">
+                        <button type="button" class="btn btn-success" onclick="saveEntity()"> 
                             <span class="glyphicon glyphicon-saved"> </span> Create Entity
                         </button>
-                        <button type="button" class="btn btn-default" 
+                        <button type="button" class="btn btn-default"
                                 data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <!-- Does/Uses Modal -->
+        <div class="modal" id="doesUsesModal" tabindex="-1" role="dialog" 
+             aria-labelledby="doesUsesModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Does/Uses
+                        </h4>
+                    </div>
+                    <div class="modal-body scroll" id="does-uses-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        <table id="does-uses-table">
+                            <tr></tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="saveDoesUses()"> 
+                            <span class="glyphicon glyphicon-saved"> </span> Save Does/Uses
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <!-- CRCV Modal -->
+        <div class="modal" id="crcvModal" tabindex="-1" role="dialog" 
+             aria-labelledby="crcvModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Entity Vulnerability
+                        </h4>
+                    </div>
+                    <div class="modal-body scroll" id="cr-cv-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        <table id="cr-cv-table">
+                            <tr>
+                                <th width="50%">Critical Requirement</th>
+                                <th widhth="50%" style="text-align: center;">Vulnerable to Neutralize/Attack?</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="saveCrCv()"> 
+                            <span class="glyphicon glyphicon-saved"> </span> Save Critical Vulnerabilities
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <!-- Keyword Modal -->
+        <div class="modal" id="keywordModal" tabindex="-1" role="dialog" 
+             aria-labelledby="keywordModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Characteristics Overlay
+                        </h4>
+                    </div>
+                    <div class="modal-body scroll" id="keyword-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        You have not used all your Keywords for searching. Would you still like to proceed to Center of Gravity Analysis?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="savePCO()" data-dismiss="modal"> 
+                            <span class="glyphicon glyphicon-saved"> </span> Proceed
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Cancel
                         </button>
 
                     </div>
@@ -175,10 +275,9 @@
                 <h5>Unused Keywords</h5>
                 <input id="unused-keyword" type="text" data-role="tagsinput" class="form-box unused" disabled style="padding-right: 1vw;">
             </div>
-            <h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Entities</h4>
-            <div id="mission-entities">
-                
-            </div>
+            <table id="mission-entities">
+                <tr><h4 style="margin-top: 2vh; margin-bottom: 1vh; text-align: center;">Mission Entities</h4></tr>
+            </table>
 
         </div>
 

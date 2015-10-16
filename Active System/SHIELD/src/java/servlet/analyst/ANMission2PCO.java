@@ -32,13 +32,13 @@ public class ANMission2PCO extends FatherServlet {
         MissionDAO msonDAO = new MissionDAO();
         HttpSession session = request.getSession();
         String missionIDString = session.getAttribute("missionID").toString();
-        int missionID = Integer.parseInt(missionIDString);
+        int missionID = Integer.parseInt(missionIDString);                              
         Mission mson = msonDAO.GetMission(missionID);
         mson.generateFullKeywordList();
         ArrayList keywordList = mson.getKeywordList();        
         JSONArray keywordJArr = new JSONArray(keywordList);
         request.setAttribute("keywordList", keywordJArr.toString());
-        request.setAttribute("threat", mson.getThreat());
+        request.setAttribute("missionThreat", mson.getThreat());
         request.setAttribute("level8", mson.getArea().getLevel8());
         request.setAttribute("level7", mson.getArea().getLevel7());
         request.setAttribute("level6", mson.getArea().getLevel6());

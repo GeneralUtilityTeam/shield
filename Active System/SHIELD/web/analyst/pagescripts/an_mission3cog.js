@@ -37,8 +37,7 @@ function initialize() {
     }
     //for COG created from PCO entities
     else if (missionStatus == 3 && entity != null) {
-        console.log(entity);
-        assignDoesUses();
+        createNodes();
     }
 
     loadSideBar();
@@ -73,14 +72,14 @@ var options = {
                 end();
             }
             if (
-                    (x.group == "cog" && y.group == "cr") ||
-                    (x.group == "cr" && y.group == "cog") ||
-                    (x.group == "cog" && y.group == "cv") ||
-                    (x.group == "cv" && y.group == "cog") ||
-                    (x.group == "cc" && y.group == "cv") ||
-                    (x.group == "cv" && y.group == "cc")
+                    (x.group == 2 && y.group == 4) ||
+                    (x.group == 4 && y.group == 2) ||
+                    (x.group == 2 && y.group == 5) ||
+                    (x.group == 5 && y.group == 2) ||
+                    (x.group == 3 && y.group == 5) ||
+                    (x.group == 5 && y.group == 3)
                     ) {
-                showAndDismissAlert("danger", "You cannot connect <strong>" + x.group.toUpperCase() + "</strong> to <strong>" + y.group.toUpperCase() + "</strong>.");
+                showAndDismissAlert("danger", "You cannot connect these nodes.");
             }
 
             else {
@@ -103,7 +102,7 @@ var options = {
         color: '#202020'
     },
     groups: {
-        cog: {
+        2: {
             shape: 'icon',
             icon: {
                 face: 'FontAwesome',
@@ -112,7 +111,7 @@ var options = {
                 color: '#CC0000'
             }
         },
-        cc: {
+        3: {
             shape: 'icon',
             icon: {
                 face: 'FontAwesome',
@@ -121,7 +120,7 @@ var options = {
                 color: '#202020'
             }
         },
-        cr: {
+        4: {
             shape: 'icon',
             icon: {
                 face: 'FontAwesome',
@@ -130,7 +129,7 @@ var options = {
                 color: '#FF4500'
             }
         },
-        cv: {
+        5: {
             shape: 'icon',
             icon: {
                 face: 'FontAwesome',
@@ -160,209 +159,21 @@ function draw() {
 
 }
 
-function assignDoesUses() {
-    var table = document.getElementById("does-uses-table");
-    for (var x = 0; x < entity.length; x++) {
-        var tr, td1, td2, td3, input1, input2;
-        //create TR
-        tr = document.createElement("tr");
-        tr.style.borderBottom = "solid 1px #D3D3D3";
-        tr.style.padding = "5px";
-        tr.style.margin = "3px";
-        //create TD
-        td1 = document.createElement("td");
-        td2 = document.createElement("td");
-        td3 = document.createElement("td");
-
-        //center toggle buttons
-        td2.style.textAlign = "center";
-        td2.style.padding = "5px";
-        td3.style.textAlign = "center";
-        td3.style.padding = "5px";
-
-        //content for each td
-        //td1
-        td1.innerHTML = entity[x].name;
-
-        //td2
-        input1 = document.createElement("input");
-        input1.id = "does" + entity[x].id;
-        input1.type = "checkbox";
-        input1.setAttribute("data-toggle", "toggle");
-        td2.appendChild(input1);
-        $(function () {
-                $(input1).bootstrapToggle({
-                    on: 'Yes',
-                    off: 'No',
-                    onstyle: "success",
-                    offstyle: "default",
-                    width: "70",
-                    size: "small"
-                });
-
-            });
-
-        //td3
-        input2 = document.createElement("input");
-        input2.id = "uses" + entity[x].id;
-        input2.type = "checkbox";
-        input2.setAttribute("data-toggle", "toggle");
-        td3.appendChild(input2);
-        $(function () {
-                $(input2).bootstrapToggle({
-                    on: 'Yes',
-                    off: 'No',
-                    onstyle: "success",
-                    offstyle: "default",
-                    width: "70",
-                    size: "small"
-                });
-
-            });
-
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-        tr.appendChild(td3);
-        table.appendChild(tr);
-    }
-    $('#doesusesModal').modal('show');
-}
-
-function assignCRCV() {
-    var crCount = 0;
-    var table = document.getElementById("cv-table");
-    $('#cv-table').find("tr:gt(0)").remove();
-    for (var x = 0; x < entity.length; x++) {
-        if (entity[x].type == "cr") {
-            var tr, td1, td2, input1;
-            //create TR
-            tr = document.createElement("tr");
-            tr.style.borderBottom = "solid 1px #D3D3D3";
-            tr.style.padding = "5px";
-            tr.style.margin = "3px";
-
-            //create TD
-            td1 = document.createElement("td");
-            td2 = document.createElement("td");
-
-            //center toggle buttons
-            td2.style.textAlign = "center";
-            td2.style.padding = "5px";
-
-            //content for each td
-            //td1
-            td1.innerHTML = entity[x].name;
-
-            //td2
-            input1 = document.createElement("input");
-            input1.id = "vulnerable" + entity[x].id;
-            input1.type = "checkbox";
-            input1.setAttribute("data-toggle", "toggle");
-            td2.appendChild(input1);
-            $(function () {
-                $(input1).bootstrapToggle({
-                    on: 'Yes',
-                    off: 'No',
-                    onstyle: "success",
-                    offstyle: "default",
-                    width: "70",
-                    size: "small"
-                });
-
-            });
-
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-            table.appendChild(tr);
-
-            crCount++;
-        }
-    }
-
-}
-
-function setEntityType() {
-    var cogCounter = 0;
-    var crCounter = 0;
-    var proceed = true;
-    //Set Entity Type
-    for (var x = 0; x < entity.length; x++) {
-        if ($('#does' + entity[x].id).prop('checked') == true && $('#uses' + entity[x].id).prop('checked') == true) {
-            entity[x].type = "cog";
-            cogCounter++;
-        }
-        else if ($('#does' + entity[x].id).prop('checked') == true && $('#uses' + entity[x].id).prop('checked') == false) {
-            entity[x].type = "cc";
-        }
-        else if ($('#does' + entity[x].id).prop('checked') == false && $('#uses' + entity[x].id).prop('checked') == true) {
-            entity[x].type = "cr";
-            crCounter++;
-        }
-        else if ($('#does' + entity[x].id).prop('checked') == false && $('#uses' + entity[x].id).prop('checked') == false) {
-            proceed = false;
-            showAndDismissAlert("danger", "Please complete Does/Uses for <strong>" + entity[x].name + "</strong>");
-        }
-    }
-    if (cogCounter == 0) {
-        proceed = false;
-        showAndDismissAlert("danger", "You cannot proceed <strong> without a Center of Gravity </strong>");
-    }
-    if (crCounter == 0) {
-        proceed = false;
-        showAndDismissAlert("danger", "You do not have a <strong> Critical Requirement  </strong>");
-    }
-    if (cogCounter > 1) {
-        proceed = false;
-        showAndDismissAlert("danger", "You cannot have <strong> multiple Centers of Gravity </strong>");
-    }
-    if (proceed) {
-        assignCRCV();
-        $('#doesusesModal').modal('hide');
-        $('#cvModal').modal('show');
-    }
-
-
-}
-
-function setCV() {
-    var proceed = true;
-    var cvCounter = 0;
-    for (var x = 0; x < entity.length; x++) {
-        if (entity[x].type == "cr") {
-            if ($('#vulnerable' + entity[x].id).prop('checked') == true) {
-                entity[x].type = "cv";
-                cvCounter++;
-            }
-        }
-    }
-    if (cvCounter == 0) {
-        proceed = false;
-        showAndDismissAlert("danger", "You cannot proceed without a <strong> Critical Vulnerability </strong> ");
-    }
-    if (proceed) {
-        createNodes();
-        $('#cvModal').modal('hide');
-        $('#slidingmenu').find(".toggler").trigger("click");
-    }
-    else {
-
-    }
-}
 function createNodes() {
     nodes.clear();
     edges.clear();
     for (var x = 0; x < entity.length; x++) {
-        nodes.add([{id: entity[x].id, label: entity[x].name, group: entity[x].type}]);
+        nodes.add([{id: entity[x].id, label: entity[x].name, group: entity[x].class}]);
     }
 
     var cc = nodes.get({
         filter: function (items) {
-            return (items.group == "cc");
+            return (items.group == 3);
         }
     });
     var cog = nodes.get({
         filter: function (items) {
-            return (items.group == "cog");
+            return (items.group == 2);
         }
     });
 
@@ -371,18 +182,6 @@ function createNodes() {
         edges.add([{id: newId, from: cc[x].id, to: cog[0].id}]);
     }
     draw();
-}
-
-function resetAll() {
-    draw();
-}
-function editNode(addGroup) {
-    var nodeGroup = addGroup;
-    activeNode = network.getSelectedNodes();
-    var tempNodes = nodes.get(activeNode);
-    for (var x = 0; x < tempNodes.length; x++) {
-        nodes.update([{id: tempNodes[x].id, label: tempNodes[x].label, group: nodeGroup}]);
-    }
 }
 
 function saveData(data, callback) {
@@ -399,13 +198,13 @@ function saveCOG() {
     //get CCs for TCOA
     var ccArr = nodes.get({
         filter: function (items) {
-            return (items.group == "cc");
+            return (items.group == 3);
         }
     });
     //get CR and CVs connected to it
     var cr = nodes.get({
         filter: function (items) {
-            return (items.group == "cr");
+            return (items.group == 4);
         }
     });
     var crArr = [];
@@ -415,10 +214,10 @@ function saveCOG() {
         var ccConnectedToCr = [];
         if (crConnected != null) {
             for (var y = 0; y < crConnected.length; y++) {
-                if (nodes.get(crConnected[y]).group === "cv") {
+                if (nodes.get(crConnected[y]).group === 5) {
                     cvConnectedToCr.push(nodes.get(crConnected[y]));
                 }
-                if (nodes.get(crConnected[y]).group === "cc") {
+                if (nodes.get(crConnected[y]).group === 3) {
                     ccConnectedToCr.push(nodes.get(crConnected[y]));
                 }
             }
@@ -431,10 +230,7 @@ function saveCOG() {
     }
     //Save Nodes and Edges
     var saveNodes = nodes.get({
-        fields: ['id', 'label', 'group'],
-        type: {
-            group: 'String'                 // convert the group fields to Strings
-        }
+        fields: ['id', 'label', 'group']
     });
     var saveEdges = edges.get();
     var nodesJSON = JSON.stringify(saveNodes);

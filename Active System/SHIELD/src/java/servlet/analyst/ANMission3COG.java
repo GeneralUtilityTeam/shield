@@ -35,7 +35,12 @@ public class ANMission3COG extends FatherServlet {
         String missionIDString = session.getAttribute("missionID").toString();
         int missionID = Integer.parseInt(missionIDString);
         COG cog = msonDAO.GetCOGOfMission(missionID);
-
+        //TESTING
+        if (cog == null) {
+            ServletContext context = getServletContext();
+            RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission3cog.jsp");
+            dispatch.forward(request, response);
+        }
         if (cog.getNodeJSON() == null) { // cog is probably null
             ArrayList eentList = cog.getEentList();
             String eentJSON = new JSONArray(eentList).toString();
@@ -52,7 +57,6 @@ public class ANMission3COG extends FatherServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

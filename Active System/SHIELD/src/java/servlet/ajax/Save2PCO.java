@@ -69,7 +69,12 @@ public class Save2PCO extends HttpServlet {
         int editorID = (int)session.getAttribute("userID");
         int missionID = (int)session.getAttribute("missionID");
         String entityJSON = request.getParameter("entityArr");
-        System.out.println(entityJSON);
+        System.out.println("Save2PCO: /n" + entityJSON);
+        
+        //TESTING
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
         
         ArrayList<EEntity> eentList = new ArrayList<EEntity>();
         JSONArray entityJArr = new JSONArray(request.getParameter("entityArr"));

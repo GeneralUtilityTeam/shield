@@ -6,6 +6,7 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -23,6 +24,9 @@ public class Excerpt {
     private boolean eentityEnabled;
 
     private ArrayList<String> tagList;
+    
+    private Date published;
+    
     /**
      * @return the id
      */
@@ -147,5 +151,19 @@ public class Excerpt {
      */
     public void setTagList(ArrayList<String> tagList) {
         this.tagList = tagList;
+    }
+
+    /**
+     * @return the published
+     */
+    public Date getPublished() {
+        return published;
+    }
+
+    /**
+     * @param published the published to set
+     */
+    public void setPublished(Date published) {
+        this.published = published;
     }
 }

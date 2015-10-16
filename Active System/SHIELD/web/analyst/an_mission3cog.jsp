@@ -100,112 +100,16 @@
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
                         <button type="button" onclick="saveCOG()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to Threat Course of Action</button>
                     </div>
-                    <div id="network-popUp">
-                        <span id="operation">node</span> <br>
-                        <table style="margin:auto;"><tr>
-                                <td>id</td><td><input id="node-id" value="new value" /></td>
-                            </tr>
-                            <tr>
-                                <td>label</td><td><input id="node-label" value="new value" /></td>
-                            </tr>
-                            <tr>
-                                <td>group</td><td>
-                                    <select id="node-group">
-                                        <option value="cog">Center of Gravity</option>
-                                        <option value="cc">Critical Capability</option>
-                                        <option value="cr">Critical Requirement</option>
-                                        <option value="cv">Critical Vulnerability</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                        <input type="button" value="save" id="saveButton"/>
-                        <input type="button" value="cancel" id="cancelButton" />
-                    </div>
+                    
                     <br />
                     <div id="mynetwork"></div>
-                    <div class="btn-group" style="position: fixed; top:85vh; margin-left: 1%;">
+<!--                    <div class="btn-group" style="position: fixed; top:85vh; margin-left: 1%;">
                         <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#doesusesModal"><i class="fa fa-navicon" style="color:#202020"></i> Does/Uses Menu</a>
 
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
-
-        <!-- Does/Uses Modal -->
-        <div class="modal fade" id="doesusesModal" tabindex="-1" role="dialog" 
-             aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" 
-                                data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            Center of Gravity Analysis - Does/Uses
-                        </h4>
-                    </div>
-                    <div class="modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
-
-                        <table id="does-uses-table" width="100%">
-                            <tr>
-                                <th width="40%">Entity</th>
-                                <th widhth="30%" style="text-align: center;">Does</th>
-                                <th width="30%" style="text-align: center;">Uses</th>
-                            </tr>
-
-                        </table>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="setEntityType()">
-                            <span class="glyphicon glyphicon-arrow-right"></span>
-                            Next Step
-                        </button>
-                        <button type="button" class="btn btn-default" 
-                                data-dismiss="modal">Cancel
-                        </button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-
-        <!-- Critical Vulnerability Modal -->
-        <div class="modal fade" id="cvModal" tabindex="-1" role="dialog" 
-             aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" 
-                                data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            Center of Gravity Analysis - Critical Vulnerability
-                        </h4>
-                    </div>
-                    <div class="modal-body scroll">
-                        <table id="cv-table" width="100%">
-                            <tr>
-                                <th width="50%">Entity</th>
-                                <th widhth="50%" style="text-align: center;">Vulnerable to Neutralize/Attack?</th>
-                            </tr>
-
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="setCV()">
-                            <span class="glyphicon glyphicon-saved"></span> Confirm
-                        </button>
-                        <button type="button" class="btn btn-default" 
-                                data-dismiss="modal">Cancel
-                        </button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
 
         <!--Sliding Side Bar Menu-->
         <div id="slidingmenu" style="width: 22vw;">
