@@ -420,12 +420,10 @@ public class MissionDAO {
         return null;
     }
 
-    public boolean AddCOG(COG cog){
+    public boolean AddCOG(COG cog) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-
-            
 
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`delete_all_eentity_ext_mission`(?);");
             pstmt.setInt(1, cog.getMissionID());
@@ -435,42 +433,42 @@ public class MissionDAO {
             pstmt.setString(2, cog.getNodeJSON());
             pstmt.setString(3, cog.getEdgeJSON());
             pstmt.execute();
-            
+
             pstmt = cn.prepareStatement("CALL `shield`.`add_eentity_ext`(?, ?, ?);");
             pstmt.setInt(2, cog.getMissionID());
-       
+
             //CC
             pstmt.setInt(3, 3);
-            for(EEntity cc : cog.getCcList()){
+            for (EEntity cc : cog.getCcList()) {
                 pstmt.setInt(1, cc.getId());
                 pstmt.execute();
             }
-            
+
             //CR
             pstmt.setInt(3, 4);
-            for(EEntity cr : cog.getCrList()){
+            for (EEntity cr : cog.getCrList()) {
                 pstmt.setInt(1, cr.getId());
                 pstmt.execute();
             }
-            
-             //CV
+
+            //CV
             pstmt.setInt(3, 5);
-            for(EEntity cv : cog.getCvList()){
+            for (EEntity cv : cog.getCvList()) {
                 pstmt.setInt(1, cv.getId());
                 pstmt.execute();
             }
-            
+
             //CC-CR
             PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_cc_cr`(?, ?);");
-            for(IntTuple it : cog.getRelCRList()){
+            for (IntTuple it : cog.getRelCRList()) {
                 pstmt2.setInt(1, it.getX());
                 pstmt2.setInt(2, it.getY());
                 pstmt2.execute();
             }
-            
+
             //CR-CV
             pstmt2 = cn.prepareStatement("CALL `shield`.`link_cr_cv`(?, ?);");
-            for(IntTuple it : cog.getRelRVList()){
+            for (IntTuple it : cog.getRelRVList()) {
                 pstmt2.setInt(1, it.getX());
                 pstmt2.setInt(2, it.getY());
                 pstmt2.execute();
@@ -481,5 +479,54 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    public ArrayList<Integer> GetEEntityIDsOfCC(int ccID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_cr_cc`(?)");
+            pstmt.setInt(1, ccID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            ArrayList<Integer> crList;
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                crList = new ArrayList<Integer>();
+                do {
+                    if (!crList.contains(rs.getInt(1))) {
+                        crList.add(rs.getInt(1));
+                    }
+                } while (rs.next());
+            }
+
+            ArrayList<Integer> idList = new ArrayList<Integer>();
+            pstmt = cn.prepareStatement("CALL `shield`.`get_all_cv_cr`(?)");
+            for (int id : crList) {
+                pstmt.setInt(1, id);
+                rs = pstmt.executeQuery();
+                rs.next();
+                if (rs.getRow() != 0) {
+                    do {
+                        if (!idList.contains(rs.getInt(1))) {
+                            idList.add(rs.getInt(1));
+                        }
+                    } while (rs.next());
+                }
+                if (!idList.contains(id)) {
+                    idList.add(id);
+                }
+            }
+            cn.close();
+            return idList;
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 }

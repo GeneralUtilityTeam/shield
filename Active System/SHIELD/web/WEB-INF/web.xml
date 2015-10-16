@@ -156,6 +156,10 @@
         <servlet-name>GetEEntityOfMission</servlet-name>
         <servlet-class>servlet.ajax.GetEEntityOfMission</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetExcerptOfCC</servlet-name>
+        <servlet-class>servlet.ajax.GetExcerptOfCC</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -311,6 +315,10 @@
     <servlet-mapping>
         <servlet-name>GetEEntityOfMission</servlet-name>
         <url-pattern>/GetEEntityOfMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetExcerptOfCC</servlet-name>
+        <url-pattern>/GetExcerptOfCC</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

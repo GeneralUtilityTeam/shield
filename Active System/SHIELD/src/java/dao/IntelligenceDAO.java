@@ -221,6 +221,44 @@ public class IntelligenceDAO {
         return null;
     }
 
+    public ArrayList<Excerpt> GetExcerptOfEEntity(int eentID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_excerpt_eentity`(?)");
+            pstmt.setInt(1, eentID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();
+                do {
+                    Excerpt excr = new Excerpt();
+                    Area area = new Area();
+
+                    excr.setId(rs.getInt(1));
+                    excr.setText(rs.getString(2));
+                    area.setLat(rs.getDouble(11));
+                    area.setLng(rs.getDouble(12));
+                    excr.setArea(area);
+                    excrList.add(excr);
+
+                } while (rs.next());
+
+                cn.close();
+                return excrList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+    
     public int AddExcerpt(int userID, Excerpt excr) {
         try {
             DBConnector db = new DBConnector();
