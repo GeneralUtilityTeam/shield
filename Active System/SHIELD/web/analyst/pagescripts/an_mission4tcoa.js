@@ -17,7 +17,7 @@ $(document).ready(function () {
             missionID: missionID
         },
         success: function (responseJSON) {
-            entity = responseJSON;
+            entityCC = responseJSON;
             initialize();
         }
     });
@@ -27,12 +27,8 @@ function initialize() {
     buildNav(missionStatus, 4);
     initializeMap();
 
-    for (var x = 0; x < entity.length; x++) {
-        if (entity[x].classID == 3)
-            entityCC.push(entity[x]);
-    }
-
     var collapse = document.getElementById("accordion");
+
     for (var x = 0; x < entityCC.length; x++) {
         //Panel Element
         var id = entityCC[x].id;
@@ -53,7 +49,6 @@ function initialize() {
         var panelCollapse = document.createElement("div");
         panelCollapse.className = "panel-collapse collapse";
         panelCollapse.id = "collapse" + id;
-        assignListener(panelCollapse, id);
 
         //Panel Body
         var panelBody = document.createElement("div");
@@ -61,11 +56,30 @@ function initialize() {
         panelBody.id = "panelBody" + id;
         panelBody.innerHTML = "<p> Threat may launch/use/deploy <b>" + toTitleCase(entityCC[x].name) + "</b></p>";
         panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;'> to: <input type='date' onchange='from" + (x + 1) + ".focus()' id='to" + x + "' class='form-box' style='width:42%;'>";
+        panelBody.innerHTML += "<h7>Show Excerpts of Entities:</h7><br>";
+        panelBody.innerHTML += "<div class='checkbox'><label class='checkbox-inline' style='color:#CC0000'><input id='checkCC" + id + "' type='checkbox' value=''>Critical Capability</label> <i class='fa fa-map-marker fa-lg' style='color:#CC0000'></i></div>";
+        panelBody.innerHTML += "<div class='checkbox'><label class='checkbox-inline' style='color:#5394ed'><input id='checkCR" + id + "' type='checkbox' value=''>Critical Requirement</label> <i class='fa fa-map-marker fa-lg' style='color:#5394ed'></i></div>";
+        panelBody.innerHTML += "<div class='checkbox'><label class='checkbox-inline' style='color: #FFC200'><input id='checkCV" + id + "' type='checkbox' value=''>Critical Vulnerability</label> <i class='fa fa-map-marker fa-lg' style='color:#FFC200'></i></div>";
+        console.log(id);
+        var ccExcerpts = [];
+        $.ajax({
+            type: "GET",
+            url: "GetExcerptOfCC",
+            data: {
+                ccID: id
+            },
+            success: function (responseJSON) {
+                ccExcerpts = responseJSON;
+                console.log(id);
+                assignListener(panelCollapse, id, ccExcerpts);
+            }
+        });
 
         panelCollapse.appendChild(panelBody);
         panel.appendChild(panelHead);
         panel.appendChild(panelCollapse);
         collapse.appendChild(panel);
+
     }
 }
 
@@ -164,7 +178,7 @@ function zoomChanged(philBounds) {
     });
 }
 
-function createSearchMarker() {
+function createCCMarker() {
     var greenPin = "5BB85D";
     var yellowPin = "E6E600";
     var orangePin = "EFAD4D";
@@ -205,7 +219,6 @@ function createSearchMarker() {
 }
 
 function setMarkersOnMap(map, excerptMarker) {
-
     for (var x = 0; x < excerptMarker.length; x++) {
         excerptMarker[x].setMap(map);
     }
@@ -230,11 +243,51 @@ function setMarkerColor(color) {
     return iconColor;
 }
 
-function assignListener(panel, id) {
+function assignListener(panel, id, ccExcerpts) {
+
     $(panel).on('show.bs.collapse', function () {
-        alert(id);
-    })
+        $('#checkCC' + id).prop("checked", false);
+        $('#checkCR' + id).prop("checked", false);
+        $('#checkCV' + id).prop("checked", false);
+
+        var ccMarker, crMarker, cvMarker;
+
+        $('input:checkbox').change(function () {
+            if ($('#checkCC' + id).prop("checked") == true && $('#checkCR' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
+                alert("CCCRCV" + id);
+            }
+            else if ($('#checkCC' + id).prop("checked") == true && $('#checkCR' + id).prop("checked") == true) {
+                alert("CCCR" + id);
+            }
+            else if ($('#checkCC' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
+                alert("CCCV" + id);
+            }
+            else if ($('#checkCR' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
+                alert("CRCV" + id);
+            }
+            else if ($('#checkCC' + id).prop("checked") == true) {
+                alert("CC" + id);
+            }
+            else if ($('#checkCR' + id).prop("checked") == true) {
+                alert("CR" + id);
+            }
+            else if ($('#checkCV' + id).prop("checked") == true) {
+                alert("CV" + id);
+            }
+
+
+        });
+
+
+    });
+    $(panel).on('hide.bs.collapse', function () {
+        $('#checkCC' + id).prop("checked", false);
+        $('#checkCR' + id).prop("checked", false);
+        $('#checkCV' + id).prop("checked", false);
+    });
 }
+
+
 
 function saveTCOA() {
     var proceed = true;

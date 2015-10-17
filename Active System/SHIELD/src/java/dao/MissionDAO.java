@@ -505,7 +505,7 @@ public class MissionDAO {
             }
 
             ArrayList<Integer> idList = new ArrayList<Integer>();
-            pstmt = cn.prepareStatement("CALL `shield`.`get_all_cv_cr`(?)");
+            pstmt = cn.prepareStatement("CALL `shield`.`get_all_cv_cr_data`(?)");
             for (int id : crList) {
                 pstmt.setInt(1, id);
                 rs = pstmt.executeQuery();
@@ -528,5 +528,6 @@ public class MissionDAO {
         }
 
         return null;
-    }
+    }    
+    
 }

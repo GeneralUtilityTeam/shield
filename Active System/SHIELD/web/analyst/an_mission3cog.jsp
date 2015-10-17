@@ -37,13 +37,28 @@
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
-            
+
             var nodesArray = <%=request.getAttribute("nodesJSON")%>;
             var edgesArray = <%=request.getAttribute("edgesJSON")%>;
         </script>
 
-        <!--Vis.js Style-->
-        <style type="text/css">
+        <style>
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background: #F5F5F5;
+            }
+
             #mynetwork {
                 position: absolute;
                 top: 1vh;
@@ -94,13 +109,20 @@
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
                         <button type="button" onclick="saveCOG()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to Threat Course of Action</button>
                     </div>
-                    
+
                     <br />
                     <div id="mynetwork"></div>
-<!--                    <div class="btn-group" style="position: fixed; top:85vh; margin-left: 1%;">
-                        <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#doesusesModal"><i class="fa fa-navicon" style="color:#202020"></i> Does/Uses Menu</a>
+                    <!--                    <div class="btn-group" style="position: fixed; top:85vh; margin-left: 1%;">
+                                            <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#doesusesModal"><i class="fa fa-navicon" style="color:#202020"></i> Does/Uses Menu</a>
+                    
+                                        </div>-->
 
-                    </div>-->
+                    <div class="btn-group" style="position: fixed; top:84%; margin-left: 1%;">
+                        <a class="btn btn-default"><i class="fa fa-dot-circle-o" style="color:#CC0000"></i> Center of Gravity</a>
+                        <a class="btn btn-default"><i class="fa fa-bomb" style="color:#202020"></i> Critical Capability</a>
+                        <a class="btn btn-default"><i class="fa fa-exclamation-circle" style="color:#FF4500"></i> Critical Requirement</a>
+                        <a class="btn btn-default"><i class="fa fa-unlock-alt" style="color:#DAA520"></i> Critical Vulnerability</a>
+                    </div>
                 </div>
             </div>
         </div>

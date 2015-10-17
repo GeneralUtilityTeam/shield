@@ -2,7 +2,6 @@ function initialize() {
     buildNav(missionStatus, 3);
     //for COG already created
     if (missionStatus > 3) {
-        console.log(nodesArray);
         if (nodesArray != null) {
             for (var x = 0; x < nodesArray.length; x++) {
                 nodes.add(nodesArray[x]);
@@ -33,7 +32,6 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entity = responseJSON;
-            console.log(entity);
             initialize();
         }
     });
@@ -259,11 +257,22 @@ function loadSideBar() {
     var collapse = $('#accordion');
     collapse.empty();
     collapse.add("<h5 style='text-align:center;'>Mission Entities</h5>");
+
     for (var x = 0; x < entity.length; x++) {
         //Panel Element
         var panel = document.createElement("div");
         panel.className = "panel panel-default";
         panel.id = "panel" + x;
+        
+        var classType = "";
+        if (entity[x].classID == 2)
+            classType = "Center of Gravity";
+        else if (entity[x].classID == 3)
+            classType = "Critical Capability";
+        else if (entity[x].classID == 4)
+            classType = "Critical Requirement";
+        else if (entity[x].classID == 5)
+            classType = "Critical Vulnerability";
 
         //Panel Header
         var panelHead = document.createElement("div");
@@ -271,7 +280,7 @@ function loadSideBar() {
         panelHead.id = "panelHead" + x;
         panelHead.setAttribute("data-toggle", "collapse");
         panelHead.setAttribute("href", "#collapse" + x);
-        panelHead.innerHTML = "<h5><b>" + toTitleCase(entity[x].name) + "</b></h5>";
+        panelHead.innerHTML = "<h5><b>" + toTitleCase(entity[x].name) + "</b> - " + classType + "</h5>";
 
         //Panel Collapse
         var panelCollapse = document.createElement("div");

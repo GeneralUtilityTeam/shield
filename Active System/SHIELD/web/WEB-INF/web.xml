@@ -164,6 +164,10 @@
         <servlet-name>GetCCOfMission</servlet-name>
         <servlet-class>servlet.ajax.GetCCOfMission</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetCROfMission</servlet-name>
+        <servlet-class>servlet.ajax.GetCROfMission</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -327,6 +331,10 @@
     <servlet-mapping>
         <servlet-name>GetCCOfMission</servlet-name>
         <url-pattern>/GetCCOfMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCROfMission</servlet-name>
+        <url-pattern>/GetCROfMission</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

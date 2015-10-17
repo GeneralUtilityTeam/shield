@@ -37,12 +37,17 @@
             $(function () {
                 $('#collapseOne').collapse('show')
             });
+            
+            var missionStatus = <%=session.getAttribute("missionStatus")%>;
+            var missionTitle = '<%=session.getAttribute("missionTitle")%>';
+            var missionID = <%=session.getAttribute("missionID")%>;
+            var analystName = '<%=session.getAttribute("analystName")%>';
         </script>
 
 
     </head>
 
-    <body onload="initialize()">
+    <body>
 
         <!--Navigation Bar-->
         <script src="js/navigation.js"></script>
@@ -62,7 +67,7 @@
                         <button type="button" onclick="saveCM()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to PsyOps Objective</button>
                     </div><br>
                     <div>
-                        <div id="matrix-div">
+                        <div class="panel-group" id="accordion">
                             <table class="table table-bordered">
                                 <caption class="matrix-caption">POPULACE COOPERATION: CR</caption>
                                 
@@ -86,7 +91,6 @@
                                     <td class="CARVER"><input id="r12" type="number" min="1" max="10"></td>
                                     <td class="CARVER"><input id="total1" type="number" max="60"></td>
                                 </tr>
-                                
                             </table>
                         </div>
 

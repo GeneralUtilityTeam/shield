@@ -230,14 +230,14 @@ public class IntelligenceDAO {
             pstmt.setInt(1, eentID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
-            
+
             if (rs.getRow() == 0) {
                 cn.close();
                 return null;
             }
-            
+
             int eentityClass = rs.getInt(1);
-            
+
             pstmt = cn.prepareStatement("CALL `shield`.`get_all_excerpt_eentity`(?)");
             pstmt.setInt(1, eentID);
             rs = pstmt.executeQuery();
@@ -271,7 +271,7 @@ public class IntelligenceDAO {
 
         return null;
     }
-    
+
     public int AddExcerpt(int userID, Excerpt excr) {
         try {
             DBConnector db = new DBConnector();
@@ -339,7 +339,7 @@ public class IntelligenceDAO {
                     excr.setCategoryDesc(rs.getString(3));
                     excr.setText(rs.getString(4));
                     excr.setPublished(rs.getDate(5));
-                    
+
                     Area area = new Area();
                     area.setLat(rs.getDouble(6));
                     area.setLng(rs.getDouble(7));
@@ -405,16 +405,16 @@ public class IntelligenceDAO {
                             area2.setLevel1(rs2.getString(10));
                             area2.setLat(rs2.getDouble(11));
                             area2.setLng(rs2.getDouble(12));
-                            
+
                             excr.setEentityEnabled(true);
-                            
+
                             excr.setArea(area2);
-                            
+
                             excrList.add(excr);
                         } while (rs2.next());
                         eent.setExcrList(excrList);
                     }
-                    
+
                     eentList.add(eent);
 
                 } while (rs.next());
@@ -443,7 +443,6 @@ public class IntelligenceDAO {
             PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_eentity_excerpt`(?, ?);");
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, missionID);
-            
 
             for (EEntity e : eentList) {
                 pstmt.setInt(3, e.getClassID());
@@ -521,16 +520,16 @@ public class IntelligenceDAO {
                             area2.setLevel1(rs2.getString(10));
                             area2.setLat(rs2.getDouble(11));
                             area2.setLng(rs2.getDouble(12));
-                            
+
                             excr.setEentityEnabled(true);
-                            
+
                             excr.setArea(area2);
-                            
+
                             excrList.add(excr);
                         } while (rs2.next());
                         eent.setExcrList(excrList);
                     }
-                    
+
                     eentList.add(eent);
 
                 } while (rs.next());
@@ -546,16 +545,15 @@ public class IntelligenceDAO {
         return null;
     }
 
-    public boolean UpdateCCOfMission(int missionID, ArrayList<EEntity> ccList){
+    public boolean UpdateCCOfMission(int missionID, ArrayList<EEntity> ccList) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_cc`(?, ?, ?, ?, ?);");
-            
 
             for (EEntity e : ccList) {
-                pstmt.setInt(1,e.getId());
+                pstmt.setInt(1, e.getId());
                 pstmt.setDate(2, new java.sql.Date(e.getDateFrom().getTime()));
                 pstmt.setDate(3, new java.sql.Date(e.getDateTo().getTime()));
                 pstmt.setDouble(5, e.getLat());
@@ -569,5 +567,66 @@ public class IntelligenceDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    public ArrayList<EEntity> GetAllCROfMission(int missionID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_cr_mission`(?);");
+            pstmt.setInt(1, missionID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<EEntity> eentList = new ArrayList<EEntity>();
+                do {
+                    EEntity eent = new EEntity();
+
+                    eent.setId(rs.getInt(1));
+                    eent.setClassID(rs.getInt(2));
+                    eent.setClassDesc(rs.getString(3));
+                    eent.setName(rs.getString(4));
+
+                    PreparedStatement pstmt2 = cn.prepareStatement("CALL shield.get_all_cv_cr_data(?);");
+                    pstmt2.setInt(1, eent.getId());
+                    ResultSet rs2 = pstmt2.executeQuery();
+                    rs2.next();
+
+                    if (rs2.getRow() != 0) {
+                        ArrayList<EEntity> cvList = new ArrayList<EEntity>();
+                        do {
+                            EEntity cv = new EEntity();
+
+                            cv.setId(rs2.getInt(1));
+                            cv.setName(rs2.getString(2));
+                            cv.setCrit(rs2.getInt(3));
+                            cv.setAcce(rs2.getInt(4));
+                            cv.setRecu(rs2.getInt(5));
+                            cv.setVuln(rs2.getInt(6));
+                            cv.setEffe(rs2.getInt(7));
+                            cv.setReco(rs2.getInt(8));
+                            
+                            cvList.add(cv);
+                        } while (rs2.next());
+                        eent.setCvList(cvList);
+                    }
+
+                    eentList.add(eent);
+
+                } while (rs.next());
+
+                cn.close();
+                return eentList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 }
