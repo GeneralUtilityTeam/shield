@@ -67,7 +67,7 @@ public class GetEEntityOfMission extends HttpServlet {
         ArrayList eentList = intlDAO.GetAllEEntityOfMission(missionID);
         JSONArray eentJArr = new JSONArray(eentList);
         String eentJSON = eentJArr.toString();
-        System.out.println(eentJSON);
+        
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(eentJSON);

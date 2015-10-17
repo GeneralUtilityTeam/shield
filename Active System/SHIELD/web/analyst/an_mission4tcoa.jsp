@@ -29,13 +29,21 @@
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission4tcoa.js"></script>
         <script src="js/mission-menu-builder.js"></script>
-        
+
+        <!--Map Script-->
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
+        <script src="http://jawj.github.io/OverlappingMarkerSpiderfier/bin/oms.min.js"></script>
+        <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+        <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js"></script>
+        <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json"></script>
+
+
         <script>
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
-            
+
         </script>
 
     </head>
@@ -55,6 +63,8 @@
                     <ul class="nav nav-pills nav-stacked affix" id="nav-shield" role="tablist">
                     </ul>
                 </div>
+                <div id="mission4tcoa-area-map" style="z-index: 1; position: absolute; ">
+                </div>
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
                         <button type="button" onclick="saveTCOA()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to CARVER Methodology</button>
@@ -62,13 +72,13 @@
                     <div id="mission-threat-courses-of-action" style="height: 79vh;">
                         <div id="tcoa-list" class="col-md-5">
                             <div class="panel-group" id="accordion">
-                                
+
                             </div>
                         </div>
-                        <div class="col-md-7" id="mission4tcoa-area-map">
-                        </div>
+
                     </div>
                 </div>
+                
             </div>
         </div>
 
