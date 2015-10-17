@@ -545,4 +545,29 @@ public class IntelligenceDAO {
 
         return null;
     }
+
+    public boolean UpdateCCOfMission(int missionID, ArrayList<EEntity> ccList){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_cc`(?, ?, ?, ?, ?);");
+            
+
+            for (EEntity e : ccList) {
+                pstmt.setInt(1,e.getId());
+                pstmt.setDate(2, new java.sql.Date(e.getDateFrom().getTime()));
+                pstmt.setDate(3, new java.sql.Date(e.getDateTo().getTime()));
+                pstmt.setDouble(5, e.getLat());
+                pstmt.setDouble(6, e.getLng());
+                pstmt.executeUpdate();
+            }
+
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }

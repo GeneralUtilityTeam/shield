@@ -5,6 +5,7 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
 import dao.MissionDAO;
 import entity.EEntity;
 import entity.IntTuple;
@@ -21,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -68,6 +70,10 @@ public class Save4TCOA extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int editorID = (int)session.getAttribute("userID");
+        int missionID = (int)session.getAttribute("missionID");
+        
         JSONArray ccJArr = new JSONArray(request.getParameter("ccList"));
 
         ArrayList<EEntity> ccList = new ArrayList<EEntity>();
@@ -93,8 +99,9 @@ public class Save4TCOA extends HttpServlet {
             cc.setDateTo(dateTo);
             ccList.add(cc);
         }
-        MissionDAO msonDAO = new MissionDAO();
-        //msonDAO.UpdateCCOfMision(ccList);
+        
+        IntelligenceDAO intlDAO = new IntelligenceDAO();
+        boolean success = intlDAO.UpdateCCOfMission(missionID, ccList);
 
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
