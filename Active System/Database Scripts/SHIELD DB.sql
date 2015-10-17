@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `shield` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `shield`;
 -- MySQL dump 10.13  Distrib 5.6.24, for Win32 (x86)
 --
 -- Host: 127.0.0.1    Database: shield
@@ -1475,6 +1473,45 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_all_cc_mission` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_cc_mission`(IN in_mission_id INT)
+BEGIN
+SELECT 
+	`een`.`id`,
+    `een`.`class` AS `class_id`,
+    `sys`.`desc` AS `class_desc`,
+	`een`.`name`,
+    `ext`.`from`,
+    `ext`.`to`,
+    `ext`.`lat`,
+    `ext`.`lng`
+FROM 
+	`shield`.`reg.eentity` `een`
+LEFT JOIN
+	`shield`.`sys.eentity_class` `sys` 
+	ON `een`.`class` = `sys`.`id`
+LEFT JOIN
+	`shield`.`ext.eentity_cc` `ext`
+    ON `een`.`id` = `eentity_id`
+WHERE 
+	`een`.`rec_deleted` = 0
+	AND `een`.`mission_id` = in_mission_id
+    AND `een`.`class` = 3;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_all_cr_cc` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2689,4 +2726,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-17  7:21:41
+-- Dump completed on 2015-10-17 11:12:14
