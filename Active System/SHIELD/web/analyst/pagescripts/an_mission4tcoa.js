@@ -12,7 +12,7 @@ var minClusterZoom = 19;
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "GetEEntityOfMission",
+        url: "GetCCOfMission",
         data: {
             missionID: missionID
         },
