@@ -1,4 +1,3 @@
-var entity;
 var entityCC = [];
 var mapOptions;
 var geocoder;
@@ -8,6 +7,8 @@ var oms;
 var infoWindow;
 var mc;
 var minClusterZoom = 19;
+var markers = [];
+var entityMarker = [];
 
 $(document).ready(function () {
     $.ajax({
@@ -50,30 +51,31 @@ function initialize() {
         panelCollapse.className = "panel-collapse collapse";
         panelCollapse.id = "collapse" + id;
 
+        assignListener(panelCollapse, id);
+
         //Panel Body
         var panelBody = document.createElement("div");
         panelBody.className = "panel-body";
         panelBody.id = "panelBody" + id;
         panelBody.innerHTML = "<p> Threat may launch/use/deploy <b>" + toTitleCase(entityCC[x].name) + "</b></p>";
-        panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;'> to: <input type='date' onchange='from" + (x + 1) + ".focus()' id='to" + x + "' class='form-box' style='width:42%;'>";
+        if (entityCC[x].from != null && entityCC[x].to != null) {
+            panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;' value='" + entityCC[x].from + "'> to: <input type='date' onchange='from" + (x + 1) + ".focus()' id='to" + x + "' class='form-box' style='width:42%;' value='" + entityCC[x].to + "'><br>";
+        }
+        else {
+            panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;'> to: <input type='date' onchange='from" + (x + 1) + ".focus()' id='to" + x + "' class='form-box' style='width:42%;'><br>";
+        }
+        if (entityCC[x].lat == 0 && entityCC[x].lng == 0) {
+            panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:94%; margin-top: 10px; padding-right:0;' disabled value='" + geocodeResultLatLng() + "'><br>";
+        }
+        else {
+            var entityLatLng = new google.maps.LatLng(entityCC[x].lat, entityCC[x].lng)
+            //createCCEntityMarker(entityCC[x], entityLatLng);
+            panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:94%; margin-top: 10px; padding-right:0;' disabled value='" + geocodeResultLatLng() + "'><br>";
+        }
         panelBody.innerHTML += "<h7>Show Excerpts of Entities:</h7><br>";
         panelBody.innerHTML += "<div class='checkbox'><label class='checkbox-inline' style='color:#CC0000'><input id='checkCC" + id + "' type='checkbox' value=''>Critical Capability</label> <i class='fa fa-map-marker fa-lg' style='color:#CC0000'></i></div>";
         panelBody.innerHTML += "<div class='checkbox'><label class='checkbox-inline' style='color:#5394ed'><input id='checkCR" + id + "' type='checkbox' value=''>Critical Requirement</label> <i class='fa fa-map-marker fa-lg' style='color:#5394ed'></i></div>";
         panelBody.innerHTML += "<div class='checkbox'><label class='checkbox-inline' style='color: #FFC200'><input id='checkCV" + id + "' type='checkbox' value=''>Critical Vulnerability</label> <i class='fa fa-map-marker fa-lg' style='color:#FFC200'></i></div>";
-        console.log(id);
-        var ccExcerpts = [];
-        $.ajax({
-            type: "GET",
-            url: "GetExcerptOfCC",
-            data: {
-                ccID: id
-            },
-            success: function (responseJSON) {
-                ccExcerpts = responseJSON;
-                console.log(id);
-                assignListener(panelCollapse, id, ccExcerpts);
-            }
-        });
 
         panelCollapse.appendChild(panelBody);
         panel.appendChild(panelHead);
@@ -91,34 +93,41 @@ function initializeMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
 
     };
-    var clusterStyles = [
-        {
-            textColor: 'black',
-            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
-            height: 52,
-            width: 52
-        },
-        {
-            textColor: 'black',
-            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
-            height: 52,
-            width: 52
-        },
-        {
-            textColor: 'black',
-            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
-            height: 52,
-            width: 52
-        }
-    ];
-    var mcOptions = {gridSize: 50, maxZoom: minClusterZoom, zoomOnClick: true, styles: clusterStyles};
+
     map = new google.maps.Map(document.getElementById('mission4tcoa-area-map'), mapOptions);
     infoWindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50), disableAutoPan: true});
     geocoder = new google.maps.Geocoder();
-    //geocodeString(area); -- NOt working
-    //mc = new MarkerClusterer(map, searchMarker, mcOptions);
+
     oms = new OverlappingMarkerSpiderfier(map,
             {markersWontMove: true, markersWontHide: true});
+
+    oms.addListener('spiderfy', function (markers) {
+    });
+    oms.addListener('unspiderfy', function (markers) {
+    });
+
+//    var clusterStyles = [
+//        {
+//            textColor: 'black',
+//            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
+//            height: 52,
+//            width: 52
+//        },
+//        {
+//            textColor: 'black',
+//            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
+//            height: 52,
+//            width: 52
+//        },
+//        {
+//            textColor: 'black',
+//            url: 'http://www.zudusilatvija.lv/static//images/cluster.png',
+//            height: 52,
+//            width: 52
+//        }
+//    ];
+//    var mcOptions = {gridSize: 50, maxZoom: minClusterZoom, zoomOnClick: true, styles: clusterStyles};
+//    mc = new MarkerClusterer(map, markers, mcOptions);
 //    google.maps.event.addListener(mc, 'clusterclick', function (cluster) {
 //        if (cluster.getMarkers().length === 2) {
 //            map.fitBounds(cluster.getBounds()); // Fit the bounds of the cluster clicked on
@@ -126,10 +135,6 @@ function initializeMap() {
 //                map.setZoom(minClusterZoom + 1);
 //        }
 //    });
-    oms.addListener('spiderfy', function (markers) {
-    });
-    oms.addListener('unspiderfy', function (markers) {
-    });
 
     google.maps.event.addListener(map, 'zoom_changed', function () {
         var northEast = new google.maps.LatLng(19.648699380876213, 126.63329394531274);
@@ -143,7 +148,7 @@ function initializeMap() {
 
 function geocodeSuccess(result) {
     var area = generateAreaObject(result);
-    document.getElementById("address").value = generateFullAddress(area);
+    return generateFullAddress(area);
 }
 
 
@@ -178,11 +183,11 @@ function zoomChanged(philBounds) {
     });
 }
 
-function createCCMarker() {
-    var greenPin = "5BB85D";
-    var yellowPin = "E6E600";
-    var orangePin = "EFAD4D";
-    var redPin = "D9544F";
+function createCCMarker(excerptList) {
+    var markersArr = [];
+    var redPin = "CC0000";
+    var bluePin = "5394ed";
+    var yellowPin = "FFC200";
 
     var marker;
     var icon;
@@ -192,14 +197,14 @@ function createCCMarker() {
         var text = excerptList[x].text;
         ids = excerptList[x].id;
 
-        switch (excerptList[x].strength) {
-            case 100:
+        switch (excerptList[x].eentityClassID) {
+            case 3:
                 icon = setMarkerColor(redPin);
                 break;
-            case 60:
-                icon = setMarkerColor(orangePin);
+            case 4:
+                icon = setMarkerColor(bluePin);
                 break;
-            case 40:
+            case 5:
                 icon = setMarkerColor(yellowPin);
                 break;
         }
@@ -212,15 +217,51 @@ function createCCMarker() {
         });
         setWindowListener(marker, "Excerpt " + excerptList[x].id + ": " + excerptList[x].text);
         oms.addMarker(marker);
-        mc.addMarker(marker);
-        setMarkerListener(marker);
-        searchMarker.push(marker);
+//        mc.addMarker(marker);
+        markers.push(marker);
+        setMapOnAll(null);
+        markersArr.push(marker);
     }
+
+    return markersArr;
+}
+
+function createCCEntityMarker(entityCC) {
+    var redPin = "CC0000";
+    var bluePin = "5394ed";
+    var yellowPin = "FFC200";
+
+    var marker;
+    var icon;
+    var ids = entityCC.id;
+
+
+    marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        id: ids,
+        icon: icon
+    });
+    setWindowListener(marker, toTitleCase(entityCC.name));
+    oms.addMarker(marker);
+    entityMarker.push(marker);
+    setMapOnAll(null);
 }
 
 function setMarkersOnMap(map, excerptMarker) {
     for (var x = 0; x < excerptMarker.length; x++) {
         excerptMarker[x].setMap(map);
+    }
+}
+
+function clearCCMarkers() {
+    setMapOnAll(null);
+    markers = [];
+}
+
+function setMapOnAll(map) {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
     }
 }
 
@@ -243,44 +284,113 @@ function setMarkerColor(color) {
     return iconColor;
 }
 
-function assignListener(panel, id, ccExcerpts) {
+function assignListener(panel, id) {
+    var ccExcerpts = [];
+    $.ajax({
+        type: "GET",
+        url: "GetExcerptOfCC",
+        data: {
+            ccID: id
+        },
+        success: function (responseJSON) {
+            ccExcerpts = responseJSON;
+        }
+    });
 
+    var cc = [], cr = [], cv = [];
+    var ccMarker = [], crMarker = [], cvMarker = [];
     $(panel).on('show.bs.collapse', function () {
+        for (var x = 0; x < entityMarker; x++) {
+            if (entityMarker[x].id == id)
+                entityMarker[x].setMap(map);
+        }
+
         $('#checkCC' + id).prop("checked", false);
         $('#checkCR' + id).prop("checked", false);
         $('#checkCV' + id).prop("checked", false);
 
-        var ccMarker, crMarker, cvMarker;
+        cc.splice(0, cc.length);
+        cr.splice(0, cr.length);
+        cv.splice(0, cv.length);
+        for (var x = 0; x < ccExcerpts.length; x++) {
+            if (ccExcerpts[x].eentityClassID == 3)
+                cc.push(ccExcerpts[x]);
+            else if (ccExcerpts[x].eentityClassID == 4)
+                cr.push(ccExcerpts[x]);
+            else if (ccExcerpts[x].eentityClassID == 5)
+                cv.push(ccExcerpts[x]);
+        }
+
+        ccMarker = createCCMarker(cc);
+        crMarker = createCCMarker(cr);
+        cvMarker = createCCMarker(cv);
 
         $('input:checkbox').change(function () {
             if ($('#checkCC' + id).prop("checked") == true && $('#checkCR' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
-                alert("CCCRCV" + id);
+                setMapOnAll(null);
+                var cccrcvMarker = [];
+                for (var y = 0; y < ccMarker.length; y++) {
+                    cccrcvMarker.push(ccMarker[y]);
+                }
+                for (var y = 0; y < crMarker.length; y++) {
+                    cccrcvMarker.push(crMarker[y]);
+                }
+                for (var y = 0; y < cvMarker.length; y++) {
+                    cccrcvMarker.push(cvMarker[y]);
+                }
+                setMarkersOnMap(map, cccrcvMarker);
             }
             else if ($('#checkCC' + id).prop("checked") == true && $('#checkCR' + id).prop("checked") == true) {
-                alert("CCCR" + id);
+                setMapOnAll(null);
+                var cccrMarker = [];
+                for (var y = 0; y < ccMarker.length; y++) {
+                    cccrMarker.push(ccMarker[y]);
+                }
+                for (var y = 0; y < crMarker.length; y++) {
+                    cccrMarker.push(crMarker[y]);
+                }
+                setMarkersOnMap(map, cccrMarker);
             }
             else if ($('#checkCC' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
-                alert("CCCV" + id);
+                setMapOnAll(null);
+                var cccvMarker = [];
+                for (var y = 0; y < ccMarker.length; y++) {
+                    cccvMarker.push(ccMarker[y]);
+                }
+                for (var y = 0; y < cvMarker.length; y++) {
+                    cccvMarker.push(cvMarker[y]);
+                }
+                setMarkersOnMap(map, cccvMarker);
             }
             else if ($('#checkCR' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
-                alert("CRCV" + id);
+                setMapOnAll(null);
+                var crcvMarker = [];
+                for (var y = 0; y < cvMarker.length; y++) {
+                    crcvMarker.push(cvMarker[y]);
+                }
+                for (var y = 0; y < crMarker.length; y++) {
+                    crcvMarker.push(crMarker[y]);
+                }
+                setMarkersOnMap(map, crcvMarker);
             }
             else if ($('#checkCC' + id).prop("checked") == true) {
-                alert("CC" + id);
+                setMapOnAll(null);
+                setMarkersOnMap(map, ccMarker);
             }
             else if ($('#checkCR' + id).prop("checked") == true) {
-                alert("CR" + id);
+                setMapOnAll(null);
+                setMarkersOnMap(map, crMarker);
             }
             else if ($('#checkCV' + id).prop("checked") == true) {
-                alert("CV" + id);
+                setMapOnAll(null);
+                setMarkersOnMap(map, cvMarker);
             }
-
-
         });
-
 
     });
     $(panel).on('hide.bs.collapse', function () {
+        setMarkersOnMap(null, entityMarker);
+        clearCCMarkers();
         $('#checkCC' + id).prop("checked", false);
         $('#checkCR' + id).prop("checked", false);
         $('#checkCV' + id).prop("checked", false);
@@ -295,6 +405,7 @@ function saveTCOA() {
     for (var x = 0; x < entityCC.length; x++) {
         var from = document.getElementById("from" + x).value;
         var to = document.getElementById("to" + x).value;
+        var at = document.getElementById("at" + x).value;
         if (from == "") {
             showAndDismissAlert("danger", "Please input <strong> from </strong> date in <strong> Critical Capability " + (x + 1) + "</strong>");
             proceed = false;
@@ -310,27 +421,22 @@ function saveTCOA() {
     }
 
     if (proceed) {
-        for (var x = 0; x < entity.length; x++) {
-            for (var y = 0; y < entityCC.length; y++) {
-                if (entity[x].id == entity[y].id) {
-                    entity[x].from = document.getElementById("from" + y).value;
-                    entity[x].to = document.getElementById("to" + y).value;
-                }
-            }
+        for (var y = 0; y < entityCC.length; y++) {
+            entityCC[x].from = document.getElementById("from" + y).value;
+            entityCC[x].to = document.getElementById("to" + y).value;
+//            entityCC[x].lat = document.getElementById("to" + y).value; TODO
+//            entityCC[x].lng = document.getElementById("to" + y).value;
         }
 
         $.ajax({
             type: "GET",
             url: "Save4TCOA",
             data: {
-                missionID: missionID,
-                entityArr: toJSON(entity)
+                entityArr: toJSON(entityCC)
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");
-                setTimeout(function () {
-                    window.location.assign("ANMission5CM")
-                }, 3000);
+                window.location.assign("ANMission5CM");
             }
         });
     }

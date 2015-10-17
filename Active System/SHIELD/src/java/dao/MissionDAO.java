@@ -521,6 +521,8 @@ public class MissionDAO {
                     idList.add(id);
                 }
             }
+            
+            idList.add(ccID);
             cn.close();
             return idList;
         } catch (SQLException ex) {
