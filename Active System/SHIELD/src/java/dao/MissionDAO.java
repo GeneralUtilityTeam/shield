@@ -505,7 +505,7 @@ public class MissionDAO {
             }
 
             ArrayList<Integer> idList = new ArrayList<Integer>();
-            pstmt = cn.prepareStatement("CALL `shield`.`get_all_cv_cr_data`(?)");
+            pstmt = cn.prepareStatement("CALL `shield`.`get_all_cv_cr`(?)");
             for (int id : crList) {
                 pstmt.setInt(1, id);
                 rs = pstmt.executeQuery();
@@ -521,7 +521,6 @@ public class MissionDAO {
                     idList.add(id);
                 }
             }
-            
             idList.add(ccID);
             cn.close();
             return idList;
@@ -530,6 +529,38 @@ public class MissionDAO {
         }
 
         return null;
-    }    
-    
+    }
+
+    public ArrayList<Integer> GetEEntityIDsOfCR(int crID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_cv_cr`(?)");
+            pstmt.setInt(1, crID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            ArrayList<Integer> crList;
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                crList = new ArrayList<Integer>();
+                do {
+                    if (!crList.contains(rs.getInt(1))) {
+                        crList.add(rs.getInt(1));
+                    }
+                } while (rs.next());
+                crList.add(crID);
+            }
+
+            cn.close();
+            return crList;
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
 }

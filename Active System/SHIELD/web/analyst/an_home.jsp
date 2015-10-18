@@ -66,9 +66,9 @@
                         <table id="mission-table" class="table table-hover table-bordered list-table" cellspacing="0" width="100%">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
-                                    <th>Mission Title</th>
-                                    <th>Area of Operation</th>
-                                    <th>Progress</th>
+                                    <th width="20%">Mission Title</th>
+                                    <th width="55%">Area of Operation</th>
+                                    <th width="25%">Progress</th>
                                 </tr>
                             </thead>
 

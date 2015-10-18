@@ -168,6 +168,10 @@
         <servlet-name>GetCROfMission</servlet-name>
         <servlet-class>servlet.ajax.GetCROfMission</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetExcerptOfCR</servlet-name>
+        <servlet-class>servlet.ajax.GetExcerptOfCR</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -335,6 +339,10 @@
     <servlet-mapping>
         <servlet-name>GetCROfMission</servlet-name>
         <url-pattern>/GetCROfMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetExcerptOfCR</servlet-name>
+        <url-pattern>/GetExcerptOfCR</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

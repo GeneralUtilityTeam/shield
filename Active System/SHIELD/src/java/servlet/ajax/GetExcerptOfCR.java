@@ -21,7 +21,7 @@ import org.json.JSONArray;
  *
  * @author Franco
  */
-public class GetExcerptOfCC extends HttpServlet {
+public class GetExcerptOfCR extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +40,10 @@ public class GetExcerptOfCC extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetExcerptOfCC</title>");
+            out.println("<title>Servlet GetExcerptOfCR</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GetExcerptOfCC at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetExcerptOfCR at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,12 +61,12 @@ public class GetExcerptOfCC extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String ccIDStr = (String) request.getParameter("ccID");
-        int ccID = Integer.parseInt(ccIDStr);
+        String crIDStr = (String) request.getParameter("crID");
+        int crID = Integer.parseInt(crIDStr);
         MissionDAO msonDAO = new MissionDAO();
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         ArrayList<Excerpt> returnList = new ArrayList<Excerpt>();
-        for (Integer id : msonDAO.GetEEntityIDsOfCC(ccID)) {
+        for (Integer id : msonDAO.GetEEntityIDsOfCR(crID)) {
             for (Excerpt excr : intlDAO.GetExcerptOfEEntity(id)) {
                 if (!returnList.contains(excr)) {
                     returnList.add(excr);
