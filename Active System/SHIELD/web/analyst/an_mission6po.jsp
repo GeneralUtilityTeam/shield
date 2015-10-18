@@ -10,6 +10,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+        <!--Data Table-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+
         <!--Layout-->
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
@@ -31,18 +36,42 @@
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
-            $(function () {
-                $('#collapseTwo').collapse('hide')
-            });
-            $(function () {
-                $('#collapseOne').collapse('show')
-            });
+            var missionStatus = <%=session.getAttribute("missionStatus")%>;
+            var missionTitle = '<%=session.getAttribute("missionTitle")%>';
+            var missionID = <%=session.getAttribute("missionID")%>;
+            var analystName = '<%=session.getAttribute("analystName")%>';
         </script>
 
+        <style>
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background: #F5F5F5;
+            }
+            .alignRight {
+                text-align: right;
+            }
+            .alignCenter {
+                text-align: center;
+            }
+            .bold {
+                font-weight: 800;
+            }
+        </style>
 
     </head>
 
-    <body onload="initialize()">
+    <body>
 
         <!--Navigation Bar-->
         <script src="js/navigation.js"></script>
@@ -57,9 +86,15 @@
                     <ul class="nav nav-pills nav-stacked affix" id="nav-shield" role="tablist">
                     </ul>
                 </div>
-                <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
+                <div class="col-md-10" style="margin-left: 19vw; width: 76vw; overflow: auto; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="saveMO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Generate Operation Plan</button>
+                        <button type="button" onclick="savePO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to PsyOps Objective</button>
+                    </div><br>
+                    <div style="height: 75vh;padding-top: 1vh; padding-right: 0;">
+                        <div class="panel-group" id="accordion">
+                            
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -102,7 +137,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-        
+
         <!--Notification Alert-->
         <div class="alert-messages text-center">
         </div>

@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `shield` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `shield`;
 -- MySQL dump 10.13  Distrib 5.6.24, for Win32 (x86)
 --
 -- Host: 127.0.0.1    Database: shield
@@ -149,7 +151,7 @@ CREATE TABLE `log.user_access` (
   KEY `user_access-user_idx` (`user_id`),
   CONSTRAINT `user_access-acces` FOREIGN KEY (`access_id`) REFERENCES `sys.access` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_access-user` FOREIGN KEY (`user_id`) REFERENCES `reg.user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +160,7 @@ CREATE TABLE `log.user_access` (
 
 LOCK TABLES `log.user_access` WRITE;
 /*!40000 ALTER TABLE `log.user_access` DISABLE KEYS */;
-INSERT INTO `log.user_access` VALUES (1,2,'2015-10-06 18:55:06',1),(2,2,'2015-10-06 18:55:14',1),(3,2,'2015-10-06 20:18:02',1),(4,2,'2015-10-06 20:25:42',1),(5,2,'2015-10-06 21:10:47',1),(6,2,'2015-10-07 09:57:06',1),(7,2,'2015-10-07 09:57:35',1),(8,2,'2015-10-07 09:59:16',1),(9,2,'2015-10-07 10:08:39',1),(10,2,'2015-10-07 10:22:05',1),(11,2,'2015-10-07 14:58:41',1),(12,2,'2015-10-07 15:05:43',1),(13,2,'2015-10-07 15:28:34',1),(14,2,'2015-10-07 15:31:40',1),(15,2,'2015-10-07 16:17:58',1),(16,2,'2015-10-07 16:28:03',1),(17,2,'2015-10-07 16:38:18',1),(18,2,'2015-10-07 16:55:23',1),(19,2,'2015-10-07 18:26:43',1),(20,2,'2015-10-07 19:27:36',1),(21,2,'2015-10-07 20:20:58',1),(22,2,'2015-10-07 20:28:06',1),(23,2,'2015-10-07 20:30:27',1),(24,2,'2015-10-07 21:38:16',1),(25,2,'2015-10-07 21:59:25',1),(26,2,'2015-10-07 22:05:06',1),(27,2,'2015-10-07 22:07:15',1),(28,2,'2015-10-07 22:14:00',1),(29,2,'2015-10-07 22:53:02',1),(30,2,'2015-10-07 23:13:15',1),(31,2,'2015-10-07 23:21:05',1),(32,2,'2015-10-07 23:29:05',1),(33,2,'2015-10-07 23:33:08',1),(34,2,'2015-10-08 00:24:34',1),(35,2,'2015-10-08 12:22:54',1),(36,2,'2015-10-08 12:40:34',1),(37,2,'2015-10-10 21:10:27',1),(38,2,'2015-10-12 12:30:19',1),(39,2,'2015-10-12 12:47:10',1),(40,2,'2015-10-12 14:56:36',1),(41,2,'2015-10-12 15:38:12',1),(42,2,'2015-10-12 15:51:55',1),(43,2,'2015-10-12 17:03:16',1),(44,2,'2015-10-12 17:35:15',1),(45,2,'2015-10-12 18:58:21',1),(46,2,'2015-10-12 21:48:53',1),(47,2,'2015-10-12 22:14:06',1),(48,2,'2015-10-12 22:50:27',1),(49,2,'2015-10-12 22:54:47',1),(50,2,'2015-10-13 12:24:41',1),(51,2,'2015-10-13 12:25:43',1),(52,2,'2015-10-13 13:23:11',1),(53,2,'2015-10-13 13:54:43',1),(54,2,'2015-10-13 14:11:48',1),(55,2,'2015-10-13 14:41:20',1),(56,2,'2015-10-13 15:10:22',1),(57,2,'2015-10-13 15:21:51',1),(58,2,'2015-10-13 15:27:03',1),(59,2,'2015-10-13 16:31:32',1),(60,2,'2015-10-13 18:19:35',1),(61,2,'2015-10-13 19:02:23',1),(62,2,'2015-10-13 19:10:45',1),(63,2,'2015-10-13 19:31:03',1),(64,2,'2015-10-13 20:09:06',1),(65,2,'2015-10-13 20:17:13',1),(66,2,'2015-10-13 21:14:16',1),(67,2,'2015-10-13 21:19:19',1),(68,2,'2015-10-13 21:21:31',1),(69,2,'2015-10-13 21:24:24',1),(70,2,'2015-10-13 21:39:05',1),(71,2,'2015-10-13 21:50:19',1),(72,2,'2015-10-13 22:40:46',1),(73,2,'2015-10-13 22:54:26',1),(74,2,'2015-10-13 23:16:09',1),(75,2,'2015-10-14 00:33:44',1),(76,2,'2015-10-14 11:06:50',1),(77,2,'2015-10-14 12:14:27',1),(78,2,'2015-10-14 19:05:41',1),(79,2,'2015-10-14 19:13:01',1),(80,2,'2015-10-14 19:52:16',1),(81,2,'2015-10-14 22:16:41',1),(82,2,'2015-10-14 22:20:56',1),(83,2,'2015-10-14 22:23:01',1),(84,2,'2015-10-14 22:41:21',1),(85,2,'2015-10-14 22:46:52',1),(86,2,'2015-10-14 23:38:08',1),(87,2,'2015-10-14 23:40:36',1),(88,2,'2015-10-14 23:43:47',1),(89,2,'2015-10-14 23:46:34',1),(90,2,'2015-10-14 23:57:59',1),(91,2,'2015-10-15 12:46:41',1),(92,2,'2015-10-15 12:52:47',1),(93,2,'2015-10-15 12:55:21',1),(94,2,'2015-10-15 13:10:31',1),(95,2,'2015-10-15 13:39:19',1),(96,2,'2015-10-15 13:43:37',1),(97,2,'2015-10-15 13:45:08',1),(98,2,'2015-10-15 13:47:54',1),(99,2,'2015-10-15 13:48:38',1),(100,2,'2015-10-15 13:58:06',1),(101,2,'2015-10-15 14:01:36',1),(102,2,'2015-10-15 14:03:48',1),(103,2,'2015-10-15 14:28:45',1),(104,2,'2015-10-15 14:33:50',1),(105,2,'2015-10-15 15:10:03',1),(106,2,'2015-10-15 15:48:32',1),(107,2,'2015-10-15 16:52:49',1),(108,2,'2015-10-15 17:43:31',1),(109,2,'2015-10-15 17:59:45',1),(110,2,'2015-10-15 18:11:14',1),(111,2,'2015-10-15 18:26:49',1),(112,2,'2015-10-15 18:56:07',1),(113,2,'2015-10-15 18:58:47',1),(114,2,'2015-10-15 20:23:56',1),(115,2,'2015-10-15 20:49:39',1),(116,2,'2015-10-16 11:05:03',1),(117,2,'2015-10-16 11:41:51',1),(118,2,'2015-10-16 11:52:56',1),(119,2,'2015-10-16 12:13:56',1),(120,2,'2015-10-16 14:29:49',1),(121,2,'2015-10-16 15:15:45',1),(122,2,'2015-10-16 15:32:39',1),(123,2,'2015-10-16 16:04:52',1),(124,2,'2015-10-16 17:13:38',1),(125,2,'2015-10-16 17:36:01',1),(126,2,'2015-10-16 20:23:34',1),(127,2,'2015-10-16 20:57:21',1),(128,2,'2015-10-16 21:09:00',1),(129,2,'2015-10-16 21:22:17',1),(130,2,'2015-10-16 21:34:09',1),(131,2,'2015-10-16 21:39:16',1),(132,2,'2015-10-16 22:14:15',1),(133,2,'2015-10-16 22:37:04',1),(134,2,'2015-10-16 22:42:27',1),(135,2,'2015-10-16 23:21:52',1),(136,2,'2015-10-16 23:37:48',1),(137,2,'2015-10-17 12:41:44',1),(138,2,'2015-10-17 14:39:23',1),(139,2,'2015-10-17 16:11:50',1);
+INSERT INTO `log.user_access` VALUES (1,2,'2015-10-06 18:55:06',1),(2,2,'2015-10-06 18:55:14',1),(3,2,'2015-10-06 20:18:02',1),(4,2,'2015-10-06 20:25:42',1),(5,2,'2015-10-06 21:10:47',1),(6,2,'2015-10-07 09:57:06',1),(7,2,'2015-10-07 09:57:35',1),(8,2,'2015-10-07 09:59:16',1),(9,2,'2015-10-07 10:08:39',1),(10,2,'2015-10-07 10:22:05',1),(11,2,'2015-10-07 14:58:41',1),(12,2,'2015-10-07 15:05:43',1),(13,2,'2015-10-07 15:28:34',1),(14,2,'2015-10-07 15:31:40',1),(15,2,'2015-10-07 16:17:58',1),(16,2,'2015-10-07 16:28:03',1),(17,2,'2015-10-07 16:38:18',1),(18,2,'2015-10-07 16:55:23',1),(19,2,'2015-10-07 18:26:43',1),(20,2,'2015-10-07 19:27:36',1),(21,2,'2015-10-07 20:20:58',1),(22,2,'2015-10-07 20:28:06',1),(23,2,'2015-10-07 20:30:27',1),(24,2,'2015-10-07 21:38:16',1),(25,2,'2015-10-07 21:59:25',1),(26,2,'2015-10-07 22:05:06',1),(27,2,'2015-10-07 22:07:15',1),(28,2,'2015-10-07 22:14:00',1),(29,2,'2015-10-07 22:53:02',1),(30,2,'2015-10-07 23:13:15',1),(31,2,'2015-10-07 23:21:05',1),(32,2,'2015-10-07 23:29:05',1),(33,2,'2015-10-07 23:33:08',1),(34,2,'2015-10-08 00:24:34',1),(35,2,'2015-10-08 12:22:54',1),(36,2,'2015-10-08 12:40:34',1),(37,2,'2015-10-10 21:10:27',1),(38,2,'2015-10-12 12:30:19',1),(39,2,'2015-10-12 12:47:10',1),(40,2,'2015-10-12 14:56:36',1),(41,2,'2015-10-12 15:38:12',1),(42,2,'2015-10-12 15:51:55',1),(43,2,'2015-10-12 17:03:16',1),(44,2,'2015-10-12 17:35:15',1),(45,2,'2015-10-12 18:58:21',1),(46,2,'2015-10-12 21:48:53',1),(47,2,'2015-10-12 22:14:06',1),(48,2,'2015-10-12 22:50:27',1),(49,2,'2015-10-12 22:54:47',1),(50,2,'2015-10-13 12:24:41',1),(51,2,'2015-10-13 12:25:43',1),(52,2,'2015-10-13 13:23:11',1),(53,2,'2015-10-13 13:54:43',1),(54,2,'2015-10-13 14:11:48',1),(55,2,'2015-10-13 14:41:20',1),(56,2,'2015-10-13 15:10:22',1),(57,2,'2015-10-13 15:21:51',1),(58,2,'2015-10-13 15:27:03',1),(59,2,'2015-10-13 16:31:32',1),(60,2,'2015-10-13 18:19:35',1),(61,2,'2015-10-13 19:02:23',1),(62,2,'2015-10-13 19:10:45',1),(63,2,'2015-10-13 19:31:03',1),(64,2,'2015-10-13 20:09:06',1),(65,2,'2015-10-13 20:17:13',1),(66,2,'2015-10-13 21:14:16',1),(67,2,'2015-10-13 21:19:19',1),(68,2,'2015-10-13 21:21:31',1),(69,2,'2015-10-13 21:24:24',1),(70,2,'2015-10-13 21:39:05',1),(71,2,'2015-10-13 21:50:19',1),(72,2,'2015-10-13 22:40:46',1),(73,2,'2015-10-13 22:54:26',1),(74,2,'2015-10-13 23:16:09',1),(75,2,'2015-10-14 00:33:44',1),(76,2,'2015-10-14 11:06:50',1),(77,2,'2015-10-14 12:14:27',1),(78,2,'2015-10-14 19:05:41',1),(79,2,'2015-10-14 19:13:01',1),(80,2,'2015-10-14 19:52:16',1),(81,2,'2015-10-14 22:16:41',1),(82,2,'2015-10-14 22:20:56',1),(83,2,'2015-10-14 22:23:01',1),(84,2,'2015-10-14 22:41:21',1),(85,2,'2015-10-14 22:46:52',1),(86,2,'2015-10-14 23:38:08',1),(87,2,'2015-10-14 23:40:36',1),(88,2,'2015-10-14 23:43:47',1),(89,2,'2015-10-14 23:46:34',1),(90,2,'2015-10-14 23:57:59',1),(91,2,'2015-10-15 12:46:41',1),(92,2,'2015-10-15 12:52:47',1),(93,2,'2015-10-15 12:55:21',1),(94,2,'2015-10-15 13:10:31',1),(95,2,'2015-10-15 13:39:19',1),(96,2,'2015-10-15 13:43:37',1),(97,2,'2015-10-15 13:45:08',1),(98,2,'2015-10-15 13:47:54',1),(99,2,'2015-10-15 13:48:38',1),(100,2,'2015-10-15 13:58:06',1),(101,2,'2015-10-15 14:01:36',1),(102,2,'2015-10-15 14:03:48',1),(103,2,'2015-10-15 14:28:45',1),(104,2,'2015-10-15 14:33:50',1),(105,2,'2015-10-15 15:10:03',1),(106,2,'2015-10-15 15:48:32',1),(107,2,'2015-10-15 16:52:49',1),(108,2,'2015-10-15 17:43:31',1),(109,2,'2015-10-15 17:59:45',1),(110,2,'2015-10-15 18:11:14',1),(111,2,'2015-10-15 18:26:49',1),(112,2,'2015-10-15 18:56:07',1),(113,2,'2015-10-15 18:58:47',1),(114,2,'2015-10-15 20:23:56',1),(115,2,'2015-10-15 20:49:39',1),(116,2,'2015-10-16 11:05:03',1),(117,2,'2015-10-16 11:41:51',1),(118,2,'2015-10-16 11:52:56',1),(119,2,'2015-10-16 12:13:56',1),(120,2,'2015-10-16 14:29:49',1),(121,2,'2015-10-16 15:15:45',1),(122,2,'2015-10-16 15:32:39',1),(123,2,'2015-10-16 16:04:52',1),(124,2,'2015-10-16 17:13:38',1),(125,2,'2015-10-16 17:36:01',1),(126,2,'2015-10-16 20:23:34',1),(127,2,'2015-10-16 20:57:21',1),(128,2,'2015-10-16 21:09:00',1),(129,2,'2015-10-16 21:22:17',1),(130,2,'2015-10-16 21:34:09',1),(131,2,'2015-10-16 21:39:16',1),(132,2,'2015-10-16 22:14:15',1),(133,2,'2015-10-16 22:37:04',1),(134,2,'2015-10-16 22:42:27',1),(135,2,'2015-10-16 23:21:52',1),(136,2,'2015-10-16 23:37:48',1),(137,2,'2015-10-17 12:41:44',1),(138,2,'2015-10-17 14:39:23',1),(139,2,'2015-10-17 16:11:50',1),(140,2,'2015-10-17 19:36:09',1),(141,2,'2015-10-17 19:36:09',1);
 /*!40000 ALTER TABLE `log.user_access` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,6 +339,36 @@ INSERT INTO `reg.mission` VALUES (1,0,5,2,'PAGKAMULAT','Oliver','Encourage citiz
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reg.po`
+--
+
+DROP TABLE IF EXISTS `reg.po`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reg.po` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rec_deleted` tinyint(4) DEFAULT NULL,
+  `eentity_cr_id` int(11) DEFAULT NULL,
+  `mission_id` int(11) DEFAULT NULL,
+  `text` text,
+  PRIMARY KEY (`id`),
+  KEY `po_eentity_idx` (`eentity_cr_id`),
+  KEY `po_mission_idx` (`mission_id`),
+  CONSTRAINT `po_eentity` FOREIGN KEY (`eentity_cr_id`) REFERENCES `reg.eentity` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `po_mission` FOREIGN KEY (`mission_id`) REFERENCES `reg.mission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reg.po`
+--
+
+LOCK TABLES `reg.po` WRITE;
+/*!40000 ALTER TABLE `reg.po` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reg.po` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reg.source`
 --
 
@@ -365,6 +397,36 @@ LOCK TABLES `reg.source` WRITE;
 /*!40000 ALTER TABLE `reg.source` DISABLE KEYS */;
 INSERT INTO `reg.source` VALUES (1,0,8,'Davao City Area Study','(NR: 10ID2-PROD-08)','2010-01-01','2015-10-12 17:42:55'),(2,0,8,'Municipality of Columbio, SK','(NR: 10ID2-PROD-08) Contains information about the study done in the year 2010 at the City of General Santos, Sultan Kudarat by the Psycholoical Operations Team of the Civil-Military Operations Group.','2000-01-01','2015-10-12 17:43:50'),(3,0,8,'General Santos City','(NR: 10ID2-PROD-09) Contains information about the study done in the year 2010 at the province of Compostela Valley by the Psycholoical Operations Team of the Civil-Military Operations Group.','2010-01-01','2015-10-12 17:44:37'),(4,0,8,'Compostela Valley Province','(NR: 10ID2-PROD-01) Contains information about the study done in the year 2010 at the Municipality of Columbio, Sultan Kudarat by the Psycholoical Operations Team of the Civil-Military Operations Group.','2010-01-01','2015-10-12 17:45:03'),(5,0,8,'South Cotobato','(NR: 10ID2-PROD-06) Contains information about the study done in the year 2010 at the province of Davao Oriental by the Psycholoical Operations Team of the Civil-Military Operations Group.','2010-01-01','2015-10-12 17:45:22'),(6,0,8,'Davao Oriental','(NR: 10ID2-PROD-03) Contains information about the study done in the year 2010 at the province of Sarangani by the Psycholoical Operations Team of the Civil-Military Operations Group.','2010-01-01','2015-10-12 17:45:40'),(7,0,8,'Sarangani','Contains information about the study done in the year 2010 at the province of South Cotobato by the Psycholoical Operations Team of the Civil-Military Operations Group.','2010-01-01','2015-10-12 17:45:51'),(8,0,8,'Davao del Norte','(NR: 10ID2-PROD-02) Contains information about the study done in the year 2010 at the province of Davao Del Norte by the Psycholoical Operations Team of the Civil-Military Operations Group.','2010-01-01','2015-10-12 17:46:18'),(9,0,1,'Franco\'s Book','This is a book written by Franco','2015-01-15','2015-10-15 15:10:31');
 /*!40000 ALTER TABLE `reg.source` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reg.spo`
+--
+
+DROP TABLE IF EXISTS `reg.spo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reg.spo` (
+  `id` int(11) NOT NULL,
+  `rec_deleted` tinyint(4) DEFAULT NULL,
+  `eentity_cv_id` int(11) DEFAULT NULL,
+  `mission_id` int(11) DEFAULT NULL,
+  `text` text,
+  PRIMARY KEY (`id`),
+  KEY `spo_eentity_idx` (`eentity_cv_id`),
+  KEY `spo_mission_idx` (`mission_id`),
+  CONSTRAINT `spo_eentity` FOREIGN KEY (`eentity_cv_id`) REFERENCES `reg.eentity` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `spo_mission` FOREIGN KEY (`mission_id`) REFERENCES `reg.mission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reg.spo`
+--
+
+LOCK TABLES `reg.spo` WRITE;
+/*!40000 ALTER TABLE `reg.spo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reg.spo` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1229,6 +1291,35 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_po` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_po`(IN in_cr_id INT, IN in_mission_id INT, IN in_text TEXT)
+BEGIN
+INSERT INTO `shield`.`reg.po`(
+		`eentity_cr_id`,
+		`mission_id`,
+        `text`
+	)
+	VALUES(
+		in_cr_id,
+		in_mission_id,
+        in_text
+	);
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `add_source` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1291,6 +1382,34 @@ ELSE
 	SELECT 
 		0 AS SUCCESS;
 END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_spo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_spo`(IN in_cv_id INT, IN in_mission_id INT, IN in_text TEXT)
+BEGIN
+INSERT INTO `shield`.`reg.spo`(
+		`eentity_cv_id`,
+		`mission_id`,
+        `text`
+	)
+	VALUES(
+		in_cv_id,
+		in_mission_id,
+        in_text
+	);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1489,6 +1608,32 @@ SET
 	`rec_deleted` = 1
 WHERE 
 	`mission_id` = in_mission_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_all_pospo_mission` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_all_pospo_mission`(IN in_mission_id INT)
+BEGIN
+DELETE FROM
+	`shield`.`reg.po`
+WHERE
+	`mission_id` = in_mission_id;
+DELETE FROM 
+	`shield`.`reg.spo` 
+WHERE
+    `mission_id` = in_mission_id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2855,4 +3000,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-17 16:28:20
+-- Dump completed on 2015-10-18 22:34:57

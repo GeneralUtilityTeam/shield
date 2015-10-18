@@ -24,7 +24,7 @@
         <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
         <script  src="js/bootstrap-tagsinput.js"></script>
 
-        
+
         <script type="text/javascript">
             var msonJSOB = <%=request.getAttribute("msonJSOB")%>;
             var missionID = <%=session.getAttribute("missionID")%>;
@@ -37,6 +37,24 @@
             var savedArea;
 
         </script>
+        
+        <style>
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background: #F5F5F5;
+            }
+        </style>
 
     </head>
 
@@ -113,7 +131,7 @@
                                         <label data-toggle="tooltip" title="Press Enter to Add Keyword" style="width: 9%; font-weight: 100; font-size: 12px;">Keywords: </label> <input style="width: 40vw;" id="objective-keyword" type="text" data-role="tagsinput" class="form-box" >
                                     </td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td>
                                         <h5><b>Situation:  </b></h5>

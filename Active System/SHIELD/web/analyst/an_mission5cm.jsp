@@ -31,19 +31,29 @@
         <script src="js/mission-menu-builder.js"></script>
 
         <script>
-            $(function () {
-                $('#collapseTwo').collapse('hide')
-            });
-            $(function () {
-                $('#collapseOne').collapse('show')
-            });
-            
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
         </script>
 
+        <style>
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background: #F5F5F5;
+            }
+        </style>
 
     </head>
 
@@ -53,7 +63,7 @@
         <script src="js/navigation.js"></script>
 
         <div id="container-fluid">
-            <div id="content-shield" style="border-top: none;">
+            <div id="content-shield" style="border-top: none; overflow: hidden;">
                 <div class="col-md-2" style="position: fixed;">
                     <div style="background-color: rgba(230,230,230,1.0); color: black; width: 18vw; border-radius: 5px; text-align: justify; padding: 0 15px 0 15px;">
                         <h5 style="padding-top: 20px; font-size: 15px;"><span class="glyphicon glyphicon-file" aria-hidden="true"> </span><b> MISSION:</b><br> <label id="nav-mission-title-label" style="font-size: 13px; font-weight: 100; padding-left: 20px; text-align: left;"> </label></h5>
@@ -62,36 +72,13 @@
                     <ul class="nav nav-pills nav-stacked affix" id="nav-shield" role="tablist">
                     </ul>
                 </div>
-                <div class="col-md-10" style="margin-left: 19vw; width: 76vw;">
+                <div class="col-md-10" style="margin-left: 19vw; width: 76vw; overflow: auto; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
                         <button type="button" onclick="saveCM()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to PsyOps Objective</button>
                     </div><br>
-                    <div>
+                    <div style="height: 75vh;padding-top: 1vh; padding-right: 0;">
                         <div class="panel-group" id="accordion">
-                            <table class="table table-bordered">
-                                <caption class="matrix-caption">POPULACE COOPERATION: CR</caption>
-                                
-                                <tr>
-                                    <td class="CV">Target Component (Critical Vulnerability)</td>
-                                    <td class="CARVER">Criticality</td>
-                                    <td class="CARVER">Accessibility</td>
-                                    <td class="CARVER">Recuperability</td>
-                                    <td class="CARVER">Vulnerability</td>
-                                    <td class="CARVER">Effect</td>
-                                    <td class="CARVER">Recognizability</td>
-                                    <td class="CARVER">Total</td>
-                                </tr>
-                                <tr>
-                                    <td>Insurgent Cell</td>
-                                    <td class="CARVER"><input id="c1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="a1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="r11" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="v1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="e1" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="r12" type="number" min="1" max="10"></td>
-                                    <td class="CARVER"><input id="total1" type="number" max="60"></td>
-                                </tr>
-                            </table>
+                            
                         </div>
 
                     </div>
@@ -101,7 +88,7 @@
 
         <!--Sliding Side Bar Menu-->
         <!--Sliding Side Bar Menu-->
-        <div id="slidingmenu" style="width: 25vw;">
+        <div id="slidingmenu" style="width: 22vw;">
             <div id="panel-holder love"  style=" padding: 1vh 1vw 1vh 1vw;">
                 <div id=""></div>
 
@@ -111,7 +98,7 @@
         <script src="js/BootSideMenu.js"></script>
 
         <script type="text/javascript">
-            $('#slidingmenu').BootSideMenu({side: "right"});
+            $('#slidingmenu').BootSideMenu({side: "left"});
         </script>
         <script type="text/javascript">
 
@@ -131,7 +118,7 @@
 
         </script>
         <!--/Sliding Side Bar Menu-->
-        
+
         <!--Notification Alert-->
         <div class="alert-messages text-center">
         </div>

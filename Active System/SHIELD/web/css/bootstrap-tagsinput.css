@@ -29,6 +29,7 @@
   margin-right: 2px;
   color: white;
   font-size: 12px;
+  background-color: #63ce63;
 }
 .bootstrap-tagsinput .tag [data-role="remove"] {
   margin-left: 8px;

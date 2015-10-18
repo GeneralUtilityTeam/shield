@@ -65,12 +65,12 @@ function initialize() {
             panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;'> to: <input type='date' onchange='from" + (x + 1) + ".focus()' id='to" + x + "' class='form-box' style='width:42%;'><br>";
         }
         if (entityCC[x].lat == 0 && entityCC[x].lng == 0) {
-            panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:94%; margin-top: 10px; padding-right:0;' disabled value='" + geocodeResultLatLng() + "'><br>";
+            panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:94%; margin-top: 10px; padding-right:0;' disabled value=''><br>";
+            createCCEntityMarker(entityCC[x], x);
         }
         else {
-            var entityLatLng = new google.maps.LatLng(entityCC[x].lat, entityCC[x].lng)
-            //createCCEntityMarker(entityCC[x], entityLatLng);
-            panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:94%; margin-top: 10px; padding-right:0;' disabled value='" + geocodeResultLatLng() + "'><br>";
+            panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:94%; margin-top: 10px; padding-right:0;' disabled value=''><br>";
+            createCCEntityMarker(entityCC[x], x);
         }
         panelBody.innerHTML += "<h7>Show Excerpts of Entities:</h7><br>";
         panelBody.innerHTML += "<div class='checkbox'><label class='checkbox-inline' style='color:#CC0000'><input id='checkCC" + id + "' type='checkbox' value=''>Critical Capability</label> <i class='fa fa-map-marker fa-lg' style='color:#CC0000'></i></div>";
@@ -146,9 +146,21 @@ function initializeMap() {
     });
 }
 
-function geocodeSuccess(result) {
+function geocodeResultStringTCOA(str, i) { // Takes String Address; Returns geocode results
+    geocoder.geocode({
+        'address': str
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            geocodeSuccess(results[0], i);
+        } else {
+            return null;
+        }
+    });
+}
+
+function geocodeSuccess(result, i) {
     var area = generateAreaObject(result);
-    return generateFullAddress(area);
+    document.getElementById("at" + i).value = generateFullAddress(area);
 }
 
 
@@ -226,32 +238,73 @@ function createCCMarker(excerptList) {
     return markersArr;
 }
 
-function createCCEntityMarker(entityCC) {
-    var redPin = "CC0000";
-    var bluePin = "5394ed";
-    var yellowPin = "FFC200";
+function createCCEntityMarker(entityCC, i) {
 
     var marker;
-    var icon;
+    var icon = "http://maps.google.com/mapfiles/kml/shapes/target.png";
     var ids = entityCC.id;
+    if (entityCC.lat == 0 && entityCC.lng == 0) {
+        var bounds = new google.maps.LatLngBounds();
+        for (var x = 0; x < entityCC.excrList.length; x++) {
+            bounds.extend(new google.maps.LatLng(entityCC.excrList[x].area.lat, entityCC.excrList[x].area.lng));
+        }
+        
+        var latlngString = bounds.getCenter().toString();
+        geocodeResultStringTCOA(latlngString, i);
+        marker = new google.maps.Marker({
+            position: bounds.getCenter(),
+            map: map,
+            draggable: true,
+            id: ids,
+            icon: icon
+        });
+        google.maps.event.addListener(marker, 'dragend', function (evt) {
+            latlngString = evt.latLng.lat().toFixed(5).toString() + ", " + evt.latLng.lng().toFixed(5).toString();
+            geocodeResultStringTCOA(latlngString, i);
+        });
+
+        google.maps.event.addListener(marker, 'drag', function (evt) {
+            latlngString = evt.latLng.lat().toFixed(5).toString() + ", " + evt.latLng.lng().toFixed(5).toString();
+            geocodeResultStringTCOA(latlngString, i);
+        });
+    }
+    else {
+        var pos = new google.maps.LatLng(entityCC.lat, entityCC.lng);
+        var latlngString = pos.toString();
+        geocodeResultStringTCOA(latlngString, i);
+        marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            draggable: true,
+            id: ids,
+            icon: icon
+        });
+        google.maps.event.addListener(marker, 'dragend', function (evt) {
+            latlngString = evt.latLng.lat().toFixed(5).toString() + ", " + evt.latLng.lng().toFixed(5).toString();
+            geocodeResultStringTCOA(latlngString, i);
+        });
+
+        google.maps.event.addListener(marker, 'drag', function (evt) {
+            latlngString = evt.latLng.lat().toFixed(5).toString() + ", " + evt.latLng.lng().toFixed(5).toString();
+            geocodeResultStringTCOA(latlngString, i);
+        });
+    }
 
 
-    marker = new google.maps.Marker({
-        position: pos,
-        map: map,
-        id: ids,
-        icon: icon
-    });
     setWindowListener(marker, toTitleCase(entityCC.name));
     oms.addMarker(marker);
     entityMarker.push(marker);
     setMapOnAll(null);
+    setEntityMarkerOnMap(null, marker);
 }
 
 function setMarkersOnMap(map, excerptMarker) {
     for (var x = 0; x < excerptMarker.length; x++) {
         excerptMarker[x].setMap(map);
     }
+}
+function setEntityMarkerOnMap(map, marker) {
+    marker.setMap(map);
 }
 
 function clearCCMarkers() {
@@ -299,12 +352,13 @@ function assignListener(panel, id) {
 
     var cc = [], cr = [], cv = [];
     var ccMarker = [], crMarker = [], cvMarker = [];
-    $(panel).on('show.bs.collapse', function () {
-        for (var x = 0; x < entityMarker; x++) {
-            if (entityMarker[x].id == id)
-                entityMarker[x].setMap(map);
-        }
 
+    $(panel).on('show.bs.collapse', function () {
+
+        for (var x = 0; x < entityMarker.length; x++) {
+            if (entityMarker[x].id == id)
+                setEntityMarkerOnMap(map, entityMarker[x]);
+        }
         $('#checkCC' + id).prop("checked", false);
         $('#checkCR' + id).prop("checked", false);
         $('#checkCV' + id).prop("checked", false);
@@ -388,13 +442,16 @@ function assignListener(panel, id) {
         });
 
     });
+
     $(panel).on('hide.bs.collapse', function () {
         setMarkersOnMap(null, entityMarker);
+        setMarkersOnMap(null, markers);
         clearCCMarkers();
         $('#checkCC' + id).prop("checked", false);
         $('#checkCR' + id).prop("checked", false);
         $('#checkCV' + id).prop("checked", false);
     });
+
 }
 
 
@@ -422,17 +479,17 @@ function saveTCOA() {
 
     if (proceed) {
         for (var y = 0; y < entityCC.length; y++) {
-            entityCC[x].from = document.getElementById("from" + y).value;
-            entityCC[x].to = document.getElementById("to" + y).value;
-//            entityCC[x].lat = document.getElementById("to" + y).value; TODO
-//            entityCC[x].lng = document.getElementById("to" + y).value;
+            entityCC[y].from = document.getElementById("from" + y).value;
+            entityCC[y].to = document.getElementById("to" + y).value;
+            entityCC[y].lat = entityMarker[y].position.lat();
+            entityCC[y].lng = entityMarker[y].position.lng();
         }
-
+        
         $.ajax({
             type: "GET",
             url: "Save4TCOA",
             data: {
-                entityArr: toJSON(entityCC)
+                ccList: toJSON(entityCC)
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");

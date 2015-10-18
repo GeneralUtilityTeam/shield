@@ -15,7 +15,6 @@ $(document).ready(function () {
 });
 
 function initialize() {
-    //replace first parameter with Mission Status - msonJSOB.status
     buildNav(missionStatus, 5);
     buildCarver();
 }
@@ -37,7 +36,10 @@ function buildCarver() {
         panelHead.setAttribute("data-toggle", "collapse");
         panelHead.setAttribute("data-parent", "#accordion");
         panelHead.setAttribute("href", "#collapse" + id);
-        panelHead.innerHTML = "<h5>" + eentityCR[x].name + ": CR</h5>";
+        panelHead.innerHTML = "<h5><b>Critical Requirement: " + toTitleCase(eentityCR[x].name) + "</b></h5>";
+        panelHead.style.textAlign = "center";
+        panelHead.style.backgroundColor = "rgba(230,230,230,1.0)";
+
 
         //Panel Collapse
         var panelCollapse = document.createElement("div");
@@ -51,149 +53,162 @@ function buildCarver() {
 
         var table = document.createElement("table");
         table.className = "table table-bordered";
-        table.innerHTML = '<tr><td class="CV">Target Component (Critical Vulnerability)</td><td class="CARVER">Criticality</td><td class="CARVER">Accessibility</td><td class="CARVER">Recuperability</td><td class="CARVER">Vulnerability</td><td class="CARVER">Effect</td><td class="CARVER">Recognizability</td><td class="CARVER">Total</td></tr>"';
+        table.innerHTML = '<tr style="border: solid 1px #B2B2B2; background-color: #F5F5F5; font-weight: 700;"><td class="CV" style="border: solid 1px #B2B2B2;">Target Component (Critical Vulnerability)</td><td class="CARVER crit" style="border: solid 1px #B2B2B2;">Criticality</td><td class="CARVER acce" style="border: solid 1px #B2B2B2;">Accessibility</td><td class="CARVER recu" style="border: solid 1px #B2B2B2;">Recuperability</td><td class="CARVER vuln" style="border: solid 1px #B2B2B2;">Vulnerability</td><td class="CARVER effe" style="border: solid 1px #B2B2B2;">Effect</td><td class="CARVER reco" style="border: solid 1px #B2B2B2;">Recognizability</td><td class="CARVER" style="border: solid 1px #B2B2B2;">Total</td></tr>';
 
         var cvList = eentityCR[x].cvList;
         cvList.forEach(function (cv) {
             var tr = document.createElement("tr");
+            tr.style.border = "solid 1px #B2B2B2";
+            tr.style.padding = "10px";
 
             var tdName = document.createElement("td");
-            tdName.innerHTML = cv.name;
+            tdName.innerHTML = toTitleCase(cv.name);
+            tdName.style.paddingLeft = "10px";
+            tdName.style.fontWeight = "700";
+            tdName.style.paddingTop = "10px";
+            tdName.style.paddingBottom = "10px";
+            tdName.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdName);
 
             var tdCrit = document.createElement("td");
-            tdCrit.className = "CARVER";
-            tdCrit.innerHTML = '<input id="' + id + 'crit' + cv.id + '" type="number" min="1" max="10" value= ' + cv.crit + '>';
+            tdCrit.className = "CARVER crit";
+            tdCrit.innerHTML = '<input id="' + id + 'crit' + cv.id + '" type="number" min="1" max="10" value= "' + cv.crit + '" onchange="calculateCV(' + id + ',' + cv.id + ')" style="text-align:center;">';
+            tdCrit.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdCrit);
 
             var tdAcce = document.createElement("td");
-            tdAcce.className = "CARVER";
-            tdAcce.innerHTML = '<input id="' + id + 'acce' + cv.id + '" type="number" min="1" max="10" value= ' + cv.acce + '>';
+            tdAcce.className = "CARVER acce";
+            tdAcce.innerHTML = '<input id="' + id + 'acce' + cv.id + '" type="number" min="1" max="10" value= "' + cv.acce + '" onchange="calculateCV(' + id + ',' + cv.id + ')" style="text-align:center;">';
+            tdAcce.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdAcce);
 
             var tdRecu = document.createElement("td");
-            tdRecu.className = "CARVER";
-            tdRecu.innerHTML = '<input id="' + id + 'recu' + cv.id + '" type="number" min="1" max="10" value= ' + cv.recu + '>';
+            tdRecu.className = "CARVER recu";
+            tdRecu.innerHTML = '<input id="' + id + 'recu' + cv.id + '" type="number" min="1" max="10" value= "' + cv.recu + '" onchange="calculateCV(' + id + ',' + cv.id + ')" style="text-align:center;">';
+            tdRecu.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdRecu);
 
             var tdVuln = document.createElement("td");
-            tdVuln.className = "CARVER";
-            tdVuln.innerHTML = '<input id="' + id + 'vuln' + cv.id + '" type="number" min="1" max="10" value= ' + cv.vuln + '>';
+            tdVuln.className = "CARVER vuln";
+            tdVuln.innerHTML = '<input id="' + id + 'vuln' + cv.id + '" type="number" min="1" max="10" value= "' + cv.vuln + '" onchange="calculateCV(' + id + ',' + cv.id + ')" style="text-align:center;">';
+            tdVuln.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdVuln);
 
             var tdEffe = document.createElement("td");
-            tdEffe.className = "CARVER";
-            tdEffe.innerHTML = '<input id="' + id + 'effe' + cv.id + '" type="number" min="1" max="10" value= ' + cv.effe + '>';
+            tdEffe.className = "CARVER effe";
+            tdEffe.innerHTML = '<input id="' + id + 'effe' + cv.id + '" type="number" min="1" max="10" value= "' + cv.effe + '" onchange="calculateCV(' + id + ',' + cv.id + ')" style="text-align:center;">';
+            tdEffe.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdEffe);
 
             var tdReco = document.createElement("td");
-            tdReco.className = "CARVER";
-            tdReco.innerHTML = '<input id="' + id + 'reco' + cv.id + '" type="number" min="1" max="10" value= ' + cv.reco + '>';
+            tdReco.className = "CARVER reco";
+            tdReco.innerHTML = '<input id="' + id + 'reco' + cv.id + '" type="number" min="1" max="10" value= "' + cv.reco + '" onchange="calculateCV(' + id + ',' + cv.id + ')" style="text-align:center;">';
+            tdReco.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdReco);
 
-            table.appendChild(tr);
+            var initialTotal = cv.crit + cv.acce + cv.recu + cv.vuln + cv.effe + cv.reco;
 
             var tdTotal = document.createElement("td");
             tdTotal.className = "CARVER";
-            tdTotal.innerHTML = '<input id="' + id + 'total' + cv.id + '" type="number" min="1" max="60">';
+            tdTotal.innerHTML = '<input id="' + id + 'total' + cv.id + '" type="number" min="1" max="60" value= "' + initialTotal + '" disabled style="text-align:center;">';
+            tdTotal.style.border = "solid 1px #B2B2B2";
             tr.appendChild(tdTotal);
+
+            table.appendChild(tr);
 
         });
 
+        var guideTable = document.createElement("table");
+        guideTable.id = "guideTable" + id;
+        guideTable.className = "table table-bordered";
+        guideTable.innerHTML = '<tr><td width="80%" style="text-align:center; font-weight: 700;">Criteria</td><td width="20%" style="text-align:center; font-weight: 700;">Scale</td></tr>';
+
+        guideTable.innerHTML += '<tr><td width="80%"></td><td width="20%" style="text-align:center;">9-10</td></tr>';
+        guideTable.innerHTML += '<tr><td width="80%"></td><td width="20%" style="text-align:center;">7-8</td></tr>';
+        guideTable.innerHTML += '<tr><td width="80%"></td><td width="20%" style="text-align:center;">5-6</td></tr>';
+        guideTable.innerHTML += '<tr><td width="80%"></td><td width="20%" style="text-align:center;">3-4</td></tr>';
+        guideTable.innerHTML += '<tr><td width="80%"></td><td width="20%" style="text-align:center;">1-2</td></tr>';
+
+        assignListener(panelCollapse, id);
+
         panelBody.appendChild(table);
+        panelBody.appendChild(guideTable);
         panelCollapse.appendChild(panelBody);
         panel.appendChild(panelHead);
         panel.appendChild(panelCollapse);
         collapse.appendChild(panel);
 
     }
+
 }
 
-function loadMatrixes() {
-    var carverDiv = document.getElementById("matrix-div");
-    for (var x = 0; x < carvJSON.length; x++) {
-        //Table
-        var table = document.createElement('table');
-        table.className = 'table table-bordered';
-        table.innerHTML = '<caption class="matrix-caption">' + carvJSON[x].crText.toUpperCase() + ' - CARVER MATRIX</caption>'
-        //THeader
-        var thead = document.createElement('thead');
+function assignListener(panel, id) {
 
-        var headRow = thead.insertRow(0);
-        var cvHeader = headRow.insertCell(0);
-        cvHeader.innerHTML = 'Target Component (Critical Vulnerability)';
-        cvHeader.className = 'CV';
-        var cHeader = headRow.insertCell(1);
-        cHeader.innerHTML = 'Criticality';
-        cHeader.className = 'CARVER';
-        var aHeader = headRow.insertCell(2);
-        aHeader.innerHTML = 'Accessibility';
-        aHeader.className = 'CARVER';
-        var rHeader = headRow.insertCell(3);
-        rHeader.innerHTML = 'Recuperability';
-        rHeader.className = 'CARVER';
-        var vHeader = headRow.insertCell(4);
-        vHeader.innerHTML = 'Vulnerability';
-        vHeader.className = 'CARVER';
-        var eHeader = headRow.insertCell(5);
-        eHeader.innerHTML = 'Effect';
-        eHeader.className = 'CARVER';
-        var r2Header = headRow.insertCell(6);
-        r2Header.innerHTML = 'Recognizability';
-        r2Header.className = 'CARVER';
-        var totalHeader = headRow.insertCell(7);
-        totalHeader.innerHTML = "Total";
-        totalHeader.className = 'CARVER';
-        table.appendChild(thead);
+    $(panel).on('show.bs.collapse', function () {
 
-        //TBody
-        var tbody = document.createElement('tbody');
-        var crID = carvJSON[x].crID;
-        var cv;
-        for (var y = 0; y < carvJSON[x].cvList.length; y++) {
-            cv = carvJSON[x].cvList[y];
-            var crRow = tbody.insertRow(y);
-            var cvHeader = crRow.insertCell(0);
-            cvHeader.innerHTML = cv.text;
-            cvHeader.className = 'CV';
-            var cHeader = crRow.insertCell(1);
-            cHeader.innerHTML = "<input id='" + crID + 'C' + cv.cvID + "' type='number' onchange='calculateCV(" + crID + "," + cv.cvID + ")'  min='1' max='10' onKeyPress='return numbersonly(this, event)' value = '" + cv.criticality + "'>";
-            cHeader.className = 'CARVER';
-            var aHeader = crRow.insertCell(2);
-            aHeader.innerHTML = "<input id='" + crID + 'A' + cv.cvID + "' type='number' onchange='calculateCV(" + crID + "," + cv.cvID + ")'  min='1' max='10' onKeyPress='return numbersonly(this, event)' value = '" + cv.accessibility + "'>";
-            aHeader.className = 'CARVER';
-            var rHeader = crRow.insertCell(3);
-            rHeader.innerHTML = "<input id='" + crID + 'R' + cv.cvID + "' type='number' onchange='calculateCV(" + crID + "," + cv.cvID + ")'  min='1' max='10' onKeyPress='return numbersonly(this, event)' value = '" + cv.recuperability + "'>";
-            rHeader.className = 'CARVER';
-            var vHeader = crRow.insertCell(4);
-            vHeader.innerHTML = "<input id='" + crID + 'V' + cv.cvID + "' type='number' onchange='calculateCV(" + crID + "," + cv.cvID + ")'  min='1' max='10' onKeyPress='return numbersonly(this, event)' value = '" + cv.vulnerability + "'>";
-            vHeader.className = 'CARVER';
-            var eHeader = crRow.insertCell(5);
-            eHeader.innerHTML = "<input id='" + crID + 'E' + cv.cvID + "' type='number' onchange='calculateCV(" + crID + "," + cv.cvID + ")'  min='1' max='10' onKeyPress='return numbersonly(this, event)' value = '" + cv.effect + "'>";
-            eHeader.className = 'CARVER';
-            var r2Header = crRow.insertCell(6);
-            r2Header.innerHTML = "<input id='" + crID + 'RT' + cv.cvID + "' type='number' onchange='calculateCV(" + crID + "," + cv.cvID + ")'  min='1' max='10' onKeyPress='return numbersonly(this, event)' value = '" + cv.recognizability + "'>";
-            r2Header.className = 'CARVER';
-            var totalHeader = crRow.insertCell(7);
-            totalHeader.innerHTML = "<input id='" + crID + 'TO' + cv.cvID + "' type='number' onchange='calculateCV(" + crID + "," + cv.cvID + ")'  min='1' max='10' value = '" + cv.total + "' disabled>";
-            totalHeader.className = 'CARVER';
-        }
-        var lastCell = tbody.insertRow(y).insertCell(0);
-        lastCell.setAttribute('colspan', 8);
-        lastCell.innerHTML = "<b>Legend</b><p>10 - High Desirability for attacking the target.</p><p>5 - Average Desirability for attacking the target.</p><p>1 - Low Desirability for attacking the target.</p>";
-        table.appendChild(tbody);
-        carverDiv.appendChild(table);
-        carverDiv.appendChild(document.createElement('br'));
-    }
+        $('.crit').on('click', function () {
+            $("#guideTable" + id + " tr:eq(1) td:eq(0)").text("Immediate effect on the threat's CR; the threat cannot function without the CV.");
+            $("#guideTable" + id + " tr:eq(2) td:eq(0)").text("Effect within 1 week on the threat's CR.");
+            $("#guideTable" + id + " tr:eq(3) td:eq(0)").text("Effect within 1 month on the threat's CR.");
+            $("#guideTable" + id + " tr:eq(4) td:eq(0)").text("Effect within 2 months on the threat's CR.");
+            $("#guideTable" + id + " tr:eq(5) td:eq(0)").text("No significant effect on the threat's CR.");
+
+        });
+        $('.acce').on('click', function () {
+            $("#guideTable" + id + " tr:eq(1) td:eq(0)").text("Easily accessible; target can be reached by all PSYOP diessemination methods, to include face-to-face communication.");
+            $("#guideTable" + id + " tr:eq(2) td:eq(0)").text("Moderately accessible due to threat and terrain; target can be reached by all PSYOP dissemination methods, to include face-to-face communication.");
+            $("#guideTable" + id + " tr:eq(3) td:eq(0)").text("Limited accessibility due to threat and terrain; target can be reached by all PSYOP dissemination methods, to include face-to-face communication.");
+            $("#guideTable" + id + " tr:eq(4) td:eq(0)").text("Only accessible by leaflet air drop and aerial broadcast station dissemination");
+            $("#guideTable" + id + " tr:eq(5) td:eq(0)").text("Not accessible or inaccessible due to terrain, ground threat level, air defense threat level, and lack of receivers.");
+
+        });
+        $('.recu').on('click', function () {
+            $("#guideTable" + id + " tr:eq(1) td:eq(0)").text("Mitigation of the effects of the PSYOP series requires 1 month or more.");
+            $("#guideTable" + id + " tr:eq(2) td:eq(0)").text("Mitigation of the effects of the PSYOP series requires 1 week to 1 month.");
+            $("#guideTable" + id + " tr:eq(3) td:eq(0)").text("Mitigation of the effects of the PSYOP series requires 72 hours to 1 week.");
+            $("#guideTable" + id + " tr:eq(4) td:eq(0)").text("Mitigation of the effects of the PSYOP series requires 24 to 72 hours.");
+            $("#guideTable" + id + " tr:eq(5) td:eq(0)").text("Same day mitigation of the effects of the PSYOP series");
+
+        });
+        $('.vuln').on('click', function () {
+            $("#guideTable" + id + " tr:eq(1) td:eq(0)").text("Very vulnerable to PSYOP products and actions due to existing target characteristics, motives, or conditions.");
+            $("#guideTable" + id + " tr:eq(2) td:eq(0)").text("Vulnerable to influence by PSYOP products and actions due to existing target characteristics, motives, or conditions.");
+            $("#guideTable" + id + " tr:eq(3) td:eq(0)").text("Moderately vulnerable to influence by PSYOP products and actions due to existing target characteristics, motives, or conditions.");
+            $("#guideTable" + id + " tr:eq(4) td:eq(0)").text("Slightly vulnerable to influence by PSYOP products and actions due to existing target characteristics, motives, or conditions.");
+            $("#guideTable" + id + " tr:eq(5) td:eq(0)").text("Invulnerable to influence by PSYOP products and actions due to existing target characteristics, motives, or conditions.");
+
+        });
+        $('.effe').on('click', function () {
+            $("#guideTable" + id + " tr:eq(1) td:eq(0)").text("Overwhelming positive effects; no significant negative effects.");
+            $("#guideTable" + id + " tr:eq(2) td:eq(0)").text("Moderately positive effects; no significant negative effects.");
+            $("#guideTable" + id + " tr:eq(3) td:eq(0)").text("No significant effects; neutral.");
+            $("#guideTable" + id + " tr:eq(4) td:eq(0)").text("Moderately negative effects; few significant positive effects.");
+            $("#guideTable" + id + " tr:eq(5) td:eq(0)").text("Overwhelmingly negative effects; no significant positive effects.");
+
+        });
+        $('.reco').on('click', function () {
+            $("#guideTable" + id + " tr:eq(1) td:eq(0)").text("The target is clearly recognizable; impact indicators require little effort for collection.");
+            $("#guideTable" + id + " tr:eq(2) td:eq(0)").text("The target is easily recognizable; impact indicators require slight effort for collection.");
+            $("#guideTable" + id + " tr:eq(3) td:eq(0)").text("The target is difficult to recognize or might be confused with other targets; impact indicators require a moderate effort for collection.");
+            $("#guideTable" + id + " tr:eq(4) td:eq(0)").text("The target is difficult to recognize, even with close range, without the aid of location nationals or regional experts; the target is easily confused with other targets and impact indicators require a significant effort for collection.");
+            $("#guideTable" + id + " tr:eq(5) td:eq(0)").text("The target cannot be recognized under any conditions, except by location nationals or regional experts; impact indicators are near impossible to collect.");
+
+        });
+
+    });
+    $(panel).on('hide.bs.collapse', function () {
+
+    });
 }
+
 function calculateCV(crID, cvID) {
-    var c = parseInt(document.getElementById(crID + "C" + cvID).value);
-    var a = parseInt(document.getElementById(crID + "A" + cvID).value);
-    var r = parseInt(document.getElementById(crID + "R" + cvID).value);
-    var v = parseInt(document.getElementById(crID + "V" + cvID).value);
-    var e = parseInt(document.getElementById(crID + "E" + cvID).value);
-    var rt = parseInt(document.getElementById(crID + "RT" + cvID).value);
-    document.getElementById(crID + "TO" + cvID).value = c + a + r + v + e + rt;
+    var c = parseInt(document.getElementById(crID + "crit" + cvID).value);
+    var a = parseInt(document.getElementById(crID + "acce" + cvID).value);
+    var r = parseInt(document.getElementById(crID + "recu" + cvID).value);
+    var v = parseInt(document.getElementById(crID + "vuln" + cvID).value);
+    var e = parseInt(document.getElementById(crID + "effe" + cvID).value);
+    var rt = parseInt(document.getElementById(crID + "reco" + cvID).value);
+    document.getElementById(crID + "total" + cvID).value = c + a + r + v + e + rt;
 }
 
 function saveCM() {
@@ -201,10 +216,8 @@ function saveCM() {
         type: "GET",
         url: "Save5CM",
         success: function (response) {
-            showAndDismissAlert("success", response);
-            setTimeout(function () {
-                window.location.assign("ANMission6PO")
-            }, 3000);
+            showAndDismissAlert("success", "<strong>CARVER Methodology</strong> has been <strong>saved.</strong>");
+                window.location.assign("ANMission6PO");
         }
     });
 }
