@@ -484,7 +484,7 @@ function saveTCOA() {
             entityCC[y].lat = entityMarker[y].position.lat();
             entityCC[y].lng = entityMarker[y].position.lng();
         }
-        
+        console.log(entityCC);
         $.ajax({
             type: "GET",
             url: "Save4TCOA",

@@ -556,8 +556,8 @@ public class IntelligenceDAO {
                 pstmt.setInt(1, e.getId());
                 pstmt.setDate(2, new java.sql.Date(e.getDateFrom().getTime()));
                 pstmt.setDate(3, new java.sql.Date(e.getDateTo().getTime()));
-                pstmt.setDouble(5, e.getLat());
-                pstmt.setDouble(6, e.getLng());
+                pstmt.setDouble(4, e.getLat());
+                pstmt.setDouble(5, e.getLng());
                 pstmt.executeUpdate();
             }
 
