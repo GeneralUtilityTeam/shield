@@ -26,14 +26,13 @@
         <!--Sliding Side Bar CSS-->
         <link href="css/BootSideMenu.css" rel="stylesheet">
 
-        <!--Vis.js Plugin-->
-        <script type="text/javascript" src="js/vis.js"></script>
-        <link href="css/vis.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission6po.js"></script>
         <script src="js/mission-menu-builder.js"></script>
+
+        <!--Dropdown Checkbox-->
+        <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
 
         <script>
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
@@ -92,50 +91,16 @@
                     </div><br>
                     <div style="height: 75vh;padding-top: 1vh; padding-right: 0;">
                         <div class="panel-group" id="accordion">
+
+                        </div>
+
+                        <div id="psyopsObj" style="width: 70%; margin-left: 15%;">
                             
                         </div>
 
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Add SPO Modal -->
-        <div class="modal fade" id="addSPO" tabindex="-1" role="dialog" 
-             aria-labelledby="addSPOlabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" 
-                                data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">
-                            Supporting PSYOPS Objective
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <table>
-                            <tr>
-                                <td><h5>SPO: </h5></td>
-                                <td><textarea type="text" class="form-box" rows="4" cols="50" placeholder="Enter Supporting PSYOPS Objective" style="margin-top: 5px;"></textarea></td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" style="margin-left: 5px;"><span class="glyphicon glyphicon-plus"></span> Add Another SPO</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-saved"> </span>
-                            Add Supporting PSYOPS Objective
-                        </button>
-                        <button type="button" class="btn btn-default" 
-                                data-dismiss="modal">Close
-                        </button>
-
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
         </div>
 
         <!--Notification Alert-->

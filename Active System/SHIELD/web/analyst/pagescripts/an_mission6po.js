@@ -1,4 +1,6 @@
 var eentityCR;
+var poCounter;
+
 
 $(document).ready(function () {
     $.ajax({
@@ -13,11 +15,16 @@ $(document).ready(function () {
             console.log(eentityCR);
         }
     });
+
+
+    $('#example-getting-started').multiselect();
+
 });
 
 function initialize() {
     buildNav(missionStatus, 6);
     buildCarver();
+    addPO();
 }
 
 function buildCarver() {
@@ -82,7 +89,7 @@ function buildCarver() {
                     },
                     "targets": 7
                 },
-                {"sClass": "alignCenter", "targets": [1, 2, 3, 4, 5, 6,7]},
+                {"sClass": "alignCenter", "targets": [1, 2, 3, 4, 5, 6, 7]},
                 {"sClass": "bold", "targets": [0]}
             ]
         });
@@ -95,6 +102,57 @@ function buildCarver() {
 
     }
 
+
+}
+
+function addPO() {
+    var poDiv = document.getElementById("psyopsObj");
+    var table = document.createElement("table");
+    table.style.width = "100%";
+
+
+    var trPO = document.createElement("tr");
+    var td1PO = document.createElement("td");
+    td1PO.style.width = "60%";
+    td1PO.innerHTML = "PO: <input type='text' class='form-box' style='width: 90%;'>";
+
+    var td2PO = document.createElement("td");
+    td2PO.innerHTML = "CR Reference: ";
+    td2PO.style.width = "30%";
+    var select = document.createElement("select");
+    select.id = "cv";
+    for (var x = 0; x < eentityCR.length; x++) {
+        var option = document.createElement("option");
+        option.text = toTitleCase(eentityCR[x].name);
+        select.appendChild(option);
+    }
+
+    td2PO.appendChild(select);
+
+    var td3PO = document.createElement("td");
+    td3PO.style.width = "10%";
+    var addSPOBtn = document.createElement("button");
+    addSPOBtn.className = "btn btn-success";
+    addSPOBtn.setAttribute("onclick", addSPO(table, select));
+    addSPOBtn.style.width = "100%";
+    addSPOBtn.innerHTML = "<span class='glyphicon glyphicon-plus'></span> Add SPO";
+    td3PO.appendChild(addSPOBtn);
+
+    trPO.appendChild(td1PO);
+    trPO.appendChild(td2PO);
+    trPO.appendChild(td3PO);
+    table.appendChild(trPO);
+    poDiv.appendChild(table);
+    activateMultiSelect(select);
+
+}
+
+function addSPO(table, select){
+    
+}
+
+function activateMultiSelect(select) {
+    $(select).multiselect();
 }
 
 function savePO() {

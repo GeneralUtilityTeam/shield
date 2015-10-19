@@ -7,6 +7,7 @@ package dao;
 
 import db.DBConnector;
 import entity.Area;
+import entity.LogEntry;
 import entity.Mission;
 import entity.User;
 import java.sql.Connection;
@@ -65,7 +66,7 @@ public class UserDAO {
         return null;
     }
 
-    public boolean Logout (int id){
+    public boolean Logout(int id) {
         try {
             //Create Connection
             DBConnector db = new DBConnector();
@@ -74,11 +75,10 @@ public class UserDAO {
             //Prepare the statement which will use a stored procedure
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`logout`(?);");
             pstmt.setInt(1, id);
-            System.out.println(id);
             //Run statement and advance to first line
             ResultSet rs = pstmt.executeQuery();
             rs.next();
-            
+
             boolean success = false;
             if (rs.getRow() != 0) {
                 int result = rs.getInt(1);
@@ -96,7 +96,7 @@ public class UserDAO {
         }
         return false;
     }
-    
+
     public String GetFullName(int id) {
         try {
             //Create Connection
@@ -130,7 +130,7 @@ public class UserDAO {
         return null;
     }
 
-    public ArrayList<User> GetAllUser(){
+    public ArrayList<User> GetAllUser() {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
@@ -148,15 +148,17 @@ public class UserDAO {
                     user.setId(rs.getInt(1));
                     user.setClassID(rs.getInt(2));
                     user.setClassDesc(rs.getString(3));
-                    user.setUname(rs.getString(4));
-                    if(rs.getInt(5) == 1)
+                    if (rs.getInt(4) == 1) {
                         user.setStatus("Logged In");
-                    else
+                    } else {
                         user.setStatus("Logged Out");
-                    user.setNameTitle(rs.getString(6));
-                    user.setNameFirst(rs.getString(7));
-                    user.setNameOther(rs.getString(8));
-                    user.setNameLast(rs.getString(9));
+                    }
+                    user.setLastSeen(rs.getDate(5));
+                    user.setUname(rs.getString(6));
+                    user.setNameTitle(rs.getString(7));
+                    user.setNameFirst(rs.getString(8));
+                    user.setNameOther(rs.getString(9));
+                    user.setNameLast(rs.getString(10));
                     user.generateFullName();
                     userList.add(user);
                 } while (rs.next());
@@ -171,4 +173,104 @@ public class UserDAO {
 
         return null;
     }
+
+    public ArrayList<LogEntry> GetAccessLog() {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_access`();");
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<LogEntry> logList = new ArrayList<LogEntry>();
+                do {
+                    LogEntry log = new LogEntry();
+                    log.setId(rs.getInt(1));
+                    log.setUserID(rs.getInt(2));
+                    log.setUserUname(rs.getString(3));
+                    log.setDate(rs.getDate(4));
+                    log.setEntryClassId(rs.getInt(5));
+                    log.setEntryClassDesc(rs.getString(6));
+                    logList.add(log);
+                } while (rs.next());
+
+                cn.close();
+                return logList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public ArrayList<LogEntry> GetActionLog() {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_action`();");
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<LogEntry> logList = new ArrayList<LogEntry>();
+                do {
+                    LogEntry log = new LogEntry();
+                    log.setId(rs.getInt(1));
+                    log.setUserID(rs.getInt(2));
+                    log.setUserUname(rs.getString(3));
+                    log.setDate(rs.getDate(4));
+                    log.setEntryDesc(rs.getString(5));
+                    logList.add(log);
+                } while (rs.next());
+
+                cn.close();
+                return logList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public int AddUser(int editorID, User user) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_user`(?, ?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, editorID);
+            pstmt.setInt(2, user.getClassID());
+            pstmt.setString(3, user.getUname());
+            pstmt.setString(4, user.getPword());
+            pstmt.setString(5, user.getNameTitle());
+            pstmt.setString(6, user.getNameFirst());
+            pstmt.setString(7, user.getNameOther());
+            pstmt.setString(8, user.getNameLast());
+            
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    } //Clear
 }

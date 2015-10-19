@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.util.Date;
+
 /**
  *
  * @author Franco
@@ -15,12 +17,14 @@ public class User {
     private int classID;
     private String classDesc;
     private String uname;
+    private String pword;
     private String nameTitle;
     private String nameFirst;
     private String nameOther;
     private String nameLast;
     private String fullName;
     private String status;
+    private Date lastSeen;
     
     public User(){
         
@@ -33,6 +37,7 @@ public class User {
         this.nameFirst = nameFirst;
         this.nameOther = nameOther;
         this.nameLast = nameLast;
+        LogEntry ev;
     }
 
     public String generateFullName() {
@@ -179,6 +184,34 @@ public class User {
      */
     public void setClassDesc(String classDesc) {
         this.classDesc = classDesc;
+    }
+
+    /**
+     * @return the lastSeen
+     */
+    public Date getLastSeen() {
+        return lastSeen;
+    }
+
+    /**
+     * @param lastSeen the lastSeen to set
+     */
+    public void setLastSeen(Date lastSeen) {
+        this.lastSeen = lastSeen;
+    }
+
+    /**
+     * @return the pword
+     */
+    public String getPword() {
+        return pword;
+    }
+
+    /**
+     * @param pword the pword to set
+     */
+    public void setPword(String pword) {
+        this.pword = pword;
     }
 
 }

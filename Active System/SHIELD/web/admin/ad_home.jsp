@@ -17,6 +17,12 @@
         <!--General Scripts-->
         <script src="js/util.js"></script>
         <script  src="js/alert.js"></script>
+        
+        <!--Data Table-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+        
 
         <!--Page Script-->
         <script src="admin/pagescripts/ad_home.js"></script>
@@ -31,7 +37,6 @@
 
             <ul id="myTab" class="nav nav-tabs" style="margin-left: 1.5vw; margin-right: 1.5vw">
                 <li class="active"><a href="#shield-users" data-toggle="tab">SHIELD Users</a></li>
-                <li><a href="#active-users" data-toggle="tab">Active Users</a></li>
                 <li><a href="#access-log" data-toggle="tab">Access Log</a></li>
                 <li><a href="#action-log" data-toggle="tab">Action Log</a></li>
             </ul>
@@ -42,45 +47,28 @@
 
                         <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser" style="margin-right: 1vw;"><span class="glyphicon glyphicon-plus"></span> Add New User</button>
 
-                        <table class="table table-bordered table-hover list-table">
+                        <table id="user-table" class="table table-bordered table-hover list-table">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
-                                    <th width="30%">Username</th>
-                                    <th width="40%">Name</th>
-                                    <th width="30%">Account Type</th>
+                                    <th width="20%">Username</th>
+                                    <th width="30%">Name</th>
+                                    <th width="20%">Account Type</th>
+                                    <th width="15%">Status</th>
+                                    <th width="15%">Last Login</th>
                                 </tr>
                             </thead>
-                            <tbody id="shield-users-body">
-                                <tr data-toggle="modal" data-target="#updateUser">
-                                    <td>danchristian.torres</td>
-                                    <td>Mr. Dan Christian R. Torres</td>
-                                    <td>Analyst</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="active-users">
-                        <table class="table table-bordered table-hover list-table">
-                            <thead style="background-color: #D3D3D3;">
-                                <tr>
-                                    <th width="30%">Username</th>
-                                    <th width="70%">Login Time</th>
-                                </tr>
-                            </thead>
-                            <tbody id="access-log-body">
+                            <tbody id="user-table-body">
 
                             </tbody>
                         </table>
                     </div>
-
                     <div class="tab-pane fade" id="access-log">
-                        <table class="table table-bordered table-hover list-table">
+                        <table id="access-table" class="table table-bordered table-hover list-table">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
                                     <th width="30%">Username</th>
                                     <th width="30%">Access Type</th>
-                                    <th width="40%">Date and Time</th>
+                                    <th width="40%">Date</th>
                                 </tr>
                             </thead>
                             <tbody id="access-log-body">
@@ -90,7 +78,7 @@
                     </div>
 
                     <div class="tab-pane fade" id="action-log">
-                        <table class="table table-bordered table-hover list-table">
+                        <table id="action-table" class="table table-bordered table-hover list-table">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
                                     <th width="30%">Username</th>
@@ -125,6 +113,14 @@
                     </div>
                     <div class="modal-body">
                         <table id="begin-mission-table" style="width: 100%;">
+                            <tr>
+                                <td>
+                                    User Type: <select class="form-box" placeholder="Enter Username"required>
+                                        <option value="2">Analyst</option>
+                                        <option value="3">Encoder</option>
+                                    </select>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     Username: <input type="text" name="add-username" class="form-box" placeholder="Enter Username"required>
@@ -164,7 +160,6 @@
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Close
                         </button>
-
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->

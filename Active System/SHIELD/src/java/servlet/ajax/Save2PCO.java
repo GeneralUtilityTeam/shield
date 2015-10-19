@@ -76,7 +76,7 @@ public class Save2PCO extends HttpServlet {
             JSONObject jsob = new JSONObject(j.toString());
             EEntity eent = new EEntity();
             eent.setName(jsob.getString("name"));
-            eent.setClassID(jsob.getInt("class"));
+            eent.setClassID(jsob.getInt("classID"));
             ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();
             for(Object id : jsob.getJSONArray("excrList")){
                 Excerpt excr = new Excerpt();

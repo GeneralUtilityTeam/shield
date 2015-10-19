@@ -180,6 +180,18 @@
         <servlet-name>GetAllUser</servlet-name>
         <servlet-class>servlet.ajax.GetAllUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAccessLog</servlet-name>
+        <servlet-class>servlet.ajax.GetAccessLog</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetActionLog</servlet-name>
+        <servlet-class>servlet.ajax.GetActionLog</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveUser</servlet-name>
+        <servlet-class>servlet.ajax.SaveUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -359,6 +371,18 @@
     <servlet-mapping>
         <servlet-name>GetAllUser</servlet-name>
         <url-pattern>/GetAllUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAccessLog</servlet-name>
+        <url-pattern>/GetAccessLog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetActionLog</servlet-name>
+        <url-pattern>/GetActionLog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveUser</servlet-name>
+        <url-pattern>/SaveUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

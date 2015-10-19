@@ -3,45 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet;
+package servlet.ajax;
 
 import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import servlet.father.FatherServlet;
+import org.json.JSONArray;
 
 /**
  *
  * @author Franco
  */
-public class Logout extends FatherServlet {
+public class GetAccessLog extends HttpServlet {
 
-     protected void servletAction(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        int userID = (int)session.getAttribute("userID");
-        String dispatchLocation = "error.jsp";
-        boolean success = new UserDAO().Logout(userID);
-        
-        if(success){
-            dispatchLocation = "index.jsp";
-            session.invalidate();
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet GetAccessLog</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet GetAccessLog at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-            
-        request.setAttribute("destination", dispatchLocation);
-        
-        ServletContext context = getServletContext();
-        RequestDispatcher dispatch = context.getRequestDispatcher("/message.jsp");
-        dispatch.forward(request, response);
-
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -54,7 +59,14 @@ public class Logout extends FatherServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        UserDAO userDAO = new UserDAO();
+        ArrayList userList = userDAO.GetAccessLog();
+        JSONArray userJArr= new JSONArray(userList);
+        String userJSON = userJArr.toString();
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(userJSON);
     }
 
     /**
@@ -80,6 +92,5 @@ public class Logout extends FatherServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }
