@@ -5,12 +5,15 @@
  */
 package servlet.ajax;
 
+import dao.UserDAO;
+import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -56,7 +59,23 @@ public class SaveUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        
+        User user = new User();
+        
+        HttpSession session = request.getSession();
+        int userID = (int)session.getAttribute("userID");
+        
+        UserDAO userDAO = new UserDAO();
+        try{
+            userDAO.AddUser(userID, null);
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
+        
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("<strong>User has been created</strong> has been <strong>added.</strong>");
     }
 
     /**

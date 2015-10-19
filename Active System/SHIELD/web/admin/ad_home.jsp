@@ -115,7 +115,7 @@
                         <table id="begin-mission-table" style="width: 100%;">
                             <tr>
                                 <td>
-                                    User Type: <select class="form-box" placeholder="Enter Username"required>
+                                    User Type: <select id="add-class" class="form-box" placeholder="Enter Username"required>
                                         <option value="2">Analyst</option>
                                         <option value="3">Encoder</option>
                                     </select>
@@ -123,32 +123,32 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Username: <input type="text" name="add-username" class="form-box" placeholder="Enter Username"required>
+                                    Username: <input id="add-username" type="text" name="add-username" class="form-box" placeholder="Enter Username"required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Password: <input type="password" name="add-password" class="form-box" placeholder="Enter Password"required>
+                                    Password: <input id="add-password" type="password" name="add-password" class="form-box" placeholder="Enter Password"required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Name Title: <input type="text" name="add-name-title" class="form-box" placeholder="Enter Name Title (e.g. Mr, Captain, Major)" required>
+                                    Name Title: <input id="add-name-title" type="text" name="add-name-title" class="form-box" placeholder="Enter Name Title (e.g. Mr, Captain, Major)" required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    First Name: <input type="text" name="add-name-first" class="form-box" placeholder="Enter First Name" required>
+                                    First Name: <input id="add-name-first" type="text" name="add-name-first" class="form-box" placeholder="Enter First Name" required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Other Name: <input type="text" name="add-name-other" class="form-box" placeholder="Enter Other Name (Middle Initial/Middle Name)">
+                                    Other Name: <input id="add-name-other" type="text" name="add-name-other" class="form-box" placeholder="Enter Other Name (Middle Initial/Middle Name)">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Last Name: <input type="text" name="add-name-last" class="form-box" placeholder="Enter Last Name" required>
+                                    Last Name: <input id="add-name-last" type="text" name="add-name-last" class="form-box" placeholder="Enter Last Name" required>
                                 </td>
                             </tr>
                         </table>

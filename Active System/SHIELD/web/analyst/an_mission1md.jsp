@@ -75,7 +75,7 @@
                 </div>
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="saveMD()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to Data Sources</button>
+                        <button type="button" onclick="saveMD()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to Characteristics Overlay</button>
                     </div>
                     <div id="mission-details">
                         <div class="col-md-9">

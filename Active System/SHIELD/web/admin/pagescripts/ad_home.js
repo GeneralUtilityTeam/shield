@@ -84,7 +84,36 @@ function initialize() {
     });
 }
 function addUser() {
-    
+    var classID = document.getElementById("add-class").value;
+    var uname = document.getElementById("add-username").value;
+    var pword = document.getElementById("add-password").value;
+    var nameTitle = document.getElementById("add-name-title").value;
+    var nameFirst = document.getElementById("add-name-first").value;
+    var nameOther = document.getElementById("add-name-other").value;
+    var nameLast = document.getElementById("add-name-last").value;
+   
+    if (classID === "" || uname === "" ||
+            pword === "" ) {
+        showAndDismissAlert("danger", "<strong>Add User failed.</strong> Please complete the form.");
+    }
+    else {
+        $.ajax({
+            type: "GET",
+            url: "SaveUser",
+            data: {
+                classID: classID,
+                uname: uname,
+                pword: pword,
+                nameTitle: nameTitle,
+                nameFirst: nameFirst,
+                nameOther: nameOther,
+                nameLast: nameLast
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
+            }
+        });
+    }
 }
 function updateUser() {
     

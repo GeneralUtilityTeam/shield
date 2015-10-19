@@ -212,12 +212,28 @@ function calculateCV(crID, cvID) {
 }
 
 function saveCM() {
+    var eentityCV = [];
+    for (var x = 0; x < eentityCR.length; x++) {
+        for (var y = 0; y < eentityCR[x].cvList.length; y++) {
+            eentityCR[x].cvList[y].crit = parseInt($('#' + eentityCR[x].id + 'crit' + eentityCR[x].cvList[y].id).val());
+            eentityCR[x].cvList[y].acce = parseInt($('#' + eentityCR[x].id + 'acce' + eentityCR[x].cvList[y].id).val());
+            eentityCR[x].cvList[y].recu = parseInt($('#' + eentityCR[x].id + 'recu' + eentityCR[x].cvList[y].id).val());
+            eentityCR[x].cvList[y].vuln = parseInt($('#' + eentityCR[x].id + 'vuln' + eentityCR[x].cvList[y].id).val());
+            eentityCR[x].cvList[y].effe = parseInt($('#' + eentityCR[x].id + 'effe' + eentityCR[x].cvList[y].id).val());
+            eentityCR[x].cvList[y].reco = parseInt($('#' + eentityCR[x].id + 'reco' + eentityCR[x].cvList[y].id).val());
+            eentityCV.push(eentityCR[x].cvList[y]);
+        }
+    }
+    console.log(eentityCV);
     $.ajax({
         type: "GET",
         url: "Save5CM",
+        data: {
+            cvJArr: toJSON(eentityCV)
+        },
         success: function (response) {
             showAndDismissAlert("success", "<strong>CARVER Methodology</strong> has been <strong>saved.</strong>");
-                window.location.assign("ANMission6PO");
+            //window.location.assign("ANMission6PO");
         }
     });
 }

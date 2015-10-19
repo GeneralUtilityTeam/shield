@@ -563,4 +563,32 @@ public class MissionDAO {
 
         return null;
     }
+
+    //
+    public boolean UpdateCVOfMission(int missionID, ArrayList<EEntity> cvList) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_cv`(?, ?, ?, ?, ?, ?, ?);");
+
+            for (EEntity e : cvList) {
+                pstmt.setInt(1, e.getId());
+                pstmt.setInt(2, e.getCrit());
+                pstmt.setInt(3, e.getAcce());
+                pstmt.setInt(4, e.getRecu());
+                pstmt.setInt(5, e.getVuln());
+                pstmt.setInt(6, e.getEffe());
+                pstmt.setInt(7, e.getReco());
+
+                pstmt.executeUpdate();
+            }
+
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }

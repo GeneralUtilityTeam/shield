@@ -5,12 +5,25 @@
  */
 package servlet.ajax;
 
+import dao.IntelligenceDAO;
+import dao.MissionDAO;
+import entity.EEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -56,7 +69,33 @@ public class Save5CM extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int editorID = (int) session.getAttribute("userID");
+        int missionID = (int) session.getAttribute("missionID");
+
+        JSONArray crJArr = new JSONArray(request.getParameter("cvJArr"));
+        ArrayList<EEntity> cvList = new ArrayList<EEntity>();
+        for (Object obj : crJArr) {
+            EEntity cv = new EEntity();
+            JSONObject jsob = new JSONObject(obj.toString());
+            cv.setId(jsob.getInt("id"));
+            cv.setCrit(jsob.getInt("crit"));
+            cv.setAcce(jsob.getInt("acce"));
+            cv.setRecu(jsob.getInt("recu"));
+            cv.setVuln(jsob.getInt("vuln"));
+            cv.setEffe(jsob.getInt("effe"));
+            cv.setReco(jsob.getInt("reco"));
+            cvList.add(cv);
+        }
+
+        MissionDAO msonDAO = new MissionDAO();
+        boolean success = msonDAO.UpdateCVOfMission(missionID, cvList);
         
+        int missionStatus = (int) session.getAttribute("missionStatus");
+        if (missionStatus == 5 && success) {
+            missionStatus = msonDAO.AdvanceMissionStatus(missionStatus);
+            session.setAttribute("missionStatus", missionStatus);
+        }
         
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
