@@ -25,7 +25,12 @@ function breakString(str, breakAt){  //breaks a string at point 'breakAt' and in
     }
     return result;
 }
-
+function isEqualRaw(str1, str2){
+    if(str1.toLowerCase().replace(' ', '-') == str2.toLowerCase().replace(' ', '-'))
+        return true;
+    else
+        return false;
+}
 // -- UI DOM CONTROLS
 function clearTableRows(tableName){
     table = document.getElementById(tableName);

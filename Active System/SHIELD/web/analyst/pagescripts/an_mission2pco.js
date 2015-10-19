@@ -342,6 +342,7 @@ function loadEntity() {
 }
 
 var entityExcerptList = [];
+
 function createEntity() {
     var modal = $('#entityModal');
     document.getElementById("entityModalLabel").innerHTML = "Create Entity";
