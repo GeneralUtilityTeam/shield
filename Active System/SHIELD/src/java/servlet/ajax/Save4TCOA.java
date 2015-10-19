@@ -76,9 +76,9 @@ public class Save4TCOA extends HttpServlet {
         int missionID = (int) session.getAttribute("missionID");
         String ccStr = request.getParameter("ccList");
         JSONArray ccJArr = new JSONArray(ccStr);
-        
+
         ArrayList<EEntity> ccList = new ArrayList<EEntity>();
-        DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         for (Object obj : ccJArr) {
             EEntity cc = new EEntity();
@@ -93,26 +93,30 @@ public class Save4TCOA extends HttpServlet {
             try {
                 dateFrom = format.parse(dateFromStr);
                 dateTo = format.parse(dateToStr);
+                if (dateFrom != null) {
+                    cc.setDateFrom(dateFrom);
+                }
+                if (dateTo != null) {
+                    cc.setDateTo(dateTo);
+                }
             } catch (ParseException ex) {
                 Logger.getLogger(SaveSource.class.getName()).log(Level.SEVERE, null, ex);
             }
-            cc.setDateFrom(dateFrom);
-            cc.setDateTo(dateTo);
+
             ccList.add(cc);
         }
 
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         boolean success = intlDAO.UpdateCCOfMission(missionID, ccList);
-        
+
         MissionDAO msonDAO = new MissionDAO();
-        
-        
-        int missionStatus = (int) session.getAttribute("missionStatus");
-        if (missionStatus == 4 && success) {
-            missionStatus = msonDAO.AdvanceMissionStatus(missionStatus);
-            session.setAttribute("missionStatus", missionStatus);
+        if (success) {
+            int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 4);
+            if (missionStatus != 0) {
+                session.setAttribute("missionStatus", missionStatus);
+            }
         }
-        
+
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");

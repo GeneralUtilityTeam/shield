@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import utility.ShieldUtility;
 
 /**
  *
@@ -62,7 +63,8 @@ public class PrimaryExcerptSearch extends HttpServlet {
             throws ServletException, IOException {
         
             //Working Code
-        String query = request.getParameter("param");
+        ShieldUtility su = new ShieldUtility();
+        String query = su.SQLify(request.getParameter("param"));
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         ArrayList excrList = intlDAO.PrimarySearch(query);
         JSONArray excrJArr = new JSONArray(excrList);

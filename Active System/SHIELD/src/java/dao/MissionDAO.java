@@ -269,13 +269,14 @@ public class MissionDAO {
         return -1;
     } //Clear
 
-    public int AdvanceMissionStatus(int missionID) {
+    public int AdvanceMissionStatus(int missionID, int phase) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`advance_mission_status`(?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`advance_mission_status`(?, ?);");
             pstmt.setInt(1, missionID);
+            pstmt.setInt(2, phase);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
             if (rs.getRow() == 0) {
@@ -284,7 +285,7 @@ public class MissionDAO {
             } else {
                 int status = rs.getInt(1);
                 cn.close();
-                return status;
+                return phase+1;
             }
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);

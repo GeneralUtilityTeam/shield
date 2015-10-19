@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
+import utility.ShieldUtility;
 
 /**
  *
@@ -63,9 +64,10 @@ public class BeginNewMission extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         int userID = (int)session.getAttribute("userID");
+        ShieldUtility su = new ShieldUtility();
         
-        String title = request.getParameter("missionTitle");
-        String objective = request.getParameter("missionObjective");
+        String title = su.SQLify(request.getParameter("missionTitle"));
+        String objective = su.SQLify(request.getParameter("missionObjective"));
         String level8 = request.getParameter("level8");
         String level7 = request.getParameter("level7");
         String level6 = request.getParameter("level6");

@@ -34,4 +34,8 @@ public class ShieldUtility {
         }
         return listdata;
     }
+    
+    public String SQLify(String str){
+        return str.replace("'", "`");
+    }
 }

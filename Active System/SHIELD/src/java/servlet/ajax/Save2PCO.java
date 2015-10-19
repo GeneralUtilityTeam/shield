@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import utility.ShieldUtility;
 
 /**
  *
@@ -69,13 +70,14 @@ public class Save2PCO extends HttpServlet {
         int editorID = (int)session.getAttribute("userID");
         int missionID = (int)session.getAttribute("missionID");
         
+        ShieldUtility su = new ShieldUtility();
         ArrayList<EEntity> eentList = new ArrayList<EEntity>();
         JSONArray entityJArr = new JSONArray(request.getParameter("entityArr"));
         
         for(Object j : entityJArr){
             JSONObject jsob = new JSONObject(j.toString());
             EEntity eent = new EEntity();
-            eent.setName(jsob.getString("name"));
+            eent.setName(su.SQLify(jsob.getString("name")));
             eent.setClassID(jsob.getInt("classID"));
             ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();
             for(Object id : jsob.getJSONArray("excrList")){
@@ -87,14 +89,20 @@ public class Save2PCO extends HttpServlet {
             eent.setExcrList(excrList);
             eentList.add(eent);
         }
+        
+        
         MissionDAO msonDAO = new MissionDAO();
         IntelligenceDAO intlDAO = new IntelligenceDAO();
+        
         boolean success = intlDAO.AddEEntitiesToMission(missionID, editorID, eentList);
-        int missionStatus = (int)session.getAttribute("missionStatus");
-        if(missionStatus == 2 && success){
-            missionStatus = msonDAO.AdvanceMissionStatus(missionID);
-            session.setAttribute("missionStatus", missionStatus);
+        if (success) {
+            int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 2);
+            if (missionStatus != 0) {
+                session.setAttribute("missionStatus", missionStatus);
+            }
         }
+        
+        
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");

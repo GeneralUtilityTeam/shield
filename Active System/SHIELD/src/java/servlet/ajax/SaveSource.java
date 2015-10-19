@@ -69,7 +69,7 @@ public class SaveSource extends HttpServlet {
         int classID = Integer.parseInt(request.getParameter("class"));
         String title = request.getParameter("title");
         String desc = request.getParameter("desc");
-        DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String publishedStr = request.getParameter("published");
         Date published = null;
         try {

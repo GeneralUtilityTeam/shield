@@ -65,37 +65,37 @@ public class Save1MD extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         //Save Mission Details from SHIELD 1
         ShieldUtility su = new ShieldUtility();
         HttpSession session = request.getSession();
-        int editorID = (int)session.getAttribute("userID");
-        
+        int editorID = (int) session.getAttribute("userID");
+
         Mission mson = new Mission();
         mson.setId(Integer.parseInt(request.getParameter("id")));
         mson.setUserID(editorID);
-        mson.setTitle(request.getParameter("title"));
-        mson.setThreat(request.getParameter("threat"));
-        mson.setObjective(request.getParameter("objective"));
+        mson.setTitle(su.SQLify(request.getParameter("title")));
+        mson.setThreat(su.SQLify(request.getParameter("threat")));
+        mson.setObjective(su.SQLify(request.getParameter("objective")));
         mson.setObjectiveKeywordList(su.jsKeywordStringToList(request.getParameter("objectiveKeywordList")));
-        mson.setSituation(request.getParameter("situation"));
+        mson.setSituation(su.SQLify(request.getParameter("situation")));
         mson.setSituationKeywordList(su.jsKeywordStringToList(request.getParameter("situationKeywordList")));
-        mson.setExecution(request.getParameter("execution"));
+        mson.setExecution(su.SQLify(request.getParameter("execution")));
         mson.setExecutionKeywordList(su.jsKeywordStringToList(request.getParameter("executionKeywordList")));
-        mson.setAdminAndLogistics(request.getParameter("adminAndLogistics"));
+        mson.setAdminAndLogistics(su.SQLify(request.getParameter("adminAndLogistics")));
         mson.setAdminAndLogisticsKeywordList(su.jsKeywordStringToList(request.getParameter("adminAndLogisticsKeywordList")));
-        mson.setCommandAndSignal(request.getParameter("commandAndSignal"));
+        mson.setCommandAndSignal(su.SQLify(request.getParameter("commandAndSignal")));
         mson.setCommandAndSignalKeywordList(su.jsKeywordStringToList(request.getParameter("commandAndSignalKeywordList")));
-        
+
         MissionDAO msonDAO = new MissionDAO();
         boolean success = msonDAO.UpdateMission(editorID, mson);
-        
-        int missionStatus = (int)session.getAttribute("missionStatus");
-        if(missionStatus == 1 && success){
-            missionStatus = msonDAO.AdvanceMissionStatus(mson.getId());
-            session.setAttribute("missionStatus", missionStatus);
+        if (success) {
+            int missionStatus = msonDAO.AdvanceMissionStatus(mson.getId(), 1);
+            if (missionStatus != 0) {
+                session.setAttribute("missionStatus", missionStatus);
+            }
         }
-        
+
         JSONObject obj = new JSONObject();
         obj.put("success", success);
         response.setContentType("application/json");

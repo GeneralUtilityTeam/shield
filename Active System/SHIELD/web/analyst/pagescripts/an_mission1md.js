@@ -93,7 +93,7 @@ function saveMD() {
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
-                window.location.assign("ANMission2PCO?id=" + missionID)
+                window.location.assign("ANMission2PCO")
 
             }
         });
