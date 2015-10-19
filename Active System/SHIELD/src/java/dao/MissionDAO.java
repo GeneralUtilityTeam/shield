@@ -377,6 +377,7 @@ public class MissionDAO {
             Connection cn = db.getConnection();
 
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_cog_mission`(?);");
+            System.out.println(missionID);
             pstmt.setInt(1, missionID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();

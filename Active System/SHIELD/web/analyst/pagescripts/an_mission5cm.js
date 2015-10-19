@@ -233,7 +233,7 @@ function saveCM() {
         },
         success: function (response) {
             showAndDismissAlert("success", "<strong>CARVER Methodology</strong> has been <strong>saved.</strong>");
-            //window.location.assign("ANMission6PO");
+            window.location.assign("ANMission6PO");
         }
     });
 }

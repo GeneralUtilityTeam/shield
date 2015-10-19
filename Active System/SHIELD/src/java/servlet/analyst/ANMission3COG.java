@@ -35,7 +35,6 @@ public class ANMission3COG extends FatherServlet {
         String missionIDString = session.getAttribute("missionID").toString();
         int missionID = Integer.parseInt(missionIDString);
         COG cog = msonDAO.GetCOGOfMission(missionID);
-        System.out.println(cog.getEdgeJSON());
         //TESTING
         if (cog.getNodeJSON() == null) { // cog is probably null
             ArrayList eentList = cog.getEentList();

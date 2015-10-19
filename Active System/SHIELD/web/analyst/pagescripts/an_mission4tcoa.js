@@ -19,6 +19,7 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entityCC = responseJSON;
+            console.log(entityCC);
             initialize();
         }
     });
@@ -58,11 +59,11 @@ function initialize() {
         panelBody.className = "panel-body";
         panelBody.id = "panelBody" + id;
         panelBody.innerHTML = "<p> Threat may launch/use/deploy <b>" + toTitleCase(entityCC[x].name) + "</b></p>";
-        if (entityCC[x].from != null && entityCC[x].to != null) {
-            panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;' value='" + entityCC[x].from + "'> to: <input type='date' onchange='from" + (x + 1) + ".focus()' id='to" + x + "' class='form-box' style='width:42%;' value='" + entityCC[x].to + "'><br>";
+        if (entityCC[x].dateFrom != null && entityCC[x].dateTo != null) {
+            panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;' value='" + entityCC[x].dateFrom + "'> to: <input type='date' id='to" + x + "' class='form-box' style='width:42%;' value='" + entityCC[x].dateTo + "'><br>";
         }
         else {
-            panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;'> to: <input type='date' onchange='from" + (x + 1) + ".focus()' id='to" + x + "' class='form-box' style='width:42%;'><br>";
+            panelBody.innerHTML += " from: <input type='date' onchange='to" + x + ".focus()' id='from" + x + "' class='form-box' style='width:42%;'> to: <input type='date' id='to" + x + "' class='form-box' style='width:42%;'><br>";
         }
         if (entityCC[x].lat == 0 && entityCC[x].lng == 0) {
             panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:94%; margin-top: 10px; padding-right:0;' disabled value=''><br>";
@@ -248,7 +249,7 @@ function createCCEntityMarker(entityCC, i) {
         for (var x = 0; x < entityCC.excrList.length; x++) {
             bounds.extend(new google.maps.LatLng(entityCC.excrList[x].area.lat, entityCC.excrList[x].area.lng));
         }
-        
+
         var latlngString = bounds.getCenter().toString();
         geocodeResultStringTCOA(latlngString, i);
         marker = new google.maps.Marker({
@@ -478,18 +479,23 @@ function saveTCOA() {
     }
 
     if (proceed) {
+        var entityCCArr = [];
         for (var y = 0; y < entityCC.length; y++) {
             entityCC[y].from = document.getElementById("from" + y).value;
             entityCC[y].to = document.getElementById("to" + y).value;
             entityCC[y].lat = entityMarker[y].position.lat();
             entityCC[y].lng = entityMarker[y].position.lng();
+            var entityCCObj = {id: entityCC[y].id, from: entityCC[y].from, to: entityCC[y].to, lat: entityCC[y].lat, lng: entityCC[y].lng};
+            entityCCArr.push(entityCCObj);
         }
-        console.log(entityCC);
+        
         $.ajax({
             type: "GET",
             url: "Save4TCOA",
+            dataType: 'jsonp',
+            cache: true,
             data: {
-                ccList: toJSON(entityCC)
+                ccList: toJSON(entityCCArr)
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");

@@ -70,12 +70,13 @@ public class Save4TCOA extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("working");
         HttpSession session = request.getSession();
         int editorID = (int) session.getAttribute("userID");
         int missionID = (int) session.getAttribute("missionID");
-
-        JSONArray ccJArr = new JSONArray(request.getParameter("ccList"));
-
+        String ccStr = request.getParameter("ccList");
+        JSONArray ccJArr = new JSONArray(ccStr);
+        
         ArrayList<EEntity> ccList = new ArrayList<EEntity>();
         DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 

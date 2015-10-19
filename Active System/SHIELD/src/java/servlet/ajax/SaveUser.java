@@ -62,13 +62,19 @@ public class SaveUser extends HttpServlet {
         
         
         User user = new User();
-        
+        user.setClassID(Integer.parseInt(request.getParameter("classID")));
+        user.setUname(request.getParameter("uname"));
+        user.setPword(request.getParameter("pword"));
+        user.setNameTitle(request.getParameter("nameTitle"));
+        user.setNameFirst(request.getParameter("nameFirst"));
+        user.setNameOther(request.getParameter("nameOther"));
+        user.setNameLast(request.getParameter("nameLast"));
         HttpSession session = request.getSession();
         int userID = (int)session.getAttribute("userID");
         
         UserDAO userDAO = new UserDAO();
         try{
-            userDAO.AddUser(userID, null);
+            userDAO.AddUser(userID, user);
         }catch(Exception ex){
             System.out.println(ex);
         }
