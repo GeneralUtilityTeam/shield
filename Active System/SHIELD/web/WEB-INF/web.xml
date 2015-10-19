@@ -172,6 +172,14 @@
         <servlet-name>GetExcerptOfCR</servlet-name>
         <servlet-class>servlet.ajax.GetExcerptOfCR</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>servlet.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetAllUser</servlet-name>
+        <servlet-class>servlet.ajax.GetAllUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -343,6 +351,14 @@
     <servlet-mapping>
         <servlet-name>GetExcerptOfCR</servlet-name>
         <url-pattern>/GetExcerptOfCR</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAllUser</servlet-name>
+        <url-pattern>/GetAllUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

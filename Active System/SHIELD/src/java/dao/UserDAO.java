@@ -6,11 +6,14 @@
 package dao;
 
 import db.DBConnector;
+import entity.Area;
+import entity.Mission;
 import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +65,38 @@ public class UserDAO {
         return null;
     }
 
+    public boolean Logout (int id){
+        try {
+            //Create Connection
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            //Prepare the statement which will use a stored procedure
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`logout`(?);");
+            pstmt.setInt(1, id);
+            System.out.println(id);
+            //Run statement and advance to first line
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            
+            boolean success = false;
+            if (rs.getRow() != 0) {
+                int result = rs.getInt(1);
+                if (result == 1) {
+                    success = true;
+                }
+            }
+
+            //Close connection
+            cn.close();
+            return success;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     public String GetFullName(int id) {
         try {
             //Create Connection
@@ -92,6 +127,48 @@ public class UserDAO {
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
+    }
+
+    public ArrayList<User> GetAllUser(){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_user`();");
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<User> userList = new ArrayList<User>();
+                do {
+                    User user = new User();
+                    user.setId(rs.getInt(1));
+                    user.setClassID(rs.getInt(2));
+                    user.setClassDesc(rs.getString(3));
+                    user.setUname(rs.getString(4));
+                    if(rs.getInt(5) == 1)
+                        user.setStatus("Logged In");
+                    else
+                        user.setStatus("Logged Out");
+                    user.setNameTitle(rs.getString(6));
+                    user.setNameFirst(rs.getString(7));
+                    user.setNameOther(rs.getString(8));
+                    user.setNameLast(rs.getString(9));
+                    user.generateFullName();
+                    userList.add(user);
+                } while (rs.next());
+
+                cn.close();
+                return userList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return null;
     }
 }

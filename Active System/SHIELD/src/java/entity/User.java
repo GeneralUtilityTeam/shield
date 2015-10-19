@@ -13,13 +13,18 @@ public class User {
 
     private int id;
     private int classID;
+    private String classDesc;
     private String uname;
     private String nameTitle;
     private String nameFirst;
     private String nameOther;
     private String nameLast;
     private String fullName;
-
+    private String status;
+    
+    public User(){
+        
+    }
     public User(int id, int classID, String uname, String nameTitle, String nameFirst, String nameOther, String nameLast) {
         this.id = id;
         this.classID = classID;
@@ -146,6 +151,34 @@ public class User {
      */
     public String getFullName() {
         return fullName;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the classDesc
+     */
+    public String getClassDesc() {
+        return classDesc;
+    }
+
+    /**
+     * @param classDesc the classDesc to set
+     */
+    public void setClassDesc(String classDesc) {
+        this.classDesc = classDesc;
     }
 
 }
