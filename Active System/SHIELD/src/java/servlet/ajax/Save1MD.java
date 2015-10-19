@@ -91,8 +91,7 @@ public class Save1MD extends HttpServlet {
         boolean success = msonDAO.UpdateMission(editorID, mson);
         
         int missionStatus = (int)session.getAttribute("missionStatus");
-        System.out.println(missionStatus);
-        if(missionStatus == 1){
+        if(missionStatus == 1 && success){
             missionStatus = msonDAO.AdvanceMissionStatus(mson.getId());
             session.setAttribute("missionStatus", missionStatus);
         }

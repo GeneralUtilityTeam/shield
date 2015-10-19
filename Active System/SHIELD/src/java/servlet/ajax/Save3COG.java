@@ -125,7 +125,15 @@ public class Save3COG extends HttpServlet {
         cog.setMissionID(missionID);
         
         MissionDAO msonDAO = new MissionDAO();
-        msonDAO.AddCOG(cog);
+        
+
+        boolean success = msonDAO.AddCOG(cog);
+        
+        int missionStatus = (int)session.getAttribute("missionStatus");
+        if(missionStatus == 3 && success){
+            missionStatus = msonDAO.AdvanceMissionStatus(missionStatus);
+            session.setAttribute("missionStatus", missionStatus);
+        }
         
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");

@@ -71,9 +71,9 @@ public class Save4TCOA extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        int editorID = (int)session.getAttribute("userID");
-        int missionID = (int)session.getAttribute("missionID");
-        
+        int editorID = (int) session.getAttribute("userID");
+        int missionID = (int) session.getAttribute("missionID");
+
         JSONArray ccJArr = new JSONArray(request.getParameter("ccList"));
 
         ArrayList<EEntity> ccList = new ArrayList<EEntity>();
@@ -99,10 +99,19 @@ public class Save4TCOA extends HttpServlet {
             cc.setDateTo(dateTo);
             ccList.add(cc);
         }
-        
+
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         boolean success = intlDAO.UpdateCCOfMission(missionID, ccList);
-
+        
+        MissionDAO msonDAO = new MissionDAO();
+        
+        
+        int missionStatus = (int) session.getAttribute("missionStatus");
+        if (missionStatus == 4 && success) {
+            missionStatus = msonDAO.AdvanceMissionStatus(missionStatus);
+            session.setAttribute("missionStatus", missionStatus);
+        }
+        
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");

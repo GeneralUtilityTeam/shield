@@ -91,7 +91,7 @@ public class Save2PCO extends HttpServlet {
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         boolean success = intlDAO.AddEEntitiesToMission(missionID, editorID, eentList);
         int missionStatus = (int)session.getAttribute("missionStatus");
-        if(missionStatus == 2){
+        if(missionStatus == 2 && success){
             missionStatus = msonDAO.AdvanceMissionStatus(missionID);
             session.setAttribute("missionStatus", missionStatus);
         }
