@@ -67,7 +67,6 @@ public class BeginNewMission extends HttpServlet {
         ShieldUtility su = new ShieldUtility();
         
         String title = su.SQLify(request.getParameter("missionTitle"));
-        String objective = su.SQLify(request.getParameter("missionObjective"));
         String level8 = request.getParameter("level8");
         String level7 = request.getParameter("level7");
         String level6 = request.getParameter("level6");
@@ -86,7 +85,6 @@ public class BeginNewMission extends HttpServlet {
         
         mson.setUserID(userID);
         mson.setTitle(title);
-        mson.setObjective(objective);
         area.setLevel8(level8);
         area.setLevel7(level7);
         area.setLevel6(level6);

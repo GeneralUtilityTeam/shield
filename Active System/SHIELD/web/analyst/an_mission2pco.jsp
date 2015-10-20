@@ -57,7 +57,9 @@
             var level3 = '<%=request.getAttribute("level3")%>';
             var level2 = '<%=request.getAttribute("level2")%>';
             var level1 = '<%=request.getAttribute("level1")%>';
-
+            var lat = <%=request.getAttribute("lat")%>;
+            var lng = <%=request.getAttribute("lng")%>;
+            
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });

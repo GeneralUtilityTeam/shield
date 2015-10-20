@@ -5,8 +5,10 @@
  */
 package servlet.encoder;
 
+import dao.SystemDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import servlet.father.FatherServlet;
 
 /**
@@ -24,6 +27,10 @@ public class ENHome extends FatherServlet {
 
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        ArrayList clssList = new SystemDAO().GetSourceClasses();
+        JSONArray clssJSON = new JSONArray(clssList);
+        request.setAttribute("clssJSON", clssJSON);
         
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/encoder/en_home.jsp");

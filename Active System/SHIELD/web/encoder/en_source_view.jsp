@@ -18,21 +18,49 @@
         <script src="js/util.js"></script>
         <script  src="js/alert.js"></script>
 
+        <!--Data Table-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+        <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+        
         <!--Page Script-->
-        <script src="encoder/pagescripts/en_source_view.js"></script>
+        <script src="analyst/pagescripts/en_source_view.js"></script>
         <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
-        <script  src="js/bootstrap-tagsinput.min.js"></script>
+        <script  src="js/bootstrap-tagsinput.js"></script>
+        
+        <!--Google Map-->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script>
+            //Global Variables
+            var srcJSON = <%=request.getAttribute("srcJSON")%>;
+            var ctgyJSON = <%=request.getAttribute("ctgyJSON")%>;
+            var sourceID = <%=session.getAttribute("sourceID")%>;
+            var excrJSON;
+            var address;
+            var area;
+            var latLng;
+            var switchString; //boolean; true if a string was used, false if a click was used
+            var excrTable;
+            var srcTable;
+    
+            //Map Variables
+            var geocoder = new google.maps.Geocoder();
+            var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
+            var map;
+            var marker;
+        </script>
+
     </head>
     <body onload="initialize()">
 
         <!--Navigation Bar-->
-        <script src="js/en_navigation.js"></script>
+        <script src="js/navigation.js"></script>
 
         <div id="container-fluid">
             <div id="content-shield" style="border-top: none;">
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addExcerpt" style="margin-right: 5px;"><span class="glyphicon glyphicon-plus"></span> Add Excerpt to Source</button>
-                    <a href="ENHome" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-left"></span> Back to List of Sources</a>
+                    <a href="ANSources" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-left"></span> Back to List of Sources</a>
 
                     <table class="table table-bordered table-hover list-table">
                         <thead style="background-color: #D3D3D3;">
@@ -45,9 +73,15 @@
                         </tbody>
                     </table>
 
-                    <table id="src-excerpts" class="excerpt-list" style="width: 100%;">
-
-                    </table> 
+                    <table id="src-excerpts" class="table table-bordered table-hover list-table" width="100%">
+                        <thead style="background-color: #D3D3D3;">
+                        <th>ID</th>
+                        <th>Category</th>
+                        <th>Text</th>
+                        </thead>
+                        <tbody id="src-excerpts-body">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>       
@@ -73,7 +107,7 @@
                                     <h5>Category:  </h5>
                                 </td>
                                 <td>
-                                    <select class="form-box" required>
+                                    <select id="input-excerpt-category" class="form-box" required>
                                     </select>
                                 </td>
                             </tr>
@@ -82,15 +116,39 @@
                                     <h5>Excerpt Text:  </h5>
                                 </td>
                                 <td>
-                                    <textarea rows="4" cols="50" class="form-box" style="height: 70px;" required placeholder="Enter Excerpt Text"></textarea>
+                                    <textarea id="input-excerpt-text" rows="4" cols="50" class="form-box" style="height: 70px; margin-top: 5px;" required placeholder="Enter Excerpt Text"></textarea>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <h5>Excerpt Area:  </h5>
+                                </td>
+                                <td>
+                                    <div class="input-group" style="width: 100%; margin-bottom: 5px;" >
+                                        <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
+                                        
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" value="Search Area" onclick="addressSearch()">
+                                                Locate Area
+                                            </button>
+                                        </span>
+                                    </div><!-- /input-group -->
+                                </td>
+                            </tr>
+                            <tr>
+                                
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div style="height: 300px; width: 550px; margin-bottom: 10px;" id="source-view-map">
+                                    </div></td>
+                            </tr>                            
                             <tr>
                                 <td>
                                     <h5>Tags:  </h5>
                                 </td>
                                 <td>
-                                    <input type="text" data-role="tagsinput" class="form-box" required placeholder="Press Enter to Add Tag">
+                                    <input id="input-excerpt-tags" type="text" data-role="tagsinput" class="form-box" required placeholder="Press Enter to Add Tag">
                                 </td>
                             </tr>
                         </table>

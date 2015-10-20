@@ -116,30 +116,41 @@ function viewExcerpt(id) {
 
 function saveExcerpt() {
     var text = document.getElementById("input-excerpt-text").value;
-    var categoryID = document.getElementById("input-excerpt-category").value;
-    var tagList = $('#input-excerpt-tags').tagsinput('items');
-    $.ajax({
-        type: "GET",
-        url: "SaveExcerpt",
-        data: {
-            categoryID: categoryID,
-            text: text,
-            tagList: toJSON(tagList),
-            level8: area.level8,
-            level7: area.level7,
-            level6: area.level6,
-            level5: area.level5,
-            level4: area.level4,
-            level3: area.level3,
-            level2: area.level2,
-            level1: area.level1,
-            lat: latLng.lat(),
-            lng: latLng.lng()
-        },
-        success: function (response) {
-            $('#addSource').modal('hide');
-            showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
-            excrTable.ajax.reload();
-        }
-    });
+    if (checkIfEmpty(text)) {
+        showAndDismissAlert("warning", "Please input excerpt text");
+    }
+    else if (area == null) {
+        showAndDismissAlert("warning", "Please enter an area");
+    }
+    else {
+        var categoryID = document.getElementById("input-excerpt-category").value;
+        var tagList = $('#input-excerpt-tags').tagsinput('items');
+        $.ajax({
+            type: "GET",
+            url: "SaveExcerpt",
+            data: {
+                categoryID: categoryID,
+                text: text,
+                tagList: toJSON(tagList),
+                level8: area.level8,
+                level7: area.level7,
+                level6: area.level6,
+                level5: area.level5,
+                level4: area.level4,
+                level3: area.level3,
+                level2: area.level2,
+                level1: area.level1,
+                lat: latLng.lat(),
+                lng: latLng.lng()
+            },
+            success: function (response) {
+                $('#addSource').modal('hide');
+                document.getElementById("input-excerpt-text").value = "";
+                $('#input-excerpt-tags').tagsinput('removeAll');
+
+                showAndDismissAlert("success", "<strong>New Excerpt</strong> has been <strong>added.</strong>");
+                excrTable.ajax.reload();
+            }
+        });
+    }
 }
