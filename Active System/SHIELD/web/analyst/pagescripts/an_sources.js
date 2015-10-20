@@ -1,7 +1,7 @@
 function initialize() {
     showAndDismissAlert('success', 'Data Sources of <strong>SHIELD</strong>');
     var dropdown = document.getElementById("source-type");
-    clssJSON.forEach(function(conf){
+    clssJSON.forEach(function (conf) {
         var option = document.createElement("option");
         option.setAttribute("label", conf.valueText);
         option.setAttribute("value", conf.id);
@@ -30,23 +30,38 @@ $(document).ready(function () {
 });
 
 function saveSource() {
+    var proceed = true;
     var sourceClass = document.getElementById("source-type").value;
     var sourceName = document.getElementById("source-name").value;
     var sourceDesc = document.getElementById("source-description").value;
     var sourceDate = document.getElementById("source-date").value;
-    $.ajax({
-        type: "GET",
-        url: "SaveSource",
-        data: {
-            class : sourceClass,
-            title: sourceName,
-            desc: sourceDesc,
-            published: sourceDate
-        },
-        success: function (response) {
-            $('#addSource').modal('hide');
-            showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
-            table.ajax.reload();
-        }
-    });
+    if (checkIfEmpty(sourceName)) {
+        showAndDismissAlert("warning", "Please input source name");
+        proceed = false;
+    }
+    if (checkIfEmpty(sourceDesc)) {
+        showAndDismissAlert("warning", "Please input source description");
+        proceed = false;
+    }
+    if (sourceDate.value == null) {
+        showAndDismissAlert("warning", "Please input source date");
+        proceed = false;
+    }
+    if (proceed) {
+        $.ajax({
+            type: "GET",
+            url: "SaveSource",
+            data: {
+                class: sourceClass,
+                title: sourceName,
+                desc: sourceDesc,
+                published: sourceDate
+            },
+            success: function (response) {
+                $('#addSource').modal('hide');
+                showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
+                table.ajax.reload();
+            }
+        });
+    }
 }

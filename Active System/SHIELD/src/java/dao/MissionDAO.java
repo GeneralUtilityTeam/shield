@@ -12,6 +12,7 @@ import entity.EEntity;
 import entity.IntTuple;
 import entity.Mission;
 import entity.Task;
+import entity.PsyopObjective;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -285,7 +286,7 @@ public class MissionDAO {
             } else {
                 int status = rs.getInt(1);
                 cn.close();
-                return phase+1;
+                return phase + 1;
             }
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -584,6 +585,43 @@ public class MissionDAO {
                 pstmt.setInt(7, e.getReco());
 
                 pstmt.executeUpdate();
+            }
+
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean SavePOSPOOfMission(int missionID, ArrayList<EEntity> crList) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`delete_all_pospo_mission`(?);");
+            pstmt.setInt(1, missionID);
+            pstmt.execute();
+
+            pstmt = cn.prepareStatement("CALL `shield`.`add_po`(?, ?);");
+            PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_cv_spo`(?, ?, ?);");
+            pstmt2.setInt(1, missionID);
+            
+            for (EEntity cr : crList) {
+                
+                PsyopObjective po = cr.getPo();
+                pstmt.setInt(1, cr.getId());
+                pstmt.setInt(2, po.getId());
+                pstmt.execute();
+
+                for(PsyopObjective spo : cr.getSpoList()){
+                    pstmt2.setInt(3, spo.getId());
+                    for(int cvID : spo.getCvIDList()){
+                        pstmt2.setInt(2, cvID);
+                        pstmt2.execute();
+                    }
+                }
             }
 
             return true;

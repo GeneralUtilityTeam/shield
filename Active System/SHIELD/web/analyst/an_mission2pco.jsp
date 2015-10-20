@@ -35,7 +35,7 @@
 
         <!--Map Script-->
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
-        <script src="http://jawj.github.io/OverlappingMarkerSpiderfier/bin/oms.min.js"></script>
+        <script src="js/oms.js"></script>
         <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
         <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js"></script>
         <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json"></script>

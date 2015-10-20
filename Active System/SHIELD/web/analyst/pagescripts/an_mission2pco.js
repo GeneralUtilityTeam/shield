@@ -105,7 +105,7 @@ var mc;
 var minClusterZoom = 19;
 function initializeMap() {
     mapOptions = {
-        center: new google.maps.LatLng(7.190708, 125.455341),
+        center: new google.maps.LatLng(lat, lng),
         zoom: 10,
         minZoom: 6,
         mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -138,23 +138,24 @@ function initializeMap() {
     //geocodeString(area); -- NOt working
     mc = new MarkerClusterer(map, searchMarker, mcOptions);
     oms = new OverlappingMarkerSpiderfier(map,
-            {markersWontMove: true, markersWontHide: true});
+            {markersWontMove: true, markersWontHide: true, keepSpiderfied: true});
     google.maps.event.addListener(mc, 'clusterclick', function (cluster) {
 
         if (cluster.getMarkers().length === 2) {
             map.fitBounds(cluster.getBounds()); // Fit the bounds of the cluster clicked on
             if (map.getZoom() > minClusterZoom + 1) // If zoomed in past 15 (first level without clustering), zoom out to 15
                 map.setZoom(minClusterZoom + 1);
-
-
         }
+        setTimeout('openAllClusters()', 1000);
     });
     oms.addListener('spiderfy', function (markers) {
     });
     oms.addListener('unspiderfy', function (markers) {
     });
+    
 
     google.maps.event.addListener(map, 'zoom_changed', function () {
+        setTimeout('openAllClusters()', 1000);
         var northEast = new google.maps.LatLng(19.648699380876213, 126.63329394531274);
         var southWest = new google.maps.LatLng(5.344441440480007, 115.39702050781239);
         var philBounds = new google.maps.LatLngBounds(southWest, northEast);
@@ -251,7 +252,16 @@ function createSearchMarker() {
         mc.addMarker(marker);
         setMarkerListener(marker);
         searchMarker.push(marker);
+        setTimeout('openAllClusters()', 1000);
     }
+}
+
+function openAllClusters() {
+    var markers = oms.markersNearAnyOtherMarker();
+
+    $.each(markers, function (i, marker) {
+        google.maps.event.trigger(markers[i], 'click');
+    });
 }
 
 function setMarkerListener(marker) {

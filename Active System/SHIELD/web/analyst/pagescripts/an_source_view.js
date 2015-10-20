@@ -121,18 +121,22 @@ function clearInput(){
 }
 
 function saveExcerpt() {
+    var proceed = true;
     var text = document.getElementById("input-excerpt-text").value;
     var tagList = $('#input-excerpt-tags').tagsinput('items');
     if (checkIfEmpty(text)) {
         showAndDismissAlert("warning", "Please input excerpt text");
+        proceed = false;
     }
-    else if (area == null) {
+    if (area == null) {
         showAndDismissAlert("warning", "Please enter an area");
+        proceed = false;
     }
-    else if (tagList.length == 0) {
+    if (tagList.length == 0) {
         showAndDismissAlert("warning", "Please enter tags");
+        proceed = false;
     }
-    else {
+    if(proceed){
         var categoryID = document.getElementById("input-excerpt-category").value;
 
         $.ajax({

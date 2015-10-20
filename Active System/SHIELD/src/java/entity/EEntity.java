@@ -26,6 +26,7 @@ public class EEntity {
     private double lng;
     
     //CR properties
+    private PsyopObjective po;
     private ArrayList<EEntity> ccList;
     private ArrayList<EEntity> cvList;
     
@@ -36,6 +37,7 @@ public class EEntity {
     private int vuln;
     private int effe;
     private int reco;
+    private ArrayList<PsyopObjective> spoList;
     /**
      * @return the id
      */
@@ -278,5 +280,33 @@ public class EEntity {
      */
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    /**
+     * @return the po
+     */
+    public PsyopObjective getPo() {
+        return po;
+    }
+
+    /**
+     * @param po the po to set
+     */
+    public void setPo(PsyopObjective po) {
+        this.po = po;
+    }
+
+    /**
+     * @return the spoList
+     */
+    public ArrayList<PsyopObjective> getSpoList() {
+        return spoList;
+    }
+
+    /**
+     * @param spoList the spoList to set
+     */
+    public void setSpoList(ArrayList<PsyopObjective> spoList) {
+        this.spoList = spoList;
     }
 }

@@ -34,10 +34,26 @@ $(document).ready(function () {
 });
 
 function saveSource() {
+    var proceed = true;
     var sourceClass = document.getElementById("source-type").value;
     var sourceName = document.getElementById("source-name").value;
     var sourceDesc = document.getElementById("source-description").value;
     var sourceDate = document.getElementById("source-date").value;
+    
+    if (checkIfEmpty(sourceName)) {
+        showAndDismissAlert("warning", "Please input source name");
+        proceed = false;
+    }
+    if (checkIfEmpty(sourceDesc)) {
+        showAndDismissAlert("warning", "Please input source description");
+        proceed = false;
+    }
+    if (sourceDate.value == null) {
+        showAndDismissAlert("warning", "Please input source date");
+        proceed = false;
+    }
+    if (proceed) {
+    
     $.ajax({
         type: "GET",
         url: "SaveSource",
@@ -53,4 +69,5 @@ function saveSource() {
             table.ajax.reload();
         }
     });
+    }
 }
