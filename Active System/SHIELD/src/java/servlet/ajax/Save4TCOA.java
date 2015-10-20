@@ -112,6 +112,7 @@ public class Save4TCOA extends HttpServlet {
         MissionDAO msonDAO = new MissionDAO();
         if (success) {
             int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 4);
+            msonDAO.ResetMission(missionID, 5);
             if (missionStatus != 0) {
                 session.setAttribute("missionStatus", missionStatus);
             }

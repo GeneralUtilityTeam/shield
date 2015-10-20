@@ -279,6 +279,7 @@ public class MissionDAO {
             pstmt.setInt(1, missionID);
             pstmt.setInt(2, phase);
             ResultSet rs = pstmt.executeQuery();
+            
             rs.next();
             if (rs.getRow() == 0) {
                 cn.close();
@@ -379,7 +380,6 @@ public class MissionDAO {
             Connection cn = db.getConnection();
 
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_cog_mission`(?);");
-            System.out.println(missionID);
             pstmt.setInt(1, missionID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -566,7 +566,31 @@ public class MissionDAO {
         return null;
     }
 
-    //
+    public int ResetMission(int missionID, int newphase){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`reset_mission`(?, ?);");
+            pstmt.setInt(1, missionID);
+            pstmt.setInt(2, newphase);
+            ResultSet rs = pstmt.executeQuery();
+            
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                int status = rs.getInt(1);
+                cn.close();
+                return newphase;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    
     public boolean UpdateCVOfMission(int missionID, ArrayList<EEntity> cvList) {
         try {
             DBConnector db = new DBConnector();

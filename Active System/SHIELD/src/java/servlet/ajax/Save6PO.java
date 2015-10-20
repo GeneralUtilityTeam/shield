@@ -104,6 +104,7 @@ public class Save6PO extends HttpServlet {
         boolean success = msonDAO.SavePOSPOOfMission(missionID, cvList);
         if (success) {
             int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 6);
+            msonDAO.ResetMission(missionID, 7);
             if (missionStatus != 0) {
                 session.setAttribute("missionStatus", missionStatus);
             }

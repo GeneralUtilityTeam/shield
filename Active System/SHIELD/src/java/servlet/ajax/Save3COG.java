@@ -130,6 +130,7 @@ public class Save3COG extends HttpServlet {
         
         if (success) {
             int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 3);
+            msonDAO.ResetMission(missionID, 4);
             if (missionStatus != 0) {
                 session.setAttribute("missionStatus", missionStatus);
             }
