@@ -59,7 +59,7 @@
             var level1 = '<%=request.getAttribute("level1")%>';
             var lat = <%=request.getAttribute("lat")%>;
             var lng = <%=request.getAttribute("lng")%>;
-            
+
             $(function () {
                 $('#collapseTwo').collapse('hide')
             });
@@ -123,11 +123,17 @@
                             </div>
 
                             <div class="btn-group" style="z-index: 1; position: fixed; margin: 72vh 0 0 1vmin;">
-                                <a class="btn btn-md btn-default" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
+                                <a class="btn btn-md btn-default" data-toggle="tooltip" title="Right-click on marker/s before creating an Entity" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
                             </div>
                             <div class="" style="z-index: 1; position: fixed; margin: 73vh 0 0 10vw; width: 15vw;">
                                 <input type="range" id="areaRangeInput" name="rangeInput" step="1" min="1" max="8" style="width: 100%; color: #111111">
-                                <label id="areaRangeText" style="display: block; text-align: center; font-weight: 100;"/></label><hr>
+                                <label id="areaRangeText" style="display: block; text-align: center; font-weight: 100;"/></label>
+                            </div>
+                            <div class="btn-group" style="position: fixed; margin: 79vh 0 0 0;">
+                                <a class="btn btn-default" style="font-weight: 100;"><i class='fa fa-map-marker fa-lg' style='color:#009900'></i> Selected Marker</a>
+                                <a class="btn btn-default" style="font-weight: 900;"><i class='fa fa-map-marker fa-lg' style='color:#CC0000'></i> Strong Relevance</a>
+                                <a class="btn btn-default" style="font-weight: 500;"><i class='fa fa-map-marker fa-lg' style='color:#FF4500'></i> Moderate Relevance</a>
+                                <a class="btn btn-default" style="font-weight: 100;"><i class='fa fa-map-marker fa-lg' style='color:#E6E600'></i> Weak Relevance</a>
                             </div>
                             <div id="mission2pco-area-map" style="height: 78vh; width: 74vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
                             </div>

@@ -592,7 +592,7 @@ function saveCrCv() {
     }
     if (entity.length < 4) {
         proceed = false;
-        showAndDismissAlert("danger", "You cannot do not have enough <strong> Entities </strong>");
+        showAndDismissAlert("danger", "You do not have enough <strong> Entities </strong>");
     }
     if (cogCounter == 0) {
         proceed = false;

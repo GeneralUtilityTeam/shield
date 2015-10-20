@@ -137,6 +137,7 @@ function geocodeSuccess(result){ // This function is specific to this page
     //set the address bard to the result
     var stringed = generateFullAddress(area);
     document.getElementById('address').value = stringed; //UP TO HERE
+    map.setCenter(new google.maps.LatLng(area.lat, area.lng));
 }
 
 //UI Functions
