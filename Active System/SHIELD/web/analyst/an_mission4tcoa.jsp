@@ -43,6 +43,7 @@
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
             
             var lat = <%=request.getAttribute("lat")%>;
             var lng = <%=request.getAttribute("lng")%>;

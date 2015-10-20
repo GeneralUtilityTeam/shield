@@ -34,6 +34,7 @@
             var area;
             var latLng;
             var switchString; //boolean; true if a string was used, false if a click was used
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
     
             //Map Variables
             var geocoder = new google.maps.Geocoder();

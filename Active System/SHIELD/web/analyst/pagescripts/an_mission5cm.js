@@ -15,6 +15,7 @@ $(document).ready(function () {
 });
 
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     buildNav(missionStatus, 5);
     buildCarver();
 }

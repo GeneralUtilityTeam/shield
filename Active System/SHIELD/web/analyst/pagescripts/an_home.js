@@ -4,7 +4,7 @@
 function initialize() {
     //Greeting Alert
     showAndDismissAlert('success', 'Welcome to <strong>SHIELD! </strong>');
-    
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     //Map Initalization
     if (map == null) {
         var latlng = new google.maps.LatLng(14.5800, 121.000)

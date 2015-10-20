@@ -1,4 +1,5 @@
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert('success', 'Existing Missions of <strong>SHIELD</strong>');
 }
 //Data Table Function

@@ -32,6 +32,7 @@
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
             //Global Variables
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
             var srcJSON = <%=request.getAttribute("srcJSON")%>;
             var ctgyJSON = <%=request.getAttribute("ctgyJSON")%>;
             var sourceID = <%=session.getAttribute("sourceID")%>;

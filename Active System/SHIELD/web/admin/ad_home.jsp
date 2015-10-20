@@ -26,7 +26,9 @@
 
         <!--Page Script-->
         <script src="admin/pagescripts/ad_home.js"></script>
-
+        <script>
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
+        </script>
     </head>
     <body onload="initialize()">
 

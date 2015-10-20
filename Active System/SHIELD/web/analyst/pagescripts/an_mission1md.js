@@ -1,4 +1,6 @@
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
+    
     buildNav(missionStatus, 1);
     if (msonJSOB.title != null)
         document.getElementById('title').value = msonJSOB.title;

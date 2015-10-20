@@ -31,6 +31,7 @@
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
             var geocoder;
             var address;
             var areaJSON;

@@ -42,6 +42,7 @@ $(document).ready(function () {
 });
 
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     buildNav(missionStatus, 6);
     buildCarver();
     activateAddSPOBtn();
@@ -266,7 +267,11 @@ function savePO() {
             showAndDismissAlert("danger", "Please input <strong>Psyops Objective </strong> for " + crArr[x].name);
         }
         var spoList = [];
-        for (var y = 0; y < crArr[x].spoCounter; y++) {
+        if(crArr[x].spoCounter < 2){
+            proceed = false;
+                showAndDismissAlert("danger", "You need at least <strong>2 Supporting Psyops Objectives </strong> to proceed.");
+        }
+        for (var y = 0; y < crArr[x].spoCounter && proceed; y++) {
             var spoObj;
             var spoText = $('#' + crArr[x].id + "spoText" + y).val();
             if (checkIfEmpty(spoText)) {

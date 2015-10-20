@@ -1,4 +1,5 @@
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     buildNav(missionStatus, 3);
     //for COG already created
     if (missionStatus > 3) {

@@ -2,6 +2,7 @@ var srcJSON = [{"datePublish": "2010-01-01", "type": "Area Study", "name": "Dava
     {"datePublish": "2010-01-01", "type": "Interview", "name": "Davao del Sur Area Study 2010", "description": "Area study conducted on the Davao del Sur area by the 10th Infantry (AGILA) division", "id": 2}];
 
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert('success', 'Data Sources of <strong>SHIELD</strong>');
     var dropdown = document.getElementById("source-type");
     clssJSON.forEach(function(conf){

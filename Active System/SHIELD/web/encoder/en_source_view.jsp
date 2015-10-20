@@ -35,6 +35,7 @@
             var srcJSON = <%=request.getAttribute("srcJSON")%>;
             var ctgyJSON = <%=request.getAttribute("ctgyJSON")%>;
             var sourceID = <%=session.getAttribute("sourceID")%>;
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
             var excrJSON;
             var address;
             var area;

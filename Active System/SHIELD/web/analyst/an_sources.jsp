@@ -27,6 +27,7 @@
         <script src="analyst/pagescripts/an_sources.js"></script>
         <script>
             var clssJSON = <%=request.getAttribute("clssJSON")%>;
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
             var table;
         </script>
     </head>

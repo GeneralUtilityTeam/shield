@@ -1,4 +1,5 @@
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert('success', 'Excerpts of <strong>' + srcJSON.title + '</strong>');
 
     srcTable = document.getElementById('src-table');

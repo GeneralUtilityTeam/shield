@@ -1,4 +1,5 @@
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert('success', 'Data Sources of <strong>SHIELD</strong>');
     var dropdown = document.getElementById("source-type");
     clssJSON.forEach(function(conf){

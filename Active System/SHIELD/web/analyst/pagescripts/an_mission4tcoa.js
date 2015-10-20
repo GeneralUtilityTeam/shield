@@ -26,6 +26,7 @@ $(document).ready(function () {
 });
 function initialize() {
     //replace first parameter with Mission Status - msonJSOB.status
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     buildNav(missionStatus, 4);
     initializeMap();
 

@@ -7,6 +7,7 @@ var usedKeywords = [], unusedKeywords = [];
 var selectedMarker = [];
 
 function initialize() { //Change this to take entities
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     buildNav(missionStatus, 2);
     loadAreaSlider();
     initializeMap();

@@ -25,7 +25,9 @@
 
         <!--Page Script-->
         <script src="analyst/pagescripts/an_missions.js"></script>
-
+        <script>
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
+            </script>
     </head>
     <body onload="initialize()">
 

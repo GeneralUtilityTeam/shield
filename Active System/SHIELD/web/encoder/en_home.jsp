@@ -26,6 +26,7 @@
         <!--Page Script-->
         <script src="encoder/pagescripts/en_home.js"></script>
         <script>
+            var userFullName = '<%=session.getAttribute("userFullName")%>';
             var clssJSON = <%=request.getAttribute("clssJSON")%>;
             var table;
         </script>

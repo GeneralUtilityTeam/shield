@@ -2,6 +2,7 @@ var userTable;
 var accessTable;
 var actionTable;
 function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert("success", "Welcome to <strong>SHIELD </strong>- Admin")
     
     //Data Tables
