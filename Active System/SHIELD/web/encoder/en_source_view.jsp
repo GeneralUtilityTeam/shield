@@ -24,7 +24,7 @@
         <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
         
         <!--Page Script-->
-        <script src="analyst/pagescripts/en_source_view.js"></script>
+        <script src="encoder/pagescripts/en_source_view.js"></script>
         <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
         <script  src="js/bootstrap-tagsinput.js"></script>
         
@@ -60,7 +60,7 @@
             <div id="content-shield" style="border-top: none;">
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addExcerpt" style="margin-right: 5px;" onclick="clearInput()"><span class="glyphicon glyphicon-plus"></span> Add Excerpt to Source</button>
-                    <a href="ANSources" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-left"></span> Back to List of Sources</a>
+                    <a href="ENHome" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-left"></span> Back to List of Sources</a>
 
                     <table class="table table-bordered table-hover list-table">
                         <thead style="background-color: #D3D3D3;">
