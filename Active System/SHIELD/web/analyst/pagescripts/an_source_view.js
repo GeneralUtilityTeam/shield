@@ -113,18 +113,28 @@ function viewExcerpt(id) {
         }
     });
 }
+function clearInput(){
+    document.getElementById("input-excerpt-text").value = "";
+    area = null;
+    document.getElementById('address').value = ""
+    $('#input-excerpt-tags').tagsinput('removeAll');
+}
 
 function saveExcerpt() {
     var text = document.getElementById("input-excerpt-text").value;
+    var tagList = $('#input-excerpt-tags').tagsinput('items');
     if (checkIfEmpty(text)) {
         showAndDismissAlert("warning", "Please input excerpt text");
     }
     else if (area == null) {
         showAndDismissAlert("warning", "Please enter an area");
     }
+    else if (tagList.length == 0) {
+        showAndDismissAlert("warning", "Please enter tags");
+    }
     else {
         var categoryID = document.getElementById("input-excerpt-category").value;
-        var tagList = $('#input-excerpt-tags').tagsinput('items');
+
         $.ajax({
             type: "GET",
             url: "SaveExcerpt",

@@ -59,7 +59,7 @@
         <div id="container-fluid">
             <div id="content-shield" style="border-top: none;">
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addExcerpt" style="margin-right: 5px;"><span class="glyphicon glyphicon-plus"></span> Add Excerpt to Source</button>
+                    <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addExcerpt" style="margin-right: 5px;" onclick="clearInput()"><span class="glyphicon glyphicon-plus"></span> Add Excerpt to Source</button>
                     <a href="ANSources" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-left"></span> Back to List of Sources</a>
 
                     <table class="table table-bordered table-hover list-table">
