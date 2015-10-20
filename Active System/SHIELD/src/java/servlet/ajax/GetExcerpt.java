@@ -68,7 +68,6 @@ public class GetExcerpt extends HttpServlet {
         Excerpt excr = new IntelligenceDAO().GetExcerpt(id);
         JSONObject excrJObj= new JSONObject(excr);
         String excrJSON = excrJObj.toString();
-        System.out.println(excrJSON);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(excrJSON);
