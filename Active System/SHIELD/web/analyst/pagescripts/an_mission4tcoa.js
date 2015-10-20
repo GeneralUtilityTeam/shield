@@ -82,7 +82,7 @@ function initialize() {
         panel.appendChild(panelHead);
         panel.appendChild(panelCollapse);
         collapse.appendChild(panel);
-
+        
     }
 }
 
@@ -100,12 +100,9 @@ function initializeMap() {
     geocoder = new google.maps.Geocoder();
 
     oms = new OverlappingMarkerSpiderfier(map,
-            {markersWontMove: true, markersWontHide: true});
+            {markersWontMove: true, markersWontHide: true, keepSpiderfied: true});
 
-    oms.addListener('spiderfy', function (markers) {
-    });
-    oms.addListener('unspiderfy', function (markers) {
-    });
+
 
 //    var clusterStyles = [
 //        {
@@ -136,14 +133,24 @@ function initializeMap() {
 //                map.setZoom(minClusterZoom + 1);
 //        }
 //    });
-
+    setTimeout('openAllClusters()', 1000);
     google.maps.event.addListener(map, 'zoom_changed', function () {
+        
+        setTimeout('openAllClusters()', 1000);
         var northEast = new google.maps.LatLng(19.648699380876213, 126.63329394531274);
         var southWest = new google.maps.LatLng(5.344441440480007, 115.39702050781239);
         var philBounds = new google.maps.LatLngBounds(southWest, northEast);
         if (map.getZoom() === 6) {
             zoomChanged(philBounds);
         }
+    });
+}
+
+function openAllClusters() {
+    var markers = oms.markersNearAnyOtherMarker();
+
+    $.each(markers, function (i, marker) {
+        google.maps.event.trigger(markers[i], 'click');
     });
 }
 
@@ -237,6 +244,7 @@ function createCCMarker(excerptList) {
     }
 
     return markersArr;
+    setTimeout('openAllClusters()', 1000);
 }
 
 function createCCEntityMarker(entityCC, i) {
@@ -303,20 +311,24 @@ function setMarkersOnMap(map, excerptMarker) {
     for (var x = 0; x < excerptMarker.length; x++) {
         excerptMarker[x].setMap(map);
     }
+    setTimeout('openAllClusters()', 1000);
 }
 function setEntityMarkerOnMap(map, marker) {
     marker.setMap(map);
+    setTimeout('openAllClusters()', 1000);
 }
 
 function clearCCMarkers() {
     setMapOnAll(null);
     markers = [];
+    setTimeout('openAllClusters()', 1000);
 }
 
 function setMapOnAll(map) {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(map);
     }
+    setTimeout('openAllClusters()', 1000);
 }
 
 function setWindowListener(marker, text) {
@@ -394,6 +406,7 @@ function assignListener(panel, id) {
                     cccrcvMarker.push(cvMarker[y]);
                 }
                 setMarkersOnMap(map, cccrcvMarker);
+                setTimeout('openAllClusters()', 1000);
             }
             else if ($('#checkCC' + id).prop("checked") == true && $('#checkCR' + id).prop("checked") == true) {
                 setMapOnAll(null);
@@ -405,6 +418,7 @@ function assignListener(panel, id) {
                     cccrMarker.push(crMarker[y]);
                 }
                 setMarkersOnMap(map, cccrMarker);
+                setTimeout('openAllClusters()', 1000);
             }
             else if ($('#checkCC' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
                 setMapOnAll(null);
@@ -416,6 +430,7 @@ function assignListener(panel, id) {
                     cccvMarker.push(cvMarker[y]);
                 }
                 setMarkersOnMap(map, cccvMarker);
+                setTimeout('openAllClusters()', 1000);
             }
             else if ($('#checkCR' + id).prop("checked") == true && $('#checkCV' + id).prop("checked") == true) {
                 setMapOnAll(null);
@@ -427,18 +442,22 @@ function assignListener(panel, id) {
                     crcvMarker.push(crMarker[y]);
                 }
                 setMarkersOnMap(map, crcvMarker);
+                setTimeout('openAllClusters()', 1000);
             }
             else if ($('#checkCC' + id).prop("checked") == true) {
                 setMapOnAll(null);
                 setMarkersOnMap(map, ccMarker);
+                setTimeout('openAllClusters()', 1000);
             }
             else if ($('#checkCR' + id).prop("checked") == true) {
                 setMapOnAll(null);
                 setMarkersOnMap(map, crMarker);
+                setTimeout('openAllClusters()', 1000);
             }
             else if ($('#checkCV' + id).prop("checked") == true) {
                 setMapOnAll(null);
                 setMarkersOnMap(map, cvMarker);
+                setTimeout('openAllClusters()', 1000);
             }
         });
 
