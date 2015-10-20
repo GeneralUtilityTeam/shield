@@ -419,7 +419,6 @@ public class MissionDAO {
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("null2");
         return null;
     }
 
@@ -595,9 +594,70 @@ public class MissionDAO {
         return false;
     }
 
-    public ArrayList<EEntity> GetPOSPOOfMission(int missionID){
-        
+    public ArrayList<EEntity> GetPOSPOOfMission(int missionID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_cr_mission`(?);");
+            pstmt.setInt(1, missionID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            ArrayList<EEntity> crList = new ArrayList<EEntity>();
+
+            if (rs.getRow() != 0) {
+                PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`get_all_spo_cr`(?);");
+                PreparedStatement pstmt3 = cn.prepareStatement("CALL `shield`.`get_all_cvid_spo`(?);");
+
+                do {
+                    EEntity cr = new EEntity();
+                    cr.setId(rs.getInt(1));
+                    cr.setName(rs.getString(4));
+
+                    PsyopObjective po = new PsyopObjective();
+                    po.setText(rs.getString(5));
+                    cr.setPo(po);
+
+                    pstmt2.setInt(1, cr.getId());
+                    ResultSet rs2 = pstmt2.executeQuery();
+                    rs2.next();
+
+                    ArrayList<PsyopObjective> spoList = new ArrayList<PsyopObjective>();
+
+                    if (rs2.getRow() != 0) {
+                        do {
+                            PsyopObjective spo = new PsyopObjective();
+                            spo.setId(rs2.getInt(1));
+                            spo.setCrID(cr.getId());
+                            spo.setText(rs2.getString(2));
+
+                            pstmt3.setInt(1, spo.getId());
+                            ResultSet rs3 = pstmt3.executeQuery();
+                            rs3.next();
+                            
+                            ArrayList<Integer> cvIDList = new ArrayList<Integer>();
+                            if (rs3.getRow() != 0) {
+                                do {
+                                    cvIDList.add(rs3.getInt(1));
+                                }while(rs3.next());
+                            }
+                            spo.setCvIDList(cvIDList);
+                            spoList.add(spo);
+                        } while (rs2.next());
+                    }
+                    cr.setSpoList(spoList);
+                    crList.add(cr);
+                } while (rs.next());
+            }
+            cn.close();
+            return crList;
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
+
     public boolean SavePOSPOOfMission(int missionID, ArrayList<EEntity> crList) {
         try {
             DBConnector db = new DBConnector();
@@ -608,21 +668,21 @@ public class MissionDAO {
             pstmt.execute();
 
             pstmt = cn.prepareStatement("CALL `shield`.`add_po`(?, ?);");
-            PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_cv_spo`(?, ?, ?);");
+            PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_cv_spo`(?, ?, ?, ?);");
             pstmt2.setInt(1, missionID);
-            
+
             for (EEntity cr : crList) {
-                
+
                 PsyopObjective po = cr.getPo();
                 pstmt.setInt(1, cr.getId());
                 pstmt.setString(2, po.getText());
                 pstmt.execute();
 
-                for(PsyopObjective spo : cr.getSpoList()){
-                    pstmt2.setString(3, spo.getText());
-                    for(int cvID : spo.getCvIDList()){
-                        System.out.println(cvID);
-                        pstmt2.setInt(2, cvID);
+                for (PsyopObjective spo : cr.getSpoList()) {
+                    pstmt2.setString(4, spo.getText());
+                    for (int cvID : spo.getCvIDList()) {
+                        pstmt2.setInt(2, cr.getId());
+                        pstmt2.setInt(3, cvID);
                         pstmt2.execute();
                     }
                 }

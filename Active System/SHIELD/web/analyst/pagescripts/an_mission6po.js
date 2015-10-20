@@ -4,7 +4,7 @@ var crArr = [];
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "GetCROfMission",
+        url: "GetPOSPOOfMission",
         data: {
             missionID: missionID
         },

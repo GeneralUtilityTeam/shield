@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class PsyopObjective {
     private int id;
+    private int crID;
     private String type;
     private String text;
   
@@ -73,5 +74,19 @@ public class PsyopObjective {
      */
     public void setCvIDList(ArrayList<Integer> cvIDList) {
         this.cvIDList = cvIDList;
+    }
+
+    /**
+     * @return the crID
+     */
+    public int getCrID() {
+        return crID;
+    }
+
+    /**
+     * @param crID the crID to set
+     */
+    public void setCrID(int crID) {
+        this.crID = crID;
     }
 }

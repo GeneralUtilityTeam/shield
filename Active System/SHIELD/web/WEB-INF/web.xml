@@ -192,6 +192,10 @@
         <servlet-name>SaveUser</servlet-name>
         <servlet-class>servlet.ajax.SaveUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetPOSPOOfMission</servlet-name>
+        <servlet-class>servlet.ajax.GetPOSPOOfMission</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -383,6 +387,10 @@
     <servlet-mapping>
         <servlet-name>SaveUser</servlet-name>
         <url-pattern>/SaveUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPOSPOOfMission</servlet-name>
+        <url-pattern>/GetPOSPOOfMission</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
