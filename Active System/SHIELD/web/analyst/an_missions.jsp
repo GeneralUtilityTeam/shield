@@ -38,10 +38,9 @@
                 <table id="mission-table" class="table table-bordered table-hover list-table" width="100%">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
-                                    <th>Mission Title</th>
-                                    <th>Mission Objective</th>
-                                    <th>Area of Operation</th>
-                                    <th>Progress</th>
+                                    <th width="30%">Mission Title</th>
+                                    <th width="50%">Area of Operation</th>
+                                    <th width="20%">Progress</th>
                                 </tr>
                             </thead>
                             <tbody id="mission-table-body">

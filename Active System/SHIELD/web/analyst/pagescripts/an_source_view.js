@@ -35,7 +35,7 @@ function initialize() {
     var dropdown = document.getElementById("input-excerpt-category");
     ctgyJSON.forEach(function (conf) {
         var option = document.createElement("option");
-        option.setAttribute("label", conf.valueText);
+        option.setAttribute("label", toTitleCase(conf.valueText));
         option.setAttribute("value", conf.id);
         dropdown.appendChild(option);
     });
@@ -46,11 +46,19 @@ $(document).ready(function () {
             "url": "GetExcerptOfSource",
             "dataSrc": ""
         },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
         "columns": [
             {"data": "id"},
             {"data": "categoryDesc"},
             {"data": "text"}
+        ],
+        "columnDefs": [
+            {
+                "render": function (data, type, row) {
+                    return toTitleCase(data);
+                },
+                "targets": 1
+            }
         ]
     });
     $('#src-excerpts tbody').on('click', 'tr', function () {
@@ -100,8 +108,8 @@ function viewExcerpt(id) {
         success: function (responseJson) {
             var excerpt = responseJson;
             document.getElementById('view-excerpt-text').innerHTML = excerpt.text;
-            document.getElementById('category').innerHTML = excerpt.categoryDesc;
-            //document.getElementById('enter-tags').innerHTML = 
+            document.getElementById('category').innerHTML = toTitleCase(excerpt.categoryDesc);
+            document.getElementById('source').innerHTML = srcJSON.title;
             var tagList = excerpt.tagList;
             $('#enter-tags').tagsinput('clearAll');
             if (tagList != null) {
@@ -113,7 +121,7 @@ function viewExcerpt(id) {
         }
     });
 }
-function clearInput(){
+function clearInput() {
     document.getElementById("input-excerpt-text").value = "";
     area = null;
     document.getElementById('address').value = ""
@@ -125,18 +133,18 @@ function saveExcerpt() {
     var text = document.getElementById("input-excerpt-text").value;
     var tagList = $('#input-excerpt-tags').tagsinput('items');
     if (checkIfEmpty(text)) {
-        showAndDismissAlert("warning", "Please input excerpt text");
+        showAndDismissAlert("danger", "Please Input <strong>Excerpt Text.</strong>");
         proceed = false;
     }
     if (area == null) {
-        showAndDismissAlert("warning", "Please enter an area");
+        showAndDismissAlert("danger", "Please Locate an <strong>Area.</strong>");
         proceed = false;
     }
     if (tagList.length == 0) {
-        showAndDismissAlert("warning", "Please enter tags");
+        showAndDismissAlert("danger", "Please Enter <strong>Tags.</strong>");
         proceed = false;
     }
-    if(proceed){
+    if (proceed) {
         var categoryID = document.getElementById("input-excerpt-category").value;
 
         $.ajax({
@@ -158,7 +166,7 @@ function saveExcerpt() {
                 lng: latLng.lng()
             },
             success: function (response) {
-                $('#addSource').modal('hide');
+                $('#addExcerpt').modal('hide');
                 document.getElementById("input-excerpt-text").value = "";
                 $('#input-excerpt-tags').tagsinput('removeAll');
 

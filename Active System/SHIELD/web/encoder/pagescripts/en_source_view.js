@@ -100,7 +100,8 @@ function viewExcerpt(id) {
         success: function (responseJson) {
             var excerpt = responseJson;
             document.getElementById('view-excerpt-text').innerHTML = excerpt.text;
-            document.getElementById('category').innerHTML = excerpt.categoryDesc;
+            document.getElementById('category').innerHTML = toTitleCase(excerpt.categoryDesc);
+            document.getElementById('source').innerHTML = srcJSON.title;
             //document.getElementById('enter-tags').innerHTML = 
             var tagList = excerpt.tagList;
             $('#enter-tags').tagsinput('clearAll');
@@ -125,19 +126,20 @@ function saveExcerpt() {
     var text = document.getElementById("input-excerpt-text").value;
     var tagList = $('#input-excerpt-tags').tagsinput('items');
     if (checkIfEmpty(text)) {
-        showAndDismissAlert("warning", "Please input excerpt text");
+        showAndDismissAlert("danger", "Please Input <strong>Excerpt Text.</strong>");
         proceed = false;
     }
     if (area == null) {
-        showAndDismissAlert("warning", "Please enter an area");
+        showAndDismissAlert("danger", "Please Locate an <strong>Area.</strong>");
         proceed = false;
     }
     if (tagList.length == 0) {
-        showAndDismissAlert("warning", "Please enter tags");
+        showAndDismissAlert("danger", "Please Enter <strong>Tags.</strong>");
         proceed = false;
     }
-    if(proceed){
+    if (proceed) {
         var categoryID = document.getElementById("input-excerpt-category").value;
+
         $.ajax({
             type: "GET",
             url: "SaveExcerpt",
@@ -157,10 +159,11 @@ function saveExcerpt() {
                 lng: latLng.lng()
             },
             success: function (response) {
-                $('#addSource').modal('hide');
-                showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
+                $('#addExcerpt').modal('hide');
                 document.getElementById("input-excerpt-text").value = "";
                 $('#input-excerpt-tags').tagsinput('removeAll');
+
+                showAndDismissAlert("success", "<strong>New Excerpt</strong> has been <strong>added.</strong>");
                 excrTable.ajax.reload();
             }
         });

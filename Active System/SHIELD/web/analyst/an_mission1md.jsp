@@ -79,7 +79,7 @@
                     </div>
                     <div id="mission-details">
                         <div class="col-md-9">
-                            <table id="mission-details-table" style="width: 100%;">
+                            <table id="mission-details-table" style="width: 95%;">
                                 <tr>
                                     <td>
                                         <h4><b>Details</b></h4>

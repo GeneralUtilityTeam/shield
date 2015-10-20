@@ -14,9 +14,9 @@ $(document).ready(function () {
                 var crObj;
                 var entity = eentityCR[x];
                 var spoCounter = 0;
-                if (spoList.length > 0)
-                    spoCounter = spoList.length;
-                crObj = {id: entity.id, name: entity.name, cvList: entity.cvList, spoCounter: spoCounter, spoList: entity.spoList};
+                //if (spoList.length > 0)
+                //    spoCounter = spoList.length;
+                crObj = {id: entity.id, name: entity.name, cvList: entity.cvList, spoCounter: spoCounter};
                 crArr.push(crObj);
             }
             console.log(crArr);
@@ -31,7 +31,7 @@ function initialize() {
     buildNav(missionStatus, 6);
     buildCarver();
     activateAddSPOBtn();
-    loadSPO();
+    //loadSPO();
 }
 
 function buildCarver() {
@@ -263,13 +263,16 @@ function savePO() {
         poObj = {id: crArr[x].id, po: poText, spoList: spoList};
         saveCR.push(poObj);
     }
-    console.log(saveCR);
-//    $.ajax({
-//        type: "GET",
-//        url: "Save6PO",
-//        success: function (response) {
-//            showAndDismissAlert("success", response);
-//            window.location.assign("ANMissions");
-//        }
-//    });
+    $.ajax({
+
+        type: "GET",
+        url: "Save6PO",
+        data: {
+            saveCR: toJSON(saveCR)
+        },
+        success: function (response) {
+            showAndDismissAlert("success", response);
+            // window.location.assign("ANMissions");
+        }
+    });
 }

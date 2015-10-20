@@ -595,6 +595,9 @@ public class MissionDAO {
         return false;
     }
 
+    public ArrayList<EEntity> GetPOSPOOfMission(int missionID){
+        
+    }
     public boolean SavePOSPOOfMission(int missionID, ArrayList<EEntity> crList) {
         try {
             DBConnector db = new DBConnector();
@@ -612,12 +615,13 @@ public class MissionDAO {
                 
                 PsyopObjective po = cr.getPo();
                 pstmt.setInt(1, cr.getId());
-                pstmt.setInt(2, po.getId());
+                pstmt.setString(2, po.getText());
                 pstmt.execute();
 
                 for(PsyopObjective spo : cr.getSpoList()){
-                    pstmt2.setInt(3, spo.getId());
+                    pstmt2.setString(3, spo.getText());
                     for(int cvID : spo.getCvIDList()){
+                        System.out.println(cvID);
                         pstmt2.setInt(2, cvID);
                         pstmt2.execute();
                     }

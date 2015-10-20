@@ -8,17 +8,31 @@ $(document).ready(function () {
             "url": "GetAllMissions",
             "dataSrc": ""
         },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "lengthMenu": [[6, 10, 25, 50, -1], [6, 10, 25, 50, "All"]],
         "columns": [
             {"data": "title"},
-            {"data": "objective"},
             {"data": "area"},
             {"data": "status"}
         ],
+        "columnDefs": [
+            {
+                // The `data` parameter refers to the data for the cell (defined by the
+                // `data` option, which defaults to the column being worked with, in
+                // this case `data: 0`.
+                "render": function (data, type, row) {
+                    return generateFullAddress(data);
+                },
+                "targets": 1
+            }
+        ],
         "fnRowCallback": function (nRow, data) {
             /* Turn the fourt row -- progress -- into a progressbar with bootstrap */
-            progressString = '<div class="progress active"><div class="progress-bar ' + defineProgressBar(data.status) + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: ' + data.status * 14.28 + '%;">' + data.status + ' of 7 Steps</div></div>';
-            $('td:eq(3)', nRow).html(progressString);
+            if (data.status < 7)
+                progressString = '<div class="progress active"><div class="progress-bar ' + defineProgressBar(data.status) + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: ' + data.status * 14.28 + '%;">' + data.status + ' of 6 Steps</div></div>';
+            else {
+                progressString = '<div class="progress active"><div class="progress-bar ' + defineProgressBar(data.status) + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: ' + data.status * 14.28 + '%;"> Mission Completed</div></div>';
+            }
+            $('td:eq(2)', nRow).html(progressString);
             return nRow;
         }
     });

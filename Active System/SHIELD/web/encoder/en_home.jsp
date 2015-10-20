@@ -33,7 +33,7 @@
     <body onload="initialize()">
 
         <!--Navigation Bar-->
-        <script src="js/navigation.js"></script>
+        <script src="js/en_navigation.js"></script>
 
         <div id="container-fluid">
             <div id="content-shield" style="border-top: none;">
