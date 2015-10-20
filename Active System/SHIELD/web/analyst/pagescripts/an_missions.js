@@ -12,7 +12,8 @@ $(document).ready(function () {
         "columns": [
             {"data": "title"},
             {"data": "area"},
-            {"data": "status"}
+            {"data": "status"},
+            {"data": "status"},
         ],
         "columnDefs": [
             {
@@ -33,6 +34,14 @@ $(document).ready(function () {
                 progressString = '<div class="progress active"><div class="progress-bar ' + defineProgressBar(data.status) + '" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: ' + data.status * 14.28 + '%;"> Mission Completed</div></div>';
             }
             $('td:eq(2)', nRow).html(progressString);
+
+            /* Turn the fourt row -- progress -- into a progressbar with bootstrap */
+            if (data.status == 7)
+                printBtn = '<button class="btn btn-primary" onclick="printReport(event,' + data.id + ');" style="display: block;   margin-left: auto;   margin-right: auto;"><span class="glyphicon glyphicon-print"></span> Print Report</button>';
+            else {
+                printBtn = "";
+            }
+            $('td:eq(3)', nRow).html(printBtn);
             return nRow;
         }
     });
@@ -61,4 +70,41 @@ function defineProgressBar(status) {
 function defineProgressPercent(status) {
     var statusInt = parseInt(status);
     return statusInt * 14.28;
+}
+
+function printReport(event, id) {
+    event.stopPropagation();
+    var eentityCR = [];
+    var crArr = [];
+    $.ajax({
+        type: "GET",
+        url: "GetCROfMission",
+        data: {
+            missionID: id
+        },
+        success: function (responseJSON) {
+            eentityCR = responseJSON;
+            $.ajax({
+                type: "GET",
+                url: "GetPOSPOOfMission",
+                data: {
+                    missionID: id
+                },
+                success: function (responseJSON) {
+                    var poArr = responseJSON;
+                    var empty = true;
+                    for (var x = 0; x < poArr.length; x++) {
+                        var crObj;
+                        var entity = poArr[x];
+                        crObj = {id: entity.id, name: entity.name, po: entity.poText, cvList: eentityCR[x].cvList, spoList: entity.spoList};
+                        crArr.push(crObj);
+                    }
+                    
+                    
+                }
+            });
+        }
+    });
+    
+    
 }

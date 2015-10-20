@@ -38,9 +38,10 @@
                 <table id="mission-table" class="table table-bordered table-hover list-table" width="100%">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
-                                    <th width="30%">Mission Title</th>
+                                    <th width="20%">Mission Title</th>
                                     <th width="50%">Area of Operation</th>
                                     <th width="20%">Progress</th>
+                                    <th width="10%">Print Report</th>
                                 </tr>
                             </thead>
                             <tbody id="mission-table-body">
@@ -49,6 +50,39 @@
                         </table>
             </div>
         </div>
+        
+        <div id="container" class="print container">
+                <label id="mission-title">Psychological Operations Plan: </label>
+                <table class="po-table-print">
+                    <thead>
+                        <tr class="po-row"><td class="po"><strong>Psychological Objective 1:</strong> Submit the system</td></tr>
+                        <tr><td class="spo"><strong>SPO1.</strong> Make sure there are no errors</td></tr>
+                        <tr><td class="spo"><strong>SPO2.</strong> Print the document</td></tr>
+                        <tr><td class="spo"><strong>SPO3. </strong>Hope the professors die</td></tr>
+                    </thead>
+                </table>
+                <table class="table-print"><thead><tr class="rowing"><td class="criticalreq" colspan="8">Critical Requirement 1</td></tr><tr class="rowing"><td class="criticalvul">Critical Vulnerability</td><td class="CARVER">C</td><td class="CARVER">A</td><td class="CARVER">R</td><td class="CARVER">V</td><td class="CARVER">E</td><td class="CARVER">R</td><td class="CARVER">Total</td></tr></thead></table>
+
+                <table class="po-table-print">
+                    <thead>
+                        <tr class="po-row"><td class="po"><strong>Psychological Objective 2:</strong> Submit the system</td></tr>
+                        <tr><td class="spo"><strong>SPO1.</strong> Make sure there are no errors</td></tr>
+                        <tr><td class="spo"><strong>SPO2.</strong> Print the document</td></tr>
+                        <tr><td class="spo"><strong>SPO3. </strong>Hope the professors die</td></tr>
+                    </thead>
+                </table>
+                <table class="table-print"><thead><tr class="rowing"><td class="criticalreq" colspan="8">Critical Requirement 2</td></tr><tr class="rowing"><td class="criticalvul">Critical Vulnerability</td><td class="CARVER">C</td><td class="CARVER">A</td><td class="CARVER">R</td><td class="CARVER">V</td><td class="CARVER">E</td><td class="CARVER">R</td><td class="CARVER">Total</td></tr></thead></table>
+                <table class="po-table-print">
+                    <thead>
+                        <tr class="po-row"><td class="po"><strong>Psychological Objective 1:</strong> Submit the system</td></tr>
+                        <tr><td class="spo"><strong>SPO1.</strong> Make sure there are no errors</td></tr>
+                        <tr><td class="spo"><strong>SPO2.</strong> Print the document</td></tr>
+                        <tr><td class="spo"><strong>SPO3. </strong>Hope the professors die</td></tr>
+                    </thead>
+                </table>
+                <table class="table-print"><thead><tr class="rowing"><td class="criticalreq" colspan="8">Critical Requirement</td></tr><tr class="rowing"><td class="criticalvul">Critical Vulnerability</td><td class="CARVER">C</td><td class="CARVER">A</td><td class="CARVER">R</td><td class="CARVER">V</td><td class="CARVER">E</td><td class="CARVER">R</td><td class="CARVER">Total</td></tr></thead></table>
+
+            </div>
         
         <!--Notification Alert-->
         <div class="alert-messages text-center">

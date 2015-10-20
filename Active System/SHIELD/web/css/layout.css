@@ -383,3 +383,97 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
 }
+
+
+@media print{
+.print{
+		width: 100%;
+		height:100%;
+	}
+}
+.container{
+	width:70%;
+	height:95%;
+	margin: auto;
+	font-family: "Times New Roman", Times, serif;
+	display:none;
+}
+.po{
+	border-collapse:collapse;
+	display:block;
+	padding-bottom:5px;
+	padding-top: 10px;
+	font-size: 12pt;
+	text-align:left;
+	
+}
+.spo{
+	border-collapse:collapse;
+	display:block;
+	padding-bottom:3px;
+	padding-left: 30px;
+	padding-top: 3px;
+	font-size: 11pt;
+	text-align:left;
+	
+}
+
+.table-print{
+		border-collapse: collapse;
+		width: 100%;
+		border: 1px solid #000000;
+		padding-bottom: 10px;
+	}
+.po-table-print{
+		
+		width: 100%;
+		padding-bottom: 20px;
+		font-family: "Times New Roman", Times, serif;
+	}
+.rowing{
+		border-collapse: collapse;
+		background-color: #FFFFFF;
+		height: 20px;
+		width: 100%;
+		border: 1px solid;
+}
+.po-row{
+	width: 100%;
+	border: transparent;
+}
+	
+.criticalvul{
+	font-size: 13pt;
+	font-weight:bold;
+	width: 30%;
+	font-family: "Times New Roman", Times, serif;
+
+}
+.CARVER{
+	border-collapse: collapse;
+	border: 1px solid;
+	font-size: 12pt;
+	font-family: "Times New Roman", Times, serif;
+    text-align: center;
+	width: 10%;
+}
+.criticalreq{
+	background-color: #F5F5F5;
+	text-align: center;
+	font-weight:700;
+	font-size: 15pt;
+	width:100%;
+	height: 30px;
+	font-family: "Times New Roman", Times, serif;
+}
+
+#mission-title{
+	display: block;
+	text-align:center;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	font-size: 25pt;
+	font-weight: 700;
+	width: 100%;
+	font-family: "Times New Roman", Times, serif;
+}
