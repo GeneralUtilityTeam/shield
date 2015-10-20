@@ -186,7 +186,7 @@ function addSPO(id) {
     for (var x = 0; x < entity.cvList.length; x++) {
         var option = document.createElement("option");
         option.value = entity.cvList[x].id;
-        option.text = entity.cvList[x].name;
+        option.text = toTitleCase(entity.cvList[x].name);
         select.appendChild(option);
     }
     td3PO.appendChild(select);
@@ -226,7 +226,7 @@ function loadSPO() {
             for (var z = 0; z < crArr[x].cvList.length; z++) {
                 var option = document.createElement("option");
                 option.value = crArr[x].cvList[z].id;
-                option.text = crArr[x].cvList[z].name;
+                option.text = toTitleCase(crArr[x].cvList[z].name);
                 select.appendChild(option);
             }
             td3PO.appendChild(select);
@@ -300,7 +300,7 @@ function savePO() {
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Psyops Objective</strong> has been <strong>saved.</strong>");
-                // window.location.assign("ANMissions");
+                window.location.assign("ANMissions");
             }
         });
     }

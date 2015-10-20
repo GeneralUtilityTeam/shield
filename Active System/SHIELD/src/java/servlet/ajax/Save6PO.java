@@ -102,12 +102,12 @@ public class Save6PO extends HttpServlet {
         MissionDAO msonDAO = new MissionDAO();
         
         boolean success = msonDAO.SavePOSPOOfMission(missionID, cvList);
-//        if (success) {
-//            int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 6);
-//            if (missionStatus != 0) {
-//                session.setAttribute("missionStatus", missionStatus);
-//            }
-//        }
+        if (success) {
+            int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 6);
+            if (missionStatus != 0) {
+                session.setAttribute("missionStatus", missionStatus);
+            }
+        }
         
         
         response.setContentType("text/plain");
