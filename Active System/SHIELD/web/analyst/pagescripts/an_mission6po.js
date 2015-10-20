@@ -10,33 +10,34 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             eentityCR = responseJSON;
-            console.log(responseJSON);
-
+            $.ajax({
+                type: "GET",
+                url: "GetPOSPOOfMission",
+                data: {
+                    missionID: missionID
+                },
+                success: function (responseJSON) {
+                    var poArr = responseJSON;
+                    var empty = true;
+                    for (var x = 0; x < poArr.length; x++) {
+                        var crObj;
+                        var entity = poArr[x];
+                        var spoCounter = 0;
+                        if (entity.spoList.length > 0) {
+                            spoCounter = entity.spoList.length;
+                            empty = false;
+                        }
+                        crObj = {id: entity.id, name: entity.name, po: replaceIfEmpty(entity.poText), cvList: eentityCR[x].cvList, spoCounter: spoCounter, spoList: entity.spoList};
+                        crArr.push(crObj);
+                    }
+                    initialize();
+                    if (!empty)
+                        loadSPO();
+                }
+            });
         }
     });
-    $.ajax({
-        type: "GET",
-        url: "GetPOSPOOfMission",
-        data: {
-            missionID: missionID
-        },
-        success: function (responseJSON) {
-            var poArr = responseJSON;
-            console.log(responseJSON);
-            for (var x = 0; x < poArr.length; x++) {
-                var crObj;
-                var entity = poArr[x];
-                var spoCounter = 0;
-                if (entity.spoList.length > 0)
-                    spoCounter = entity.spoList.length;
-                crObj = {id: entity.id, name: entity.name, po: replaceIfEmpty(entity.poText), cvList: eentityCR[x].cvList, spoCounter: spoCounter};
-                crArr.push(crObj);
-            }
-            console.log(crArr);
-            initialize();
 
-        }
-    });
 
 });
 
@@ -44,7 +45,6 @@ function initialize() {
     buildNav(missionStatus, 6);
     buildCarver();
     activateAddSPOBtn();
-    //loadSPO();
 }
 
 function buildCarver() {
@@ -198,7 +198,6 @@ function addSPO(id) {
     $('#poTable' + id).append(trPO);
 
     entity.spoCounter++;
-    console.log(crArr);
 }
 
 function loadSPO() {
@@ -215,7 +214,7 @@ function loadSPO() {
             var td2PO = document.createElement("td");
             td2PO.style.width = "50%";
             td2PO.style.paddingTop = "2vh";
-            td2PO.innerHTML = "<input type='text' class='form-box' style='width: 95%;' id='" + id + "spoText" + y + "'>";
+            td2PO.innerHTML = "<input type='text' class='form-box' style='width: 95%;' id='" + id + "spoText" + y + "' value='" + crArr[x].spoList[y].text + "'>";
 
             var td3PO = document.createElement("td");
             td3PO.innerHTML = "CV Reference: ";
@@ -224,10 +223,10 @@ function loadSPO() {
             var select = document.createElement("select");
             select.setAttribute("multiple", "multiple");
             select.id = id + "spoCV" + y;
-            for (var x = 0; x < entity.cvList.length; x++) {
+            for (var z = 0; z < crArr[x].cvList.length; z++) {
                 var option = document.createElement("option");
-                option.value = entity.cvList[x].id;
-                option.text = entity.cvList[x].name;
+                option.value = crArr[x].cvList[z].id;
+                option.text = crArr[x].cvList[z].name;
                 select.appendChild(option);
             }
             td3PO.appendChild(select);
@@ -258,34 +257,51 @@ function activateAddSPOBtn() {
 
 function savePO() {
     var saveCR = [];
-    console.log(crArr);
+    var proceed = true;
     for (var x = 0; x < crArr.length; x++) {
         var poObj;
         var poText = $('#poText' + crArr[x].id).val();
+        if (checkIfEmpty(poText)) {
+            proceed = false;
+            showAndDismissAlert("danger", "Please input <strong>Psyops Objective </strong> for " + crArr[x].name);
+        }
         var spoList = [];
         for (var y = 0; y < crArr[x].spoCounter; y++) {
             var spoObj;
             var spoText = $('#' + crArr[x].id + "spoText" + y).val();
+            if (checkIfEmpty(spoText)) {
+                proceed = false;
+                showAndDismissAlert("danger", "Please input <strong>Supporting Psyops Objective </strong> for " + crArr[x].name);
+            }
             var spoCV = [];
             $('#' + crArr[x].id + "spoCV" + y + ' option:selected').each(function () {
                 spoCV.push($(this).val());
             });
-            var spoObj = {text: spoText, cvIDList: spoCV};
-            spoList.push(spoObj);
+            if (spoCV.length == 0) {
+                proceed = false;
+                showAndDismissAlert("danger", "Please include reference for <strong>Supporting Psyops Objective </strong> on " + crArr[x].name);
+            }
+            if (proceed) {
+                var spoObj = {text: spoText, cvIDList: spoCV};
+                spoList.push(spoObj);
+            }
         }
-        poObj = {id: crArr[x].id, po: poText, spoList: spoList};
-        saveCR.push(poObj);
+        if (proceed) {
+            poObj = {id: crArr[x].id, po: poText, spoList: spoList};
+            saveCR.push(poObj);
+        }
     }
-    $.ajax({
-
-        type: "GET",
-        url: "Save6PO",
-        data: {
-            saveCR: toJSON(saveCR)
-        },
-        success: function (response) {
-            showAndDismissAlert("success", response);
-            // window.location.assign("ANMissions");
-        }
-    });
+    if (proceed) {
+        $.ajax({
+            type: "GET",
+            url: "Save6PO",
+            data: {
+                saveCR: toJSON(saveCR)
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>Psyops Objective</strong> has been <strong>saved.</strong>");
+                // window.location.assign("ANMissions");
+            }
+        });
+    }
 }
