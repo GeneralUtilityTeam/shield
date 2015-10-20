@@ -4,19 +4,32 @@ var crArr = [];
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "GetPOSPOOfMission",
+        url: "GetCROfMission",
         data: {
             missionID: missionID
         },
         success: function (responseJSON) {
             eentityCR = responseJSON;
-            for (var x = 0; x < eentityCR.length; x++) {
+            console.log(responseJSON);
+
+        }
+    });
+    $.ajax({
+        type: "GET",
+        url: "GetPOSPOOfMission",
+        data: {
+            missionID: missionID
+        },
+        success: function (responseJSON) {
+            var poArr = responseJSON;
+            console.log(responseJSON);
+            for (var x = 0; x < poArr.length; x++) {
                 var crObj;
-                var entity = eentityCR[x];
+                var entity = poArr[x];
                 var spoCounter = 0;
-                //if (spoList.length > 0)
-                //    spoCounter = spoList.length;
-                crObj = {id: entity.id, name: entity.name, cvList: entity.cvList, spoCounter: spoCounter};
+                if (entity.spoList.length > 0)
+                    spoCounter = entity.spoList.length;
+                crObj = {id: entity.id, name: entity.name, po: replaceIfEmpty(entity.poText), cvList: eentityCR[x].cvList, spoCounter: spoCounter};
                 crArr.push(crObj);
             }
             console.log(crArr);
@@ -119,7 +132,7 @@ function buildCarver() {
 
         var td2PO = document.createElement("td");
         td2PO.style.width = "50%";
-        td2PO.innerHTML = "<input id='poText" + id + "' type='text' class='form-box' style='width: 95%;' value='" + eentityCR[x].po + "'>";
+        td2PO.innerHTML = "<input id='poText" + id + "' type='text' class='form-box' style='width: 95%;' value='" + crArr[x].po + "'>";
 
         var td3PO = document.createElement("td");
         td3PO.style.width = "35%";

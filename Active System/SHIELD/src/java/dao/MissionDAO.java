@@ -618,6 +618,7 @@ public class MissionDAO {
                     PsyopObjective po = new PsyopObjective();
                     po.setText(rs.getString(5));
                     cr.setPo(po);
+                    cr.setPoText(rs.getString(5));
 
                     pstmt2.setInt(1, cr.getId());
                     ResultSet rs2 = pstmt2.executeQuery();

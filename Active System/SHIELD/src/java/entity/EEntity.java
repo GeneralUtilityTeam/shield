@@ -27,6 +27,7 @@ public class EEntity {
     
     //CR properties
     private PsyopObjective po;
+    private String poText;
     private ArrayList<EEntity> ccList;
     private ArrayList<EEntity> cvList;
     
@@ -308,5 +309,19 @@ public class EEntity {
      */
     public void setSpoList(ArrayList<PsyopObjective> spoList) {
         this.spoList = spoList;
+    }
+
+    /**
+     * @return the poText
+     */
+    public String getPoText() {
+        return poText;
+    }
+
+    /**
+     * @param poText the poText to set
+     */
+    public void setPoText(String poText) {
+        this.poText = poText;
     }
 }
