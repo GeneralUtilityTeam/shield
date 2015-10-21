@@ -830,61 +830,54 @@ function getMarker(excrID) {
 }
 
 function applyFilter() {
-    if (excerptList != null)
-        
-        console.log("Filter Level: " + filterLevel);
-        console.log("Filter Area: " + filterArea);
-        console.log("Filter Strength: " + filterStrength)
-        
-        var marker;
+    if (excerptList != null) {
+        mc.clearMarkers();
         var excrArea;
         var visible;
-        
+
         excerptList.forEach(function (excr) {
-            marker = getMarker(excr.id); //This method may or may not exist yet
+
             visible = false;
             excrArea = null;
-            console.log(" ------------  " + excr.id);
-            console.log("")
-            
-            if(excr.strength >= filterStrength){
-                console.log("strengthPass");
-                if(filterLevel == 1){
+            if (excr.strength >= filterStrength) {
+                if (filterLevel == 1) {
                     excrArea = excr.area.level1;
                 }
-                else if(filterLevel == 2){
-                    if(isEqualRaw(excr.area.level2, filterArea))
-                        visible = true;
+                else if (filterLevel == 2) {
+                    excrArea = excr.area.level2;
                 }
-                else if(filterLevel == 3){
-                    if(isEqualRaw(excr.area.level3, filterArea))
-                        visible = true;
+                else if (filterLevel == 3) {
+                    excrArea = excr.area.level3;
                 }
-                else if(filterLevel == 4){
-                    if(isEqualRaw(excr.area.level4, filterArea))
-                        visible = true;
+                else if (filterLevel == 4) {
+                    excrArea = excr.area.level4;
                 }
-                else if(filterLevel == 5){
-                    if(isEqualRaw(excr.area.level5, filterArea))
-                        visible = true;
+                else if (filterLevel == 5) {
+                    excrArea = excr.area.level5;
                 }
-                else if(filterLevel == 6){
-                    if(isEqualRaw(excr.area.level6, filterArea))
-                        visible = true;
+                else if (filterLevel == 6) {
+                    excrArea = excr.area.level6;
                 }
-                else if(filterLevel == 7){
-                    if(isEqualRaw(excr.area.level7, filterArea))
-                        visible = true;
+                else if (filterLevel == 7) {
+                    excrArea = excr.area.level7;
                 }
-                else if(filterLevel == 8){
-                    if(isEqualRaw(excr.area.level8, filterArea))
-                        visible = true;
+                else if (filterLevel == 8) {
+                    excrArea = excr.area.level8;
                 }
+
+                if (isEqualRaw(excrArea, filterArea))
+                    visible = true;
+
             }
-           
-            console.log(visible);
-            marker.setVisible(visible);
+            excrMarker = getMarker(excr.id); //This method may or may not exist yet
+            if(visible){
+                mc.addMarker(excrMarker);
+            }
+            
+            excrMarker.setVisible(visible);
         });
+        mc.redraw();
+    }
 }
 //function setRemoveEntityListener(){
 //    alert("zzz");

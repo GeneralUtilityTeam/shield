@@ -344,7 +344,16 @@ public class IntelligenceDAO {
                     Area area = new Area();
                     area.setLat(rs.getDouble(6));
                     area.setLng(rs.getDouble(7));
-                    excr.setStrength(rs.getDouble(8));
+                    area.setLevel8(rs.getString(8));
+                    area.setLevel7(rs.getString(9));
+                    area.setLevel6(rs.getString(10));
+                    area.setLevel5(rs.getString(11));
+                    area.setLevel4(rs.getString(12));
+                    area.setLevel3(rs.getString(13));
+                    area.setLevel2(rs.getString(14));
+                    area.setLevel1(rs.getString(15));
+                    
+                    excr.setStrength(rs.getDouble(16));
                     excr.setArea(area);
                     excrList.add(excr);
                 } while (rs.next());
