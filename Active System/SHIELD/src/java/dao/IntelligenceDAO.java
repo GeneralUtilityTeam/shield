@@ -352,7 +352,7 @@ public class IntelligenceDAO {
                     area.setLevel3(rs.getString(13));
                     area.setLevel2(rs.getString(14));
                     area.setLevel1(rs.getString(15));
-                    
+
                     excr.setStrength(rs.getDouble(16));
                     excr.setArea(area);
                     excrList.add(excr);
@@ -619,7 +619,7 @@ public class IntelligenceDAO {
                             cv.setVuln(rs2.getInt(6));
                             cv.setEffe(rs2.getInt(7));
                             cv.setReco(rs2.getInt(8));
-                            
+
                             cvList.add(cv);
                         } while (rs2.next());
                         eent.setCvList(cvList);
@@ -639,7 +639,7 @@ public class IntelligenceDAO {
 
         return null;
     }
-    
+
     public ArrayList<EEntity> GetAllCCCVCROfMission(int missionID) {
         try {
             DBConnector db = new DBConnector();
@@ -661,12 +661,12 @@ public class IntelligenceDAO {
                     eent.setClassID(rs.getInt(2));
                     eent.setClassDesc(rs.getString(3));
                     eent.setName(rs.getString(4));
-                    
+
                     PsyopObjective po = new PsyopObjective();
                     po.setText(rs.getString(5));
                     eent.setPo(po);
                     eent.setPoText(po.getText());
-                    
+
                     // CC's of CR
                     PreparedStatement pstmt2 = cn.prepareStatement("CALL shield.get_all_cc_cr(?);");
                     pstmt2.setInt(1, eent.getId());
@@ -684,18 +684,18 @@ public class IntelligenceDAO {
                             cc.setDateTo(rs2.getDate(4));
                             cc.setLat(rs2.getDouble(5));
                             cc.setLng(rs2.getDouble(6));
-                            
+
                             ccList.add(cc);
                         } while (rs2.next());
                         eent.setCcList(ccList);
                     }
-                    
+
                     // CV's of CR
                     PreparedStatement pstmt3 = cn.prepareStatement("CALL shield.get_all_cv_cr_data(?);");
                     pstmt3.setInt(1, eent.getId());
                     ResultSet rs3 = pstmt3.executeQuery();
                     rs3.next();
-                    
+
                     if (rs3.getRow() != 0) {
                         ArrayList<EEntity> cvList = new ArrayList<EEntity>();
                         do {
@@ -709,18 +709,18 @@ public class IntelligenceDAO {
                             cv.setVuln(rs3.getInt(6));
                             cv.setEffe(rs3.getInt(7));
                             cv.setReco(rs3.getInt(8));
-                            
+
                             cvList.add(cv);
                         } while (rs2.next());
                         eent.setCvList(cvList);
                     }
-                    
+
                     // CV's of CR
                     PreparedStatement pstmt4 = cn.prepareStatement("CALL shield.get_all_spo_cr(?);");
                     pstmt3.setInt(1, eent.getId());
                     ResultSet rs4 = pstmt4.executeQuery();
                     rs3.next();
-                    
+
                     if (rs4.getRow() != 0) {
                         ArrayList<EEntity> cvList = new ArrayList<EEntity>();
                         do {
@@ -734,7 +734,7 @@ public class IntelligenceDAO {
                             cv.setVuln(rs3.getInt(6));
                             cv.setEffe(rs3.getInt(7));
                             cv.setReco(rs3.getInt(8));
-                            
+
                             cvList.add(cv);
                         } while (rs2.next());
                         eent.setCvList(cvList);
@@ -746,6 +746,45 @@ public class IntelligenceDAO {
 
                 cn.close();
                 return eentList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public ArrayList<EEntity> GetAllCCOfCR(int crID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_cc_cr`(?);");
+            pstmt.setInt(1, crID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                
+                ArrayList<EEntity> ccList = new ArrayList<EEntity>();
+                do {
+                    EEntity cc = new EEntity();
+
+                    cc.setId(rs.getInt(1));
+                    cc.setName(rs.getString(2));
+                    cc.setDateFrom(rs.getDate(3));
+                    cc.setDateTo(rs.getDate(4));
+                    cc.setLat(rs.getDouble(5));
+                    cc.setLng(rs.getDouble(6));
+
+                    ccList.add(cc);
+                } while (rs.next());
+                
+                cn.close();
+                return ccList;
             }
 
         } catch (SQLException ex) {

@@ -703,17 +703,14 @@ function loadStrengthSlider() {
         // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
         $('#strengthRangeInput').change(function () {
             $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
-            switch ($('#areaRangeInput').val()) {
-                case 1:
-                    filterStrength = 40;
-                    break;
-                case 2:
-                    filterStrength = 60;
-                    break;
-                case 3:
-                    filterStrength = 100;
-                    break;
-            }
+            var strengthRange = $('#strengthRangeInput').val();
+            console.log(strengthRange);
+            if(strengthRange == 1)
+                filterStrength = 40;
+            else if(strengthRange == 2)
+                filterStrength = 60;
+            else if(strengthRange == 3)
+                filterStrength = 100;
             applyFilter();
         });
 
@@ -822,7 +819,6 @@ function deleteEntity(id) {
     }
     entity.splice(entityDelete, 1);
     loadEntity();
-    console.log(entity);
 }
 
 function getMarker(excrID) {
