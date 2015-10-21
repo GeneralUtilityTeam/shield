@@ -13,6 +13,7 @@ var oms;
 var infoWindow;
 var mc;
 var minClusterZoom = 19;
+
 var filterLevel;
 var filterArea;
 var filterStrength;
@@ -30,7 +31,6 @@ function initialize() { //Change this to take entities
     }
     else {
         entityCounter = entity.length;
-
         loadEntity();
     }
     //set entity array to the mission entity
@@ -98,6 +98,7 @@ $(document).ready(function () {
                     searchMarker = [];
                     if (excerptList.length > 0) {
                         createSearchMarker();
+                        applyFilter();
                     }
                     else
                         showAndDismissAlert("danger", "<strong>No Results Found! </strong>");
@@ -687,6 +688,7 @@ function savePCO() {
 
 function loadStrengthSlider() {
     filterStrength = 40;
+    
     var rangeValues =
             {
                 "1": "All",
@@ -721,6 +723,9 @@ function loadStrengthSlider() {
 
 function loadAreaSlider() {
     // define a lookup for what text should be displayed for each value in your range
+    filterLevel = 1;
+    filterArea = level1;
+    
     var lastLevel;
     var proceed = true;
     if (level1 == "null" && proceed) {

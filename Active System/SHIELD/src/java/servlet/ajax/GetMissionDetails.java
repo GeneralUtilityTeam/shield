@@ -59,7 +59,14 @@ public class GetMissionDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String missionIDString = request.getParameter("id");
+        int missionID = Integer.parseInt(missionIDString);
+        MissionDAO msonDAO = new MissionDAO();
+        Mission mson = msonDAO.GetMission(missionID);
+        String msonJSOB = new JSONObject(mson).toString();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(msonJSOB);
     }
 
     /**
