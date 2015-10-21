@@ -133,7 +133,7 @@
                             </div>
 
                             <div class="btn-group" style="z-index: 1; position: fixed; margin: 2vh 0 0 64vw;">
-                                <a class="btn btn-md btn-default" data-toggle="tooltip" title="Right-click on marker/s before creating an Entity" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
+                                <a class="btn btn-md btn-default" data-toggle="tooltip" data-placement="bottom" title="Right-click on marker/s before creating an Entity" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
                             </div>
                             <!--Area Filter-->
                             <div class="" style="z-index: 1; position: fixed; margin: 73vh 0 0 1vw; width: 18vw;">

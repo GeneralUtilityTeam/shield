@@ -1,6 +1,6 @@
 var excerptList;
 var searchMarker = [];
-var entity;
+var entity = [];
 var entityCounter = 0;
 var entityArr = [];
 var usedKeywords = [], unusedKeywords = [];
@@ -25,13 +25,14 @@ function initialize() { //Change this to take entities
     loadStrengthSlider();
     initializeMap();
 
-    if (entity == null) {
+    if (entity.length == 0) {
         entity = new Array();
         entityCounter = 0;
     }
-    else {
+    if (entity.length > 0) {
         entityCounter = entity.length;
         loadEntity();
+        activateRemoveBtn(entity);
     }
     //set entity array to the mission entity
 }
@@ -46,6 +47,8 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entity = responseJSON;
+            console.log(responseJSON);
+            console.log(entity);
             initialize();
         }
     });
@@ -334,17 +337,16 @@ function loadEntity() {
             table.appendChild(trExcerpt);
         }
 
-//        var removeBtn = document.createElement("button");
-//        removeBtn.className = "btn btn-danger";
-//        removeBtn.id = "remove" + entity[x].id;
-//        var span = document.createElement("span");
-//        span.className = "glyphicon glyphicon-trash";
-//        removeBtn.appendChild(span);
-//        removeBtn.innerHTML += " Remove Entity";
-//        removeBtn.setAttribute("disabled", true);
+        var removeBtn = document.createElement("button");
+        removeBtn.className = "btn btn-danger";
+        removeBtn.id = "remove" + entity[x].id;
+        var span = document.createElement("span");
+        span.className = "glyphicon glyphicon-trash";
+        removeBtn.appendChild(span);
+        removeBtn.innerHTML += " Remove Entity";
 
         panelBody.appendChild(table);
-//        panelBody.appendChild(removeBtn);
+        panelBody.appendChild(removeBtn);
         panelCollapse.appendChild(panelBody);
         panel.appendChild(panelHead);
         panel.appendChild(panelCollapse);
@@ -503,9 +505,11 @@ function saveEntity() {
         selectedMarker = new Array();
         createSearchMarker();
         loadEntity();
+        console.log(entity);
         $('#entityModal').modal('hide');
+        activateRemoveBtn(entity);
     }
-    else if (entityExcerptList.length != 0 && proceed) {
+    else if (entityExcerptList.length == 0 && proceed) {
         showAndDismissAlert("danger", "<strong>Failed! </strong> You do not have any excerpts to this Entity");
     }
 }
@@ -687,7 +691,7 @@ function savePCO() {
 }
 
 function loadStrengthSlider() {
-
+    filterStrength = 40;
     var rangeValues =
             {
                 "1": "All",
@@ -695,7 +699,7 @@ function loadStrengthSlider() {
                 "3": "Strong Relevance"
             };
 
-    $('#strengthRangeInput').attr("value", 2);
+    $('#strengthRangeInput').attr("value", 1);
     $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
     $(function () {
         // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
@@ -810,13 +814,12 @@ function displayKeywords(value) {
 }
 
 function deleteEntity(id) {
-    var entityDelete;
     for (var x = 0; x < entity.length; x++) {
         if (entity[x].id == id)
-            entityDelete = entity.indexOf(entity[x].id);
+            entity.splice(x, 1);
     }
-    entity.splice(entityDelete, 1);
     loadEntity();
+    activateRemoveBtn(entity);
 }
 
 function getMarker(excrID) {
@@ -882,11 +885,12 @@ function applyFilter() {
         mc.redraw();
     }
 }
-//function setRemoveEntityListener(){
-//    alert("zzz");
-//    for(var x=0; x<entity.length; x++){
-//        var btn = document.getElementById("remove" + entity[x].id);
-//        btn.setAttribute("disabled", false);
-////        document.getElementById("remove" + entity[x].id).setAttribute("onclick", deleteEntity(entity[x].id));
-//    }
-//}
+
+function activateRemoveBtn(entityArr) {
+    console.log(entityArr);
+    for (var x = 0; x < entityArr.length; x++) {
+        var entity = entityArr[x];
+        var btn = document.getElementById("remove" + entity.id);
+        btn.setAttribute("onclick", "deleteEntity(" + entity.id + ")");
+    }
+}

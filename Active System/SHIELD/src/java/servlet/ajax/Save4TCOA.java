@@ -72,7 +72,6 @@ public class Save4TCOA extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("working");
         HttpSession session = request.getSession();
-        int editorID = (int) session.getAttribute("userID");
         int missionID = (int) session.getAttribute("missionID");
         String ccStr = request.getParameter("ccList");
         JSONArray ccJArr = new JSONArray(ccStr);
@@ -107,11 +106,15 @@ public class Save4TCOA extends HttpServlet {
         }
 
         IntelligenceDAO intlDAO = new IntelligenceDAO();
+        
+        MissionDAO msonDAO = new MissionDAO();
+        msonDAO.ResetMission(missionID, 4);
         boolean success = intlDAO.UpdateCCOfMission(missionID, ccList);
 
-        MissionDAO msonDAO = new MissionDAO();
         if (success) {
             int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 4);
+            System.out.println("TCOA Mission ID: " + missionID);
+            System.out.println("TCOA Mission Status: " + missionStatus);
             msonDAO.ResetMission(missionID, 5);
             if (missionStatus != 0) {
                 session.setAttribute("missionStatus", missionStatus);
