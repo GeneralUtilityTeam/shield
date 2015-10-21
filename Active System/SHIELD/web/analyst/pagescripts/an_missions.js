@@ -75,6 +75,25 @@ function defineProgressPercent(status) {
 
 function printReport(event, id) {
     event.stopPropagation();
+    var missionDetails;
+    //Write Mission Details on Print Report
+    $.ajax({
+        type: "GET",
+        url: "GetMissionDetails",
+        data: {
+            id: id
+        },
+        success: function (responseJSON) {
+            missionDetails = responseJSON;
+            document.getElementById("mission-title").innerHTML = 'Psychological Operations Plan "' + missionDetails.title + '"';
+            document.getElementById("situation-content").innerHTML = missionDetails.situation;
+            document.getElementById("objective-content").innerHTML = missionDetails.objective;
+            document.getElementById("execution-content").innerHTML = missionDetails.execution;
+            document.getElementById("admin-and-logistics-content").innerHTML = missionDetails.adminAndLogistics;
+            document.getElementById("command-and-signal-content").innerHTML = missionDetails.commandAndSignal;
+        }
+    });
+
     var eentityCR = [];
     var crArr = [];
     $.ajax({
@@ -100,12 +119,209 @@ function printReport(event, id) {
                         crObj = {id: entity.id, name: entity.name, po: entity.poText, cvList: eentityCR[x].cvList, spoList: entity.spoList};
                         crArr.push(crObj);
                     }
-                    
-                    
+                    console.log(crArr);
+
+                    var content = document.getElementById("report-content");
+                    content.innerHTML = "";
+
+                    for (var x = 0; x < crArr.length; x++) {
+
+                        //PO CONTENT
+                        var poLabel = document.createElement("label");
+                        poLabel.className = "supporting-info";
+                        poLabel.innerHTML = "PSYCHOLOGICAL OPERATIONS OBJECTIVE " + (x + 1);
+
+                        var poTable = document.createElement("table");
+                        poTable.className = "text-table-print";
+
+                        var poThead = document.createElement("thead");
+
+                        var poTr = document.createElement("tr");
+                        poTr.className = "po-row";
+                        var poTd = document.createElement("td");
+                        poTd.className = "po";
+                        poTd.innerHTML = "<b>PO: </b>" + crArr[x].po;
+                        poTr.appendChild(poTd);
+
+                        poThead.appendChild(poTr);
+
+
+                        for (var y = 0; y < crArr[x].spoList.length; y++) {
+                            var spoTr = document.createElement("tr");
+                            var spoTd = document.createElement("td");
+                            spoTd.className = "spo";
+                            spoTd.innerHTML = "SPO " + (y + 1) + ": " + crArr[x].spoList[y].text;
+
+                            spoTr.appendChild(spoTd);
+
+                            var cvTr = document.createElement("tr");
+                            var cvTd = document.createElement("td");
+                            cvTd.className = "cvref";
+                            cvTd.innerHTML = "CV Reference: ";
+                            for (var z = 0; z < crArr[x].spoList[y].cvIDList.length; z++) {
+                                for (var i = 0; i < crArr[x].cvList.length; i++) {
+                                    if (crArr[x].spoList[y].cvIDList[z] == crArr[x].cvList[i].id) {
+                                        if (crArr[x].spoList[y].cvIDList.length > 1)
+                                            cvTd.innerHTML += toTitleCase(crArr[x].cvList[i].name) + ", ";
+                                        else {
+                                            cvTd.innerHTML += toTitleCase(crArr[x].cvList[i].name);
+                                        }
+                                    }
+                                }
+                            }
+                            cvTr.appendChild(cvTd);
+
+                            poThead.appendChild(spoTr);
+                            poThead.appendChild(cvTr);
+                        }
+
+                        poTable.appendChild(poThead);
+                        content.appendChild(poTable);
+
+                        //CR CONTENT
+                        var supportingInformationLabel = document.createElement("label");
+                        supportingInformationLabel.className = "supporting-label";
+                        supportingInformationLabel.innerHTML = "Supporting Information: ";
+
+                        content.appendChild(supportingInformationLabel);
+
+                        var carverTable = document.createElement("table");
+                        carverTable.className = "table-print";
+
+                        var crTr = document.createElement("tr");
+                        crTr.className = "carver-row";
+                        var crTd = document.createElement("td");
+                        crTd.className = "criticalreq";
+                        crTd.setAttribute("colspan", "8");
+                        crTd.innerHTML = "Critical Requirement: " + toTitleCase(crArr[x].name);
+                        crTr.appendChild(crTd);
+
+                        var crHeaderTr = document.createElement("tr");
+                        crHeaderTr.className = "carver-row";
+
+                        var tdHeaderName = document.createElement("td");
+                        tdHeaderName.className = "cv";
+                        tdHeaderName.innerHTML = "<b>Critical Vulnerability</b>";
+                        crHeaderTr.appendChild(tdHeaderName);
+
+                        var tdHeaderCrit = document.createElement("td");
+                        tdHeaderCrit.className = "CM";
+                        tdHeaderCrit.innerHTML = "<b>C</b>";
+                        crHeaderTr.appendChild(tdHeaderCrit);
+
+                        var tdHeaderAcce = document.createElement("td");
+                        tdHeaderAcce.className = "CM";
+                        tdHeaderAcce.innerHTML = "<b>A</b>";
+                        crHeaderTr.appendChild(tdHeaderAcce);
+
+                        var tdHeaderRecu = document.createElement("td");
+                        tdHeaderRecu.className = "CM";
+                        tdHeaderRecu.innerHTML = "<b>R</b>";
+                        crHeaderTr.appendChild(tdHeaderRecu);
+
+                        var tdHeaderVuln = document.createElement("td");
+                        tdHeaderVuln.className = "CM";
+                        tdHeaderVuln.innerHTML = "<b>V</b>";
+                        crHeaderTr.appendChild(tdHeaderVuln);
+
+                        var tdHeaderEffe = document.createElement("td");
+                        tdHeaderEffe.className = "CM";
+                        tdHeaderEffe.innerHTML = "<b>E</b>";
+                        crHeaderTr.appendChild(tdHeaderEffe);
+
+                        var tdHeaderReco = document.createElement("td");
+                        tdHeaderReco.className = "CM";
+                        tdHeaderReco.innerHTML = "<b>R</b>";
+                        crHeaderTr.appendChild(tdHeaderReco);
+
+                        var tdHeaderTotal = document.createElement("td");
+                        tdHeaderTotal.className = "CM";
+                        tdHeaderTotal.innerHTML = "<b>Total</b>";
+                        crHeaderTr.appendChild(tdHeaderTotal);
+
+                        carverTable.appendChild(crTr);
+                        carverTable.appendChild(crHeaderTr);
+
+                        var cvList = crArr[x].cvList;
+                        cvList.forEach(function (cv) {
+                            var tr = document.createElement("tr");
+                            tr.className = "carver-row";
+
+                            var tdName = document.createElement("td");
+                            tdName.className = "cv";
+                            tdName.innerHTML = toTitleCase(cv.name);
+                            tr.appendChild(tdName);
+
+                            var tdCrit = document.createElement("td");
+                            tdCrit.className = "CM";
+                            tdCrit.innerHTML = cv.crit;
+                            tr.appendChild(tdCrit);
+
+                            var tdAcce = document.createElement("td");
+                            tdAcce.className = "CM";
+                            tdAcce.innerHTML = cv.acce;
+                            tr.appendChild(tdAcce);
+
+                            var tdRecu = document.createElement("td");
+                            tdRecu.className = "CM";
+                            tdRecu.innerHTML = cv.recu;
+                            tr.appendChild(tdRecu);
+
+                            var tdVuln = document.createElement("td");
+                            tdVuln.className = "CM";
+                            tdVuln.innerHTML = cv.vuln;
+                            tr.appendChild(tdVuln);
+
+                            var tdEffe = document.createElement("td");
+                            tdEffe.className = "CM";
+                            tdEffe.innerHTML = cv.effe;
+                            tr.appendChild(tdEffe);
+
+                            var tdReco = document.createElement("td");
+                            tdReco.className = "CM";
+                            tdReco.innerHTML = cv.reco;
+                            tr.appendChild(tdReco);
+
+                            var initialTotal = cv.crit + cv.acce + cv.recu + cv.vuln + cv.effe + cv.reco;
+
+                            var tdTotal = document.createElement("td");
+                            tdTotal.className = "CM";
+                            tdTotal.innerHTML = initialTotal;
+                            tr.appendChild(tdTotal);
+
+                            carverTable.appendChild(tr);
+
+                        });
+                        content.appendChild(carverTable);
+
+
+                        $.ajax({
+                            type: "GET",
+                            url: "GetCCOfCR",
+                            data: {
+                                crID: crArr[x].id
+                            },
+                            success: function (responseJSON) {
+
+                                
+
+
+                                var divElements = document.getElementById("container").innerHTML;
+                                var oldPage = document.body.innerHTML;
+
+                                //Reset the page's HTML with div's HTML only
+                                document.body.innerHTML = "<html><head><title></title></head><body>" + divElements + "</body>";
+                                window.print();
+                                document.body.innerHTML = oldPage;
+                            }
+                        });
+                    }
+
+
                 }
             });
         }
     });
-    
-    
+
+
 }

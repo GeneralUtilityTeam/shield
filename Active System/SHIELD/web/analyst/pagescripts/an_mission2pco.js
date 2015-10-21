@@ -687,8 +687,7 @@ function savePCO() {
 }
 
 function loadStrengthSlider() {
-    filterStrength = 40;
-    
+
     var rangeValues =
             {
                 "1": "All",
@@ -696,20 +695,19 @@ function loadStrengthSlider() {
                 "3": "Strong Relevance"
             };
 
-    $('#strengthRangeInput').attr("value", 1);
+    $('#strengthRangeInput').attr("value", 2);
+    $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
     $(function () {
-        $('#strengthRangeInput').attr("value", 1);
-        $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
         // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
         $('#strengthRangeInput').change(function () {
             $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
             var strengthRange = $('#strengthRangeInput').val();
             console.log(strengthRange);
-            if(strengthRange == 1)
+            if (strengthRange == 1)
                 filterStrength = 40;
-            else if(strengthRange == 2)
+            else if (strengthRange == 2)
                 filterStrength = 60;
-            else if(strengthRange == 3)
+            else if (strengthRange == 3)
                 filterStrength = 100;
             applyFilter();
         });
@@ -722,7 +720,7 @@ function loadAreaSlider() {
     // define a lookup for what text should be displayed for each value in your range
     filterLevel = 1;
     filterArea = level1;
-    
+
     var lastLevel;
     var proceed = true;
     if (level1 == "null" && proceed) {
