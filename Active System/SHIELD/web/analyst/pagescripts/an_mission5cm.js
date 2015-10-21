@@ -1,4 +1,7 @@
 var eentityCR;
+var entityCC;
+var geocoder;
+
 
 $(document).ready(function () {
     $.ajax({
@@ -10,6 +13,19 @@ $(document).ready(function () {
         success: function (responseJSON) {
             eentityCR = responseJSON;
             initialize();
+        }
+    });
+    $.ajax({
+        type: "GET",
+        url: "GetCCOfMission",
+        data: {
+            missionID: missionID
+        },
+        success: function (responseJSON) {
+            entityCC = responseJSON;
+            console.log(entityCC);
+            initializeGeocoder();
+            loadSideBar();
         }
     });
 });
@@ -210,6 +226,66 @@ function calculateCV(crID, cvID) {
     var e = parseInt(document.getElementById(crID + "effe" + cvID).value);
     var rt = parseInt(document.getElementById(crID + "reco" + cvID).value);
     document.getElementById(crID + "total" + cvID).value = c + a + r + v + e + rt;
+}
+
+function loadSideBar() {
+    var collapse = document.getElementById("accordion-sidebar");
+
+    for (var x = 0; x < entityCC.length; x++) {
+        //Panel Element
+        var id = entityCC[x].id;
+        var panel = document.createElement("div");
+        panel.className = "panel panel-default";
+        panel.id = "panel" + id;
+
+        //Panel Header
+        var panelHead = document.createElement("div");
+        panelHead.className = "panel-heading";
+        panelHead.id = "panelHead" + id;
+        panelHead.setAttribute("data-toggle", "collapse");
+        panelHead.setAttribute("data-parent", "#accordion");
+        panelHead.setAttribute("href", "#collapse" + id);
+        panelHead.innerHTML = "<h5>Critical Capability " + (x + 1) + ": <b>" + toTitleCase(entityCC[x].name) + "</b></h5>";
+
+        //Panel Collapse
+        var panelCollapse = document.createElement("div");
+        panelCollapse.className = "panel-collapse collapse";
+        panelCollapse.id = "collapse" + id;
+
+        //Panel Body
+        var panelBody = document.createElement("div");
+        panelBody.className = "panel-body";
+        panelBody.id = "panelBody" + id;
+        panelBody.innerHTML = "<p> Threat may launch/use/deploy <b>" + toTitleCase(entityCC[x].name) + "</b></p>";
+        panelBody.innerHTML += " from: <input type='date' id='from" + x + "' class='form-box' style='width:83%;' value='" + entityCC[x].dateFrom + "' disabled><br> to: <input type='date' id='to" + x + "' class='form-box' style='width:90%; margin-top: 10px; padding-right:0;' value='" + entityCC[x].dateTo + "' disabled><br>";
+        var latlngString = entityCC[x].lat.toString() + ", " + entityCC[x].lng.toString();
+
+        panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:90%; margin-top: 10px; padding-right:0;' value=''><br>";
+        geocodeResultStringTCOA(latlngString, x);
+
+        panelCollapse.appendChild(panelBody);
+        panel.appendChild(panelHead);
+        panel.appendChild(panelCollapse);
+        collapse.appendChild(panel);
+
+    }
+}
+
+function geocodeResultStringTCOA(str, i) { // Takes String Address; Returns geocode results
+    geocoder.geocode({
+        'address': str
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            geocodeSuccess(results[0], i);
+        } else {
+            return null;
+        }
+    });
+}
+
+function geocodeSuccess(result, i) {
+    var area = generateAreaObject(result);
+    document.getElementById("at" + i).value = generateFullAddress(area);
 }
 
 function saveCM() {

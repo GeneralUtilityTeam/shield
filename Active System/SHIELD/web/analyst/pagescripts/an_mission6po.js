@@ -112,7 +112,28 @@ function buildCarver() {
                 },
                 {"sClass": "alignCenter", "targets": [1, 2, 3, 4, 5, 6, 7]},
                 {"sClass": "bold", "targets": [0]}
-            ]
+            ],
+            "fnRowCallback": function (nRow, data) {
+                if (data.crit < 5) {
+                    $('td:eq(1)', nRow).css('background-color', '#FFADAD');
+                }
+                if (data.acce < 5) {
+                    $('td:eq(2)', nRow).css('background-color', '#FFADAD');
+                }
+                if (data.recu < 5) {
+                    $('td:eq(3)', nRow).css('background-color', '#FFADAD');
+                }
+                if (data.vuln < 5) {
+                    $('td:eq(4)', nRow).css('background-color', '#FFADAD');
+                }
+                if (data.effe < 5) {
+                    $('td:eq(5)', nRow).css('background-color', '#FFADAD');
+                }
+                if (data.reco < 5) {
+                    $('td:eq(6)', nRow).css('background-color', '#FFADAD');
+                }
+                return nRow;
+            }
         });
 
         panelBody.appendChild(table);
@@ -267,9 +288,9 @@ function savePO() {
             showAndDismissAlert("danger", "Please input <strong>Psyops Objective </strong> for " + crArr[x].name);
         }
         var spoList = [];
-        if(crArr[x].spoCounter < 2){
+        if (crArr[x].spoCounter < 2) {
             proceed = false;
-                showAndDismissAlert("danger", "You need at least <strong>2 Supporting Psyops Objectives </strong> to proceed.");
+            showAndDismissAlert("danger", "You need at least <strong>2 Supporting Psyops Objectives </strong> to proceed.");
         }
         for (var y = 0; y < crArr[x].spoCounter && proceed; y++) {
             var spoObj;

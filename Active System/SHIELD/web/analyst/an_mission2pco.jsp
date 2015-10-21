@@ -90,6 +90,15 @@
                 border-radius: 5px;
                 background: #F5F5F5;
             }
+            a[href^="http://maps.google.com/maps"]{display:none !important}
+            a[href^="https://maps.google.com/maps"]{display:none !important}
+
+            .gmnoprint a, .gmnoprint span, .gm-style-cc {
+                display:none;
+            }
+            .gmnoprint div {
+                background:none !important;
+            }
 
         </style>
 
@@ -123,19 +132,27 @@
                                 <input type="text" name="country" id="search-field" class="form-control" style="width: 28vw;"/>
                             </div>
 
-                            <div class="btn-group" style="z-index: 1; position: fixed; margin: 72vh 0 0 1vmin;">
+                            <div class="btn-group" style="z-index: 1; position: fixed; margin: 2vh 0 0 64vw;">
                                 <a class="btn btn-md btn-default" data-toggle="tooltip" title="Right-click on marker/s before creating an Entity" onclick="createEntity()"><i class="fa fa-plus" style="color:#009900"></i> Create Entity</a>
                             </div>
-                            <div class="" style="z-index: 1; position: fixed; margin: 73vh 0 0 10vw; width: 15vw;">
+                            <!--Area Filter-->
+                            <div class="" style="z-index: 1; position: fixed; margin: 73vh 0 0 1vw; width: 18vw;">
                                 <input type="range" id="areaRangeInput" name="rangeInput" step="1" min="1" max="8" style="width: 100%; color: #111111">
-                                <label id="areaRangeText" style="display: block; text-align: center; font-weight: 100;"/></label>
+                                <label id="areaRangeText" style="display: block; text-align: center; font-weight: 700;"/></label>
                             </div>
-                            <div class="btn-group" style="position: fixed; margin: 79vh 0 0 0;">
-                                <a class="btn btn-default" style="font-weight: 100;"><i class='fa fa-map-marker fa-lg' style='color:#009900'></i> Selected Marker</a>
-                                <a class="btn btn-default" style="font-weight: 900;"><i class='fa fa-map-marker fa-lg' style='color:#CC0000'></i> Strong Relevance</a>
-                                <a class="btn btn-default" style="font-weight: 500;"><i class='fa fa-map-marker fa-lg' style='color:#FF4500'></i> Moderate Relevance</a>
-                                <a class="btn btn-default" style="font-weight: 100;"><i class='fa fa-map-marker fa-lg' style='color:#E6E600'></i> Weak Relevance</a>
+                            <!--Strength Filter-->
+                            <div class="" style="z-index: 1; position: fixed; margin: 3vh 0 0 47vw; width: 15vw;">
+                                <input type="range" id="strengthRangeInput" name="rangeInput" step="1" min="1" max="3" style="width: 100%; color: #111111">
+                                <label id="strengthRangeText" style="display: block; text-align: center; font-weight: 700;"/></label>
                             </div>
+                            <!--Legend-->
+                            <ul class="list-inline" style="position: fixed; margin: 79vh 0 0 0;">
+                                <li  style="font-weight: 900;"> Legend: </li>
+                                <li  style="font-weight: 100;"><i class='fa fa-map-marker fa-lg' style='color:#009900'></i> Selected Marker</li>
+                                <li  style="font-weight: 900;"><i class='fa fa-map-marker fa-lg' style='color:#CC0000'></i> Strong Relevance</li>
+                                <li  style="font-weight: 500;"><i class='fa fa-map-marker fa-lg' style='color:#FF4500'></i> Moderate Relevance</li>
+                                <li  style="font-weight: 100;"><i class='fa fa-map-marker fa-lg' style='color:#E6E600'></i> Weak Relevance</li>
+                            </ul>
                             <div id="mission2pco-area-map" style="height: 78vh; width: 74vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
                             </div>
                         </div>

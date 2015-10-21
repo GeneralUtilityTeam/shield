@@ -31,24 +31,25 @@ $(document).ready(function () {
 });
 
 function saveSource() {
+   var proceed = true;
     var sourceClass = document.getElementById("source-type").value;
     var sourceName = document.getElementById("source-name").value;
     var sourceDesc = document.getElementById("source-description").value;
     var sourceDate = document.getElementById("source-date").value;
-    if(checkIfEmpty(sourceName) && checkIfEmpty(sourceDesc) && (sourceDate.value==null)){
-        showAndDismissAlert("warning", "Please input source name");
-        showAndDismissAlert("warning", "Please input source description");
-        showAndDismissAlert("warning", "Please input source date");
-    } else if(checkIfEmpty(sourceName) && checkIfEmpty(sourceDesc)){
-        showAndDismissAlert("warning", "Please input source name");
-        showAndDismissAlert("warning", "Please input source description");
-    }else if(checkIfEmpty(sourceDesc)){
-        showAndDismissAlert("warning", "Please input source description");
-    }else if(sourceDate.value == null){
-        showAndDismissAlert("warning", "Please input source date");
-    }else if (checkIfEmpty(sourceName)){
-        showAndDismissAlert("warning", "Please input source name");
-    }else{
+    if(checkIfEmpty(sourceName)){
+        showAndDismissAlert("danger", "Please input <strong>source name</strong>");
+        proceed = false;
+    }
+    if(checkIfEmpty(sourceDesc)){
+        showAndDismissAlert("danger", "Please input <strong>source description</strong>");
+        proceed = false;
+    }
+    
+    if(sourceDate.value == null){
+        showAndDismissAlert("danger", "Please input <strong>source date</strong>");
+        proceed = false;
+    }
+    if(proceed){
     $.ajax({
         type: "GET",
         url: "SaveSource",

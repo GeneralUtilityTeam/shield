@@ -1,5 +1,5 @@
-var srcJSON = [{"datePublish": "2010-01-01", "type": "Area Study", "name": "Davao del Sur Area Study 2010", "description": "Area study conducted on the Davao del Sur area by the 10th Infantry (AGILA) division", "id": 1},
-    {"datePublish": "2010-01-01", "type": "Interview", "name": "Davao del Sur Area Study 2010", "description": "Area study conducted on the Davao del Sur area by the 10th Infantry (AGILA) division", "id": 2}];
+//var srcJSON = [{"datePublish": "2010-01-01", "type": "Area Study", "name": "Davao del Sur Area Study 2010", "description": "Area study conducted on the Davao del Sur area by the 10th Infantry (AGILA) division", "id": 1},
+//    {"datePublish": "2010-01-01", "type": "Interview", "name": "Davao del Sur Area Study 2010", "description": "Area study conducted on the Davao del Sur area by the 10th Infantry (AGILA) division", "id": 2}];
 
 function initialize() {
     document.getElementById("global-username").innerHTML = userFullName + " ";
@@ -35,28 +35,25 @@ $(document).ready(function () {
 });
 
 function saveSource() {
+   var proceed = true;
     var sourceClass = document.getElementById("source-type").value;
     var sourceName = document.getElementById("source-name").value;
     var sourceDesc = document.getElementById("source-description").value;
     var sourceDate = document.getElementById("source-date").value;
-    
-    if(checkIfEmpty(sourceName) && checkIfEmpty(sourceDesc) && (sourceDate.value==null)){
-        showAndDismissAlert("warning", "Please input source name");
-        showAndDismissAlert("warning", "Please input source description");
-        showAndDismissAlert("warning", "Please input source date");
-    } else if(checkIfEmpty(sourceName) && checkIfEmpty(sourceDesc)){
-        showAndDismissAlert("warning", "Please input source name");
-        showAndDismissAlert("warning", "Please input source description");
-    }else if(checkIfEmpty(sourceDesc)){
-        showAndDismissAlert("warning", "Please input source description");
-    }else if(sourceDate.value == null){
-        showAndDismissAlert("warning", "Please input source date");
-    }else if (checkIfEmpty(sourceName)){
-        showAndDismissAlert("warning", "Please input source name");
+    if(checkIfEmpty(sourceName)){
+        showAndDismissAlert("danger", "Please input <strong>source name</strong>");
+        proceed = false;
+    }
+    if(checkIfEmpty(sourceDesc)){
+        showAndDismissAlert("danger", "Please input <strong>source description</strong>");
+        proceed = false;
     }
     
-    else{
-    
+    if(sourceDate.value == null){
+        showAndDismissAlert("danger", "Please input <strong>source date</strong>");
+        proceed = false;
+    }
+    if(proceed){
     $.ajax({
         type: "GET",
         url: "SaveSource",

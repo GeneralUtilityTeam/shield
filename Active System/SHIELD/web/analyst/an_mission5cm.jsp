@@ -26,6 +26,9 @@
         <link href="css/vis.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
+        <!--Map Script-->
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
+        
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission5cm.js"></script>
         <script src="js/mission-menu-builder.js"></script>
@@ -36,7 +39,7 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-            
+
         </script>
 
         <style>
@@ -80,7 +83,7 @@
                     </div><br>
                     <div style="height: 75vh;padding-top: 1vh; padding-right: 0;">
                         <div class="panel-group" id="accordion">
-                            
+
                         </div>
 
                     </div>
@@ -91,8 +94,8 @@
         <!--Sliding Side Bar Menu-->
         <!--Sliding Side Bar Menu-->
         <div id="slidingmenu" style="width: 22vw;">
-            <div id="panel-holder love"  style=" padding: 1vh 1vw 1vh 1vw;">
-                <div id=""></div>
+            <h5 style="text-align: center;"><b>Threat Course of Action</b></h5>
+            <div class="panel-group" id="accordion-sidebar" style="margin: 10px 10px 10px 10px; ">
 
             </div>
         </div>

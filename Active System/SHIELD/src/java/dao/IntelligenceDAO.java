@@ -9,6 +9,7 @@ import db.DBConnector;
 import entity.Area;
 import entity.EEntity;
 import entity.Excerpt;
+import entity.PsyopObjective;
 import entity.Source;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -609,6 +610,121 @@ public class IntelligenceDAO {
                             cv.setVuln(rs2.getInt(6));
                             cv.setEffe(rs2.getInt(7));
                             cv.setReco(rs2.getInt(8));
+                            
+                            cvList.add(cv);
+                        } while (rs2.next());
+                        eent.setCvList(cvList);
+                    }
+
+                    eentList.add(eent);
+
+                } while (rs.next());
+
+                cn.close();
+                return eentList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+    
+    public ArrayList<EEntity> GetAllCCCVCROfMission(int missionID) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_all_cr_mission`(?);");
+            pstmt.setInt(1, missionID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<EEntity> eentList = new ArrayList<EEntity>();
+                do {
+                    EEntity eent = new EEntity();
+
+                    eent.setId(rs.getInt(1));
+                    eent.setClassID(rs.getInt(2));
+                    eent.setClassDesc(rs.getString(3));
+                    eent.setName(rs.getString(4));
+                    
+                    PsyopObjective po = new PsyopObjective();
+                    po.setText(rs.getString(5));
+                    eent.setPo(po);
+                    eent.setPoText(po.getText());
+                    
+                    // CC's of CR
+                    PreparedStatement pstmt2 = cn.prepareStatement("CALL shield.get_all_cc_cr(?);");
+                    pstmt2.setInt(1, eent.getId());
+                    ResultSet rs2 = pstmt2.executeQuery();
+                    rs2.next();
+
+                    if (rs2.getRow() != 0) {
+                        ArrayList<EEntity> ccList = new ArrayList<EEntity>();
+                        do {
+                            EEntity cc = new EEntity();
+
+                            cc.setId(rs2.getInt(1));
+                            cc.setName(rs2.getString(2));
+                            cc.setDateFrom(rs2.getDate(3));
+                            cc.setDateTo(rs2.getDate(4));
+                            cc.setLat(rs2.getDouble(5));
+                            cc.setLng(rs2.getDouble(6));
+                            
+                            ccList.add(cc);
+                        } while (rs2.next());
+                        eent.setCcList(ccList);
+                    }
+                    
+                    // CV's of CR
+                    PreparedStatement pstmt3 = cn.prepareStatement("CALL shield.get_all_cv_cr_data(?);");
+                    pstmt3.setInt(1, eent.getId());
+                    ResultSet rs3 = pstmt3.executeQuery();
+                    rs3.next();
+                    
+                    if (rs3.getRow() != 0) {
+                        ArrayList<EEntity> cvList = new ArrayList<EEntity>();
+                        do {
+                            EEntity cv = new EEntity();
+
+                            cv.setId(rs3.getInt(1));
+                            cv.setName(rs3.getString(2));
+                            cv.setCrit(rs3.getInt(3));
+                            cv.setAcce(rs3.getInt(4));
+                            cv.setRecu(rs3.getInt(5));
+                            cv.setVuln(rs3.getInt(6));
+                            cv.setEffe(rs3.getInt(7));
+                            cv.setReco(rs3.getInt(8));
+                            
+                            cvList.add(cv);
+                        } while (rs2.next());
+                        eent.setCvList(cvList);
+                    }
+                    
+                    // CV's of CR
+                    PreparedStatement pstmt4 = cn.prepareStatement("CALL shield.get_all_spo_cr(?);");
+                    pstmt3.setInt(1, eent.getId());
+                    ResultSet rs4 = pstmt4.executeQuery();
+                    rs3.next();
+                    
+                    if (rs4.getRow() != 0) {
+                        ArrayList<EEntity> cvList = new ArrayList<EEntity>();
+                        do {
+                            EEntity cv = new EEntity();
+
+                            cv.setId(rs3.getInt(1));
+                            cv.setName(rs3.getString(2));
+                            cv.setCrit(rs3.getInt(3));
+                            cv.setAcce(rs3.getInt(4));
+                            cv.setRecu(rs3.getInt(5));
+                            cv.setVuln(rs3.getInt(6));
+                            cv.setEffe(rs3.getInt(7));
+                            cv.setReco(rs3.getInt(8));
                             
                             cvList.add(cv);
                         } while (rs2.next());

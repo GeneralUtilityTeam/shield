@@ -5,11 +5,23 @@ var entityCounter = 0;
 var entityArr = [];
 var usedKeywords = [], unusedKeywords = [];
 var selectedMarker = [];
+var mapOptions;
+var geocoder;
+var map;
+var zoom;
+var oms;
+var infoWindow;
+var mc;
+var minClusterZoom = 19;
+var filterLevel;
+var filterArea;
+var filterStrength;
 
 function initialize() { //Change this to take entities
     document.getElementById("global-username").innerHTML = userFullName + " ";
     buildNav(missionStatus, 2);
     loadAreaSlider();
+    loadStrengthSlider();
     initializeMap();
 
     if (entity == null) {
@@ -94,16 +106,9 @@ $(document).ready(function () {
         }
 
     });
+
 });
 
-var mapOptions;
-var geocoder;
-var map;
-var zoom;
-var oms;
-var infoWindow;
-var mc;
-var minClusterZoom = 19;
 function initializeMap() {
     mapOptions = {
         center: new google.maps.LatLng(lat, lng),
@@ -153,7 +158,7 @@ function initializeMap() {
     });
     oms.addListener('unspiderfy', function (markers) {
     });
-    
+
 
     google.maps.event.addListener(map, 'zoom_changed', function () {
         setTimeout('openAllClusters()', 1000);
@@ -209,10 +214,6 @@ function zoomChanged(philBounds) {
         map.setCenter(new google.maps.LatLng(y, x));
     });
 }
-//For Tooltip of Edit and Delete Entity
-$(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-});
 
 //Load Markers based on search
 
@@ -248,7 +249,7 @@ function createSearchMarker() {
             id: ids,
             icon: icon
         });
-        setWindowListener(marker, "Excerpt " + excerptList[x].id + ": " + excerptList[x].text);
+        setWindowListener(marker, "<strong>Excerpt " + excerptList[x].id + "</strong>: <br>" + excerptList[x].text);
         oms.addMarker(marker);
         mc.addMarker(marker);
         setMarkerListener(marker);
@@ -684,6 +685,39 @@ function savePCO() {
 
 }
 
+function loadStrengthSlider() {
+    filterStrength = 40;
+    var rangeValues =
+            {
+                "1": "All",
+                "2": "Moderate Relevance",
+                "3": "Strong Relevance"
+            };
+
+    $('#strengthRangeInput').attr("value", 1);
+    $(function () {
+        $('#strengthRangeInput').attr("value", 1);
+        $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
+        // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
+        $('#strengthRangeInput').change(function () {
+            $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
+            switch ($('#areaRangeInput').val()) {
+                case 1:
+                    filterStrength = 40;
+                    break;
+                case 2:
+                    filterStrength = 60;
+                    break;
+                case 3:
+                    filterStrength = 100;
+                    break;
+            }
+            applyFilter();
+        });
+
+    });
+
+}
 function loadAreaSlider() {
     // define a lookup for what text should be displayed for each value in your range
     var lastLevel;
@@ -739,8 +773,12 @@ function loadAreaSlider() {
         $('#areaRangeText').text("Search Area Range: " + rangeValues[$('#areaRangeInput').val()]);
         // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
         $('#areaRangeInput').change(function () {
-            if (rangeValues[$('#areaRangeInput').val()] != "null")
+            if (rangeValues[$('#areaRangeInput').val()] != "null") {
                 $('#areaRangeText').text("Search Area Range: " + rangeValues[$('#areaRangeInput').val()]);
+                filterArea = rangeValues[$('#areaRangeInput').val()];
+                filterLevel = $('#areaRangeInput').val();
+                applyFilter();
+            }
             else {
                 $('#areaRangeText').text("No Area Level Found");
             }
@@ -781,6 +819,73 @@ function deleteEntity(id) {
     console.log(entity);
 }
 
+function getMarker(excrID) {
+    var marker;
+    for (var x = 0; x < searchMarker.length; x++) {
+        marker = searchMarker[x];
+        if (marker.id == excrID)
+            break;
+    }
+    return marker;
+}
+
+function applyFilter() {
+    if (excerptList != null)
+        
+        console.log("Filter Level: " + filterLevel);
+        console.log("Filter Area: " + filterArea);
+        console.log("Filter Strength: " + filterStrength)
+        
+        var marker;
+        var excrArea;
+        var visible;
+        
+        excerptList.forEach(function (excr) {
+            marker = getMarker(excr.id); //This method may or may not exist yet
+            visible = false;
+            excrArea = null;
+            console.log(" ------------  " + excr.id);
+            console.log("")
+            
+            if(excr.strength >= filterStrength){
+                console.log("strengthPass");
+                if(filterLevel == 1){
+                    excrArea = excr.area.level1;
+                }
+                else if(filterLevel == 2){
+                    if(isEqualRaw(excr.area.level2, filterArea))
+                        visible = true;
+                }
+                else if(filterLevel == 3){
+                    if(isEqualRaw(excr.area.level3, filterArea))
+                        visible = true;
+                }
+                else if(filterLevel == 4){
+                    if(isEqualRaw(excr.area.level4, filterArea))
+                        visible = true;
+                }
+                else if(filterLevel == 5){
+                    if(isEqualRaw(excr.area.level5, filterArea))
+                        visible = true;
+                }
+                else if(filterLevel == 6){
+                    if(isEqualRaw(excr.area.level6, filterArea))
+                        visible = true;
+                }
+                else if(filterLevel == 7){
+                    if(isEqualRaw(excr.area.level7, filterArea))
+                        visible = true;
+                }
+                else if(filterLevel == 8){
+                    if(isEqualRaw(excr.area.level8, filterArea))
+                        visible = true;
+                }
+            }
+           
+            console.log(visible);
+            marker.setVisible(visible);
+        });
+}
 //function setRemoveEntityListener(){
 //    alert("zzz");
 //    for(var x=0; x<entity.length; x++){

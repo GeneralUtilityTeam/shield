@@ -200,6 +200,10 @@
         <servlet-name>GetMissionDetails</servlet-name>
         <servlet-class>servlet.ajax.GetMissionDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetCCCVCROfMission</servlet-name>
+        <servlet-class>servlet.ajax.GetCCCVCROfMission</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -399,6 +403,10 @@
     <servlet-mapping>
         <servlet-name>GetMissionDetails</servlet-name>
         <url-pattern>/GetMissionDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetCCCVCROfMission</servlet-name>
+        <url-pattern>/GetCCCVCROfMission</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
