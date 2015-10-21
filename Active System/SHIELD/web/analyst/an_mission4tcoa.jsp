@@ -44,10 +44,21 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-            
+
             var lat = <%=request.getAttribute("lat")%>;
             var lng = <%=request.getAttribute("lng")%>;
         </script>
+        <style>
+            a[href^="http://maps.google.com/maps"]{display:none !important}
+            a[href^="https://maps.google.com/maps"]{display:none !important}
+
+            .gmnoprint a, .gmnoprint span, .gm-style-cc {
+                display:none;
+            }
+            .gmnoprint div {
+                background:none !important;
+            }
+        </style>
 
     </head>
 
@@ -81,7 +92,7 @@
 
                     </div>
                 </div>
-                
+
             </div>
         </div>
 

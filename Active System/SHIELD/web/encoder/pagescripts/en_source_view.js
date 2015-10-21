@@ -36,7 +36,7 @@ function initialize() {
     var dropdown = document.getElementById("input-excerpt-category");
     ctgyJSON.forEach(function (conf) {
         var option = document.createElement("option");
-        option.setAttribute("label", conf.valueText);
+        option.setAttribute("label", toTitleCase(conf.valueText));
         option.setAttribute("value", conf.id);
         dropdown.appendChild(option);
     });
@@ -52,6 +52,14 @@ $(document).ready(function () {
             {"data": "id"},
             {"data": "categoryDesc"},
             {"data": "text"}
+        ],
+        "columnDefs": [
+            {
+                "render": function (data, type, row) {
+                    return toTitleCase(data);
+                },
+                "targets": 1
+            }
         ]
     });
     $('#src-excerpts tbody').on('click', 'tr', function () {
@@ -115,7 +123,7 @@ function viewExcerpt(id) {
         }
     });
 }
-function clearInput(){
+function clearInput() {
     document.getElementById("input-excerpt-text").value = "";
     area = null;
     document.getElementById('address').value = ""

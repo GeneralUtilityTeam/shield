@@ -22,12 +22,12 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
         <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
-        
+
         <!--Page Script-->
         <script src="encoder/pagescripts/en_source_view.js"></script>
         <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
         <script  src="js/bootstrap-tagsinput.js"></script>
-        
+
         <!--Google Map-->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
@@ -43,13 +43,24 @@
             var switchString; //boolean; true if a string was used, false if a click was used
             var excrTable;
             var srcTable;
-    
+
             //Map Variables
             var geocoder = new google.maps.Geocoder();
             var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
             var map;
             var marker;
         </script>
+        <style>
+            a[href^="http://maps.google.com/maps"]{display:none !important}
+            a[href^="https://maps.google.com/maps"]{display:none !important}
+
+            .gmnoprint a, .gmnoprint span, .gm-style-cc {
+                display:none;
+            }
+            .gmnoprint div {
+                background:none !important;
+            }
+        </style>
 
     </head>
     <body onload="initialize()">
@@ -127,7 +138,7 @@
                                 <td>
                                     <div class="input-group" style="width: 100%; margin-bottom: 5px;" >
                                         <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
-                                        
+
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" value="Search Area" onclick="addressSearch()">
                                                 Locate Area
@@ -137,7 +148,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                
+
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -191,10 +202,9 @@
                                 </h4>
                             </div>
                             <div class="panel-body">
-                                <blockquote id="view-excerpt-text">20 words of the artifact only please it's so hard to reach 
-                                    20 words please please please please please please</blockquote>
-                                <h5>Category: <label id="category">Political</label></h5>
-                                <h5>Source: <label id="source">Dan</label></h5>
+                                <blockquote id="view-excerpt-text"></blockquote>
+                                <h5>Category: <label id="category"></label></h5>
+                                <h5>Source: <label id="source"></label></h5>
                                 <h5>Tags: <input id="enter-tags" type="text" data-role="tagsinput" class="form-box" disabled></h5>
                             </div>
                         </div>

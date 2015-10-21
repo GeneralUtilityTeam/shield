@@ -35,13 +35,24 @@
             var latLng;
             var switchString; //boolean; true if a string was used, false if a click was used
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-    
+
             //Map Variables
             var geocoder = new google.maps.Geocoder();
             var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
             var map;
             var marker;
         </script>
+        <style>
+            a[href^="http://maps.google.com/maps"]{display:none !important}
+            a[href^="https://maps.google.com/maps"]{display:none !important}
+
+            .gmnoprint a, .gmnoprint span, .gm-style-cc {
+                display:none;
+            }
+            .gmnoprint div {
+                background:none !important;
+            }
+        </style>
 
     </head>
     <body onload="initialize()">

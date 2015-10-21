@@ -43,10 +43,10 @@
 
                     <table id="source-table" class="table table-bordered table-hover list-table" width="100%">
                         <thead style="background-color: #D3D3D3;">
-                        <th>Type</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Date Published</th>
+                        <th width="15%">Type</th>
+                        <th width="25%">Name</th>
+                        <th width="50%">Description</th>
+                        <th width="10%">Date Published</th>
                         </thead>
                         <tbody id="source-table-body">
                         </tbody>

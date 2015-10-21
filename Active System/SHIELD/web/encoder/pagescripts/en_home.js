@@ -7,7 +7,7 @@ function initialize() {
     var dropdown = document.getElementById("source-type");
     clssJSON.forEach(function(conf){
         var option = document.createElement("option");
-        option.setAttribute("label", conf.valueText);
+        option.setAttribute("label", toTitleCase(conf.valueText));
         option.setAttribute("value", conf.id);
         dropdown.appendChild(option);
     });
@@ -26,11 +26,19 @@ $(document).ready(function () {
             {"data": "title"},
             {"data": "desc"},
             {"data": "published"}
+        ],
+        "columnDefs": [
+            {
+                "render": function (data, type, row) {
+                    return toTitleCase(data);
+                },
+                "targets": 0
+            }
         ]
     });
     $('#source-table tbody').on('click', 'tr', function () {
         var data = table.row(this).data();
-        window.location.assign("ANSourceView?id=" + data.id);
+        window.location.assign("ENSourceView?id=" + data.id);
     });
 });
 
