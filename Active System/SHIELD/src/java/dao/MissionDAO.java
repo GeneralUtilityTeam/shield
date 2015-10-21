@@ -271,10 +271,11 @@ public class MissionDAO {
     } //Clear
 
     public int AdvanceMissionStatus(int missionID, int phase) {
+        System.out.println("Advancing");
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-
+            
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`advance_mission_status`(?, ?);");
             pstmt.setInt(1, missionID);
             pstmt.setInt(2, phase);

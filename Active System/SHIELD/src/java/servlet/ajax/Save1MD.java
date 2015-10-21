@@ -88,12 +88,10 @@ public class Save1MD extends HttpServlet {
         mson.setCommandAndSignalKeywordList(su.jsKeywordStringToList(request.getParameter("commandAndSignalKeywordList")));
 
         MissionDAO msonDAO = new MissionDAO();
+        msonDAO.ResetMission(mson.getId(), 1);
         boolean success = msonDAO.UpdateMission(editorID, mson);
         if (success) {
             int missionStatus = msonDAO.AdvanceMissionStatus(mson.getId(), 1);
-            System.out.println("MD Mission ID: " + mson.getId());
-            System.out.println("MD Mission Status: " + missionStatus);
-            //msonDAO.ResetMission(mson.getId(), 2);
             if (missionStatus != 0) {
                 session.setAttribute("missionStatus", missionStatus);
             }

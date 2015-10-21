@@ -125,7 +125,7 @@ public class Save3COG extends HttpServlet {
         cog.setMissionID(missionID);
         
         MissionDAO msonDAO = new MissionDAO();
-        
+        msonDAO.ResetMission(missionID, 3);
         boolean success = msonDAO.AddCOG(cog);
         
         if (success) {
