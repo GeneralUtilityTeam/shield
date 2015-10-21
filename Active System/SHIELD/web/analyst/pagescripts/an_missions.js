@@ -1,6 +1,9 @@
+var geocoder;
+
 function initialize() {
     document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert('success', 'Existing Missions of <strong>SHIELD</strong>');
+    initializeGeocoder();
 }
 //Data Table Function
 $(document).ready(function () {
@@ -75,6 +78,7 @@ function defineProgressPercent(status) {
 
 function printReport(event, id) {
     event.stopPropagation();
+
     var missionDetails;
     //Write Mission Details on Print Report
     $.ajax({
@@ -104,6 +108,7 @@ function printReport(event, id) {
         },
         success: function (responseJSON) {
             eentityCR = responseJSON;
+
             $.ajax({
                 type: "GET",
                 url: "GetPOSPOOfMission",
@@ -130,6 +135,7 @@ function printReport(event, id) {
                         var poLabel = document.createElement("label");
                         poLabel.className = "supporting-info";
                         poLabel.innerHTML = "PSYCHOLOGICAL OPERATIONS OBJECTIVE " + (x + 1);
+                        content.appendChild(poLabel);
 
                         var poTable = document.createElement("table");
                         poTable.className = "text-table-print";
@@ -294,6 +300,7 @@ function printReport(event, id) {
                         });
                         content.appendChild(carverTable);
 
+                        var ccDiv = document.createElement("div");
 
                         $.ajax({
                             type: "GET",
@@ -301,27 +308,91 @@ function printReport(event, id) {
                             data: {
                                 crID: crArr[x].id
                             },
+                            async: false,
                             success: function (responseJSON) {
 
-                                
+                                var ccArr = responseJSON;
+                                console.log(ccArr);
 
+                                var tcoaLabel = document.createElement("label");
+                                tcoaLabel.className = "supporting-label";
+                                tcoaLabel.innerHTML = "Possible Threat Courses of Action: ";
 
-                                var divElements = document.getElementById("container").innerHTML;
-                                var oldPage = document.body.innerHTML;
+                                content.appendChild(tcoaLabel);
+                                for (var y = 0; y < ccArr.length; y++) {
+                                    var ccTable = document.createElement("table");
+                                    ccTable.className = "text-table-print";
 
-                                //Reset the page's HTML with div's HTML only
-                                document.body.innerHTML = "<html><head><title></title></head><body>" + divElements + "</body>";
-                                window.print();
-                                document.body.innerHTML = oldPage;
+                                    var ccNameTr = document.createElement("tr");
+                                    ccNameTr.className = "po-row";
+                                    var ccNameTd = document.createElement("td");
+                                    ccNameTd.className = "po";
+                                    ccNameTd.innerHTML = "<b>Propaganda" + (y + 1) + "</b> The threat may launch/use/deploy <b>" + ccArr[y].name + ": </b>";
+                                    ccNameTr.appendChild(ccNameTd);
+
+                                    var ccFromTr = document.createElement("tr");
+                                    var ccFromTd = document.createElement("td");
+                                    ccFromTd.className = "spo";
+                                    ccFromTd.innerHTML = "<b>From: </b>" + ccArr[y].dateFrom;
+                                    ccFromTr.appendChild(ccFromTd);
+
+                                    var ccToTr = document.createElement("tr");
+                                    var ccToTd = document.createElement("td");
+                                    ccToTd.className = "spo";
+                                    ccToTd.innerHTML = "<b>To: </b>" + ccArr[y].dateTo;
+                                    ccToTr.appendChild(ccToTd);
+
+                                    var latlngString = ccArr[y].lat.toString() + ", " + ccArr[y].lng.toString();
+                                    var area = geocodeResultStringPrint(latlngString);
+                                    var ccLocationTr = document.createElement("tr");
+                                    var ccLocationTd = document.createElement("td");
+                                    ccLocationTd.className = "spo";
+                                    ccLocationTd.innerHTML = "<b>Location: </b>" + area;
+                                    ccLocationTr.appendChild(ccLocationTd);
+
+                                    ccTable.appendChild(ccNameTr);
+                                    ccTable.appendChild(ccFromTr);
+                                    ccTable.appendChild(ccToTr);
+                                    ccTable.appendChild(ccLocationTr);
+
+                                    ccDiv.appendChild(ccTable);
+                                }
+                                content.appendChild(ccDiv);
+
                             }
                         });
                     }
+
+                    var divElements = document.getElementById("container").innerHTML;
+                    var oldPage = document.body.innerHTML;
+
+                    //Reset the page's HTML with div's HTML only
+                    document.body.innerHTML = "<html><head><title></title></head><body>" + divElements + "</body>";
+                    window.print();
+                    document.body.innerHTML = oldPage;
 
 
                 }
             });
         }
     });
+}
 
 
+
+function geocodeResultStringPrint(str) { // Takes String Address; Returns geocode results
+    geocoder.geocode({
+        'address': str
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            return geocodeSuccess(results[0]);
+        } else {
+            return null;
+        }
+    });
+}
+
+function geocodeSuccess(result) {
+    var area = generateAreaObject(result);
+    return generateFullAddress(area);
 }

@@ -22,6 +22,10 @@
         <!--General Scripts-->
         <script src="js/util.js"></script>
         <script  src="js/alert.js"></script>
+        
+        <!--Map Script-->
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
+        
 
         <!--Page Script-->
         <script src="analyst/pagescripts/an_missions.js"></script>
