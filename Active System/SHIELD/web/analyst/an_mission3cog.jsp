@@ -41,6 +41,10 @@
 
             var nodesArray = <%=request.getAttribute("nodesJSON")%>;
             var edgesArray = <%=request.getAttribute("edgesJSON")%>;
+
+            $(window).load(function () {
+                $('#tipModal').modal('show');
+            });
         </script>
 
         <style>
@@ -113,19 +117,43 @@
 
                     <br />
                     <div id="mynetwork"></div>
-                    <!--                    <div class="btn-group" style="position: fixed; top:85vh; margin-left: 1%;">
-                                            <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#doesusesModal"><i class="fa fa-navicon" style="color:#202020"></i> Does/Uses Menu</a>
-                    
-                                        </div>-->
-
-                    <div class="btn-group" style="position: fixed; top:84%; margin-left: 1%;">
-                        <a class="btn btn-default"><i class="fa fa-dot-circle-o" style="color:#CC0000"></i> Center of Gravity</a>
-                        <a class="btn btn-default"><i class="fa fa-bomb" style="color:#202020"></i> Critical Capability</a>
-                        <a class="btn btn-default"><i class="fa fa-exclamation-circle" style="color:#FF4500"></i> Critical Requirement</a>
-                        <a class="btn btn-default"><i class="fa fa-unlock-alt" style="color:#DAA520"></i> Critical Vulnerability</a>
-                    </div>
+                    <!--Legend-->
+                    <ul class="list-inline" style="position: fixed; margin: 77vh 0 0 1vw;">
+                        <li  style="font-weight: 900;"> Legend: </li>
+                        <li  style="font-weight: 100;"><i class="fa fa-dot-circle-o" style="color:#CC0000"></i> Center of Gravity</li>
+                        <li  style="font-weight: 100;"><i class="fa fa-bomb" style="color:#202020"></i> Critical Capability</li>
+                        <li  style="font-weight: 100;"><i class="fa fa-exclamation-circle" style="color:#FF4500"></i> Critical Requirement</li>
+                        <li  style="font-weight: 100;"><i class="fa fa-unlock-alt" style="color:#DAA520"></i> Critical Vulnerability</li>
+                    </ul>
                 </div>
             </div>
+        </div>
+
+        <!-- Tip Modal -->
+        <div class="modal" id="tipModal" tabindex="-1" role="dialog" 
+             aria-labelledby="tipModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Tip! 
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        <label>Click Edit Button on top-left of screen to add connection to Entities. </label> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
         </div>
 
         <!--Sliding Side Bar Menu-->

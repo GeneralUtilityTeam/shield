@@ -681,9 +681,7 @@ function savePCO() {
             },
             success: function (response) {
                 showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
-                setTimeout(function () {
-                    window.location.assign("ANMission3COG")
-                }, 3000);
+                window.location.assign("ANMission3COG");
             }
         });
     }

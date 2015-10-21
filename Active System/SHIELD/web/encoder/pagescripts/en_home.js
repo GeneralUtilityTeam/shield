@@ -57,7 +57,7 @@ function saveSource() {
         proceed = false;
     }
     
-    if(sourceDate.value == null){
+    if(sourceDate == null){
         showAndDismissAlert("danger", "Please input <strong>source date</strong>");
         proceed = false;
     }

@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-md-10" style="margin-left: 19vw; width: 76vw; overflow: auto; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="savePO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> Save and Proceed to PsyOps Objective</button>
+                        <button type="button" onclick="savePO()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span> PsyOps Plan Completed</button>
                     </div><br>
                     <div style="height: 75vh;padding-top: 1vh; padding-right: 0;">
                         <div class="panel-group" id="accordion">

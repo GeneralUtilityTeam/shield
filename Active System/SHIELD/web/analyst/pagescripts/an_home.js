@@ -8,7 +8,7 @@ function initialize() {
     //Map Initalization
     if (map == null) {
         var latlng = new google.maps.LatLng(14.5800, 121.000)
-        
+
         //Map
         var mapOptions = {
             zoom: 15,
@@ -22,7 +22,7 @@ function initialize() {
             geocodeResultLatLng(latLng);
         });
     }
-    
+
     //Geocoder Initialization
     initializeGeocoder();
 }
@@ -40,12 +40,12 @@ $(document).ready(function () {
             {"data": "area"},
             {"data": "status"}
         ],
-        "columnDefs" : [
+        "columnDefs": [
             {
                 // The `data` parameter refers to the data for the cell (defined by the
                 // `data` option, which defaults to the column being worked with, in
                 // this case `data: 0`.
-                "render": function ( data, type, row ) {
+                "render": function (data, type, row) {
                     return generateFullAddress(data);
                 },
                 "targets": 1
@@ -92,9 +92,7 @@ function beginMission() {
             success: function (response) {
                 if (response.missionID != -1) {
                     showAndDismissAlert("success", "You have successfully created a <strong>Mission.</strong>");
-                    setTimeout(function () {
-                        window.location.assign("ANMission1MD?id=" + response.missionID)
-                    }, 3000);
+                    window.location.assign("ANMission1MD?id=" + response.missionID);
                 }
                 else {
                     showAndDismissAlert("error", "Error");
@@ -107,30 +105,30 @@ function beginMission() {
 
 
 //Searching Function
-function addressSearch(){
+function addressSearch() {
     switchString = true;
     var address = document.getElementById('address').value;
     geocodeResultString(address);
 }
 
 //Map Functions
-function positionMarker(){
-    if(marker == null){
+function positionMarker() {
+    if (marker == null) {
         marker = new google.maps.Marker({
             map: map,
             draggable: false,
             position: latLng
         });
     }
-    else{
+    else {
         marker.setPosition(latLng);
     }
 }
 
 
-function geocodeSuccess(result){ // This function is specific to this page
+function geocodeSuccess(result) { // This function is specific to this page
     area = generateAreaObject(result);
-    if(switchString){
+    if (switchString) {
         latLng = new google.maps.LatLng(area.latLng.lat(), area.latLng.lng());
         positionMarker();
     }
