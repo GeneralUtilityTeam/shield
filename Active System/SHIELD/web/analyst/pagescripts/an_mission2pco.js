@@ -718,6 +718,7 @@ function loadStrengthSlider() {
     });
 
 }
+
 function loadAreaSlider() {
     // define a lookup for what text should be displayed for each value in your range
     var lastLevel;
@@ -767,9 +768,9 @@ function loadAreaSlider() {
                 "8": level8
             };
 
-    $('#areaRangeInput').attr("value", lastLevel - 1);
+    $('#areaRangeInput').attr("value", 1);
     $(function () {
-        $('#areaRangeInput').attr("value", lastLevel - 1);
+        $('#areaRangeInput').attr("value", 1);
         $('#areaRangeText').text("Search Area Range: " + rangeValues[$('#areaRangeInput').val()]);
         // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
         $('#areaRangeInput').change(function () {
@@ -869,11 +870,14 @@ function applyFilter() {
                     visible = true;
 
             }
+            else {
+                console.log("reject");
+            }
             excrMarker = getMarker(excr.id); //This method may or may not exist yet
-            if(visible){
+            if (visible) {
                 mc.addMarker(excrMarker);
             }
-            
+
             excrMarker.setVisible(visible);
         });
         mc.redraw();
