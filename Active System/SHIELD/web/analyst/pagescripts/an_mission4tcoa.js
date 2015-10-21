@@ -517,7 +517,7 @@ function saveTCOA() {
             data: {
                 ccList: toJSON(entityCCArr)
             },
-            success: function (response) {
+            success: function (response) {  
                 showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");
                 window.location.assign("ANMission5CM");
             }

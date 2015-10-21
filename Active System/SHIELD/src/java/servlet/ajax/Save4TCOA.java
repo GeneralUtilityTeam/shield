@@ -113,14 +113,13 @@ public class Save4TCOA extends HttpServlet {
 
         if (success) {
             int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 4);
-            System.out.println("TCOA Mission ID: " + missionID);
-            System.out.println("TCOA Mission Status: " + missionStatus);
+            
             msonDAO.ResetMission(missionID, 5);
             if (missionStatus != 0) {
                 session.setAttribute("missionStatus", missionStatus);
             }
         }
-
+        System.out.println("success");
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");

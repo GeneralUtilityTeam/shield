@@ -105,7 +105,7 @@ function addUser() {
                 classID: classID,
                 uname: uname,
                 pword: pword,
-                nameTitle: nameTitle,
+                nameTitle: nameTitle.replace(".", ""),
                 nameFirst: nameFirst,
                 nameOther: nameOther,
                 nameLast: nameLast

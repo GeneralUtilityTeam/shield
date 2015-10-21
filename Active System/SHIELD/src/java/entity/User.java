@@ -25,10 +25,11 @@ public class User {
     private String fullName;
     private String status;
     private Date lastSeen;
-    
-    public User(){
-        
+
+    public User() {
+
     }
+
     public User(int id, int classID, String uname, String nameTitle, String nameFirst, String nameOther, String nameLast) {
         this.id = id;
         this.classID = classID;
@@ -51,6 +52,19 @@ public class User {
         this.fullName = fullName;
 
         return fullName;
+    }
+
+    public String getNavName() {
+        if (this.nameLast != null) {
+            if (this.nameTitle != null) {
+                return nameTitle + ". " + nameLast;
+
+            } else {
+                return nameLast;
+            }
+        } else {
+            return this.uname;
+        }
     }
 
     /**

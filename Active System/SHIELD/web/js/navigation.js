@@ -14,7 +14,7 @@ document.write(
                 <ul class="nav navbar-nav navbar-right" id="right-nav">\
                     <li>\
                         <a href="Logout">\
-                            <label id="global-username">_</label><span class="glyphicon glyphicon-user"></span> <label id="userlabel">Logout</label>\
+                            <label id="global-username" style="padding-right: 10px;">_</label><span class="glyphicon glyphicon-user"></span> <label id="userlabel">Logout</label>\
                         </a>\
                     </li>\
                 </ul>\

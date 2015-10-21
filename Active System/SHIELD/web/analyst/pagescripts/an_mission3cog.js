@@ -248,7 +248,7 @@ function saveCOG() {
         },
         success: function (response) {
             showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
-            window.location.assign("ANMission4TCOA");
+            setTimeout(window.location.assign("ANMission4TCOA"), 3000);
         }
     });
 

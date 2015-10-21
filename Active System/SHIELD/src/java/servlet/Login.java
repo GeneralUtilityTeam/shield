@@ -112,7 +112,7 @@ public class Login extends HttpServlet {
                 login = "good";
                 session.setAttribute("classID", user.getClassID());
                 session.setAttribute("userUname", user.getUname());
-                session.setAttribute("userFullName", user.getFullName());
+                session.setAttribute("userFullName", user.getNavName());
                 session.setAttribute("userID", user.getId());
             }
         }
