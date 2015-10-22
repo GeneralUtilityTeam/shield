@@ -25,7 +25,7 @@ public class MissionDAO {
     ShieldUtility su = new ShieldUtility();
 
     // <editor-fold defaultstate="collapsed" desc="----- MISSION">
-    public Mission GetMission(int missionID) { //Clear
+    public Mission GetMission(int missionID) { 
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
@@ -133,7 +133,7 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
-    } //Clear
+    } 
 
     public ArrayList<Mission> GetAllMissions() {
         try {
@@ -179,7 +179,7 @@ public class MissionDAO {
         }
 
         return null;
-    } //Clear
+    } 
 
     public ArrayList<Mission> GetAllOngoingMissionOfUser(int userID) {
         try {
@@ -262,7 +262,7 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
-    } //Clear
+    } 
 
     public int AdvanceMissionStatus(int missionID, int phase) {
         try {
@@ -287,7 +287,7 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
-    } //Clear
+    } 
 
     public boolean UpdateMission(int editorID, Mission mson) {
         try {
@@ -365,7 +365,7 @@ public class MissionDAO {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    } //Clear
+    } 
 
     public int ResetMission(int missionID, int newphase) {
         try {

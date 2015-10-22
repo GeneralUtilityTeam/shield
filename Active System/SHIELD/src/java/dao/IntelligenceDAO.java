@@ -308,6 +308,7 @@ public class IntelligenceDAO {
                     pstmt.setString(2, s);
                     pstmt.execute();
                 }
+                return excerptID;
             }
         } catch (SQLException ex) {
             Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -398,6 +399,55 @@ public class IntelligenceDAO {
         return null;
     } 
 
+    public boolean UpdateExcerpt(int editorID, Excerpt excr){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_excerpt`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            
+            Area area = excr.getArea();
+            pstmt.setInt(1, editorID);
+            pstmt.setInt(2, excr.getId());
+            pstmt.setString(3, excr.getText());
+            pstmt.setString(4, area.getLevel8());
+            pstmt.setString(5, area.getLevel7());
+            pstmt.setString(6, area.getLevel6());
+            pstmt.setString(7, area.getLevel5());
+            pstmt.setString(8, area.getLevel4());
+            pstmt.setString(9, area.getLevel3());
+            pstmt.setString(10, area.getLevel2());
+            pstmt.setString(11, area.getLevel1());
+            pstmt.setDouble(12, area.getLat());
+            pstmt.setDouble(13, area.getLng());
+
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return false;
+            } else {
+                pstmt = cn.prepareStatement("CALL `shield`.`unlink_excerpt_tags`(?);");
+                pstmt.setInt(1, excr.getId());
+                pstmt.execute();
+                ArrayList<String> tagList = excr.getTagList();
+                pstmt = cn.prepareStatement("CALL `shield`.`link_excerpt_tag`(?, ?);");
+                pstmt.setInt(1, excr.getId());
+                for (String s : tagList) {
+                    pstmt.setString(2, s);
+                    pstmt.execute();
+                }
+                cn.close();
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    } 
+    
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="----- EENTITY">\
     public ArrayList<EEntity> GetAllEEntityOfMission(int missionID) {

@@ -197,3 +197,52 @@ function saveExcerpt() {
         });
     }
 }
+
+function updateExcerpt(){
+    var proceed = true;
+    var text = document.getElementById("update-excerpt-text").value;
+    var tagList = $('#update-excerpt-tags').tagsinput('items');
+    if (checkIfEmpty(text)) {
+        showAndDismissAlert("danger", "Please Input <strong>Excerpt Text.</strong>");
+        proceed = false;
+    }
+    if (area == null) {
+        showAndDismissAlert("danger", "Please Locate an <strong>Area.</strong>");
+        proceed = false;
+    }
+    if (tagList.length == 0) {
+        showAndDismissAlert("danger", "Please Enter <strong>Tags.</strong>");
+        proceed = false;
+    }
+    if (proceed) {
+        var categoryID = document.getElementById("update-excerpt-category").value;
+
+        $.ajax({
+            type: "GET",
+            url: "UpdateExcerpt",
+            data: {
+                categoryID: categoryID,
+                text: text,
+                tagList: toJSON(tagList),
+                level8: area.level8,
+                level7: area.level7,
+                level6: area.level6,
+                level5: area.level5,
+                level4: area.level4,
+                level3: area.level3,
+                level2: area.level2,
+                level1: area.level1,
+                lat: latLng.lat(),
+                lng: latLng.lng()
+            },
+            success: function (response) {
+                $('#addExcerpt').modal('hide');
+                document.getElementById("input-excerpt-text").value = "";
+                $('#input-excerpt-tags').tagsinput('removeAll');
+
+                showAndDismissAlert("success", "<strong>New Excerpt</strong> has been <strong>added.</strong>");
+                excrTable.ajax.reload();
+            }
+        });
+    }
+}
