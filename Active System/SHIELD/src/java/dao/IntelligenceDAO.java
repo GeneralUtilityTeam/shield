@@ -404,17 +404,18 @@ public class IntelligenceDAO {
                             Area area2 = new Area();
 
                             excr.setId(rs2.getInt(1));
-                            excr.setText(rs2.getString(2));
-                            area2.setLevel8(rs2.getString(3));
-                            area2.setLevel7(rs2.getString(4));
-                            area2.setLevel6(rs2.getString(5));
-                            area2.setLevel5(rs2.getString(6));
-                            area2.setLevel4(rs2.getString(7));
-                            area2.setLevel3(rs2.getString(8));
-                            area2.setLevel2(rs2.getString(9));
-                            area2.setLevel1(rs2.getString(10));
-                            area2.setLat(rs2.getDouble(11));
-                            area2.setLng(rs2.getDouble(12));
+                            excr.setCategoryID(rs2.getInt(2));
+                            excr.setText(rs2.getString(3));
+                            area2.setLevel8(rs2.getString(4));
+                            area2.setLevel7(rs2.getString(5));
+                            area2.setLevel6(rs2.getString(6));
+                            area2.setLevel5(rs2.getString(7));
+                            area2.setLevel4(rs2.getString(8));
+                            area2.setLevel3(rs2.getString(9));
+                            area2.setLevel2(rs2.getString(10));
+                            area2.setLevel1(rs2.getString(11));
+                            area2.setLat(rs2.getDouble(12));
+                            area2.setLng(rs2.getDouble(13));
 
                             excr.setEentityEnabled(true);
 
