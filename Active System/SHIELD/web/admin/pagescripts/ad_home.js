@@ -111,7 +111,9 @@ function addUser() {
                 nameLast: nameLast
             },
             success: function (response) {
-                showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
+                $('#addUser').modal('hide');
+                showAndDismissAlert("success", "<strong>User</strong> have been <strong>created.</strong>");
+                userTable.ajax.reload();
             }
         });
     }

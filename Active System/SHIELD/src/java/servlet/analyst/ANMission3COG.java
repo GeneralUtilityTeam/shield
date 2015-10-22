@@ -30,9 +30,18 @@ public class ANMission3COG extends FatherServlet {
     protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        MissionDAO msonDAO = new MissionDAO();
         HttpSession session = request.getSession();
-        String missionIDString = session.getAttribute("missionID").toString();
+        String missionIDString;
+
+        if (session.getAttribute("missionID") == null) {
+            request.setAttribute("destination", "ANHome");
+            ServletContext servcont = getServletContext();
+            RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
+            dispatch.forward(request, response);
+        }
+        missionIDString = session.getAttribute("missionID").toString();
+        MissionDAO msonDAO = new MissionDAO();
+
         int missionID = Integer.parseInt(missionIDString);
         COG cog = msonDAO.GetCOGOfMission(missionID);
         //TESTING

@@ -27,33 +27,41 @@ import servlet.father.FatherServlet;
  */
 public class ANMission1MD extends FatherServlet {
 
-     protected void servletAction(HttpServletRequest request, HttpServletResponse response)
+    protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
+
         HttpSession session = request.getSession();
         String missionIDString = request.getParameter("id");
-         
-        if(missionIDString == null || missionIDString == "")
+
+        if (missionIDString == null || missionIDString == "") {
+            if (session.getAttribute("missionID") == null) {
+                request.setAttribute("destination", "ANHome");
+                ServletContext servcont = getServletContext();
+                RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
+                dispatch.forward(request, response);
+            }
             missionIDString = session.getAttribute("missionID").toString();
+        }
+        session.removeAttribute("missionID");
         int missionID = Integer.parseInt(missionIDString);
         MissionDAO msonDAO = new MissionDAO();
         Mission mson = msonDAO.GetMission(missionID);
         String msonJSOB = new JSONObject(mson).toString();
         request.setAttribute("msonJSOB", msonJSOB);
-        
+
         UserDAO userDAO = new UserDAO();
         String analystName = userDAO.GetFullName(mson.getUserID());
         session.setAttribute("missionID", missionID);
         session.setAttribute("missionTitle", mson.getTitle());
         session.setAttribute("missionStatus", msonDAO.GetMissionStatus(missionID));
         session.setAttribute("analystName", analystName);
-        
-        
+
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission1md.jsp");
         dispatch.forward(request, response);
 
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -92,6 +100,5 @@ public class ANMission1MD extends FatherServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

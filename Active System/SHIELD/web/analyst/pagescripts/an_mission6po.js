@@ -1,7 +1,9 @@
 var eentityCR;
 var crArr = [];
 
+
 $(document).ready(function () {
+    geocoder = new google.maps.Geocoder();
     $.ajax({
         type: "GET",
         url: "GetCROfMission",

@@ -28,10 +28,18 @@ public class ANMission4TCOA extends FatherServlet {
 
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String missionIDString;
+
+        if (session.getAttribute("missionID") == null) {
+            request.setAttribute("destination", "ANHome");
+            ServletContext servcont = getServletContext();
+            RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
+            dispatch.forward(request, response);
+        }
+        missionIDString = session.getAttribute("missionID").toString();
         
         MissionDAO msonDAO = new MissionDAO();
-        HttpSession session = request.getSession();
-        String missionIDString = session.getAttribute("missionID").toString();
         int missionID = Integer.parseInt(missionIDString);                              
         Mission mson = msonDAO.GetMission(missionID);
  

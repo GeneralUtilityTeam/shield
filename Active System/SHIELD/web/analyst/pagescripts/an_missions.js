@@ -1,4 +1,6 @@
 var geocoder;
+var area;
+var latLng;
 
 function initialize() {
     document.getElementById("global-username").innerHTML = userFullName + " ";
@@ -7,6 +9,7 @@ function initialize() {
 }
 //Data Table Function
 $(document).ready(function () {
+    geocoder = new google.maps.Geocoder();
     var table = $('#mission-table').DataTable({
         "ajax": {
             "url": "GetAllMissions",
@@ -115,6 +118,7 @@ function printReport(event, id) {
                 data: {
                     missionID: id
                 },
+                async: false,
                 success: function (responseJSON) {
                     var poArr = responseJSON;
                     var empty = true;
@@ -312,7 +316,6 @@ function printReport(event, id) {
                             success: function (responseJSON) {
 
                                 var ccArr = responseJSON;
-                                console.log(ccArr);
 
                                 var tcoaLabel = document.createElement("label");
                                 tcoaLabel.className = "supporting-label";
@@ -342,14 +345,14 @@ function printReport(event, id) {
                                     ccToTd.innerHTML = "<b>To: </b>" + ccArr[y].dateTo;
                                     ccToTr.appendChild(ccToTd);
 
-                                    var latlngString = ccArr[y].lat.toString() + ", " + ccArr[y].lng.toString();
-                                    var area = geocodeResultStringPrint(latlngString);
                                     var ccLocationTr = document.createElement("tr");
                                     var ccLocationTd = document.createElement("td");
                                     ccLocationTd.className = "spo";
-                                    ccLocationTd.innerHTML = "<b>Location: </b>" + area;
+                                    ccLocationTd.innerHTML = "<b>Location: </b>"+ ccArr[y].address;
                                     ccLocationTr.appendChild(ccLocationTd);
 
+
+                                    
                                     ccTable.appendChild(ccNameTr);
                                     ccTable.appendChild(ccFromTr);
                                     ccTable.appendChild(ccToTr);
@@ -391,8 +394,14 @@ function geocodeResultStringPrint(str) { // Takes String Address; Returns geocod
         }
     });
 }
-
-function geocodeSuccess(result) {
-    var area = generateAreaObject(result);
-    return generateFullAddress(area);
+function syncGeocoderString(latLngStr, ccAddressID) {
+    geocoder.geocode({
+        'address': latLngStr
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            document.getElementById(ccAddressID).innerHTML = generateFullAddress(generateAreaObject(results[0]));
+        } else {
+            return null;
+        }
+    });
 }

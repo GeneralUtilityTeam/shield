@@ -2,12 +2,12 @@
 // V 2.4.1 , Updated as of 10/9/15
 
 // -- STRING MANIUPLATION
-function toTitleCase(str){
+function toTitleCase(str) {
     return str.replace(/\w\S*/g, function (txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
-function breakString(str, breakAt){  //breaks a string at point 'breakAt' and inserts a \n
+function breakString(str, breakAt) {  //breaks a string at point 'breakAt' and inserts a \n
     var strArray = str.split(" ");
     var result = "";
     var temp = "";
@@ -17,7 +17,7 @@ function breakString(str, breakAt){  //breaks a string at point 'breakAt' and in
 
         temp += strArray[x] + " ";
         if (temp.length > breakAt) {
-            if(strArray[x+1] != strArray.length)
+            if (strArray[x + 1] != strArray.length)
                 temp += '\n';
             result += temp;
             temp = "";
@@ -25,16 +25,16 @@ function breakString(str, breakAt){  //breaks a string at point 'breakAt' and in
     }
     return result;
 }
-function isEqualRaw(str1, str2){
-    if(str1 == null || str2 == null)
+function isEqualRaw(str1, str2) {
+    if (str1 == null || str2 == null)
         return false;
-    else if(str1.toLowerCase().replace(' ', '-') == str2.toLowerCase().replace(' ', '-'))
+    else if (str1.toLowerCase().replace(' ', '-') == str2.toLowerCase().replace(' ', '-'))
         return true;
     else
         return false;
 }
 // -- UI DOM CONTROLS
-function clearTableRows(tableName){
+function clearTableRows(tableName) {
     table = document.getElementById(tableName);
     var rowCount = table.rows.length;
     for (var x = 1; x < rowCount; x++) {
@@ -159,8 +159,8 @@ function toJSON(obj) {  //converts and object into a JSON string
 }
 
 // -- GEOCODER; requires global var geocode and function geocodeSuccess(result)
-function initializeGeocoder(){
-    if(geocoder == null){
+function initializeGeocoder() {
+    if (geocoder == null) {
         geocoder = new google.maps.Geocoder();
     }
 }
@@ -176,11 +176,11 @@ function geocodeResultString(str) { // Takes String Address; Returns geocode res
     });
 }
 function geocodeResultLatLng(latLng) { // Runs a search based on a mouse click event
-	geocoder.geocode({
+    geocoder.geocode({
         latLng: latLng
     }, function (results) {
         if (results && results.length > 0) {
-			geocodeSuccess(results[0]);
+            geocodeSuccess(results[0]);
         } else {
             return null;
         }
@@ -188,48 +188,48 @@ function geocodeResultLatLng(latLng) { // Runs a search based on a mouse click e
 }
 function generateAreaObject(result) { //This method takes in the address_components of either a Marker or Searchbar and shortens it into a usable array
     var arr = result.address_components;
-    if(arr != null){
+    if (arr != null) {
         var area = new Object();
         area.latLng = result.geometry.location;
-		area.viewport = result.geometry.viewport;
-        arr.forEach(function (comp){
-			comp.types.forEach(function (type){
-				if(type != 'political'){
-					switch(type){
-						case 'street_number':
-							area.level8 = comp.long_name;
-							break;
-						case 'route':
-							area.level7 = comp.long_name;
-							break;
-						case 'neighborhood':
-							area.level6 = comp.long_name;
-							break;
-						case 'sublocality':
-							area.level5 = comp.long_name;
-							break;
-						case 'locality':
-							area.level4 = comp.long_name;
-							break;
-						case 'administrative_area_level_2':
-							area.level3 = comp.long_name;
-							break;
-						case 'administrative_area_level_1':
-							area.level2 = comp.long_name;
-							break;
-						case 'country':
-							area.level1 = comp.long_name;
-							break;
-					}
-				}
-			});
-            
+        area.viewport = result.geometry.viewport;
+        arr.forEach(function (comp) {
+            comp.types.forEach(function (type) {
+                if (type != 'political') {
+                    switch (type) {
+                        case 'street_number':
+                            area.level8 = comp.long_name;
+                            break;
+                        case 'route':
+                            area.level7 = comp.long_name;
+                            break;
+                        case 'neighborhood':
+                            area.level6 = comp.long_name;
+                            break;
+                        case 'sublocality':
+                            area.level5 = comp.long_name;
+                            break;
+                        case 'locality':
+                            area.level4 = comp.long_name;
+                            break;
+                        case 'administrative_area_level_2':
+                            area.level3 = comp.long_name;
+                            break;
+                        case 'administrative_area_level_1':
+                            area.level2 = comp.long_name;
+                            break;
+                        case 'country':
+                            area.level1 = comp.long_name;
+                            break;
+                    }
+                }
+            });
+
         });
         return area;
     }
     return null;
 }
-function generateFullAddress(area){ // Converts Address components of an area into a String that contains them 
+function generateFullAddress(area) { // Converts Address components of an area into a String that contains them 
     var level8 = (!checkIfEmpty(area.level8) ? area.level8 + ", " : "");
     var level7 = (!checkIfEmpty(area.level7) ? area.level7 + ", " : "");
     var level6 = (!checkIfEmpty(area.level6) ? area.level6 + ", " : "");
@@ -238,6 +238,6 @@ function generateFullAddress(area){ // Converts Address components of an area in
     var level3 = (!checkIfEmpty(area.level3) ? area.level3 + ", " : "");
     var level2 = (!checkIfEmpty(area.level2) ? area.level2 + ", " : "");
     var level1 = area.level1;
-	var result = level8 + level7 + level6 + level5 + level4 + level3 + level2 + level1;
+    var result = level8 + level7 + level6 + level5 + level4 + level3 + level2 + level1;
     return result;
 }

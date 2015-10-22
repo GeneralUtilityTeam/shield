@@ -273,4 +273,37 @@ public class UserDAO {
         }
         return -1;
     } //Clear
+
+    public User GetUser(int userID){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_user`(?);");
+            pstmt.setInt(1, userID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                User user = new User();
+                
+                user.setId(userID);
+                user.setClassID(rs.getInt(2));
+                user.setUname(rs.getString(3));
+                user.setNameTitle(rs.getString(4));
+                user.setNameFirst(rs.getString(5));
+                user.setNameOther(rs.getString(6));
+                user.setNameLast(rs.getString(7));
+
+                cn.close();
+                return user;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

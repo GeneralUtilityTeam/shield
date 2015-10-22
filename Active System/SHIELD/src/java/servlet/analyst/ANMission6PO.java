@@ -25,6 +25,17 @@ public class ANMission6PO extends FatherServlet {
      protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+         HttpSession session = request.getSession();
+        String missionIDString;
+
+        if (session.getAttribute("missionID") == null) {
+            request.setAttribute("destination", "ANHome");
+            ServletContext servcont = getServletContext();
+            RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
+            dispatch.forward(request, response);
+        }
+        missionIDString = session.getAttribute("missionID").toString();
+        
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission6po.jsp");
         dispatch.forward(request, response);

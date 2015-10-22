@@ -560,7 +560,7 @@ public class IntelligenceDAO {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_cc`(?, ?, ?, ?, ?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_cc`(?, ?, ?, ?, ?, ?);");
 
             for (EEntity e : ccList) {
                 pstmt.setInt(1, e.getId());
@@ -568,6 +568,7 @@ public class IntelligenceDAO {
                 pstmt.setDate(3, new java.sql.Date(e.getDateTo().getTime()));
                 pstmt.setDouble(4, e.getLat());
                 pstmt.setDouble(5, e.getLng());
+                pstmt.setString(6, e.getAddress());
                 pstmt.executeUpdate();
             }
 
@@ -779,6 +780,7 @@ public class IntelligenceDAO {
                     cc.setDateTo(rs.getDate(4));
                     cc.setLat(rs.getDouble(5));
                     cc.setLng(rs.getDouble(6));
+                    cc.setAddress(rs.getString(7));
 
                     ccList.add(cc);
                 } while (rs.next());

@@ -24,6 +24,7 @@ public class EEntity {
     private Date dateTo;
     private double lat;
     private double lng;
+    private String address;
     
     //CR properties
     private PsyopObjective po;
@@ -323,5 +324,19 @@ public class EEntity {
      */
     public void setPoText(String poText) {
         this.poText = poText;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

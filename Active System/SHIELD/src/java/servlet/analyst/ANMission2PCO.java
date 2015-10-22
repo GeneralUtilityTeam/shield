@@ -29,13 +29,23 @@ public class ANMission2PCO extends FatherServlet {
     protected void servletAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        MissionDAO msonDAO = new MissionDAO();
         HttpSession session = request.getSession();
-        String missionIDString = session.getAttribute("missionID").toString();
-        int missionID = Integer.parseInt(missionIDString);                              
+        String missionIDString;
+
+        if (session.getAttribute("missionID") == null) {
+            request.setAttribute("destination", "ANHome");
+            ServletContext servcont = getServletContext();
+            RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
+            dispatch.forward(request, response);
+        }
+        missionIDString = session.getAttribute("missionID").toString();
+
+        MissionDAO msonDAO = new MissionDAO();
+
+        int missionID = Integer.parseInt(missionIDString);
         Mission mson = msonDAO.GetMission(missionID);
         mson.generateFullKeywordList();
-        ArrayList keywordList = mson.getKeywordList();        
+        ArrayList keywordList = mson.getKeywordList();
         JSONArray keywordJArr = new JSONArray(keywordList);
         request.setAttribute("keywordList", keywordJArr.toString());
         request.setAttribute("missionThreat", mson.getThreat());
@@ -49,7 +59,7 @@ public class ANMission2PCO extends FatherServlet {
         request.setAttribute("level1", mson.getArea().getLevel1());
         request.setAttribute("lat", mson.getArea().getLat());
         request.setAttribute("lng", mson.getArea().getLng());
-        
+
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission2pco.jsp");
         dispatch.forward(request, response);
@@ -57,7 +67,6 @@ public class ANMission2PCO extends FatherServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

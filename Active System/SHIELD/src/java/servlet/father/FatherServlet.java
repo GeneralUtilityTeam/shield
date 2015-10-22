@@ -7,6 +7,8 @@ package servlet.father;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,16 +38,16 @@ public abstract class FatherServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 String login = (String) session.getAttribute("login");
                 //FIX ME
-//            if (login != null) {
+            if (login != null) {
                 servletAction(request, response);
-//            } else {
-//
-//                request.setAttribute("message", "Please login first");
-//
-//                ServletContext servcont = getServletContext();
-//                RequestDispatcher dispatch = servcont.getRequestDispatcher("/index.jsp");
-//                dispatch.forward(request, response);
-//            }
+                } else {
+
+                    session.setAttribute("message", "Please login first");
+                    request.setAttribute("destination", "index.jsp");
+                    ServletContext servcont = getServletContext();
+                    RequestDispatcher dispatch = servcont.getRequestDispatcher("/message.jsp");
+                    dispatch.forward(request, response);
+                }
 
             } finally {
                 out.close();

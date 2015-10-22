@@ -68,7 +68,7 @@
                         Mission Status
                     </a>
                 </li>
-                <li><a data-toggle="modal" data-target="#beginMission">Begin New Mission</a></li>
+                <li><a data-toggle="modal" onclick="initializeMap()">Begin New Mission</a></li>
             </ul>
             <div id="content-shield" style="border-top: none; height: 82vh;">
                 <div id="myTabContent" class="tab-content">

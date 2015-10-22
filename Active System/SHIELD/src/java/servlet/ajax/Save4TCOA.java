@@ -87,6 +87,7 @@ public class Save4TCOA extends HttpServlet {
             cc.setLng(jsob.getDouble("lng"));
             String dateFromStr = jsob.getString("from");
             String dateToStr = jsob.getString("to");
+            cc.setAddress(jsob.getString("address"));
             Date dateFrom = null;
             Date dateTo = null;
             try {

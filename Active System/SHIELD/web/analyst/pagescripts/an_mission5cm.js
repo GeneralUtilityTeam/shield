@@ -293,27 +293,27 @@ function saveCM() {
     var proceed = true;
     for (var x = 0; x < eentityCR.length; x++) {
         for (var y = 0; y < eentityCR[x].cvList.length; y++) {
-            if (eentityCR[x].cvList[y].crit == 0) {
+            if ($('#' + eentityCR[x].id + 'crit' + eentityCR[x].cvList[y].id).val() == "0") {
                 proceed = false;
                 showAndDismissAlert("danger", "Please input<strong> Criticality on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if (eentityCR[x].cvList[y].acce == 0) {
+            if ($('#' + eentityCR[x].id + 'acce' + eentityCR[x].cvList[y].id).val() == "0") {
                 proceed = false;
                 showAndDismissAlert("danger", "Please input<strong> Accessibility on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if (eentityCR[x].cvList[y].recu == 0) {
+            if ($('#' + eentityCR[x].id + 'recu' + eentityCR[x].cvList[y].id).val() == "0") {
                 proceed = false;
                 showAndDismissAlert("danger", "Please input<strong> Recuperability on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if (eentityCR[x].cvList[y].vuln == 0) {
+            if ($('#' + eentityCR[x].id + 'vuln' + eentityCR[x].cvList[y].id).val() == "0") {
                 proceed = false;
                 showAndDismissAlert("danger", "Please input<strong> Vulnerability on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if (eentityCR[x].cvList[y].effe == 0) {
+            if ($('#' + eentityCR[x].id + 'effe' + eentityCR[x].cvList[y].id).val() == "0") {
                 proceed = false;
                 showAndDismissAlert("danger", "Please input<strong> Effect on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if (eentityCR[x].cvList[y].reco == 0) {
+            if ($('#' + eentityCR[x].id + 'reco' + eentityCR[x].cvList[y].id).val() == "0") {
                 proceed = false;
                 showAndDismissAlert("danger", "Please input<strong> Recognizability on " + eentityCR[x].cvList[y].name + ". </strong>");
             }

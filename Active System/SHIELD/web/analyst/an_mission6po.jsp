@@ -33,6 +33,9 @@
         <!--Dropdown Checkbox-->
         <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
         <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
+        
+        <!--Map Script-->
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
 
         <script>
             var missionStatus = <%=session.getAttribute("missionStatus")%>;

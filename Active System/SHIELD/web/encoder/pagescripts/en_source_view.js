@@ -29,9 +29,11 @@ function initialize() {
         google.maps.event.addListener(map, 'click', function (event) {
             latLng = event.latLng;
             switchString = false;
+            positionMarker(latLng);
             geocodeResultLatLng(latLng);
         });
     }
+    initializeGeocoder();
 
     var dropdown = document.getElementById("input-excerpt-category");
     ctgyJSON.forEach(function (conf) {
@@ -74,7 +76,7 @@ function addressSearch() {
     geocodeResultString(address);
 }
 
-function positionMarker() {
+function positionMarker(latLng) {
     if (marker == null) {
         marker = new google.maps.Marker({
             map: map,
@@ -91,11 +93,18 @@ function geocodeSuccess(result) { // This function is specific to this page
     area = generateAreaObject(result);
     if (switchString) {
         latLng = new google.maps.LatLng(area.latLng.lat(), area.latLng.lng());
-        positionMarker();
+        positionMarker(latLng);
     }
     //set the address bard to the result
     var stringed = generateFullAddress(area);
     document.getElementById('address').value = stringed; //UP TO HERE
+    map.setCenter(new google.maps.LatLng(area.latLng.lat(), area.latLng.lng()));
+}
+
+function initializeMap() {
+    $("#addExcerpt").modal().on("shown.bs.modal", function () {
+        google.maps.event.trigger(map, 'resize');
+    });
 }
 
 function viewExcerpt(id) {

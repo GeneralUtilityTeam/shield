@@ -505,7 +505,8 @@ function saveTCOA() {
             entityCC[y].to = document.getElementById("to" + y).value;
             entityCC[y].lat = entityMarker[y].position.lat();
             entityCC[y].lng = entityMarker[y].position.lng();
-            var entityCCObj = {id: entityCC[y].id, from: entityCC[y].from, to: entityCC[y].to, lat: entityCC[y].lat, lng: entityCC[y].lng};
+            var address = document.getElementById("at" + y).value;
+            var entityCCObj = {id: entityCC[y].id, from: entityCC[y].from, to: entityCC[y].to, lat: entityCC[y].lat, lng: entityCC[y].lng,  address: address};
             entityCCArr.push(entityCCObj);
         }
         
