@@ -130,7 +130,6 @@ function viewUser(data) {
 }
 var activeID;
 function updateUser() {
-    console.log(activeID);
     var uname = document.getElementById("view-username").value;
     var nameTitle = document.getElementById("view-name-title").value;
     var nameFirst = document.getElementById("view-name-first").value;

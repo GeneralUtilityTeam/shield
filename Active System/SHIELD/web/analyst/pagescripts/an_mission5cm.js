@@ -24,7 +24,6 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entityCC = responseJSON;
-            console.log(entityCC);
             initializeGeocoder();
             loadSideBar();
         }

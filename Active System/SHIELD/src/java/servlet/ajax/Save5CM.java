@@ -93,8 +93,6 @@ public class Save5CM extends HttpServlet {
 
         if (success) {
             int missionStatus = msonDAO.AdvanceMissionStatus(missionID, 5);
-            System.out.println("PCO Mission ID: " + missionID);
-            System.out.println("PCO Mission Status: " + missionStatus);
             if (missionStatus != 0) {
                 session.setAttribute("missionStatus", missionStatus);
             }

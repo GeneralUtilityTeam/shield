@@ -29,8 +29,6 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entity = responseJSON;
-            console.log(responseJSON);
-            console.log(entity);
             initialize();
         }
     });
@@ -521,7 +519,6 @@ function saveEntity() {
         selectedMarker = new Array();
         createSearchMarker();
         loadEntity();
-        console.log(entity);
         $('#entityModal').modal('hide');
         activateRemoveBtn(entity);
     }
@@ -758,7 +755,6 @@ function loadStrengthSlider() {
         $('#strengthRangeInput').change(function () {
             $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
             var strengthRange = $('#strengthRangeInput').val();
-            console.log(strengthRange);
             if (strengthRange == 1)
                 filterStrength = 40;
             else if (strengthRange == 2)
@@ -924,9 +920,6 @@ function applyFilter() {
                     visible = true;
 
             }
-            else {
-                console.log("reject");
-            }
             excrMarker = getMarker(excr.id); //This method may or may not exist yet
             if (visible) {
                 mc.addMarker(excrMarker);
@@ -939,7 +932,6 @@ function applyFilter() {
 }
 
 function activateRemoveBtn(entityArr) {
-    console.log(entityArr);
     for (var x = 0; x < entityArr.length; x++) {
         var entity = entityArr[x];
         var btn = document.getElementById("remove" + entity.id);

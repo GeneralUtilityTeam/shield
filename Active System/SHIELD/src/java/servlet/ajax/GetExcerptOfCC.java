@@ -70,10 +70,8 @@ public class GetExcerptOfCC extends HttpServlet {
         
         ArrayList<Integer> eentIDList = msonDAO.GetEEntityIDsOfCC(ccID);
         ArrayList<Excerpt> excrList;
-        System.out.println("GetExcerptOfCC> eentIDList size: " + eentIDList.size());
         
         for (Integer id :eentIDList) {
-            System.out.println(id);
             for (Excerpt excr : intlDAO.GetExcerptOfEEntity(id)) {
                 if (!returnList.contains(excr)) {
                     returnList.add(excr);

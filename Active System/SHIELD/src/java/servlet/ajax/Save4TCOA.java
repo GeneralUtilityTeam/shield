@@ -70,7 +70,6 @@ public class Save4TCOA extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("working");
         HttpSession session = request.getSession();
         int missionID = (int) session.getAttribute("missionID");
         String ccStr = request.getParameter("ccList");
@@ -120,7 +119,6 @@ public class Save4TCOA extends HttpServlet {
                 session.setAttribute("missionStatus", missionStatus);
             }
         }
-        System.out.println("success");
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");

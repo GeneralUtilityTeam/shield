@@ -91,7 +91,7 @@ function printReport(event, id) {
         data: {
             id: id
         },
-        async : false,
+        async: false,
         success: function (responseJSON) {
             missionDetails = responseJSON;
             document.getElementById("mission-title").innerHTML = 'Psychological Operations Plan "' + missionDetails.title + '"';
@@ -133,12 +133,9 @@ function printReport(event, id) {
                         crObj = {id: entity.id, name: entity.name, po: entity.poText, cvList: eentityCR[x].cvList, spoList: entity.spoList};
                         crArr.push(crObj);
                     }
-                    console.log(crArr);
 
                     var content = document.getElementById("report-content");
                     content.innerHTML = "";
-
-
 
                     for (var x = 0; x < crArr.length; x++) {
 
