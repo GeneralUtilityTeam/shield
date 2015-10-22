@@ -1,3 +1,4 @@
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -47,8 +48,8 @@
 
                     <div class="tab-pane fade in active" id="shield-users">
 
-                        <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser" style="margin-right: 1vw;"><span class="glyphicon glyphicon-plus"></span> Add New User</button>
-
+                        <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser" style="margin-right: 1vw; margin-bottom: 1vh;"><span class="glyphicon glyphicon-plus"></span> Add New User</button>
+                        
                         <table id="user-table" class="table table-bordered table-hover list-table">
                             <thead style="background-color: #D3D3D3;">
                                 <tr>
@@ -167,9 +168,9 @@
             </div><!-- /.modal -->
         </div>
 
-        <!-- Edit User Modal -->
-        <div class="modal fade" id="updateUser" tabindex="-1" role="dialog" 
-             aria-labelledby="updateUserlabel" aria-hidden="true">
+        <!-- View User Modal -->
+        <div class="modal fade" id="viewUser" tabindex="-1" role="dialog" 
+             aria-labelledby="addUserlabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -178,59 +179,66 @@
                             &times;
                         </button>
                         <h4 class="modal-title" id="myModalLabel">
-                            Update User
+                            View User
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <table id="begin-mission-table" style="width: 100%;">
+                        <table id="user-table" style="width: 100%;">
                             <tr>
                                 <td>
-                                    Username: <input type="text" name="edit-username" class="form-box" placeholder="Enter Username"required>
+                                    User Type: <select id="view-class" class="form-box" placeholder="Enter Username"required>
+                                        <option value="2">Analyst</option>
+                                        <option value="3">Encoder</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Old Password: <input type="password" name="edit-old-password" class="form-box" placeholder="Enter Old Password"required>
+                                    Username: <input id="view-username" type="text" name="view-username" class="form-box" placeholder="Enter Username"required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    New Password: <input type="password" name="edit-new-password" class="form-box" placeholder="Enter New Password"required>
+                                    Old Password: <input id="view-old-password" type="password" name="view-password" class="form-box" placeholder="Enter Password"required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Name Title: <input type="text" name="edit-name-title" class="form-box" placeholder="Enter Name Title (e.g. Mr, Captain, Major)" required>
+                                    New Password: <input id="view-new-password" type="password" name="view-password" class="form-box" placeholder="Enter Password"required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    First Name: <input type="text" name="edit-name-first" class="form-box" placeholder="Enter First Name" required>
+                                    Name Title: <input id="view-name-title" type="text" name="view-name-title" class="form-box" placeholder="Enter Name Title (e.g. Mr, Captain, Major)" required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Other Name: <input type="text" name="edit-name-other" class="form-box" placeholder="Enter Other Name (Middle Initial/Middle Name)">
+                                    First Name: <input id="view-name-first" type="text" name="view-name-first" class="form-box" placeholder="Enter First Name" required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Last Name: <input type="text" name="edit-name-last" class="form-box" placeholder="Enter Last Name" required>
+                                    Other Name: <input id="view-name-other" type="text" name="view-name-other" class="form-box" placeholder="Enter Other Name (Middle Initial/Middle Name)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Last Name: <input id="view-name-last" type="text" name="view-name-last" class="form-box" placeholder="Enter Last Name" required>
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="updateUser()" class="btn btn-success"><span class="glyphicon glyphicon-saved"> </span>
-                            Update User
+                        <button type="button" onclick="editUser()" class="btn btn-warning"><span class="glyphicon glyphicon-saved"> </span>
+                            Edit User
                         </button>
-                        <button type="button"  data-toggle="modal" data-target="#clearModal" class="btn btn-danger"><span class="glyphicon glyphicon-trash"> </span>
-                            Delete User
+                        <button type="button" onclick="deleteUser()" class="btn btn-danger"><span class="glyphicon glyphicon-trasj"> </span>
+                           Delete User
                         </button>
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Close
                         </button>
-
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->

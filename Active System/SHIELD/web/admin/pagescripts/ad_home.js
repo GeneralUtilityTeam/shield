@@ -4,7 +4,7 @@ var actionTable;
 function initialize() {
     document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert("success", "Welcome to <strong>SHIELD </strong>- Admin")
-    
+
     //Data Tables
     userTable = $('#user-table').DataTable({
         "ajax": {
@@ -19,9 +19,9 @@ function initialize() {
             {"data": "status"},
             {"data": "lastSeen"}
         ],
-        "columnDefs" : [
+        "columnDefs": [
             {
-                "render": function ( data, type, row ) {
+                "render": function (data, type, row) {
                     if (data == null)
                         return "";
                     else
@@ -34,8 +34,9 @@ function initialize() {
     $('#user-table tbody').on('click', 'tr', function () {
         var data = userTable.row(this).data();
         console.log(data);
+        viewUser(data);
     });
-    
+
     accessTable = $('#access-table').DataTable({
         "ajax": {
             "url": "GetAccessLog",
@@ -47,9 +48,9 @@ function initialize() {
             {"data": "entryClassDesc"},
             {"data": "date"}
         ],
-        "columnDefs" : [
+        "columnDefs": [
             {
-                "render": function ( data, type, row ) {
+                "render": function (data, type, row) {
                     if (data == null)
                         return "";
                     else
@@ -59,7 +60,7 @@ function initialize() {
             }
         ],
     });
-    
+
     actionTable = $('#action-table').DataTable({
         "ajax": {
             "url": "GetActionLog",
@@ -71,9 +72,9 @@ function initialize() {
             {"data": "entryDesc"},
             {"data": "date"}
         ],
-        "columnDefs" : [
+        "columnDefs": [
             {
-                "render": function ( data, type, row ) {
+                "render": function (data, type, row) {
                     if (data == null)
                         return "";
                     else
@@ -92,9 +93,9 @@ function addUser() {
     var nameFirst = document.getElementById("add-name-first").value;
     var nameOther = document.getElementById("add-name-other").value;
     var nameLast = document.getElementById("add-name-last").value;
-   
+
     if (classID === "" || uname === "" ||
-            pword === "" ) {
+            pword === "") {
         showAndDismissAlert("danger", "<strong>Add User failed.</strong> Please complete the form.");
     }
     else {
@@ -105,22 +106,40 @@ function addUser() {
                 classID: classID,
                 uname: uname,
                 pword: pword,
-                nameTitle: nameTitle.replace(".", ""),
+                nameTitle: nameTitle,
                 nameFirst: nameFirst,
                 nameOther: nameOther,
                 nameLast: nameLast
             },
             success: function (response) {
-                $('#addUser').modal('hide');
-                showAndDismissAlert("success", "<strong>User</strong> have been <strong>created.</strong>");
-                userTable.ajax.reload();
+                showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
             }
         });
     }
 }
+
+function viewUser(id) {
+    $('#viewExcerpt').modal('show');
+    $.ajax({
+        type: "GET",
+        url: "GetUser",
+        data: {
+            id: id
+        },
+        success: function (responseJson) {
+            var user = responseJson;
+            document.getElementById("edit-class").text = data.classDesc;
+            document.getElementById("edit-username").value = data.uname;
+            document.getElementById("edit-name-title").value = data.title;
+            document.getElementById("edit-name-first").value = data.fname;
+            document.getElementById("edit-name-other").value = data.oname;
+            document.getElementById("edit-name-last").value = data.lname;
+        }
+    });
+}
 function updateUser() {
-    
+
 }
 function deleteUser() {
-    
+
 }
