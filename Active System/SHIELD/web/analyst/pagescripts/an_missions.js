@@ -103,6 +103,8 @@ function printReport(event, id) {
 
     var eentityCR = [];
     var crArr = [];
+    var divElements;
+    var oldPage;
     $.ajax({
         type: "GET",
         url: "GetCROfMission",
@@ -133,6 +135,8 @@ function printReport(event, id) {
 
                     var content = document.getElementById("report-content");
                     content.innerHTML = "";
+
+
 
                     for (var x = 0; x < crArr.length; x++) {
 
@@ -367,8 +371,8 @@ function printReport(event, id) {
                         });
                     }
 
-                    var divElements = document.getElementById("container").innerHTML;
-                    var oldPage = document.body.innerHTML;
+                    divElements = document.getElementById("container").innerHTML;
+                    oldPage = document.body.innerHTML;
 
                     //Reset the page's HTML with div's HTML only
                 }

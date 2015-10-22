@@ -293,29 +293,36 @@ function saveCM() {
     var proceed = true;
     for (var x = 0; x < eentityCR.length; x++) {
         for (var y = 0; y < eentityCR[x].cvList.length; y++) {
-            if ($('#' + eentityCR[x].id + 'crit' + eentityCR[x].cvList[y].id).val() == "0") {
+            var crit = parseInt($('#' + eentityCR[x].id + 'crit' + eentityCR[x].cvList[y].id).val());
+            var acce = parseInt($('#' + eentityCR[x].id + 'acce' + eentityCR[x].cvList[y].id).val());
+            var recu = parseInt($('#' + eentityCR[x].id + 'recu' + eentityCR[x].cvList[y].id).val());
+            var vuln = parseInt($('#' + eentityCR[x].id + 'vuln' + eentityCR[x].cvList[y].id).val());
+            var effe = parseInt($('#' + eentityCR[x].id + 'effe' + eentityCR[x].cvList[y].id).val());
+            var reco = parseInt($('#' + eentityCR[x].id + 'reco' + eentityCR[x].cvList[y].id).val());
+
+            if (crit == 0 || crit > 10 || $('#' + eentityCR[x].id + 'crit' + eentityCR[x].cvList[y].id).val() == "") {
                 proceed = false;
-                showAndDismissAlert("danger", "Please input<strong> Criticality on " + eentityCR[x].cvList[y].name + ". </strong>");
+                showAndDismissAlert("danger", "Invalid<strong> Criticality on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if ($('#' + eentityCR[x].id + 'acce' + eentityCR[x].cvList[y].id).val() == "0") {
+            if (acce == 0 || acce > 10 || $('#' + eentityCR[x].id + 'acce' + eentityCR[x].cvList[y].id).val() == "") {
                 proceed = false;
-                showAndDismissAlert("danger", "Please input<strong> Accessibility on " + eentityCR[x].cvList[y].name + ". </strong>");
+                showAndDismissAlert("danger", "Invalid<strong> Accessibility on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if ($('#' + eentityCR[x].id + 'recu' + eentityCR[x].cvList[y].id).val() == "0") {
+            if (recu == 0 || recu > 10 || $('#' + eentityCR[x].id + 'recu' + eentityCR[x].cvList[y].id).val() == "") {
                 proceed = false;
-                showAndDismissAlert("danger", "Please input<strong> Recuperability on " + eentityCR[x].cvList[y].name + ". </strong>");
+                showAndDismissAlert("danger", "Invalid<strong> Recuperability on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if ($('#' + eentityCR[x].id + 'vuln' + eentityCR[x].cvList[y].id).val() == "0") {
+            if (vuln == 0 || vuln > 10 || $('#' + eentityCR[x].id + 'vuln' + eentityCR[x].cvList[y].id).val() == "") {
                 proceed = false;
-                showAndDismissAlert("danger", "Please input<strong> Vulnerability on " + eentityCR[x].cvList[y].name + ". </strong>");
+                showAndDismissAlert("danger", "Invalid<strong> Vulnerability on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if ($('#' + eentityCR[x].id + 'effe' + eentityCR[x].cvList[y].id).val() == "0") {
+            if (effe == 0 || effe > 10 || $('#' + eentityCR[x].id + 'effe' + eentityCR[x].cvList[y].id).val() == "") {
                 proceed = false;
-                showAndDismissAlert("danger", "Please input<strong> Effect on " + eentityCR[x].cvList[y].name + ". </strong>");
+                showAndDismissAlert("danger", "Invalid<strong> Effect on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
-            if ($('#' + eentityCR[x].id + 'reco' + eentityCR[x].cvList[y].id).val() == "0") {
+            if (reco == 0 || reco > 10 || $('#' + eentityCR[x].id + 'reco' + eentityCR[x].cvList[y].id).val() == "") {
                 proceed = false;
-                showAndDismissAlert("danger", "Please input<strong> Recognizability on " + eentityCR[x].cvList[y].name + ". </strong>");
+                showAndDismissAlert("danger", "Invalid<strong> Recognizability on " + eentityCR[x].cvList[y].name + ". </strong>");
             }
             if (proceed) {
                 eentityCR[x].cvList[y].crit = parseInt($('#' + eentityCR[x].id + 'crit' + eentityCR[x].cvList[y].id).val());

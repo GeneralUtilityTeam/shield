@@ -1,5 +1,6 @@
 var eentityCR;
 var crArr = [];
+var cog;
 
 
 $(document).ready(function () {
@@ -40,6 +41,36 @@ $(document).ready(function () {
         }
     });
 
+    $.ajax({
+        type: "GET",
+        url: "GetCCOfMission",
+        data: {
+            missionID: missionID
+        },
+        success: function (responseJSON) {
+            entityCC = responseJSON;
+            console.log(entityCC);
+            initializeGeocoder();
+
+            $.ajax({
+                type: "GET",
+                url: "GetEEntityOfMission",
+                data: {
+                    missionID: missionID
+
+                },
+                success: function (responseJSON) {
+                    var entity = responseJSON;
+                    for (var x = 0; x < entity.length; x++) {
+                        if (entity[x].classID == 2)
+                            cog = entity[x];
+                    }
+
+                    loadSideBar();
+                }
+            });
+        }
+    });
 
 });
 
@@ -278,6 +309,109 @@ function activateAddSPOBtn() {
         btn.setAttribute("onclick", "addSPO(" + entity.id + ")");
     }
 }
+
+function loadSideBar() {
+    var cogCollapse = document.getElementById("cog-sidebar");
+
+    var cogPanel = document.createElement("div");
+    cogPanel.className = "panel panel-default";
+    cogPanel.id = "panel" + id;
+
+    //Panel Header
+    var cogPanelHead = document.createElement("div");
+    cogPanelHead.className = "panel-heading";
+    cogPanelHead.id = "panelHead" + id;
+    cogPanelHead.setAttribute("data-toggle", "collapse");
+    cogPanelHead.setAttribute("data-parent", "#accordion");
+    cogPanelHead.setAttribute("href", "#collapse" + id);
+    cogPanelHead.innerHTML = "<h5>Center of Gravity: <b>" + toTitleCase(cog.name) + "</b></h5>";
+
+    //Panel Collapse
+    var cogPanelCollapse = document.createElement("div");
+    cogPanelCollapse.className = "panel-collapse collapse in";
+    cogPanelCollapse.id = "collapse" + id;
+
+    //Panel Body
+    var cogPanelBody = document.createElement("div");
+    cogPanelBody.className = "panel-body";
+    cogPanelBody.id = "panelBody" + x;
+    var table = document.createElement("table");
+    for (var y = 0; y < cog.excrList.length; y++) {
+        var trExcerpt = document.createElement("tr");
+        var tdExcerpt = document.createElement("td");
+        tdExcerpt.style.paddingBottom = "5px";
+        tdExcerpt.style.color = "#202020";
+        tdExcerpt.style.textAlign = "justify";
+        tdExcerpt.innerHTML = "<b>Excerpt " + cog.excrList[y].id + ":</b> " + cog.excrList[y].text;
+        trExcerpt.appendChild(tdExcerpt);
+        table.appendChild(trExcerpt);
+    }
+
+    cogPanelBody.appendChild(table);
+    cogPanelCollapse.appendChild(cogPanelBody);
+    cogPanel.appendChild(cogPanelHead);
+    cogPanel.appendChild(cogPanelCollapse);
+    cogCollapse.appendChild(cogPanel);
+
+    var collapse = document.getElementById("accordion-sidebar");
+
+    for (var x = 0; x < entityCC.length; x++) {
+        //Panel Element
+        var id = entityCC[x].id;
+        var panel = document.createElement("div");
+        panel.className = "panel panel-default";
+        panel.id = "panel" + id;
+
+        //Panel Header
+        var panelHead = document.createElement("div");
+        panelHead.className = "panel-heading";
+        panelHead.id = "panelHead" + id;
+        panelHead.setAttribute("data-toggle", "collapse");
+        panelHead.setAttribute("data-parent", "#accordion");
+        panelHead.setAttribute("href", "#collapse" + id);
+        panelHead.innerHTML = "<h5>Critical Capability " + (x + 1) + ": <b>" + toTitleCase(entityCC[x].name) + "</b></h5>";
+
+        //Panel Collapse
+        var panelCollapse = document.createElement("div");
+        panelCollapse.className = "panel-collapse collapse";
+        panelCollapse.id = "collapse" + id;
+
+        //Panel Body
+        var panelBody = document.createElement("div");
+        panelBody.className = "panel-body";
+        panelBody.id = "panelBody" + id;
+        panelBody.innerHTML = "<p> Threat may launch/use/deploy <b>" + toTitleCase(entityCC[x].name) + "</b></p>";
+        panelBody.innerHTML += " from: <input type='date' id='from" + x + "' class='form-box' style='width:83%;' value='" + entityCC[x].dateFrom + "' disabled><br> to: <input type='date' id='to" + x + "' class='form-box' style='width:90%; margin-top: 10px; padding-right:0;' value='" + entityCC[x].dateTo + "' disabled><br>";
+        var latlngString = entityCC[x].lat.toString() + ", " + entityCC[x].lng.toString();
+
+        panelBody.innerHTML += " at: <input type='text' id='at" + x + "' class='form-box' style='width:90%; margin-top: 10px; padding-right:0;' value=''><br>";
+        geocodeResultStringTCOA(latlngString, x);
+
+        panelCollapse.appendChild(panelBody);
+        panel.appendChild(panelHead);
+        panel.appendChild(panelCollapse);
+        collapse.appendChild(panel);
+
+    }
+}
+
+function geocodeResultStringTCOA(str, i) { // Takes String Address; Returns geocode results
+    geocoder.geocode({
+        'address': str
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            geocodeSuccess(results[0], i);
+        } else {
+            return null;
+        }
+    });
+}
+
+function geocodeSuccess(result, i) {
+    var area = generateAreaObject(result);
+    document.getElementById("at" + i).value = generateFullAddress(area);
+}
+
 
 function savePO() {
     var saveCR = [];

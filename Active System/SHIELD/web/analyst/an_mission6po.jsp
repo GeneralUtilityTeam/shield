@@ -33,7 +33,7 @@
         <!--Dropdown Checkbox-->
         <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
         <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
-        
+
         <!--Map Script-->
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
 
@@ -99,13 +99,49 @@
                         </div>
 
                         <div id="psyopsObj" style="width: 70%; margin-left: 15%;">
-                            
+
                         </div>
 
                     </div>
                 </div>
             </div>
         </div>
+
+        <!--Sliding Side Bar Menu-->
+        <div id="slidingmenu" style="width: 22vw;">
+            <h5 style="text-align: center;"><b>Center of Gravity</b></h5>
+            <div class="panel-group" id="cog-sidebar" style="margin: 10px 10px 10px 10px; ">
+
+            </div>
+            <h5 style="text-align: center;"><b>Threat Course of Action</b></h5>
+            <div class="panel-group" id="accordion-sidebar" style="margin: 10px 10px 10px 10px; ">
+
+            </div>
+        </div>
+
+        <script src="js/BootSideMenu.js"></script>
+
+        <script type="text/javascript">
+            $('#slidingmenu').BootSideMenu({side: "left"});
+        </script>
+        <script type="text/javascript">
+
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-36251023-1']);
+            _gaq.push(['_setDomainName', 'jqueryscript.net']);
+            _gaq.push(['_trackPageview']);
+
+            (function () {
+                var ga = document.createElement('script');
+                ga.type = 'text/javascript';
+                ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(ga, s);
+            })();
+
+        </script>
+        <!--/Sliding Side Bar Menu-->
 
         <!--Notification Alert-->
         <div class="alert-messages text-center">
