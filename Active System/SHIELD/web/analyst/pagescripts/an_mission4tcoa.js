@@ -521,11 +521,14 @@ function saveTCOA() {
             success: function (response) {
                 success = true;
                 showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");
-                window.location.assign("ANMission5CM");
+                setTimeout(window.location.assign("ANMission5CM"), 1000);
             }
         });
-        showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");
-        window.location.assign("ANMission5CM");
+        if (success == false) {
+            showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");
+            setTimeout(window.location.assign("ANMission5CM"), 1000);
+        }
+
     }
 
 }
