@@ -1,6 +1,6 @@
 function initialize() {
     document.getElementById("global-username").innerHTML = userFullName + " ";
-    
+
     buildNav(missionStatus, 1);
     if (msonJSOB.title != null)
         document.getElementById('title').value = msonJSOB.title;
@@ -68,13 +68,68 @@ function saveMD() {
     var adminAndLogisticsKeywordList = $('#admin-logistics-keyword').tagsinput('items');
     var commandAndSignalKeywordList = $('#command-signal-keyword').tagsinput('items');
 
+    var proceed = true;
     if (title === "" || threat === "" ||
             objective === "" || situation === "" || execution === "" ||
             adminAndLogistics === "" || commandAndSignal === "") {
         showAndDismissAlert("danger", "<strong>Save Mission Details failed.</strong> Please complete the form.");
+        proceed = false;
     }
-    else {
-        console.log(objectiveKeywordList);
+    if (missionStatus > 1) {
+        $('#resetModal').modal('show');
+        proceed = false;
+    }
+    if (proceed) {
+        $.ajax({
+            type: "GET",
+            url: "Save1MD",
+            data: {
+                id: msonJSOB.id,
+                title: title,
+                threat: threat,
+                objective: objective,
+                situation: situation,
+                execution: execution,
+                adminAndLogistics: adminAndLogistics,
+                commandAndSignal: commandAndSignal,
+                objectiveKeywordList: toJSON(objectiveKeywordList),
+                situationKeywordList: toJSON(situationKeywordList),
+                executionKeywordList: toJSON(executionKeywordList),
+                adminAndLogisticsKeywordList: toJSON(adminAndLogisticsKeywordList),
+                commandAndSignalKeywordList: toJSON(commandAndSignalKeywordList)
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
+                window.location.assign("ANMission2PCO");
+
+            }
+        });
+    }
+}
+
+function confirmSave() {
+    var title = document.getElementById("title").value;
+    var threat = document.getElementById("threat").value;
+    var objective = document.getElementById("objective").value;
+    var situation = document.getElementById("situation").value;
+    var execution = document.getElementById("execution").value;
+    var adminAndLogistics = document.getElementById("admin-logistics").value;
+    var commandAndSignal = document.getElementById("command-signal").value;
+
+    var objectiveKeywordList = $('#objective-keyword').tagsinput('items');
+    var situationKeywordList = $('#situation-keyword').tagsinput('items');
+    var executionKeywordList = $('#execution-keyword').tagsinput('items');
+    var adminAndLogisticsKeywordList = $('#admin-logistics-keyword').tagsinput('items');
+    var commandAndSignalKeywordList = $('#command-signal-keyword').tagsinput('items');
+
+    var proceed = true;
+    if (title === "" || threat === "" ||
+            objective === "" || situation === "" || execution === "" ||
+            adminAndLogistics === "" || commandAndSignal === "") {
+        showAndDismissAlert("danger", "<strong>Save Mission Details failed.</strong> Please complete the form.");
+        proceed = false;
+    }
+    if (proceed) {
         $.ajax({
             type: "GET",
             url: "Save1MD",

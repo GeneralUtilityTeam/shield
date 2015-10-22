@@ -199,6 +199,36 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Reset Modal -->
+        <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" 
+             aria-labelledby="resetModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Reset Mission Status
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        <label>Making changes in this phase will require that your mission data be reset on this current phase. Would you like to proceed? </label> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning"
+                                data-dismiss="modal" onclick="confirmSave()">Confirm
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
 
         <!--Notification Alert-->
         <div class="alert-messages text-center">

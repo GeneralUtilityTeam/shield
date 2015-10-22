@@ -183,6 +183,106 @@ function saveCOG() {
         }
     }
 
+
+    if (missionStatus > 3) {
+        $('#resetModal').modal('show');
+        proceed = false;
+    }
+
+    if (proceed) {
+
+        //get CR and CVs connected to it
+        var tempCc = nodes.get({
+            filter: function (items) {
+                return (items.group == 3);
+            }
+        });
+        var cc = [];
+        for (var x = 0; x < tempCc.length; x++) {
+            cc.push(tempCc[x].id);
+        }
+        var tempCr = nodes.get({
+            filter: function (items) {
+                return (items.group == 4);
+            }
+        });
+        var cr = [];
+        for (var x = 0; x < tempCr.length; x++) {
+            cr.push(tempCr[x].id);
+        }
+        var tempCv = nodes.get({
+            filter: function (items) {
+                return (items.group == 5);
+            }
+        });
+        var cv = [];
+        for (var x = 0; x < tempCv.length; x++) {
+            cv.push(tempCv[x].id);
+        }
+        var ccArr = [];
+        for (var x = 0; x < tempCc.length; x++) {
+            var ccConnected = network.getConnectedNodes(tempCc[x].id);
+            if (ccConnected != null) {
+                for (var y = 0; y < ccConnected.length; y++) {
+                    if (nodes.get(ccConnected[y]).group == 4) {
+                        var ccObject = {cc: tempCc[x].id, cr: ccConnected[y]};
+                        ccArr.push(ccObject);
+                    }
+                }
+            }
+        }
+        var crArr = [];
+        for (var x = 0; x < tempCr.length; x++) {
+            var crConnected = network.getConnectedNodes(tempCr[x].id);
+            if (crConnected != null) {
+                for (var y = 0; y < crConnected.length; y++) {
+                    if (nodes.get(crConnected[y]).group == 5) {
+                        var crObject = {cr: tempCr[x].id, cv: crConnected[y]};
+                        crArr.push(crObject);
+                    }
+                }
+            }
+        }
+        //Save Nodes and Edges
+        var saveNodes = nodes.get({
+            fields: ['id', 'label', 'group']
+        });
+        var saveEdges = edges.get();
+        var nodesJSON = JSON.stringify(saveNodes);
+        var edgesJSON = JSON.stringify(saveEdges);
+
+        $.ajax({
+            type: "GET",
+            url: "Save3COG",
+            data: {
+                nodesJSON: nodesJSON,
+                edgesJSON: edgesJSON,
+                cc: toJSON(cc),
+                cr: toJSON(cr),
+                cv: toJSON(cv),
+                crArr: toJSON(ccArr),
+                rvArr: toJSON(crArr) //list of cr object {id, name, class, cvarray}
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>Center of Gravity Analysis</strong> has been <strong>saved.</strong>");
+                setTimeout(window.location.assign("ANMission4TCOA"), 3000);
+            }
+        });
+    }
+}
+
+function confirmSave() {
+
+    var proceed = true;
+    for (var x = 0; x < entity.length; x++) {
+        var node = nodes.get(entity[x].id);
+        var connected = network.getConnectedNodes(node.id);
+        if (connected.length == 0) {
+            proceed = false;
+            showAndDismissAlert("danger", "Please connect <strong>" + node.label + "</strong> to other <strong>Entities.</strong>");
+        }
+    }
+
     if (proceed) {
 
         //get CR and CVs connected to it

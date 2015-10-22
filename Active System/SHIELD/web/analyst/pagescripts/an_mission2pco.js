@@ -674,11 +674,18 @@ function setMarkerColor(color) {
 }
 
 function savePCO() {
-    if (entity.length == 0)
+    var proceed = true;
+    if (entity.length == 0) {
         showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
-    else if (entity.length < 4)
+    }
+    if (entity.length < 4) {
         showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
-    else {
+    }
+    if (missionStatus > 2) {
+        $('#resetModal').modal('show');
+        proceed = false;
+    }
+    if (proceed) {
         for (var x = 0; x < entity.length; x++) {
             var entityObject;
             var entityExcerptId = [];
@@ -700,7 +707,38 @@ function savePCO() {
             }
         });
     }
+}
 
+function confirmSave() {
+    var proceed = true;
+    if (entity.length == 0) {
+        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
+    }
+    if (entity.length < 4) {
+        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
+    }
+    if (proceed) {
+        for (var x = 0; x < entity.length; x++) {
+            var entityObject;
+            var entityExcerptId = [];
+            for (var y = 0; y < entity[x].excrList.length; y++) {
+                entityExcerptId.push(entity[x].excrList[y].id);
+            }
+            entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId};
+            entityArr.push(entityObject);
+        }
+        $.ajax({
+            type: "GET",
+            url: "Save2PCO",
+            data: {
+                entityArr: toJSON(entityArr)
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
+                window.location.assign("ANMission3COG");
+            }
+        });
+    }
 }
 
 function loadStrengthSlider() {
