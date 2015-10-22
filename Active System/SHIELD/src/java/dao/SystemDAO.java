@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import db.DBConnector;
@@ -16,8 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Franco
+ * SHIELD Decision Support System v3.0.0 Data Access Object - System Controls
  */
 public class SystemDAO {
 
@@ -52,6 +46,7 @@ public class SystemDAO {
 
         return null;
     }
+
     public ArrayList<Config> GetExcerptCategories() {
         try {
             DBConnector db = new DBConnector();

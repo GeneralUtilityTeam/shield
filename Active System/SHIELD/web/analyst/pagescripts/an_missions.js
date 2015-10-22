@@ -90,6 +90,7 @@ function printReport(event, id) {
         data: {
             id: id
         },
+        async : false,
         success: function (responseJSON) {
             missionDetails = responseJSON;
             document.getElementById("mission-title").innerHTML = 'Psychological Operations Plan "' + missionDetails.title + '"';
@@ -335,7 +336,7 @@ function printReport(event, id) {
                                     ccNameTr.className = "po-row";
                                     var ccNameTd = document.createElement("td");
                                     ccNameTd.className = "po";
-                                    ccNameTd.innerHTML = "<b>Propaganda" + (y + 1) + "</b> The threat may launch/use/deploy <b>" + ccArr[y].name + ": </b>";
+                                    ccNameTd.innerHTML = "<b>Propaganda " + (y + 1) + "</b> The threat may launch/use/deploy <b>" + ccArr[y].name + ": </b>";
                                     ccNameTr.appendChild(ccNameTd);
 
                                     var ccFromTr = document.createElement("tr");

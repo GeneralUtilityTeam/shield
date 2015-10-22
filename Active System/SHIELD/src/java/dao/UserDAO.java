@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import db.DBConnector;
@@ -19,11 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Franco
+ * SHIELD Decision Support System v3.0.0 Data Access Object - User
  */
 public class UserDAO {
 
+    // <editor-fold defaultstate="collapsed" desc="----- ACCESS">
     public User Login(String username, String password) { //Checks for login success; Returns null for failures and User object for successes
         try {
             //Create Connection
@@ -96,36 +91,38 @@ public class UserDAO {
         }
         return false;
     }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- USER">
 
-    public String GetFullName(int id) {
+    public User GetUser(int userID) {
         try {
-            //Create Connection
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            //Prepare the statement which will use a stored procedure
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_user_full_name`(?)");
-            pstmt.setInt(1, id);
-
-            //Run statement and advance to first line
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_user`(?);");
+            pstmt.setInt(1, userID);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
 
-            String fullName = null;
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                User user = new User();
 
-            if (rs.getRow() != 0) {
-                String title = rs.getString(1);
-                String first = rs.getString(2);
-                String other = rs.getString(3);
-                String last = rs.getString(4);
+                user.setId(userID);
+                user.setClassID(rs.getInt(2));
+                user.setUname(rs.getString(3));
+                user.setNameTitle(rs.getString(4));
+                user.setNameFirst(rs.getString(5));
+                user.setNameOther(rs.getString(6));
+                user.setNameLast(rs.getString(7));
 
-                fullName = (title == null ? "" : title + ". ") + (first == null ? "" : first + " ") + (other == null ? "" : other + " ") + (last == null ? "" : last + " ");
+                cn.close();
+                return user;
             }
-            cn.close();
-            return fullName;
-
         } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -173,6 +170,101 @@ public class UserDAO {
 
         return null;
     }
+
+    public String GetFullName(int id) {
+        try {
+            //Create Connection
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            //Prepare the statement which will use a stored procedure
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_user_full_name`(?)");
+            pstmt.setInt(1, id);
+
+            //Run statement and advance to first line
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            String fullName = null;
+
+            if (rs.getRow() != 0) {
+                String title = rs.getString(1);
+                String first = rs.getString(2);
+                String other = rs.getString(3);
+                String last = rs.getString(4);
+
+                fullName = (title == null ? "" : title + ". ") + (first == null ? "" : first + " ") + (other == null ? "" : other + " ") + (last == null ? "" : last + " ");
+            }
+            cn.close();
+            return fullName;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public int AddUser(int editorID, User user) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_user`(?, ?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, editorID);
+            pstmt.setInt(2, user.getClassID());
+            pstmt.setString(3, user.getUname());
+            pstmt.setString(4, user.getPword());
+            pstmt.setString(5, user.getNameTitle());
+            pstmt.setString(6, user.getNameFirst());
+            pstmt.setString(7, user.getNameOther());
+            pstmt.setString(8, user.getNameLast());
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    } //Clear
+
+    public int UpdateUser(User user, String oldPassword) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_user`(?, ?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, user.getId());
+            pstmt.setString(2, user.getUname());
+            pstmt.setString(3, oldPassword);
+            pstmt.setString(4, user.getPword());
+            pstmt.setString(5, user.getNameTitle());
+            pstmt.setString(6, user.getNameFirst());
+            pstmt.setString(7, user.getNameOther());
+            pstmt.setString(8, user.getNameLast());
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    } //Clear
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- LOGS">
 
     public ArrayList<LogEntry> GetAccessLog() {
         try {
@@ -242,99 +334,6 @@ public class UserDAO {
 
         return null;
     }
+// </editor-fold>
 
-    public int AddUser(int editorID, User user) {
-        try {
-            DBConnector db = new DBConnector();
-            Connection cn = db.getConnection();
-
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_user`(?, ?, ?, ?, ?, ?, ?, ?);");
-            pstmt.setInt(1, editorID);
-            pstmt.setInt(2, user.getClassID());
-            pstmt.setString(3, user.getUname());
-            pstmt.setString(4, user.getPword());
-            pstmt.setString(5, user.getNameTitle());
-            pstmt.setString(6, user.getNameFirst());
-            pstmt.setString(7, user.getNameOther());
-            pstmt.setString(8, user.getNameLast());
-            
-
-            ResultSet rs = pstmt.executeQuery();
-            rs.next();
-
-            if (rs.getRow() == 0) {
-                cn.close();
-                return -1;
-            } else {
-                return rs.getInt(1);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    } //Clear
-
-    public User GetUser(int userID){
-        try {
-            DBConnector db = new DBConnector();
-            Connection cn = db.getConnection();
-
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_user`(?);");
-            pstmt.setInt(1, userID);
-            ResultSet rs = pstmt.executeQuery();
-            rs.next();
-
-            if (rs.getRow() == 0) {
-                cn.close();
-                return null;
-            } else {
-                User user = new User();
-                
-                user.setId(userID);
-                user.setClassID(rs.getInt(2));
-                user.setUname(rs.getString(3));
-                user.setNameTitle(rs.getString(4));
-                user.setNameFirst(rs.getString(5));
-                user.setNameOther(rs.getString(6));
-                user.setNameLast(rs.getString(7));
-
-                cn.close();
-                return user;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-    
-    public int UpdateUser(User user, String oldPassword) {
-        try {
-            DBConnector db = new DBConnector();
-            Connection cn = db.getConnection();
-
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_user`(?, ?, ?, ?, ?, ?, ?, ?);");
-            pstmt.setInt(1, user.getId());
-            pstmt.setString(2, user.getUname());
-            pstmt.setString(3, oldPassword);
-            pstmt.setString(4, user.getPword());
-            pstmt.setString(5, user.getNameTitle());
-            pstmt.setString(6, user.getNameFirst());
-            pstmt.setString(7, user.getNameOther());
-            pstmt.setString(8, user.getNameLast());
-            
-
-            ResultSet rs = pstmt.executeQuery();
-            rs.next();
-
-            if (rs.getRow() == 0) {
-                cn.close();
-                return -1;
-            } else {
-                return rs.getInt(1);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    } //Clear
 }

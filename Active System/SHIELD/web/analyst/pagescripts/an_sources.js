@@ -2,7 +2,7 @@ function initialize() {
     document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert('success', 'Data Sources of <strong>SHIELD</strong>');
     var dropdown = document.getElementById("source-type");
-    clssJSON.forEach(function(conf){
+    clssJSON.forEach(function (conf) {
         var option = document.createElement("option");
         option.setAttribute("label", toTitleCase(conf.valueText));
         option.setAttribute("value", conf.id);
@@ -36,42 +36,55 @@ $(document).ready(function () {
         var data = table.row(this).data();
         window.location.assign("ANSourceView?id=" + data.id);
     });
+
+    excerptSummaryTable = $('#excerpt-summary-table').DataTable({
+        "ajax": {
+            "url": "GetExcerptCountRegion",
+            "dataSrc": ""
+        },
+        "lengthMenu": [[8, 25, 50, -1], [8, 25, 50, "All"]],
+        "columns": [
+            {"data": "strDim1"},
+            {"data": "strDim2"},
+            {"data": "intVal1"}
+        ]
+    });
 });
 
 function saveSource() {
-   var proceed = true;
+    var proceed = true;
     var sourceClass = document.getElementById("source-type").value;
     var sourceName = document.getElementById("source-name").value;
     var sourceDesc = document.getElementById("source-description").value;
     var sourceDate = document.getElementById("source-date").value;
-    if(checkIfEmpty(sourceName)){
+    if (checkIfEmpty(sourceName)) {
         showAndDismissAlert("danger", "Please input <strong>source name</strong>");
         proceed = false;
     }
-    if(checkIfEmpty(sourceDesc)){
+    if (checkIfEmpty(sourceDesc)) {
         showAndDismissAlert("danger", "Please input <strong>source description</strong>");
         proceed = false;
     }
-    
-    if(sourceDate == null){
+
+    if (sourceDate == null) {
         showAndDismissAlert("danger", "Please input <strong>source date</strong>");
         proceed = false;
     }
-    if(proceed){
-    $.ajax({
-        type: "GET",
-        url: "SaveSource",
-        data: {
-            class : sourceClass,
-            title: sourceName,
-            desc: sourceDesc,
-            published: sourceDate
-        },
-        success: function (response) {
-            $('#addSource').modal('hide');
-            showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
-            table.ajax.reload();
-        }
-    });
+    if (proceed) {
+        $.ajax({
+            type: "GET",
+            url: "SaveSource",
+            data: {
+                class: sourceClass,
+                title: sourceName,
+                desc: sourceDesc,
+                published: sourceDate
+            },
+            success: function (response) {
+                $('#addSource').modal('hide');
+                showAndDismissAlert("success", "<strong>New Source</strong> has been <strong>added.</strong>");
+                table.ajax.reload();
+            }
+        });
     }
 }

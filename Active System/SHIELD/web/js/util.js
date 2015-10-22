@@ -1,5 +1,5 @@
 // For: SHIELD
-// V 2.4.1 , Updated as of 10/9/15
+// V 3.0.0 , Updated as of 10/22/15
 
 // -- STRING MANIUPLATION
 function toTitleCase(str) {
@@ -33,6 +33,7 @@ function isEqualRaw(str1, str2) {
     else
         return false;
 }
+
 // -- UI DOM CONTROLS
 function clearTableRows(tableName) {
     table = document.getElementById(tableName);
@@ -240,4 +241,10 @@ function generateFullAddress(area) { // Converts Address components of an area i
     var level1 = area.level1;
     var result = level8 + level7 + level6 + level5 + level4 + level3 + level2 + level1;
     return result;
+}
+
+// -- LOGIN CHECKING
+function validateLogin(){
+    if(login == null)
+        window.location.assign("index.jsp");
 }

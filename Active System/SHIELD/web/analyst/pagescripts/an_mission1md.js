@@ -1,4 +1,10 @@
+var geocoder;
+var address;
+var areaJSON;
+var savedArea;
+
 function initialize() {
+    validateLogin();
     document.getElementById("global-username").innerHTML = userFullName + " ";
 
     buildNav(missionStatus, 1);

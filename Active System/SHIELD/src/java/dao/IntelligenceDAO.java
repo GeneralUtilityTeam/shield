@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import db.DBConnector;
@@ -21,12 +16,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Franco
+ * SHIELD Decision Support System v3.0.0 Data Access Object - Intelligence
  */
 public class IntelligenceDAO {
 
-    // -- SOURCES
+    // <editor-fold defaultstate="collapsed" desc="----- SOURCES">
     public Source GetSource(int sourceID) {
         try {
             DBConnector db = new DBConnector();
@@ -118,12 +112,13 @@ public class IntelligenceDAO {
                 return rs.getInt(1);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
 
-    // -- EXCERPTS
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- EXCERPTS">
     public Excerpt GetExcerpt(int excerptID) {
         try {
             DBConnector db = new DBConnector();
@@ -217,7 +212,7 @@ public class IntelligenceDAO {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
@@ -269,11 +264,11 @@ public class IntelligenceDAO {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
-    }
+    } 
 
     public int AddExcerpt(int userID, Excerpt excr) {
         try {
@@ -310,16 +305,15 @@ public class IntelligenceDAO {
                 pstmt = cn.prepareStatement("CALL `shield`.`link_excerpt_tag`(?, ?);");
                 pstmt.setInt(1, excerptID);
                 for (String s : tagList) {
-                    System.out.println("Linking excerpt id " + excerptID + " string " + s);
                     pstmt.setString(2, s);
                     pstmt.execute();
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
-    }
+    } 
 
     public ArrayList<Excerpt> PrimarySearch(String query) {
         try {
@@ -368,9 +362,44 @@ public class IntelligenceDAO {
         }
 
         return null;
-    }
+    } 
 
-    // -- EENTITY
+    public ArrayList<ReportItem> GetExcerptCountOfRegion() {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`rep_excerpts_region`()");
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<ReportItem> repList = new ArrayList<ReportItem>();
+                do {
+                    ReportItem rep = new ReportItem();
+
+                    rep.setStrDim1(rs.getString(1));
+                    rep.setStrDim2(rs.getString(2));
+                    rep.setIntVal1(rs.getInt(3));
+                    repList.add(rep);
+
+                } while (rs.next());
+
+                cn.close();
+                return repList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    } 
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- EENTITY">\
     public ArrayList<EEntity> GetAllEEntityOfMission(int missionID) {
         try {
             DBConnector db = new DBConnector();
@@ -438,7 +467,7 @@ public class IntelligenceDAO {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
@@ -479,11 +508,13 @@ public class IntelligenceDAO {
             return true;
 
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- EENTITY EXT">
     public ArrayList<EEntity> GetAllCCOfMission(int missionID) {
         try {
             DBConnector db = new DBConnector();
@@ -801,37 +832,6 @@ public class IntelligenceDAO {
         return null;
     }
 
-    public ArrayList<ReportItem> GetExcerptCountOfRegion() {
-        try {
-            DBConnector db = new DBConnector();
-            Connection cn = db.getConnection();
-
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`rep_excerpts_region`()");
-            ResultSet rs = pstmt.executeQuery();
-            rs.next();
-            if (rs.getRow() == 0) {
-                cn.close();
-                return null;
-            } else {
-                ArrayList<ReportItem> repList = new ArrayList<ReportItem>();
-                do {
-                    ReportItem rep = new ReportItem();
-
-                    rep.setStrDim1(rs.getString(1));
-                    rep.setStrDim2(rs.getString(2));
-                    rep.setIntVal1(rs.getInt(3));
-                    repList.add(rep);
-
-                } while (rs.next());
-
-                cn.close();
-                return repList;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
+// </editor-fold>
+    
 }

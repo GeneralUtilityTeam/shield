@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import db.DBConnector;
@@ -23,14 +18,13 @@ import java.util.logging.Logger;
 import utility.ShieldUtility;
 
 /**
- *
- * @author Franco
+ * SHIELD Decision Support System v3.0.0 Data Access Object - Mission
  */
 public class MissionDAO {
 
     ShieldUtility su = new ShieldUtility();
 
-    //Mission
+    // <editor-fold defaultstate="collapsed" desc="----- MISSION">
     public Mission GetMission(int missionID) { //Clear
         try {
             DBConnector db = new DBConnector();
@@ -232,7 +226,7 @@ public class MissionDAO {
         }
 
         return null;
-    } // Clear
+    }
 
     public int AddMission(Mission mson) {
         try {
@@ -271,16 +265,15 @@ public class MissionDAO {
     } //Clear
 
     public int AdvanceMissionStatus(int missionID, int phase) {
-        System.out.println("Advancing");
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
-            
+
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`advance_mission_status`(?, ?);");
             pstmt.setInt(1, missionID);
             pstmt.setInt(2, phase);
             ResultSet rs = pstmt.executeQuery();
-            
+
             rs.next();
             if (rs.getRow() == 0) {
                 cn.close();
@@ -374,7 +367,34 @@ public class MissionDAO {
         return false;
     } //Clear
 
-    // COG 
+    public int ResetMission(int missionID, int newphase) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`reset_mission`(?, ?);");
+            pstmt.setInt(1, missionID);
+            pstmt.setInt(2, newphase);
+            ResultSet rs = pstmt.executeQuery();
+
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                int status = rs.getInt(1);
+                cn.close();
+                return newphase;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- COG">
+
     public COG GetCOGOfMission(int missionID) {
         try {
             DBConnector db = new DBConnector();
@@ -405,7 +425,6 @@ public class MissionDAO {
                     cog.setEentList(eentList);
                 } else {
                     cn.close();
-                    System.out.println("null1");
                     return null;
                 }
             } else {
@@ -484,6 +503,8 @@ public class MissionDAO {
         return false;
     }
 
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- TCOA">
     public ArrayList<Integer> GetEEntityIDsOfCC(int ccID) {
         try {
             DBConnector db = new DBConnector();
@@ -534,6 +555,8 @@ public class MissionDAO {
         return null;
     }
 
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- CARVER">
     public ArrayList<Integer> GetEEntityIDsOfCR(int crID) {
         try {
             DBConnector db = new DBConnector();
@@ -567,31 +590,6 @@ public class MissionDAO {
         return null;
     }
 
-    public int ResetMission(int missionID, int newphase){
-        try {
-            DBConnector db = new DBConnector();
-            Connection cn = db.getConnection();
-
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`reset_mission`(?, ?);");
-            pstmt.setInt(1, missionID);
-            pstmt.setInt(2, newphase);
-            ResultSet rs = pstmt.executeQuery();
-            
-            rs.next();
-            if (rs.getRow() == 0) {
-                cn.close();
-                return -1;
-            } else {
-                int status = rs.getInt(1);
-                cn.close();
-                return newphase;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    }
-    
     public boolean UpdateCVOfMission(int missionID, ArrayList<EEntity> cvList) {
         try {
             DBConnector db = new DBConnector();
@@ -618,6 +616,8 @@ public class MissionDAO {
         }
         return false;
     }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="----- SAMPLE">
 
     public ArrayList<EEntity> GetPOSPOOfMission(int missionID) {
         try {
@@ -661,12 +661,12 @@ public class MissionDAO {
                             pstmt3.setInt(1, spo.getId());
                             ResultSet rs3 = pstmt3.executeQuery();
                             rs3.next();
-                            
+
                             ArrayList<Integer> cvIDList = new ArrayList<Integer>();
                             if (rs3.getRow() != 0) {
                                 do {
                                     cvIDList.add(rs3.getInt(1));
-                                }while(rs3.next());
+                                } while (rs3.next());
                             }
                             spo.setCvIDList(cvIDList);
                             spoList.add(spo);
@@ -721,4 +721,6 @@ public class MissionDAO {
         }
         return false;
     }
+// </editor-fold>
+
 }

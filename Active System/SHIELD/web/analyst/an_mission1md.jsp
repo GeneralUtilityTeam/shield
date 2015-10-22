@@ -26,17 +26,14 @@
 
 
         <script type="text/javascript">
+            //Dependables
             var msonJSOB = <%=request.getAttribute("msonJSOB")%>;
             var missionID = <%=session.getAttribute("missionID")%>;
             var missionTitle = '<%=session.getAttribute("missionTitle")%>';
             var missionStatus = <%=session.getAttribute("missionStatus")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-            var geocoder;
-            var address;
-            var areaJSON;
-            var savedArea;
-
+            var login = '<%=session.getAttribute("login")%>';
         </script>
         
         <style>
@@ -215,14 +212,14 @@
                         </h4>
                     </div>
                     <div class="modal-body" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
-                        <label>Making changes in this phase will require that your mission data be reset on this current phase. Would you like to proceed? </label> 
+                        <label>Making changes on this phase would mean that your mission data will be reset on all other phases. Would you like to proceed? </label> 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning"
                                 data-dismiss="modal" onclick="confirmSave()">Confirm
                         </button>
                         <button type="button" class="btn btn-default"
-                                data-dismiss="modal">Close
+                                data-dismiss="modal">Cancel
                         </button>
 
                     </div>

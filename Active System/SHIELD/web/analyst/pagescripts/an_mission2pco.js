@@ -18,26 +18,8 @@ var filterLevel;
 var filterArea;
 var filterStrength;
 
-function initialize() { //Change this to take entities
-    document.getElementById("global-username").innerHTML = userFullName + " ";
-    buildNav(missionStatus, 2);
-    loadAreaSlider();
-    loadStrengthSlider();
-    initializeMap();
-
-    if (entity.length == 0) {
-        entity = new Array();
-        entityCounter = 0;
-    }
-    if (entity.length > 0) {
-        entityCounter = entity.length;
-        loadEntity();
-        activateRemoveBtn(entity);
-    }
-    //set entity array to the mission entity
-}
-
 $(document).ready(function () {
+     validateLogin();
     $.ajax({
         type: "GET",
         url: "GetEEntityOfMission",
@@ -127,6 +109,25 @@ $(document).ready(function () {
     });
 
 });
+
+function initialize() { //Change this to take entities
+    document.getElementById("global-username").innerHTML = userFullName + " ";
+    buildNav(missionStatus, 2);
+    loadAreaSlider();
+    loadStrengthSlider();
+    initializeMap();
+
+    if (entity.length == 0) {
+        entity = new Array();
+        entityCounter = 0;
+    }
+    if (entity.length > 0) {
+        entityCounter = entity.length;
+        loadEntity();
+        activateRemoveBtn(entity);
+    }
+    //set entity array to the mission entity
+}
 
 function initializeMap() {
     mapOptions = {

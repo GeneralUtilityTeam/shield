@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 public class DBConnector {
 	private String driverName = "com.mysql.jdbc.Driver"; 
-	private String url = "jdbc:mysql://localhost:3306/shield"; //Meant to run on same machine as server for the presentation
+	private String url = "jdbc:mysql://localhost:3306/shield"; 
 	private String username = "shield"; 
 	private String password = "w44m4wzi";
 	
@@ -16,10 +16,8 @@ public class DBConnector {
 	        Class.forName(getDriverName());
 	        Connection conn = DriverManager.getConnection(getUrl(),getUsername(),getPassword() );
 	    
-	        //passing back the connection
 	        return conn;
 	           
-	        //This is all just exception catching
 	        } catch (SQLException ex) {
 	            Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex);
 	        } catch (ClassNotFoundException ex) {

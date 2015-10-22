@@ -29,18 +29,11 @@
         <!--Google Map-->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
-            //Global Variables
-            var address;
-            var area;
-            var latLng;
-            var switchString; //boolean; true if a string was used, false if a click was used
+            //Dependables
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-
-            //Map Variables
+            var login = '<%=session.getAttribute("login")%>';
             var geocoder = new google.maps.Geocoder();
             var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
-            var map;
-            var marker;
         </script>
         <style>
             a[href^="http://maps.google.com/maps"]{display:none !important}

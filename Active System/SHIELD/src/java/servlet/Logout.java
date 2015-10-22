@@ -32,6 +32,7 @@ public class Logout extends FatherServlet {
         
         if(success){
             dispatchLocation = "index.jsp";
+            session.removeAttribute("login");
             session.invalidate();
         }
             

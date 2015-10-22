@@ -1,8 +1,15 @@
-//an_home.jsp Javascript Files
-
+//Global Variables
+var address;
+var area;
+var latLng;
+var map;
+var marker;
+var switchString; //boolean; true if a string was used, false if a click was used
+//
 //Initialize
 function initialize() {
     //Greeting Alert
+     validateLogin();
     showAndDismissAlert('success', 'Welcome to <strong>SHIELD! </strong>');
     document.getElementById("global-username").innerHTML = userFullName + " ";
     //Map Initalization

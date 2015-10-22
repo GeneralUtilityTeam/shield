@@ -302,7 +302,7 @@ function createCCEntityMarker(entityCC, i) {
 
 
     setWindowListener(marker, toTitleCase(entityCC.name));
-    oms.addMarker(marker);
+    
     entityMarker.push(marker);
     setMapOnAll(null);
     setEntityMarkerOnMap(null, marker);
