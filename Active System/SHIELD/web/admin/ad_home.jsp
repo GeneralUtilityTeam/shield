@@ -186,25 +186,17 @@
                         <table id="user-table" style="width: 100%;">
                             <tr>
                                 <td>
-                                    User Type: <select id="view-class" class="form-box" placeholder="Enter Username"required>
-                                        <option value="2">Analyst</option>
-                                        <option value="3">Encoder</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
                                     Username: <input id="view-username" type="text" name="view-username" class="form-box" placeholder="Enter Username"required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Old Password: <input id="view-old-password" type="password" name="view-password" class="form-box" placeholder="Enter Password"required>
+                                    Old Password: <input id="view-old-password" type="password" name="view-old-password" class="form-box" placeholder="Enter Old Password"required>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    New Password: <input id="view-new-password" type="password" name="view-password" class="form-box" placeholder="Enter Password"required>
+                                    New Password: <input id="view-new-password" type="password" name="view-new-password" class="form-box" placeholder="Enter New Password"required>
                                 </td>
                             </tr>
                             <tr>
@@ -230,11 +222,8 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="editUser()" class="btn btn-warning"><span class="glyphicon glyphicon-saved"> </span>
+                        <button type="button" onclick="updateUser()" class="btn btn-warning"><span class="glyphicon glyphicon-saved"> </span>
                             Edit User
-                        </button>
-                        <button type="button" onclick="deleteUser()" class="btn btn-danger"><span class="glyphicon glyphicon-trasj"> </span>
-                           Delete User
                         </button>
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Close

@@ -33,7 +33,6 @@ function initialize() {
     });
     $('#user-table tbody').on('click', 'tr', function () {
         var data = userTable.row(this).data();
-        console.log(data);
         viewUser(data);
     });
 
@@ -112,32 +111,52 @@ function addUser() {
                 nameLast: nameLast
             },
             success: function (response) {
-                showAndDismissAlert("success", "<strong>Mission Details</strong> have been <strong>saved.</strong>");
+                showAndDismissAlert("success", "<strong>User</strong> has been <strong>added.</strong>");
             }
         });
     }
 }
 
-function viewUser(id) {
-    $('#viewExcerpt').modal('show');
+function viewUser(data) {
+    $('#viewUser').modal('show');
+    document.getElementById("view-username").value = data.uname;
+    document.getElementById("view-name-title").value = data.nameTitle;
+    document.getElementById("view-name-first").value = data.nameFirst;
+    document.getElementById("view-name-other").value = data.nameOther;
+    document.getElementById("view-name-last").value = data.nameLast;
+    document.getElementById("view-old-password").value = "";
+    document.getElementById("view-new-password").value = "";
+    activeID = data.id;
+}
+var activeID;
+function updateUser() {
+    console.log(activeID);
+    var uname = document.getElementById("view-username").value;
+    var nameTitle = document.getElementById("view-name-title").value;
+    var nameFirst = document.getElementById("view-name-first").value;
+    var nameOther = document.getElementById("view-name-other").value;
+    var nameLast = document.getElementById("view-name-last").value;
+    var passwordNew = document.getElementById("view-new-password").value;
+    var passwordOld = document.getElementById("view-old-password").value;
     $.ajax({
         type: "GET",
-        url: "GetUser",
+        url: "UpdateUser",
         data: {
-            id: id
+            id: activeID,
+            uname: uname,
+            passwordNew: passwordNew,
+            passwordOld: passwordOld,
+            nameTitle: nameTitle,
+            nameFirst: nameFirst,
+            nameOther: nameOther,
+            nameLast: nameLast
         },
-        success: function (responseJson) {
-            var user = responseJson;
-            document.getElementById("edit-class").text = data.classDesc;
-            document.getElementById("edit-username").value = data.uname;
-            document.getElementById("edit-name-title").value = data.title;
-            document.getElementById("edit-name-first").value = data.fname;
-            document.getElementById("edit-name-other").value = data.oname;
-            document.getElementById("edit-name-last").value = data.lname;
+        success: function (response) {
+            $('#viewUser').modal('hide');
+            showAndDismissAlert("success", "<strong>User</strong> has been <strong>updated.</strong>");
+            userTable.ajax.reload();
         }
     });
-}
-function updateUser() {
 
 }
 function deleteUser() {
