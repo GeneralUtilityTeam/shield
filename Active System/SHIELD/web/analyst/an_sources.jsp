@@ -28,6 +28,7 @@
         <script>
             var clssJSON = <%=request.getAttribute("clssJSON")%>;
             var userFullName = '<%=session.getAttribute("userFullName")%>';
+            var login = '<%=session.getAttribute("login")%>';
             var table, excerptSummaryTable;
         </script>
     </head>
@@ -45,9 +46,10 @@
                     <table id="source-table" class="table table-bordered table-hover list-table" width="100%">
                         <thead style="background-color: #D3D3D3;">
                         <th width="15%">Type</th>
-                        <th width="25%">Name</th>
-                        <th width="50%">Description</th>
+                        <th width="20%">Name</th>
+                        <th width="45%">Description</th>
                         <th width="10%">Date Published</th>
+                        <th width="10%">Date Encoded</th>
                         </thead>
                         <tbody id="source-table-body">
                         </tbody>

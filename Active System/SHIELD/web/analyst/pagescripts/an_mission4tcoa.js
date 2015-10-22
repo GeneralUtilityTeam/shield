@@ -11,6 +11,7 @@ var markers = [];
 var entityMarker = [];
 
 $(document).ready(function () {
+    validateLogin();
     $.ajax({
         type: "GET",
         url: "GetCCOfMission",
@@ -19,7 +20,6 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entityCC = responseJSON;
-            console.log(entityCC);
             initialize();
         }
     });

@@ -38,7 +38,8 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-
+            var login = '<%=session.getAttribute("login")%>';
+            
             var nodesArray = <%=request.getAttribute("nodesJSON")%>;
             var edgesArray = <%=request.getAttribute("edgesJSON")%>;
 

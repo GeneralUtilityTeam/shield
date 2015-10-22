@@ -9,6 +9,7 @@ function initialize() {
 }
 //Data Table Function
 $(document).ready(function () {
+    validateLogin();
     geocoder = new google.maps.Geocoder();
     var table = $('#mission-table').DataTable({
         "ajax": {

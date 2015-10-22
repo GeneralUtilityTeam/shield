@@ -39,7 +39,7 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-
+            var login = '<%=session.getAttribute("login")%>';
         </script>
 
         <style>

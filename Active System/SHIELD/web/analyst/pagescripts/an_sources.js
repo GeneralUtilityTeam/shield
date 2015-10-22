@@ -21,7 +21,8 @@ $(document).ready(function () {
             {"data": "classDesc"},
             {"data": "title"},
             {"data": "desc"},
-            {"data": "published"}
+            {"data": "published"},
+            {"data": "encoded"}
         ],
         "columnDefs": [
             {

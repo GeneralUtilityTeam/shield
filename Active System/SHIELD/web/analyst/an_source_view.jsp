@@ -36,19 +36,10 @@
             var srcJSON = <%=request.getAttribute("srcJSON")%>;
             var ctgyJSON = <%=request.getAttribute("ctgyJSON")%>;
             var sourceID = <%=session.getAttribute("sourceID")%>;
-            var excrJSON;
-            var address;
-            var area;
-            var latLng;
-            var switchString; //boolean; true if a string was used, false if a click was used
-            var excrTable;
-            var srcTable;
-
-            //Map Variables
+            var login = '<%=session.getAttribute("login")%>';
+            
             var geocoder = new google.maps.Geocoder();
             var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
-            var map;
-            var marker;
         </script>
         <style>
             a[href^="http://maps.google.com/maps"]{display:none !important}

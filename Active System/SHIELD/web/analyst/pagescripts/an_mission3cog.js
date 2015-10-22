@@ -1,45 +1,4 @@
-function initialize() {
-    document.getElementById("global-username").innerHTML = userFullName + " ";
-    buildNav(missionStatus, 3);
-    //for COG already created
-    if (missionStatus > 3) {
-        if (nodesArray != null) {
-            for (var x = 0; x < nodesArray.length; x++) {
-                nodes.add(nodesArray[x]);
-            }
-        }
-        if (edgesArray != null) {
-            for (var x = 0; x < edgesArray.length; x++) {
-                edges.add(edgesArray[x]);
-            }
-        }
-        draw();
-    }
-    //for COG created from PCO entities
-    else if (missionStatus == 3 && entity != null) {
-        createNodes();
-    }
-
-    loadSideBar();
-
-}
-
-$(document).ready(function () {
-    $.ajax({
-        type: "GET",
-        url: "GetEEntityOfMission",
-        data: {
-            missionID: missionID
-        },
-        success: function (responseJSON) {
-            entity = responseJSON;
-            initialize();
-        }
-    });
-});
-
 var network, nodes, edges, activeId, activeNode;
-
 var options = {
     manipulation: {
         addNode: false,
@@ -123,6 +82,46 @@ var nodesArray, edgesArray;
 nodes = new vis.DataSet();
 edges = new vis.DataSet();
 
+$(document).ready(function () {
+    validateLogin();
+    $.ajax({
+        type: "GET",
+        url: "GetEEntityOfMission",
+        data: {
+            missionID: missionID
+        },
+        success: function (responseJSON) {
+            entity = responseJSON;
+            initialize();
+        }
+    });
+});
+
+function initialize() {
+    document.getElementById("global-username").innerHTML = userFullName + " ";
+    buildNav(missionStatus, 3);
+    //for COG already created
+    if (missionStatus > 3) {
+        if (nodesArray != null) {
+            for (var x = 0; x < nodesArray.length; x++) {
+                nodes.add(nodesArray[x]);
+            }
+        }
+        if (edgesArray != null) {
+            for (var x = 0; x < edgesArray.length; x++) {
+                edges.add(edgesArray[x]);
+            }
+        }
+        draw();
+    }
+    //for COG created from PCO entities
+    else if (missionStatus == 3 && entity != null) {
+        createNodes();
+    }
+
+    loadSideBar();
+
+}
 
 //Custom functions
 function draw() {

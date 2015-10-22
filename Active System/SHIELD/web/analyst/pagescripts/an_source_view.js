@@ -1,3 +1,13 @@
+var excrJSON;
+var address;
+var area;
+var latLng;
+var switchString; //boolean; true if a string was used, false if a click was used
+var excrTable;
+var srcTable;
+var map;
+var marker;
+
 function initialize() {
     document.getElementById("global-username").innerHTML = userFullName + " ";
     showAndDismissAlert('success', 'Excerpts of <strong>' + srcJSON.title + '</strong>');

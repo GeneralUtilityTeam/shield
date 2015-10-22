@@ -4,6 +4,7 @@ var cog;
 
 
 $(document).ready(function () {
+    validateLogin();
     geocoder = new google.maps.Geocoder();
     $.ajax({
         type: "GET",

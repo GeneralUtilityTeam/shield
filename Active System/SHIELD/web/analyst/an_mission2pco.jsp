@@ -47,7 +47,8 @@
             var missionID = <%=session.getAttribute("missionID")%>;
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
-
+            var login = '<%=session.getAttribute("login")%>';
+            
             var missionThreat = '<%=request.getAttribute("missionThreat")%>';
             var keywordList = <%=request.getAttribute("keywordList")%>;
             var level8 = '<%=request.getAttribute("level8")%>';

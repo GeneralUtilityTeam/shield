@@ -4,6 +4,7 @@ var geocoder;
 
 
 $(document).ready(function () {
+    validateLogin();
     $.ajax({
         type: "GET",
         url: "GetCROfMission",

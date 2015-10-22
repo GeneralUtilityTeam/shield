@@ -31,6 +31,7 @@
         <script src="analyst/pagescripts/an_missions.js"></script>
         <script>
             var userFullName = '<%=session.getAttribute("userFullName")%>';
+            var login = '<%=session.getAttribute("login")%>';
         </script>
         <style>
             @media print{
