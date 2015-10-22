@@ -306,4 +306,35 @@ public class UserDAO {
         }
         return null;
     }
+    
+    public int UpdateUser(User user, String oldPassword) {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_user`(?, ?, ?, ?, ?, ?, ?, ?);");
+            pstmt.setInt(1, user.getId());
+            pstmt.setString(2, user.getUname());
+            pstmt.setString(3, oldPassword);
+            pstmt.setString(4, user.getPword());
+            pstmt.setString(5, user.getNameTitle());
+            pstmt.setString(6, user.getNameFirst());
+            pstmt.setString(7, user.getNameOther());
+            pstmt.setString(8, user.getNameLast());
+            
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    } //Clear
 }

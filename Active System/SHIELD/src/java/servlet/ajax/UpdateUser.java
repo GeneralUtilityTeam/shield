@@ -5,12 +5,16 @@
  */
 package servlet.ajax;
 
+import dao.UserDAO;
+import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.json.JSONObject;
 
 /**
  *
@@ -35,7 +39,7 @@ public class UpdateUser extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateUser</title>");            
+            out.println("<title>Servlet UpdateUser</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UpdateUser at " + request.getContextPath() + "</h1>");
@@ -56,7 +60,29 @@ public class UpdateUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        User user = new User();
+        user.setId(Integer.parseInt(request.getParameter("id")));
+        user.setUname(request.getParameter("uname"));
+        user.setPword(request.getParameter("passwordNew"));
+        user.setNameTitle(request.getParameter("nameTitle"));
+        user.setNameFirst(request.getParameter("nameFirst"));
+        user.setNameOther(request.getParameter("nameOther"));
+        user.setNameLast(request.getParameter("nameLast"));
+        String oldPassword = request.getParameter("passwordOld");
+
+        UserDAO userDAO = new UserDAO();
+        int result = 0;
+        try {
+            result = userDAO.UpdateUser(user, oldPassword);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("result", result);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(obj.toString());
     }
 
     /**
