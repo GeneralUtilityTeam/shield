@@ -216,6 +216,10 @@
         <servlet-name>UpdateUser</servlet-name>
         <servlet-class>servlet.ajax.UpdateUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetExcerptCountRegion</servlet-name>
+        <servlet-class>servlet.ajax.GetExcerptCountRegion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -431,6 +435,10 @@
     <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
         <url-pattern>/UpdateUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetExcerptCountRegion</servlet-name>
+        <url-pattern>/GetExcerptCountRegion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

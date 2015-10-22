@@ -10,6 +10,7 @@ import entity.Area;
 import entity.EEntity;
 import entity.Excerpt;
 import entity.PsyopObjective;
+import entity.ReportItem;
 import entity.Source;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -432,7 +433,7 @@ public class IntelligenceDAO {
                 } while (rs.next());
 
                 cn.close();
-                
+
                 return eentList;
             }
 
@@ -773,7 +774,7 @@ public class IntelligenceDAO {
                 cn.close();
                 return null;
             } else {
-                
+
                 ArrayList<EEntity> ccList = new ArrayList<EEntity>();
                 do {
                     EEntity cc = new EEntity();
@@ -788,9 +789,43 @@ public class IntelligenceDAO {
 
                     ccList.add(cc);
                 } while (rs.next());
-                
+
                 cn.close();
                 return ccList;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public ArrayList<ReportItem> GetExcerptCountOfRegion() {
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`rep_excerpts_region`()");
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return null;
+            } else {
+                ArrayList<ReportItem> repList = new ArrayList<ReportItem>();
+                do {
+                    ReportItem rep = new ReportItem();
+
+                    rep.setStrDim1(rs.getString(1));
+                    rep.setStrDim2(rs.getString(2));
+                    rep.setIntVal1(rs.getInt(3));
+                    repList.add(rep);
+
+                } while (rs.next());
+
+                cn.close();
+                return repList;
             }
 
         } catch (SQLException ex) {

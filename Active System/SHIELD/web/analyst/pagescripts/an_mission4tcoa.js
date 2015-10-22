@@ -515,6 +515,7 @@ function saveTCOA() {
             url: "Save4TCOA",
             dataType: 'jsonp',
             cache: true,
+            async: false,
             data: {
                 ccList: toJSON(entityCCArr)
             },
