@@ -78,6 +78,14 @@ $(document).ready(function () {
                     searchMarker = [];
                     if (excerptList.length > 0) {
                         createSearchMarker();
+                        $('#strengthRangeInput').val(1);
+                        $('#areaRangeInput').val(1);
+                        $('#strengthRangeText').text("Strength Range: All");
+                        $('#areaRangeText').text("Search Area Range: Philippines");
+                        filterLevel = 1;
+                        filterArea = level1;
+                        filterStrength = 40;
+                        applyFilter();
                     }
                     else
                         showAndDismissAlert("danger", "<strong>No Results Found! </strong>");
@@ -101,6 +109,13 @@ $(document).ready(function () {
                     searchMarker = [];
                     if (excerptList.length > 0) {
                         createSearchMarker();
+                        $('#strengthRangeInput').val(1);
+                        $('#areaRangeInput').val(1);
+                        $('#strengthRangeText').text("Strength Range: All");
+                        $('#areaRangeText').text("Search Area Range: Philippines");
+                        filterLevel = 1;
+                        filterArea = level1;
+                        filterStrength = 40;
                         applyFilter();
                     }
                     else

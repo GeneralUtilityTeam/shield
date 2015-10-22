@@ -66,13 +66,17 @@ public class GetExcerptOfCC extends HttpServlet {
         MissionDAO msonDAO = new MissionDAO();
         IntelligenceDAO intlDAO = new IntelligenceDAO();
         ArrayList<Excerpt> returnList = new ArrayList<Excerpt>();
-        for (Integer id : msonDAO.GetEEntityIDsOfCC(ccID)) {
-            for (Excerpt excr : intlDAO.GetExcerptOfEEntity(id)) {
-                if (!returnList.contains(excr)) {
-                    returnList.add(excr);
+        try {
+            for (Integer id : msonDAO.GetEEntityIDsOfCC(ccID)) {
+                for (Excerpt excr : intlDAO.GetExcerptOfEEntity(id)) {
+                    if (!returnList.contains(excr)) {
+                        returnList.add(excr);
+                    }
                 }
-            }
 
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
         }
 
         JSONArray excrJArr = new JSONArray(returnList.toArray());

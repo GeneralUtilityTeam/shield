@@ -109,6 +109,7 @@ function printReport(event, id) {
         data: {
             missionID: id
         },
+        async: false,
         success: function (responseJSON) {
             eentityCR = responseJSON;
 
@@ -348,11 +349,11 @@ function printReport(event, id) {
                                     var ccLocationTr = document.createElement("tr");
                                     var ccLocationTd = document.createElement("td");
                                     ccLocationTd.className = "spo";
-                                    ccLocationTd.innerHTML = "<b>Location: </b>"+ ccArr[y].address;
+                                    ccLocationTd.innerHTML = "<b>Location: </b>" + ccArr[y].address;
                                     ccLocationTr.appendChild(ccLocationTd);
 
 
-                                    
+
                                     ccTable.appendChild(ccNameTr);
                                     ccTable.appendChild(ccFromTr);
                                     ccTable.appendChild(ccToTr);
@@ -370,15 +371,14 @@ function printReport(event, id) {
                     var oldPage = document.body.innerHTML;
 
                     //Reset the page's HTML with div's HTML only
-                    document.body.innerHTML = "<html><head><title></title></head><body>" + divElements + "</body>";
-                    window.print();
-                    document.body.innerHTML = oldPage;
-
-
                 }
             });
         }
     });
+
+    document.body.innerHTML = "<html><head><title></title></head><body>" + divElements + "</body>";
+    window.print();
+    document.body.innerHTML = oldPage;
 }
 
 

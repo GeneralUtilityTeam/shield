@@ -83,7 +83,7 @@ function initialize() {
         panel.appendChild(panelHead);
         panel.appendChild(panelCollapse);
         collapse.appendChild(panel);
-        
+
     }
 }
 
@@ -136,7 +136,7 @@ function initializeMap() {
 //    });
     setTimeout('openAllClusters()', 1000);
     google.maps.event.addListener(map, 'zoom_changed', function () {
-        
+
         setTimeout('openAllClusters()', 1000);
         var northEast = new google.maps.LatLng(19.648699380876213, 126.63329394531274);
         var southWest = new google.maps.LatLng(5.344441440480007, 115.39702050781239);
@@ -506,10 +506,10 @@ function saveTCOA() {
             entityCC[y].lat = entityMarker[y].position.lat();
             entityCC[y].lng = entityMarker[y].position.lng();
             var address = document.getElementById("at" + y).value;
-            var entityCCObj = {id: entityCC[y].id, from: entityCC[y].from, to: entityCC[y].to, lat: entityCC[y].lat, lng: entityCC[y].lng,  address: address};
+            var entityCCObj = {id: entityCC[y].id, from: entityCC[y].from, to: entityCC[y].to, lat: entityCC[y].lat, lng: entityCC[y].lng, address: address};
             entityCCArr.push(entityCCObj);
         }
-        
+        var success = false;
         $.ajax({
             type: "GET",
             url: "Save4TCOA",
@@ -518,11 +518,14 @@ function saveTCOA() {
             data: {
                 ccList: toJSON(entityCCArr)
             },
-            success: function (response) {  
+            success: function (response) {
+                success = true;
                 showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");
                 window.location.assign("ANMission5CM");
             }
         });
+        showAndDismissAlert("success", "<strong>Threat Course of Action</strong> has been <strong>saved.</strong>");
+        window.location.assign("ANMission5CM");
     }
 
 }
