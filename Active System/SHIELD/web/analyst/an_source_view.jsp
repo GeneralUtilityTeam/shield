@@ -208,7 +208,7 @@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
-        </div><!-- /View Artifact Modal-->
+        </div><!-- /View Excerpt Modal-->
 
         <div class="alert-messages text-center">
         </div>
