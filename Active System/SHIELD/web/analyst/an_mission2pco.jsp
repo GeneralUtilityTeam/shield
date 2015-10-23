@@ -65,25 +65,99 @@ y<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
             function printHiddenMap() {
-                var divElements = document.getElementById('hidden-area-map').innerHTML;
+
+                var political = [];
+                var militarySecurity = [];
+                var economic = [];
+                var social = [];
+                var information = [];
+                var environmentPhysical = [];
+                var infrastructureTechnology = [];
+
+                for (var x = 0; x < entity.length; x++) {
+                    for (var y = 0; y < entity[x].excrList.length; y++) {
+                        var category = entity[x].excrList[y].categoryID;
+                        var excerptTemp = entity[x].excrList[y];
+                        switch (category) {
+                            case 1:
+                                political.push(excerptTemp);
+                                break;
+                            case 2:
+                                militarySecurity.push(excerptTemp);
+                                break;
+                            case 3:
+                                economic.push(excerptTemp);
+                                break;
+                            case 4:
+                                social.push(excerptTemp);
+                                break;
+                            case 5:
+                                information.push(excerptTemp);
+                                break;
+                            case 6:
+                                infrastructureTechnology.push(excerptTemp);
+                                break;
+                            case 7:
+                                environmentPhysical.push(excerptTemp);
+                                break;
+                        }
+                    }
+                }
+                var divElements = document.getElementById('parent-map-div').innerHTML;
                 var oldPage = document.body.innerHTML;
 
-                //Initial input
-                var reportHTML = "<html><head><title></title></head><body>";
-
-                //Content - Map
-                reportHTML += "<div class='report-map-div'>" + divElements + "</div>";
+                var reportHTML = "<html><head><style>.maptd{color: white;}</style><title></title></head><body><table>";
+                reportHTML += "<tr><td><h1>Psychological Operations Characteristics Overlay: " + missionTitle + "</h1></td></tr>";
                 
-                //Content - Aything Else
-                reportHTML += "<div class='report-text-div'><label>Testing</label></div>"
+                reportHTML += "<tr><td><h4>Excerpts</h4></td></tr>";
+
+
+                reportHTML += "<tr><td><h6>Political</h6></td></tr>";
+                political.forEach(function(excr){
+                    reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
+                });
+                
+                reportHTML += "<tr><td><h6>Military and Security</h6></td></tr>";
+                militarySecurity.forEach(function(excr){
+                    reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
+                });
+
+                reportHTML += "<tr><td><h6>Economic</h6></td></tr>";
+                economic.forEach(function(excr){
+                    reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
+                });
+
+                reportHTML += "<tr><td><h6>Social</h6></td></tr>";
+                social.forEach(function(excr){
+                    reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
+                });
+
+                reportHTML += "<tr><td><h6>Information</h6></td></tr>";
+                information.forEach(function(excr){
+                    reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
+                });
+
+                reportHTML += "<tr><td><h6>Infrastructure and Technology</h6></td></tr>";
+                infrastructureTechnology.forEach(function(excr){
+                    reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
+                });
+
+                reportHTML += "<tr><td><h6>Environmental and Physical</h6></td></tr>";
+                environmentPhysical.forEach(function(excr){
+                    reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
+                });
+                
+                reportHTML += "<tr><td class='maptd'>" + divElements + "</td></tr>";
+                
+                reportHTML += "</table></body>";
+
 
                 //Finishing lines;
                 reportHTML += "</body>";
-
-                document.body.innerHTML = reportHTML;
-                //window.print();
+                var pop = window.open();
+                pop.document.body.innerHTML = reportHTML;
+                pop.print();
                 //document.body.innerHTML = oldPage;
-                setTimeout('document.body.innerHTML = oldPage;', 10000);
             }
         </script>
         <style>
@@ -91,7 +165,7 @@ y<%@page contentType="text/html" pageEncoding="UTF-8"%>
                 vertical-align: top
             }
             .report-title-div{
-                
+
             }
             .report-text-div{
                 position:absolute;
@@ -163,7 +237,9 @@ y<%@page contentType="text/html" pageEncoding="UTF-8"%>
         <script src="js/navigation.js"></script>
 
         <div id="container-fluid">
-            <div id="hidden-area-map" class="print" style="z-index: -4; position: absolute; height: 78vh; width: 74vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
+            <div id="parent-map-div">
+                <div id="hidden-area-map" class="print" style="z-index: -4; position: absolute; height: 500px; width: 600px; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
+                </div>
             </div>
             <div id="content-shield" style="border-top: none; z-index: 1">
 
