@@ -106,43 +106,43 @@ y<%@page contentType="text/html" pageEncoding="UTF-8"%>
                 var divElements = document.getElementById('parent-map-div').innerHTML;
                 var oldPage = document.body.innerHTML;
 
-                var reportHTML = "<html><head><style>.maptd{color: white;}</style><title></title></head><body><table>";
+                var reportHTML = "<html><head><style>.maptd{color: #FFFFFF;}</style><title></title></head><body><table>";
                 reportHTML += "<tr><td><h1>Psychological Operations Characteristics Overlay: " + missionTitle + "</h1></td></tr>";
                 
-                reportHTML += "<tr><td><h4>Excerpts</h4></td></tr>";
+                reportHTML += "<tr><td><h3>Excerpts</h4></td></tr>";
 
 
-                reportHTML += "<tr><td><h6>Political</h6></td></tr>";
+                reportHTML += "<tr><td><h4>Political</h4></td></tr>";
                 political.forEach(function(excr){
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
                 
-                reportHTML += "<tr><td><h6>Military and Security</h6></td></tr>";
+                reportHTML += "<tr><td><h4>Military and Security</h4></td></tr>";
                 militarySecurity.forEach(function(excr){
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
-                reportHTML += "<tr><td><h6>Economic</h6></td></tr>";
+                reportHTML += "<tr><td><h4>Economic</h4></td></tr>";
                 economic.forEach(function(excr){
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
-                reportHTML += "<tr><td><h6>Social</h6></td></tr>";
+                reportHTML += "<tr><td><h4>Social</h4></td></tr>";
                 social.forEach(function(excr){
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
-                reportHTML += "<tr><td><h6>Information</h6></td></tr>";
+                reportHTML += "<tr><td><h4>Information</h4></td></tr>";
                 information.forEach(function(excr){
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
-                reportHTML += "<tr><td><h6>Infrastructure and Technology</h6></td></tr>";
+                reportHTML += "<tr><td><h4>Infrastructure and Technology</h4></td></tr>";
                 infrastructureTechnology.forEach(function(excr){
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
-                reportHTML += "<tr><td><h6>Environmental and Physical</h6></td></tr>";
+                reportHTML += "<tr><td><h4>Environmental and Physical</h4></td></tr>";
                 environmentPhysical.forEach(function(excr){
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
@@ -157,7 +157,7 @@ y<%@page contentType="text/html" pageEncoding="UTF-8"%>
                 var pop = window.open();
                 pop.document.body.innerHTML = reportHTML;
                 pop.print();
-                //document.body.innerHTML = oldPage;
+                pop.close();
             }
         </script>
         <style>

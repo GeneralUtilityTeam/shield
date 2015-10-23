@@ -27,7 +27,7 @@ public class Logout extends FatherServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         int userID = (int)session.getAttribute("userID");
-        String dispatchLocation = "error.jsp";
+        String dispatchLocation = "index.jsp";
         boolean success = new UserDAO().Logout(userID);
         
         if(success){
