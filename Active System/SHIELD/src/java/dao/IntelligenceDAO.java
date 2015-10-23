@@ -428,27 +428,51 @@ public class IntelligenceDAO {
         return null;
     } 
 
+    public int GetSourceIDOfExcerpt(int excerptID){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`get_source_excerpt`(?);");
+            pstmt.setInt(1, excerptID);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            if (rs.getRow() == 0) {
+                cn.close();
+                return -1;
+            } else {
+                int sourceID = rs.getInt(1);
+                cn.close();
+
+                return sourceID;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
     public boolean UpdateExcerpt(int editorID, Excerpt excr){
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_excerpt`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_excerpt`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             
             Area area = excr.getArea();
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, excr.getId());
-            pstmt.setString(3, excr.getText());
-            pstmt.setString(4, area.getLevel8());
-            pstmt.setString(5, area.getLevel7());
-            pstmt.setString(6, area.getLevel6());
-            pstmt.setString(7, area.getLevel5());
-            pstmt.setString(8, area.getLevel4());
-            pstmt.setString(9, area.getLevel3());
-            pstmt.setString(10, area.getLevel2());
-            pstmt.setString(11, area.getLevel1());
-            pstmt.setDouble(12, area.getLat());
-            pstmt.setDouble(13, area.getLng());
+            pstmt.setInt(3, excr.getCategoryID());
+            pstmt.setString(4, excr.getText());
+            pstmt.setString(5, area.getLevel8());
+            pstmt.setString(6, area.getLevel7());
+            pstmt.setString(7, area.getLevel6());
+            pstmt.setString(8, area.getLevel5());
+            pstmt.setString(9, area.getLevel4());
+            pstmt.setString(10, area.getLevel3());
+            pstmt.setString(11, area.getLevel2());
+            pstmt.setString(12, area.getLevel1());
+            pstmt.setDouble(13, area.getLat());
+            pstmt.setDouble(14, area.getLng());
 
 
             ResultSet rs = pstmt.executeQuery();

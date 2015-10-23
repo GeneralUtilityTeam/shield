@@ -46,6 +46,11 @@ public class ANSourceView extends FatherServlet {
         request.setAttribute("ctgyJSON", ctgyJSON);
         
         request.setAttribute("srcJSON", srcJSON);
+        
+        ArrayList clssList = new SystemDAO().GetSourceClasses();
+        JSONArray clssJSON = new JSONArray(clssList);
+        request.setAttribute("clssJSON", clssJSON);
+        
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_source_view.jsp");
         dispatch.forward(request, response);

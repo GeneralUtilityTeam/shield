@@ -76,8 +76,8 @@ public class UpdateSource extends HttpServlet {
         int editorID = (int)session.getAttribute("userID");
         
         int sourceID = Integer.parseInt(request.getParameter("sourceID"));
-        int classID = Integer.parseInt(request.getParameter("sourceID"));
-        String title = request.getParameter("text");
+        int classID = Integer.parseInt(request.getParameter("class"));
+        String title = request.getParameter("title");
         String desc = request.getParameter("desc");
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String publishedStr = request.getParameter("published");

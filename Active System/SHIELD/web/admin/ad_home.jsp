@@ -186,7 +186,7 @@
                         <table id="user-table" style="width: 100%;">
                             <tr>
                                 <td>
-                                    Username: <input id="view-username" type="text" name="view-username" class="form-box" placeholder="Enter Username"required>
+                                    Username: <input id="view-username" type="text" name="view-username" class="form-box" placeholder="Enter Username"required disabled>
                                 </td>
                             </tr>
                             <tr>

@@ -45,6 +45,10 @@ public class ENSourceView extends FatherServlet {
         JSONArray ctgyJSON = new JSONArray(ctgyList);
         request.setAttribute("ctgyJSON", ctgyJSON);
         
+        ArrayList clssList = new SystemDAO().GetSourceClasses();
+        JSONArray clssJSON = new JSONArray(clssList);
+        request.setAttribute("clssJSON", clssJSON);
+        
         request.setAttribute("srcJSON", srcJSON);
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/encoder/en_source_view.jsp");

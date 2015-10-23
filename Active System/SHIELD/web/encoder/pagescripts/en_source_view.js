@@ -14,6 +14,24 @@ function initialize() {
     var srcDatePub = row.insertCell(3);
     srcDatePub.innerHTML = srcJSON.published;
 
+    //For update Source
+    var sourceDropdown = document.getElementById("source-type");
+    clssJSON.forEach(function (conf) {
+        var option = document.createElement("option");
+        option.setAttribute("label", toTitleCase(conf.valueText));
+        option.setAttribute("value", conf.id);
+        sourceDropdown.appendChild(option);
+    });
+
+    document.getElementById("source-type").value = srcJSON.classID;
+    document.getElementById("source-name").value = srcJSON.title;
+    document.getElementById("source-description").value = srcJSON.desc;
+    document.getElementById("source-date").value = srcJSON.published;
+    $('#src-table').on('click', 'tr', function () {
+        $('#updateSource').modal('show');
+    });
+
+    //End of update source
 
 
     if (map == null) {
@@ -108,7 +126,6 @@ function initializeMap() {
 }
 
 function viewExcerpt(id) {
-    $('#viewExcerpt').modal('show');
     $.ajax({
         type: "GET",
         url: "GetExcerpt",
@@ -122,16 +139,52 @@ function viewExcerpt(id) {
             document.getElementById('source').innerHTML = srcJSON.title;
             //document.getElementById('enter-tags').innerHTML = 
             var tagList = excerpt.tagList;
-            $('#enter-tags').tagsinput('clearAll');
+            $('#enter-tags').tagsinput('removeAll');
             if (tagList != null) {
                 tagList.forEach(function (conf) {
                     $('#enter-tags').tagsinput('add', conf);
                 });
             }
             document.getElementById('excerpt-num').innerHTML = "Excerpt " + excerpt.id;
+
+            $('#viewExcerpt').modal('show');
+            $('#update-excerpt-button').on('click', function () {
+                activeID = id;
+                $('#viewExcerpt').modal('hide');
+                document.getElementById('address').value = generateFullAddress(excerpt.area);
+                addressSearch();
+
+                $('#input-excerpt-category').val(excerpt.categoryID);
+                document.getElementById('input-excerpt-text').value = excerpt.text;
+                var tagList = excerpt.tagList;
+                $('#input-excerpt-tags').tagsinput('removeAll');
+                if (tagList != null) {
+                    tagList.forEach(function (conf) {
+                        $('#input-excerpt-tags').tagsinput('add', conf);
+                    });
+                }
+                $('#add-update-btn').text("Update Excerpt");
+
+                document.getElementById("add-update-btn").setAttribute("onclick", "updateExcerpt()");
+                $('#addExcerpt').modal('show');
+                initializeMap();
+            });
         }
     });
 }
+
+
+function addExcerpt() {
+    $('#add-update-btn').text("Add Excerpt");
+
+    document.getElementById('input-excerpt-text').value = "";
+    document.getElementById('address').value = "";
+    $('#input-excerpt-tags').tagsinput('removeAll');
+    document.getElementById("add-update-btn").setAttribute("onclick", "saveExcerpt()");
+    $('#addExcerpt').modal('show');
+    initializeMap();
+}
+
 function clearInput() {
     document.getElementById("input-excerpt-text").value = "";
     area = null;
@@ -183,6 +236,106 @@ function saveExcerpt() {
 
                 showAndDismissAlert("success", "<strong>New Excerpt</strong> has been <strong>added.</strong>");
                 excrTable.ajax.reload();
+            }
+        });
+    }
+}
+
+function updateExcerpt() {
+    var proceed = true;
+    var text = document.getElementById("input-excerpt-text").value;
+    var tagList = $('#input-excerpt-tags').tagsinput('items');
+    if (checkIfEmpty(text)) {
+        showAndDismissAlert("danger", "Please Input <strong>Excerpt Text.</strong>");
+        proceed = false;
+    }
+    if (area == null) {
+        showAndDismissAlert("danger", "Please Locate an <strong>Area.</strong>");
+        proceed = false;
+    }
+    if (tagList.length == 0) {
+        showAndDismissAlert("danger", "Please Enter <strong>Tags.</strong>");
+        proceed = false;
+    }
+    if (proceed) {
+        var categoryID = document.getElementById("input-excerpt-category").value;
+
+        $.ajax({
+            type: "GET",
+            url: "UpdateExcerpt",
+            data: {
+                excerptID: activeID,
+                categoryID: categoryID,
+                text: text,
+                tagList: toJSON(tagList),
+                level8: area.level8,
+                level7: area.level7,
+                level6: area.level6,
+                level5: area.level5,
+                level4: area.level4,
+                level3: area.level3,
+                level2: area.level2,
+                level1: area.level1,
+                lat: latLng.lat(),
+                lng: latLng.lng()
+            },
+            success: function (response) {
+                $('#addExcerpt').modal('hide');
+                document.getElementById("input-excerpt-text").value = "";
+                $('#input-excerpt-tags').tagsinput('removeAll');
+
+                showAndDismissAlert("success", "<strong>Excerpt</strong> has been <strong>updated.</strong>");
+                excrTable.ajax.reload();
+            }
+        });
+    }
+}
+
+
+function saveSource() {
+    var proceed = true;
+    var sourceClass = document.getElementById("source-type").value;
+    var sourceName = document.getElementById("source-name").value;
+    var sourceDesc = document.getElementById("source-description").value;
+    var sourceDate = document.getElementById("source-date").value;
+    if (checkIfEmpty(sourceName)) {
+        showAndDismissAlert("danger", "Please input <strong>source name</strong>");
+        proceed = false;
+    }
+    if (checkIfEmpty(sourceDesc)) {
+        showAndDismissAlert("danger", "Please input <strong>source description</strong>");
+        proceed = false;
+    }
+
+    if (sourceDate == null) {
+        showAndDismissAlert("danger", "Please input <strong>source date</strong>");
+        proceed = false;
+    }
+    if (proceed) {
+        $.ajax({
+            type: "GET",
+            url: "UpdateSource",
+            data: {
+                sourceID: srcJSON.id,
+                class: sourceClass,
+                title: sourceName,
+                desc: sourceDesc,
+                published: sourceDate
+            },
+            success: function (response) {
+                $('#addSource').modal('hide');
+                showAndDismissAlert("success", "<strong>Source</strong> has been <strong>updated.</strong>");
+                srcTable = document.getElementById('src-table');
+                srcTable.innerHTML = "";
+                var row = srcTable.insertRow(0);
+                var srcType = row.insertCell(0);
+                srcType.innerHTML = sourceClass;
+                var srcName = row.insertCell(1);
+                srcName.innerHTML = sourceName;
+                var srcDesc = row.insertCell(2);
+                srcDesc.innerHTML = sourceDesc;
+                var srcDatePub = sourceDesc;
+                srcDatePub.innerHTML = sourceDate;
             }
         });
     }

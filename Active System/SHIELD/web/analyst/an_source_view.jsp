@@ -35,6 +35,7 @@
             var userFullName = '<%=session.getAttribute("userFullName")%>';
             var srcJSON = <%=request.getAttribute("srcJSON")%>;
             var ctgyJSON = <%=request.getAttribute("ctgyJSON")%>;
+            var clssJSON = <%=request.getAttribute("clssJSON")%>;
             var sourceID = <%=session.getAttribute("sourceID")%>;
             var login = '<%=session.getAttribute("login")%>';
             
@@ -42,6 +43,21 @@
             var infowindow = new google.maps.InfoWindow({size: new google.maps.Size(150, 50)});
         </script>
         <style>
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                background: #F5F5F5;
+            }
             a[href^="http://maps.google.com/maps"]{display:none !important}
             a[href^="https://maps.google.com/maps"]{display:none !important}
 
@@ -63,7 +79,7 @@
             <div id="content-shield" style="border-top: none;">
                 <div class="col-md-12">
                     <a href="ANSources" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-left"></span> Back to List of Sources</a>
-                    <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" onclick="initializeMap()" style="margin-right: 5px;" onclick="clearInput()"><span class="glyphicon glyphicon-plus"></span> Add Excerpt to Source</button>
+                    <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" onclick="addExcerpt()" style="margin-right: 5px;" onclick="clearInput()"><span class="glyphicon glyphicon-plus"></span> Add Excerpt to Source</button>
 
                     <table class="table table-bordered table-hover list-table">
                         <thead style="background-color: #D3D3D3;">
@@ -90,7 +106,7 @@
         </div>       
 
         <!-- Add Excerpt Modal -->
-        <div class="modal fade" id="addExcerpt" tabindex="-1" role="dialog" 
+        <div class="modal fade in scroll" id="addExcerpt" tabindex="-1" role="dialog" 
              aria-labelledby="addExcerptlabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -157,8 +173,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" onclick="saveExcerpt()"><span class="glyphicon glyphicon-saved"> </span>
-                            Add New Excerpt
+                        <button type="button" id="add-update-btn" class="btn btn-success"><span class="glyphicon glyphicon-saved"> </span>
                         </button>
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Close
@@ -170,7 +185,7 @@
         </div><!-- / Add Excerpt Modal-->
 
         <!-- View Excerpt Modal -->
-        <div class="modal" id="viewExcerpt" tabindex="-1" role="dialog" 
+        <div class="modal fade in" id="viewExcerpt" tabindex="-1" role="dialog" 
              aria-labelledby="viewExcerptlabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -201,6 +216,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" id="update-excerpt-button" class="btn btn-primary"><span class="glyphicon glyphicon-edit"> </span>
+                            Update Excerpt
+                        </button>
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Close
                         </button>
@@ -209,6 +227,53 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div><!-- /View Excerpt Modal-->
+        
+        <!-- Update Source Modal -->
+        <div class="modal fade in" id="updateSource" tabindex="-1" role="dialog" 
+             aria-labelledby="updateSourcelabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Update Source Details
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table style="width: 90%;">
+                            <tr>
+                                <td><h5>Type: </h5></td>
+                                <td><select id="source-type" required class="form-box"></select></td>
+                            </tr>
+                            <tr>
+                                <td><h5>Name: </h5></td>
+                                <td><input type="text" id="source-name" required class="form-box" placeholder="Enter Source Name"></td>
+                            </tr>
+                            <tr>
+                                <td><h5>Description: </h5></td>
+                                <td><input type="text" id="source-description" class="form-box" required placeholder="Enter Description"></td>
+                            </tr>
+                            <tr>
+                                <td><h5>Date Published: </h5></td>
+                                <td><input type="date" id="source-date" class="form-box" required></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="saveSource()" class="btn btn-success"><span class="glyphicon glyphicon-saved"> </span>
+                            Update Source Details
+                        </button>
+                        <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
 
         <div class="alert-messages text-center">
         </div>

@@ -79,7 +79,7 @@ $(document).ready(function () {
 
         if (event.keyCode == 13) {
             $.ajax({
-                type: "GET",
+                type: "GET",    
                 url: "PrimaryExcerptSearch",
                 data: {
                     param: $("#search-field").val(),
