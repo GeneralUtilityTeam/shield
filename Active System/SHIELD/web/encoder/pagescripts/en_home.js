@@ -93,3 +93,26 @@ function saveSource() {
         });
     }
 }
+
+function findSource() {
+    if ($('#excerpt-id').val() !== "") {
+        var excerptID = $('#excerpt-id').val();
+        $.ajax({
+            type: "GET",
+            url: "GetSourceIDExcerpt",
+            data: {
+                excerptID: excerptID
+            },
+            success: function (response) {
+                $('#findSource').modal('hide');
+                if (response.sourceID == -1)
+                    showAndDismissAlert("warning", "<strong>Failed! No excerpt found</strong> with that <strong>ID.</strong>");
+                else {
+                    showAndDismissAlert("success", "<strong>Source Found!</strong>");
+                    window.location.assign("ENSourceView?id=" + response.sourceID);
+                }
+
+            }
+        });
+    }
+}

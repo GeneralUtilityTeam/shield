@@ -40,7 +40,8 @@
             <div id="content-shield" style="border-top: none;">
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addSource" style="margin-right: 1vw; margin-bottom: 1vw;"><span class="glyphicon glyphicon-plus"></span> Add New Source</button>
-                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#viewExcerptSummary" style=" margin-bottom: 1vw;"><span class="glyphicon glyphicon-th-list"></span> View Excerpt Summary</button>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#viewExcerptSummary" style="margin-right: 1vw; margin-bottom: 1vw;"><span class="glyphicon glyphicon-th-list"></span> View Excerpt Summary</button>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#findSource" style=" margin-bottom: 1vw;"><span class="glyphicon glyphicon-search"></span> Find Source with Excerpt Number</button>
 
                     <table id="source-table" class="table table-bordered table-hover list-table" width="100%">
                         <thead style="background-color: #D3D3D3;">
@@ -128,6 +129,36 @@
                         </table>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        
+        <!-- Find Source Modal -->
+        <div class="modal fade" id="findSource" tabindex="-1" role="dialog" 
+             aria-labelledby="findSourcelabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Find Source based on Excerpt Number
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        Excerpt Number: <input type="number" id="excerpt-id" class="form-box" style="width: 60%;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="findSource()" class="btn btn-primary"><span class="glyphicon glyphicon-search"> </span>
+                            Find Source
+                        </button>
                         <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Close
                         </button>

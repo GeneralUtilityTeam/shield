@@ -37,7 +37,7 @@ public class GetSourceIDExcerpt extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetSourceIDExcerpt</title>");            
+            out.println("<title>Servlet GetSourceIDExcerpt</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet GetSourceIDExcerpt at " + request.getContextPath() + "</h1>");
@@ -58,14 +58,24 @@ public class GetSourceIDExcerpt extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int excerptID = Integer.parseInt(request.getParameter("excerptID"));
+        String excrIDStr = request.getParameter("excerptID");
+        int excerptID = -1;
+        try {
+            excerptID = Integer.parseInt(excrIDStr);
+        } catch (Exception ex) {
+            JSONObject obj = new JSONObject();
+            obj.put("sourceID", -1);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(obj.toString());
+        }
         int sourceID = new IntelligenceDAO().GetSourceIDOfExcerpt(excerptID);
         JSONObject obj = new JSONObject();
         obj.put("sourceID", sourceID);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(obj.toString());
-        
+
     }
 
     /**
