@@ -18,8 +18,10 @@ var filterLevel;
 var filterArea;
 var filterStrength;
 
+var hiddenMap, hiddenMapOptions, hiddenMarkers = [], omsHidden;
+
 $(document).ready(function () {
-     validateLogin();
+    validateLogin();
     $.ajax({
         type: "GET",
         url: "GetEEntityOfMission",
@@ -114,6 +116,7 @@ function initialize() { //Change this to take entities
     loadAreaSlider();
     loadStrengthSlider();
     initializeMap();
+    initializeHiddenMap();
 
     if (entity.length == 0) {
         entity = new Array();
@@ -122,6 +125,7 @@ function initialize() { //Change this to take entities
     if (entity.length > 0) {
         entityCounter = entity.length;
         loadEntity();
+        createHiddenMarkers();
         activateRemoveBtn(entity);
     }
     //set entity array to the mission entity
@@ -188,6 +192,95 @@ function initializeMap() {
         }
     });
 }
+
+function initializeHiddenMap() {
+    hiddenMapOptions = {
+        center: new google.maps.LatLng(lat, lng),
+        zoom: 8,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+
+    };
+
+    hiddenMap = new google.maps.Map(document.getElementById('hidden-area-map'), hiddenMapOptions);
+
+    omsHidden = new OverlappingMarkerSpiderfier(hiddenMap,
+            {markersWontMove: true, markersWontHide: true, keepSpiderfied: true, nearbyDistance: 500});
+
+    omsHidden.addListener('spiderfy', function (markers) {
+    });
+    omsHidden.addListener('unspiderfy', function (markers) {
+    });
+
+    createHiddenMarkers();
+}
+
+function createHiddenMarkers() {
+    hiddenMarkers = [];
+    omsHidden.clearMarkers();
+    var p = "P";
+    var m = "M";
+    var ec = "EC";
+    var ep = "EP";
+    var inf = "IN";
+    var inte = "IT";
+    var s = "S";
+    var latlngHidden;
+    var hiddenMarker;
+    var labelString;
+    for (var x = 0; x < entity.length; x++) {
+        for (var y = 0; y < entity[x].excrList.length; y++) {
+            latlngHidden = new google.maps.LatLng(entity[x].excrList[y].area.lat, entity[x].excrList[y].area.lng);
+            var category = entity[x].excrList[y].categoryID;
+            switch (category) {
+                case 1:
+                    labelString = p;
+                    break;
+                case 2:
+                    labelString = m;
+                    break;
+                case 3:
+                    labelString = ec;
+                    break;
+                case 4:
+                    labelString = s;
+                    break;
+                case 5:
+                    labelString = inf;
+                    break;
+                case 6:
+                    labelString = inte;
+                    break;
+                case 7:
+                    labelString = ep;
+                    break;
+            }
+
+            hiddenMarker = new MarkerWithLabel({
+                position: latlngHidden,
+                map: hiddenMap,
+                labelContent: labelString,
+                labelAnchor: new google.maps.Point(10, 34),
+                labelClass: "labels",
+                labelInBackground: false
+            });
+            hiddenMarker.setMap(hiddenMap);
+            omsHidden.addMarker(hiddenMarker);
+            hiddenMarkers.push(hiddenMarker);
+        }
+    }
+
+
+    setTimeout('openAllHiddenClusters()', 500);
+}
+
+function openAllHiddenClusters() {
+    var markers = omsHidden.markersNearAnyOtherMarker();
+
+    $.each(markers, function (i, marker) {
+        google.maps.event.trigger(markers[i], 'click');
+    });
+}
+
 
 function geocodeSuccess(result) {
     map.fitBounds(result.geometry.viewport);
@@ -519,6 +612,7 @@ function saveEntity() {
         selectedMarker = new Array();
         createSearchMarker();
         loadEntity();
+        createHiddenMarkers();
         $('#entityModal').modal('hide');
         activateRemoveBtn(entity);
     }
@@ -867,6 +961,7 @@ function deleteEntity(id) {
             entity.splice(x, 1);
     }
     loadEntity();
+    createHiddenMarkers();
     activateRemoveBtn(entity);
 }
 

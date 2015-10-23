@@ -224,6 +224,10 @@
         <servlet-name>UpdateExcerpt</servlet-name>
         <servlet-class>servlet.ajax.UpdateExcerpt</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateSource</servlet-name>
+        <servlet-class>servlet.ajax.UpdateSource</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -447,6 +451,10 @@
     <servlet-mapping>
         <servlet-name>UpdateExcerpt</servlet-name>
         <url-pattern>/UpdateExcerpt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSource</servlet-name>
+        <url-pattern>/UpdateSource</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

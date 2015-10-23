@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+y<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,6 +39,7 @@
         <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
         <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js"></script>
         <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json"></script>
+        <script src="https://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.1.9/src/markerwithlabel.js"></script>
 
 
         <script>
@@ -48,7 +49,7 @@
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
             var login = '<%=session.getAttribute("login")%>';
-            
+
             var missionThreat = '<%=request.getAttribute("missionThreat")%>';
             var keywordList = <%=request.getAttribute("keywordList")%>;
             var level8 = '<%=request.getAttribute("level8")%>';
@@ -62,14 +63,40 @@
             var lat = <%=request.getAttribute("lat")%>;
             var lng = <%=request.getAttribute("lng")%>;
 
-            $(function () {
-                $('#collapseTwo').collapse('hide')
-            });
-            $(function () {
-                $('#collapseOne').collapse('show')
-            });
+
+            function printHiddenMap() {
+                var divElements = document.getElementById('hidden-area-map').innerHTML;
+                var oldPage = document.body.innerHTML;
+
+                //Initial input
+                var reportHTML = "<html><head><title></title></head><body>";
+
+                //Content - Map
+                reportHTML += "<div class='report-map-div'>" + divElements + "</div>";
+                
+                //Content - Aything Else
+                reportHTML += "<div class='report-text-div'><label>Testing</label></div>"
+
+                //Finishing lines;
+                reportHTML += "</body>";
+
+                document.body.innerHTML = reportHTML;
+                //window.print();
+                //document.body.innerHTML = oldPage;
+                setTimeout('document.body.innerHTML = oldPage;', 10000);
+            }
         </script>
         <style>
+            .report-map-div{
+                vertical-align: top
+            }
+            .report-title-div{
+                
+            }
+            .report-text-div{
+                position:absolute;
+                bottom:0;
+            }
             .autocomplete-suggestions { border: 1px solid #D3D3D3; background: #FFF; opacity: .8; overflow: auto;  box-shadow: 5px 5px 5px #aaaaaa; margin-top: 3px;}
             .autocomplete-suggestion { padding: 2vh 0 2vh 2vh; overflow: hidden; height: 7vh;}
             .autocomplete-selected { background: #F5F5F5; }
@@ -100,7 +127,32 @@
             .gmnoprint div {
                 background:none !important;
             }
+            .labels {
+                color: white;
+                font-size: 16px;
+                text-align: center;
+                width: 20px;     
+                white-space: nowrap;
+            }
+            @media print{
 
+                .print{
+                    width: 100%;
+                    height:100%;
+                    display: block;
+                    size: letter landscape;
+                    color: white;
+                    font-size: 16px;
+                    text-align: center;
+                    width: 20px;     
+                    white-space: nowrap;
+                }
+                h5 {
+                    color: #000;
+                    background: none;
+                }
+
+            }
         </style>
 
     </head>
@@ -111,7 +163,9 @@
         <script src="js/navigation.js"></script>
 
         <div id="container-fluid">
-            <div id="content-shield" style="border-top: none;">
+            <div id="hidden-area-map" class="print" style="z-index: -4; position: absolute; height: 78vh; width: 74vw; border-style: solid; border-width: 1px; border-color: #D3D3D3; border-radius: 3px;">
+            </div>
+            <div id="content-shield" style="border-top: none; z-index: 1">
 
                 <div class="col-md-2" style="position: fixed;">
                     <div style="background-color: rgba(230,230,230,1.0); color: black; width: 18vw; border-radius: 5px; text-align: justify; padding: 0 15px 0 15px;">
@@ -124,6 +178,8 @@
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
                         <button type="button" onclick="assignCrCv()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Center of Gravity</button>
+                        <button type="button" onclick="printHiddenMap()" class="btn btn-default btn-sm"  style="position: fixed; right: 21vw;"><span class="glyphicon glyphicon-print"></span> Print Map</button>
+
                     </div>
 
                     <div id="data-sources">
@@ -160,7 +216,10 @@
                     </div>    
                 </div>
             </div>
+
         </div>
+
+
 
         <!-- Entity Modal -->
         <div class="modal" id="entityModal" tabindex="-1" role="dialog" 

@@ -117,6 +117,35 @@ public class IntelligenceDAO {
         return -1;
     }
 
+    public boolean UpdateSource(int editorID, Source src){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_source`(?, ?, ?, ?, ?, ?);");
+            
+            pstmt.setInt(1, editorID);
+            pstmt.setInt(2, src.getId());
+            pstmt.setInt(3, src.getClassID());
+            pstmt.setString(4, src.getTitle());
+            pstmt.setString(5, src.getDesc());
+            pstmt.setDate(6, new java.sql.Date(src.getPublished().getTime()));
+            
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() == 0) {
+                cn.close();
+                return false;
+            } else {
+                cn.close();
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="----- EXCERPTS">
     public Excerpt GetExcerpt(int excerptID) {
@@ -443,7 +472,7 @@ public class IntelligenceDAO {
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     } 
