@@ -111,7 +111,9 @@ function addUser() {
                 nameLast: nameLast
             },
             success: function (response) {
+                $('#viewUser').modal('hide');
                 showAndDismissAlert("success", "<strong>User</strong> has been <strong>added.</strong>");
+                userTable.ajax.reload();
             }
         });
     }
