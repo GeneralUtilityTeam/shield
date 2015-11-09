@@ -83,6 +83,9 @@ public class Save2PCO extends HttpServlet {
             if(eent.getClassID() == 5){
                 eent.setAcce(jsob.getInt("acce"));
                 eent.setReco(jsob.getInt("reco"));
+                System.out.println("Eentity " + eent.getName());
+                System.out.println("Acce-" + eent.getAcce());
+                System.out.println("Reco-" + eent.getReco());
             }
             
             ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();

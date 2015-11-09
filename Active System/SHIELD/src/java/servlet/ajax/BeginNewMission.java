@@ -77,8 +77,8 @@ public class BeginNewMission extends HttpServlet {
         String level1 = request.getParameter("level1");
         String latStr = request.getParameter("lat");
         String lngStr = request.getParameter("lng");
-        String HqLatStr = request.getParameter("HqLat"); 
-        String HqLngStr = request.getParameter("HqLng"); 
+        String HqLatStr = request.getParameter("latHQ"); 
+        String HqLngStr = request.getParameter("lngHQ"); 
         
         
         Mission mson = new Mission();

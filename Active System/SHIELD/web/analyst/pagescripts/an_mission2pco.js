@@ -753,6 +753,17 @@ function setMarkerColor(color) {
     return iconColor;
 }
 
+function checkMissionStatus() {
+    var proceed = true;
+    if (missionStatus > 2) {
+        $('#resetModal').modal('show');
+        proceed = false;
+    }
+    if (proceed) {
+        assignCrCv();
+    }
+}
+
 function savePCO() {
     var proceed = true;
     if (entity.length == 0) {
@@ -761,10 +772,6 @@ function savePCO() {
     if (entity.length < 4) {
         showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
     }
-    if (missionStatus > 2) {
-        $('#resetModal').modal('show');
-        proceed = false;
-    }
     if (proceed) {
         for (var x = 0; x < entity.length; x++) {
             var entityObject;
@@ -779,43 +786,7 @@ function savePCO() {
             }
             entityArr.push(entityObject);
         }
-        $.ajax({
-            type: "GET",
-            url: "Save2PCO",
-            data: {
-                entityArr: toJSON(entityArr)
-            },
-            success: function (response) {
-                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
-                window.location.assign("ANMission3COG");
-            }
-        });
-    }
-}
-
-function confirmSave() {
-    var proceed = true;
-    if (entity.length == 0) {
-        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
-    }
-    if (entity.length < 4) {
-        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
-    }
-    if (proceed) {
-        for (var x = 0; x < entity.length; x++) {
-            var entityObject;
-            var entityExcerptId = [];
-            for (var y = 0; y < entity[x].excrList.length; y++) {
-                entityExcerptId.push(entity[x].excrList[y].id);
-            }
-            if (entity[x].acce == -1 && entity[x].reco == -1)
-                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList)), reco: calculateRecognizability(entity[x].excrList)};
-            else {
-                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: entity[x].acce, reco: entity[x].reco};
-            }
-            entityArr.push(entityObject);
-        }
-        $.ajax({ //The Super AJAX
+        $.ajax({//The Super AJAX
             type: "GET",
             url: "Save2PCO",
             data: {
@@ -837,9 +808,9 @@ function confirmSave() {
                         },
                         async: false,
                         success: function (response) {
-                            
+
                             var duplicateEntityArr = new Array();// process new entityArr here
-                            
+
                             $.ajax({
                                 type: "GET",
                                 url: "Save2PCO",

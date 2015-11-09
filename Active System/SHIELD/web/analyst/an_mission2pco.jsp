@@ -258,7 +258,7 @@
                 </div>
                 <div class="col-md-10" style="margin-left: 18vw; height: 84vh; margin-top: 1vh;">
                     <div style="position: absolute; top: 80vh; right: 3vmin;">
-                        <button type="button" onclick="assignCrCv()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Center of Gravity</button>
+                        <button type="button" onclick="checkMissionStatus()" class="btn btn-success btn-sm" style="position: fixed; right: 3vw;"><span class="glyphicon glyphicon-saved"></span>Save and Proceed to Center of Gravity</button>
                         <button type="button" onclick="printHiddenMap()" class="btn btn-default btn-sm"  style="position: fixed; right: 21vw;"><span class="glyphicon glyphicon-print"></span> Print Map</button>
 
                     </div>
@@ -422,7 +422,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning"
-                                data-dismiss="modal" onclick="confirmSave()">Confirm
+                                data-dismiss="modal" onclick="assignCrCv()">Confirm
                         </button>
                         <button type="button" class="btn btn-default"
                                 data-dismiss="modal">Cancel
