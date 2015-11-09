@@ -62,7 +62,8 @@
             var level1 = '<%=request.getAttribute("level1")%>';
             var lat = <%=request.getAttribute("lat")%>;
             var lng = <%=request.getAttribute("lng")%>;
-
+            var hqLat = <%=request.getAttribute("hqLat")%>;
+            var hqLng = <%=request.getAttribute("hqLng")%>;
 
             function printHiddenMap() {
 

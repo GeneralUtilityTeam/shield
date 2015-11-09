@@ -67,7 +67,8 @@ public class MissionDAO {
                 area.setLat(rs.getDouble(17));
                 area.setLng(rs.getDouble(18));
                 mson.setArea(area);
-
+                mson.setHqLat(rs.getDouble(19));
+                mson.setHqLng(rs.getDouble(20));
                 //get keywords
                 pstmt = cn.prepareStatement("CALL `shield`.`get_all_keyword_mission`(?);");
                 pstmt.setInt(1, missionID);
@@ -235,7 +236,7 @@ public class MissionDAO {
 
             Area area = mson.getArea();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_mission`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
             pstmt.setInt(1, mson.getUserID());
             pstmt.setString(2, mson.getTitle());
             pstmt.setString(3, area.getLevel8());
@@ -248,6 +249,8 @@ public class MissionDAO {
             pstmt.setString(10, area.getLevel1());
             pstmt.setDouble(11, area.getLat());
             pstmt.setDouble(12, area.getLng());
+            pstmt.setDouble(13, mson.getHqLat());
+            pstmt.setDouble(14, mson.getHqLng());
 
             ResultSet rs = pstmt.executeQuery();
             rs.next();

@@ -59,7 +59,8 @@ public class ANMission2PCO extends FatherServlet {
         request.setAttribute("level1", mson.getArea().getLevel1());
         request.setAttribute("lat", mson.getArea().getLat());
         request.setAttribute("lng", mson.getArea().getLng());
-
+        request.setAttribute("hqLat", mson.getHqLat());
+        request.setAttribute("hqLng", mson.getHqLng());
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/analyst/an_mission2pco.jsp");
         dispatch.forward(request, response);

@@ -77,7 +77,8 @@ public class BeginNewMission extends HttpServlet {
         String level1 = request.getParameter("level1");
         String latStr = request.getParameter("lat");
         String lngStr = request.getParameter("lng");
-        
+        String HqLatStr = request.getParameter("HqLat"); 
+        String HqLngStr = request.getParameter("HqLng"); 
         
         
         Mission mson = new Mission();
@@ -96,7 +97,9 @@ public class BeginNewMission extends HttpServlet {
         area.setLat(Double.parseDouble(latStr));
         area.setLng(Double.parseDouble(lngStr));
         mson.setArea(area);
-        
+        mson.setHqLat(Double.parseDouble(HqLatStr));
+        mson.setHqLng(Double.parseDouble(HqLngStr));
+        mson.setHqLat(Double.parseDouble(HqLatStr));
         MissionDAO msonDAO = new MissionDAO();
         int missionID = -1;
         try{
