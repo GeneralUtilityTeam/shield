@@ -37,6 +37,9 @@ public class Mission {
 
     private Area area;
 
+    private double hqLat;
+    private double hqLng;
+    
     public void generateFullKeywordList(){
         ShieldUtility su = new ShieldUtility();
         keywordList = new ArrayList<String>();
@@ -325,6 +328,34 @@ public class Mission {
      */
     public void setKeywordList(ArrayList<String> keywordList) {
         this.keywordList = keywordList;
+    }
+
+    /**
+     * @return the hqLat
+     */
+    public double getHqLat() {
+        return hqLat;
+    }
+
+    /**
+     * @param hqLat the hqLat to set
+     */
+    public void setHqLat(double hqLat) {
+        this.hqLat = hqLat;
+    }
+
+    /**
+     * @return the hqLng
+     */
+    public double getHqLng() {
+        return hqLng;
+    }
+
+    /**
+     * @param hqLng the hqLng to set
+     */
+    public void setHqLng(double hqLng) {
+        this.hqLng = hqLng;
     }
 
 }

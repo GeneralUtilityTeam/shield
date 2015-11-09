@@ -4,12 +4,15 @@ var area;
 var latLng;
 var map;
 var marker;
-var switchString; //boolean; true if a string was used, false if a click was used
-//
+var addressHQ;
+var areaHQ;
+var latLngHQ;
+var markerHQ;
+
 //Initialize
 function initialize() {
     //Greeting Alert
-     validateLogin();
+    validateLogin();
     showAndDismissAlert('success', 'Welcome to <strong>SHIELD! </strong>');
     document.getElementById("global-username").innerHTML = userFullName + " ";
     //Map Initalization
@@ -23,12 +26,7 @@ function initialize() {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         map = new google.maps.Map(document.getElementById('mission-area-map'), mapOptions);
-        google.maps.event.addListener(map, 'click', function (event) {
-            latLng = event.latLng;
-            switchString = false;
-            positionMarker(latLng);
-            geocodeResultLatLng(latLng);
-        });
+
     }
 
     //Geocoder Initialization
@@ -84,8 +82,9 @@ function initializeMap() {
 function beginMission() {
     var missionTitle = document.getElementById("mission-title").value;
     var missionArea = document.getElementById("address").value;
+    var missionHQ = document.getElementById("address-hq").value;
 
-    if (missionTitle === "" || missionArea === "") { //Change this back
+    if (missionTitle === "" || missionArea === "" || missionHQ === "") { //Change this back
         showAndDismissAlert("danger", "<strong>Begin Mission Failed.</strong> Please complete the form.");
     }
     else {
@@ -103,7 +102,9 @@ function beginMission() {
                 level2: area.level2,
                 level1: area.level1,
                 lat: latLng.lat(),
-                lng: latLng.lng()
+                lng: latLng.lng(),
+                latHQ: latLngHQ.lat(),
+                lngHQ: latLngHQ.lng()
             },
             success: function (response) {
                 if (response.missionID != -1) {
@@ -122,7 +123,6 @@ function beginMission() {
 
 //Searching Function
 function addressSearch() {
-    switchString = true;
     var address = document.getElementById('address').value;
     geocodeResultString(address);
 }
@@ -144,14 +144,53 @@ function positionMarker(latLng) {
 
 function geocodeSuccess(result) { // This function is specific to this page
     area = generateAreaObject(result);
-    if (switchString) {
-        latLng = new google.maps.LatLng(area.latLng.lat(), area.latLng.lng());
-        positionMarker(latLng);
-    }
+    latLng = new google.maps.LatLng(area.latLng.lat(), area.latLng.lng());
+    positionMarker(latLng);
     //set the address bard to the result
     var stringed = generateFullAddress(area);
     document.getElementById('address').value = stringed; //UP TO HERE
-    map.setCenter(new google.maps.LatLng(area.latLng.lat(), area.latLng.lng()));
+    setBounds();
+}
+
+//Searching Function for Headquarters
+function addressHQSearch() {
+    var addressHQ = document.getElementById('address-hq').value;
+    geocodeHQResultString(addressHQ);
+}
+function geocodeHQResultString(str) { // Takes String Address; Returns geocode results
+    geocoder.geocode({
+        'address': str
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            geocodeHQSuccess(results[0]);
+        } else {
+            return null;
+        }
+    });
+}
+//Map Functions
+function positionHQMarker(latLng) {
+    if (markerHQ == null) {
+        markerHQ = new google.maps.Marker({
+            map: map,
+            draggable: false,
+            position: latLng
+        });
+    }
+    else {
+        markerHQ.setPosition(latLng);
+    }
+}
+
+
+function geocodeHQSuccess(result) { // This function is specific to this page
+    areaHQ = generateAreaObject(result);
+    latLngHQ = new google.maps.LatLng(areaHQ.latLng.lat(), areaHQ.latLng.lng());
+    positionHQMarker(latLngHQ);
+    //set the address bar to the result
+    var stringed = generateFullAddress(areaHQ);
+    document.getElementById('address-hq').value = stringed; //UP TO HERE
+    setBounds();
 }
 
 //UI Functions
@@ -170,4 +209,12 @@ function defineProgressBar(status) {
 function defineProgressPercent(status) {
     var statusInt = parseInt(status);
     return statusInt * 14.28;
+}
+function setBounds() {
+    var bounds = new google.maps.LatLngBounds();
+    if (latLng != null)
+        bounds.extend(latLng);
+    if (latLngHQ != null)
+        bounds.extend(latLngHQ);
+    map.fitBounds(bounds);
 }

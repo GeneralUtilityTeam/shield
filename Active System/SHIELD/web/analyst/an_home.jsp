@@ -56,12 +56,12 @@
         <div id="container-fluid">
 
             <ul id="myTab" class="nav nav-tabs" style="margin-left: 1.5vw; margin-right: 1.5vw">
-                <li class="active">
+                <li class="active" onmouseover="this.style.cursor = 'pointer';">
                     <a href="#mission-status" data-toggle="tab">
                         Mission Status
                     </a>
                 </li>
-                <li><a data-toggle="modal" onclick="initializeMap()">Begin New Mission</a></li>
+                <li onmouseover="this.style.cursor = 'pointer';"><a data-toggle="modal" onclick="initializeMap()">Begin New Mission</a></li>
             </ul>
             <div id="content-shield" style="border-top: none; height: 82vh;">
                 <div id="myTabContent" class="tab-content">
@@ -101,8 +101,8 @@
                     </div>
                     <div class="modal-body">
                         <table id="begin-mission-table" style="width: 100%;">
-                            <tr">
-                                <td style="width: 100px;" >
+                            <tr>
+                                <td style="width: 150px;" >
                                     <h5 style="margin-bottom: 10px;">Mission Title:  </h5>
                                 </td>
                                 <td>
@@ -114,11 +114,26 @@
                                     <h5>Mission Area:  </h5>
                                 </td>
                                 <td>
-                                    <div class="input-group">
+                                    <div class="input-group" style="margin-bottom: 10px;">
                                         <input type="text" id="address" class="form-control" placeholder="Search for an Area"required>
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" value="Search Area" onclick="addressSearch()">
                                                 Locate Area
+                                            </button>
+                                        </span>
+                                    </div><!-- /input-group -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Mission Headquarters:  </h5>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" id="address-hq" class="form-control" placeholder="Search for Headquarters"required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" value="Search Area" onclick="addressHQSearch()">
+                                                Locate Headquarters
                                             </button>
                                         </span>
                                     </div><!-- /input-group -->

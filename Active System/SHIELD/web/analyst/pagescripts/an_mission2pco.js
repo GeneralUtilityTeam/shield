@@ -13,7 +13,6 @@ var oms;
 var infoWindow;
 var mc;
 var minClusterZoom = 19;
-
 var filterLevel;
 var filterArea;
 var filterStrength;
@@ -79,7 +78,7 @@ $(document).ready(function () {
 
         if (event.keyCode == 13) {
             $.ajax({
-                type: "GET",    
+                type: "GET",
                 url: "PrimaryExcerptSearch",
                 data: {
                     param: $("#search-field").val(),
@@ -816,9 +815,10 @@ function confirmSave() {
             for (var y = 0; y < entity[x].excrList.length; y++) {
                 entityExcerptId.push(entity[x].excrList[y].id);
             }
-            entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId};
+            entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, accessibility: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList))};
             entityArr.push(entityObject);
         }
+
         $.ajax({
             type: "GET",
             url: "Save2PCO",
@@ -831,6 +831,47 @@ function confirmSave() {
             }
         });
     }
+}
+function calculateDistance(e, excr) {
+    var hqLatLng = new google.maps.LatLng(hqLat, hqLng);
+    var distanceKM = 0;
+    if (e.classID == 5) {
+        var cvCenter;
+        var cvBounds = new google.maps.LatLngBounds();
+        for (var y = 0; y < excr.length; y++) {
+            cvBounds.extend(new google.maps.LatLng(excr[y].area.lat, excr[y].area.lng));
+            cvCenter = cvBounds.getCenter();
+        }
+        var distanceM = google.maps.geometry.spherical.computeDistanceBetween(hqLatLng, cvCenter);
+
+        distanceKM = distanceM / 1000;
+    }
+    return distanceKM;
+}
+function calculateAccessibility(distance) {
+    //assumes that distance is an int, measured in km;
+    if (distance == 0)
+        return -1;
+    if (distance <= 100)
+        return 10;
+    else if (distance > 100 && distance <= 200)
+        return 9;
+    else if (distance > 200 && distance <= 300)
+        return 8;
+    else if (distance > 300 && distance <= 400)
+        return 7;
+    else if (distance > 400 && distance <= 500)
+        return 6;
+    else if (distance > 500 && distance <= 600)
+        return 5;
+    else if (distance > 600 && distance <= 700)
+        return 4;
+    else if (distance > 700 && distance <= 800)
+        return 3;
+    else if (distance > 800 && distance <= 900)
+        return 2;
+    else if (distance > 900)
+        return 1;
 }
 
 function loadStrengthSlider() {
