@@ -68,7 +68,7 @@ public class Save2PCO extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         int editorID = (int)session.getAttribute("userID");
-        int missionID = (int)session.getAttribute("missionID");
+        int missionID = Integer.parseInt(request.getParameter("missionID"));
         
         ShieldUtility su = new ShieldUtility();
         ArrayList<EEntity> eentList = new ArrayList<EEntity>();
@@ -79,6 +79,12 @@ public class Save2PCO extends HttpServlet {
             EEntity eent = new EEntity();
             eent.setName(su.SQLify(jsob.getString("name")));
             eent.setClassID(jsob.getInt("classID"));
+            
+            if(eent.getClassID() == 5){
+                eent.setAcce(jsob.getInt("acce"));
+                eent.setReco(jsob.getInt("reco"));
+            }
+            
             ArrayList<Excerpt> excrList = new ArrayList<Excerpt>();
             for(Object id : jsob.getJSONArray("excrList")){
                 Excerpt excr = new Excerpt();

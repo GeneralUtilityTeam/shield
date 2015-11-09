@@ -590,6 +590,9 @@ public class IntelligenceDAO {
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, missionID);
 
+            PreparedStatement pstmt3 = cn.prepareStatement("CALL `shield`.`update_cv`(?,0,?,0,0,0,?)");
+            
+            
             for (EEntity e : eentList) {
                 pstmt.setInt(3, e.getClassID());
                 pstmt.setString(4, e.getName());
@@ -604,8 +607,16 @@ public class IntelligenceDAO {
                         pstmt2.setInt(2, excr.getId());
                         pstmt2.execute();
                     }
+                    
+                    if(e.getClassID() == 5){
+                        pstmt3.setInt(1, eentityID);
+                        pstmt3.setInt(2, e.getAcce());
+                        pstmt3.setInt(3, e.getReco());
+                        pstmt3.execute();
+                    }
                 }
-
+                
+                
             }
 
             return true;

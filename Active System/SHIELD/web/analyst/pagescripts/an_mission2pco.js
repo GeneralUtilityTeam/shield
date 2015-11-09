@@ -61,7 +61,7 @@ $(document).ready(function () {
                         createSearchMarker();
                         $('#strengthRangeInput').val(1);
                         $('#areaRangeInput').val(1);
-                        $('#strengthRangeText').text("Strength Range: All");
+                        $('#strengthRangeText').text("Relevance Range: All");
                         $('#areaRangeText').text("Search Area Range: Philippines");
                         filterLevel = 1;
                         filterArea = level1;
@@ -92,7 +92,7 @@ $(document).ready(function () {
                         createSearchMarker();
                         $('#strengthRangeInput').val(1);
                         $('#areaRangeInput').val(1);
-                        $('#strengthRangeText').text("Strength Range: All");
+                        $('#strengthRangeText').text("Relevance Range: All");
                         $('#areaRangeText').text("Search Area Range: Philippines");
                         filterLevel = 1;
                         filterArea = level1;
@@ -279,7 +279,6 @@ function openAllHiddenClusters() {
         google.maps.event.trigger(markers[i], 'click');
     });
 }
-
 
 function geocodeSuccess(result) {
     map.fitBounds(result.geometry.viewport);
@@ -578,16 +577,7 @@ function saveEntity() {
     var classID = 0;
     var proceed = true;
     if ($('#does' + entityCounter).prop('checked') == true && $('#uses' + entityCounter).prop('checked') == true) {
-        if (entity.length != 0) {
-            for (var x = 0; x < entity.length; x++) {
-                if (entity[x].classID == 2) {
-                    proceed = false;
-                    showAndDismissAlert("danger", "You already have a <strong>Center of Gravity</strong>.");
-                }
-            }
-        }
-        if (proceed)
-            classID = 2;
+        classID = 2;
     }
     else if ($('#does' + entityCounter).prop('checked') == true && $('#uses' + entityCounter).prop('checked') == false) {
         classID = 3;
@@ -602,7 +592,7 @@ function saveEntity() {
 
 
     if (entityExcerptList.length != 0 && proceed) {
-        var entityObject = {id: entityCounter, name: $('#entity-name').val(), classID: classID, excrList: entityExcerptList};
+        var entityObject = {id: entityCounter, name: $('#entity-name').val(), classID: classID, excrList: entityExcerptList, acce: -1, reco: -1};
         entity.push(entityObject);
         entityCounter++;
         setMarkersOnMap(null, searchMarker);
@@ -619,7 +609,6 @@ function saveEntity() {
         showAndDismissAlert("danger", "<strong>Failed! </strong> You do not have any excerpts to this Entity");
     }
 }
-
 
 function assignCrCv() {
     var modal = $('#crcvModal');
@@ -683,12 +672,13 @@ function saveCrCv() {
         if (entity[x].classID == 4) {
             if ($('#vulnerable' + entity[x].id).prop('checked') == true) {
                 entity[x].classID = 5;
+                entity[x].classDesc = "cv";
             }
         }
     }
     var proceed = true;
 
-    var cogCounter, ccCounter, crCounter, cvCounter;
+    var cogCounter = 0, ccCounter = 0, crCounter = 0, cvCounter = 0;
     for (var x = 0; x < entity.length; x++) {
         if (entity[x].classID == 2) {
             cogCounter++;
@@ -717,7 +707,8 @@ function saveCrCv() {
     }
     if (cogCounter > 1) {
         proceed = false;
-        showAndDismissAlert("danger", "You cannot have <strong> multiple Centers of Gravity </strong>");
+        $('#crcvModal').modal('hide');
+        generateCOGModal();
     }
     if (cvCounter == 0) {
         proceed = false;
@@ -736,7 +727,6 @@ function saveCrCv() {
 
 }
 
-
 function setMarkersOnMap(map, excerptMarker) {
 
     for (var x = 0; x < excerptMarker.length; x++) {
@@ -754,7 +744,6 @@ function setWindowListener(marker, text) {
         infoWindow.close(map, this);
     });
 }
-
 
 function setMarkerColor(color) {
     var iconColor = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color,
@@ -783,7 +772,11 @@ function savePCO() {
             for (var y = 0; y < entity[x].excrList.length; y++) {
                 entityExcerptId.push(entity[x].excrList[y].id);
             }
-            entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId};
+            if (entity[x].acce == -1 && entity[x].reco == -1)
+                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList)), reco: calculateRecognizability(entity[x].excrList)};
+            else {
+                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: entity[x].acce, reco: entity[x].reco};
+            }
             entityArr.push(entityObject);
         }
         $.ajax({
@@ -815,23 +808,57 @@ function confirmSave() {
             for (var y = 0; y < entity[x].excrList.length; y++) {
                 entityExcerptId.push(entity[x].excrList[y].id);
             }
-            entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, accessibility: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList))};
+            if (entity[x].acce == -1 && entity[x].reco == -1)
+                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList)), reco: calculateRecognizability(entity[x].excrList)};
+            else {
+                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: entity[x].acce, reco: entity[x].reco};
+            }
             entityArr.push(entityObject);
         }
-
-        $.ajax({
+        $.ajax({ //The Super AJAX
             type: "GET",
             url: "Save2PCO",
             data: {
+                missionID: missionID,
                 entityArr: toJSON(entityArr)
             },
+            async: false,
             success: function (response) {
+
+                var duplicateCOGs = new Array();
+
+                duplicateCOGs.forEach(function (cog) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DuplicateMission",
+                        data: {
+                            missionID: missionID,
+                            missionTitle: cog.missionTitle
+                        },
+                        async: false,
+                        success: function (response) {
+                            
+                            var duplicateEntityArr = new Array();// process new entityArr here
+                            
+                            $.ajax({
+                                type: "GET",
+                                url: "Save2PCO",
+                                data: {
+                                    missionID: response.missionID,
+                                    entityArr: toJSON(duplicateEntityArr)
+                                },
+                                async: false
+                            });
+                        }
+                    });
+                });
                 showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
                 window.location.assign("ANMission3COG");
             }
         });
     }
 }
+
 function calculateDistance(e, excr) {
     var hqLatLng = new google.maps.LatLng(hqLat, hqLng);
     var distanceKM = 0;
@@ -848,10 +875,11 @@ function calculateDistance(e, excr) {
     }
     return distanceKM;
 }
+
 function calculateAccessibility(distance) {
     //assumes that distance is an int, measured in km;
     if (distance == 0)
-        return -1;
+        return 0;
     if (distance <= 100)
         return 10;
     else if (distance > 100 && distance <= 200)
@@ -874,6 +902,37 @@ function calculateAccessibility(distance) {
         return 1;
 }
 
+function calculateRecognizability(excrArr) {
+    console.log(excrArr);
+    var totalRel = 0;
+    excrArr.forEach(function (excr) {
+        totalRel += excr.strength;
+    });
+    console.log(totalRel);
+    var avgRel = (totalRel) / (excrArr.length);
+    console.log(avgRel);
+    if (avgRel > 40 && avgRel <= 46)
+        return 1;
+    else if (avgRel > 46 && avgRel <= 52)
+        return 2;
+    else if (avgRel > 52 && avgRel <= 58)
+        return 3;
+    else if (avgRel > 58 && avgRel <= 64)
+        return 4;
+    else if (avgRel > 64 && avgRel <= 7)
+        return 5;
+    else if (avgRel > 7 && avgRel <= 76)
+        return 6;
+    else if (avgRel > 76 && avgRel <= 82)
+        return 7;
+    else if (avgRel > 82 && avgRel <= 88)
+        return 8;
+    else if (avgRel > 88 && avgRel <= 94)
+        return 9;
+    else if (avgRel > 94)
+        return 10;
+}
+
 function loadStrengthSlider() {
     filterStrength = 40;
     var rangeValues =
@@ -884,11 +943,11 @@ function loadStrengthSlider() {
             };
 
     $('#strengthRangeInput').attr("value", 1);
-    $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
+    $('#strengthRangeText').text("Relevance Range: " + rangeValues[$('#strengthRangeInput').val()]);
     $(function () {
         // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
         $('#strengthRangeInput').change(function () {
-            $('#strengthRangeText').text("Strength Range: " + rangeValues[$('#strengthRangeInput').val()]);
+            $('#strengthRangeText').text("Relevance Range: " + rangeValues[$('#strengthRangeInput').val()]);
             var strengthRange = $('#strengthRangeInput').val();
             if (strengthRange == 1)
                 filterStrength = 40;
@@ -1073,4 +1132,102 @@ function activateRemoveBtn(entityArr) {
         var btn = document.getElementById("remove" + entity.id);
         btn.setAttribute("onclick", "deleteEntity(" + entity.id + ")");
     }
+}
+
+function generateCOGModal() {
+    var modalBody = $('#cog-select');
+    modalBody.empty();
+    var label = document.createElement("label");
+    label.innerHTML = "You have multiple Centers of Gravity. Please choose one Center of Gravity for this Mission. <br>";
+    var select = document.createElement("select");
+    select.id = "cogSelect";
+    select.style.textAlign = "center";
+    for (var x = 0; x < entity.length; x++) {
+        if (entity[x].classID == 2) {
+            var option = document.createElement("option");
+            option.value = entity[x].id;
+            option.text = toTitleCase(entity[x].name);
+            select.appendChild(option);
+        }
+    }
+    var cogList = document.createElement("div");
+    var label2 = document.createElement("label");
+    label2.innerHTML = "<br>A duplicate Mission will be created for each Center of Gravity. Please input Mission Title for each.";
+    cogList.appendChild(label2);
+    var table = document.createElement("table");
+    table.style.width = "100%";
+    table.id = "cogTable";
+    for (var x = 0; x < entity.length; x++) {
+        if (entity[x].classID == 2 && entity[x].id != $('#cog-select').val()) {
+            var tr = document.createElement("tr");
+
+            var td1 = document.createElement("td");
+            td1.style.width = "25%";
+            var labelCOG = document.createElement("label");
+            labelCOG.innerHTML = toTitleCase(entity[x].name) + ": ";
+            td1.appendChild(labelCOG);
+
+            var td2 = document.createElement("td");
+            td2.style.width = "65%";
+            var input = document.createElement("input");
+            input.type = "text";
+            input.className = "form-box";
+            input.setAttribute("placeholder", "Enter New Mission Title for Center Of Gravity");
+            input.id = "duplicateCOG" + entity[x].id;
+            input.style.marginBottom = "10px";
+            input.style.width = "100%";
+            td2.appendChild(input);
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            table.appendChild(tr);
+        }
+    }
+    table.deleteRow(0);
+    cogList.appendChild(table);
+
+
+    modalBody.append(label);
+    modalBody.append(select);
+    modalBody.append(cogList);
+
+    $('#cogSelect').multiselect({
+        onChange: function (option, checked, select) {
+            cogList.innerHTML = "";
+            var label2 = document.createElement("label");
+            label2.innerHTML = "<br>A duplicate Mission will be created for each Center of Gravity. Please input Mission Title for each.";
+            cogList.appendChild(label2);
+            var table = document.createElement("table");
+            table.style.width = "100%";
+            for (var x = 0; x < entity.length; x++) {
+                if (entity[x].classID == 2 && entity[x].id != $(option).val()) {
+                    var tr = document.createElement("tr");
+
+                    var td1 = document.createElement("td");
+                    td1.style.width = "25%";
+                    var labelCOG = document.createElement("label");
+                    labelCOG.innerHTML = toTitleCase(entity[x].name) + ": ";
+                    td1.appendChild(labelCOG);
+
+                    var td2 = document.createElement("td");
+                    td2.style.width = "65%";
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.className = "form-box";
+                    input.setAttribute("placeholder", "Enter New Mission Title for Center Of Gravity");
+                    input.id = "duplicateCOG" + entity[x].id;
+                    input.style.marginBottom = "10px";
+                    input.style.width = "100%";
+                    td2.appendChild(input);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    table.appendChild(tr);
+                }
+            }
+            cogList.appendChild(table);
+        }
+    });
+
+    $('#cogModal').modal('show');
 }

@@ -369,7 +369,7 @@ public class MissionDAO {
         }
         return false;
     } 
-
+    
     public int ResetMission(int missionID, int newphase) {
         try {
             DBConnector db = new DBConnector();

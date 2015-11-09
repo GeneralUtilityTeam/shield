@@ -27,6 +27,10 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
         <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+        
+        <!--Dropdown Checkbox-->
+        <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
 
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission2pco.js"></script>
@@ -109,47 +113,47 @@
 
                 var reportHTML = "<html><head><style>.maptd{color: #FFFFFF;}</style><title></title></head><body><table>";
                 reportHTML += "<tr><td><h1>Psychological Operations Characteristics Overlay: " + missionTitle + "</h1></td></tr>";
-                
+
                 reportHTML += "<tr><td><h3>Excerpts</h4></td></tr>";
 
 
                 reportHTML += "<tr><td><h4>Political</h4></td></tr>";
-                political.forEach(function(excr){
+                political.forEach(function (excr) {
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
-                
+
                 reportHTML += "<tr><td><h4>Military and Security</h4></td></tr>";
-                militarySecurity.forEach(function(excr){
+                militarySecurity.forEach(function (excr) {
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
                 reportHTML += "<tr><td><h4>Economic</h4></td></tr>";
-                economic.forEach(function(excr){
+                economic.forEach(function (excr) {
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
                 reportHTML += "<tr><td><h4>Social</h4></td></tr>";
-                social.forEach(function(excr){
+                social.forEach(function (excr) {
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
                 reportHTML += "<tr><td><h4>Information</h4></td></tr>";
-                information.forEach(function(excr){
+                information.forEach(function (excr) {
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
                 reportHTML += "<tr><td><h4>Infrastructure and Technology</h4></td></tr>";
-                infrastructureTechnology.forEach(function(excr){
+                infrastructureTechnology.forEach(function (excr) {
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
 
                 reportHTML += "<tr><td><h4>Environmental and Physical</h4></td></tr>";
-                environmentPhysical.forEach(function(excr){
+                environmentPhysical.forEach(function (excr) {
                     reportHTML += "<tr><td>- " + excr.text + "</td></tr>";
                 });
-                
+
                 reportHTML += "<tr><td class='maptd'>" + divElements + "</td></tr>";
-                
+
                 reportHTML += "</table></body>";
 
 
@@ -299,7 +303,7 @@
 
 
         <!-- Entity Modal -->
-        <div class="modal" id="entityModal" tabindex="-1" role="dialog" 
+        <div class="modal fade" id="entityModal" tabindex="-1" role="dialog" 
              aria-labelledby="entityModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" >
@@ -335,7 +339,7 @@
         </div>
 
         <!-- CRCV Modal -->
-        <div class="modal" id="crcvModal" tabindex="-1" role="dialog" 
+        <div class="modal fade" id="crcvModal" tabindex="-1" role="dialog" 
              aria-labelledby="crcvModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" >
@@ -370,7 +374,7 @@
         </div>
 
         <!-- Keyword Modal -->
-        <div class="modal" id="keywordModal" tabindex="-1" role="dialog" 
+        <div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" 
              aria-labelledby="keywordModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" >
@@ -419,6 +423,41 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning"
                                 data-dismiss="modal" onclick="confirmSave()">Confirm
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Cancel
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
+        <!-- Center of Gravity Modal -->
+        <div class="modal fade" id="cogModal" tabindex="-1" role="dialog" 
+             aria-labelledby="cogModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Multiple Centers of Gravity
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="cog-select" style="overflow: auto; padding-left: 10%; padding-right: 10%; min-height: 30vh;">
+                        <label>Please select Center of Gravity for this Mission 
+                        </label> 
+
+                        <div id="cog-select-div">
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success"
+                                data-dismiss="modal" onclick="setCOGforMission()">Confirm
                         </button>
                         <button type="button" class="btn btn-default"
                                 data-dismiss="modal">Cancel
