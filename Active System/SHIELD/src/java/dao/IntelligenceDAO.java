@@ -117,20 +117,20 @@ public class IntelligenceDAO {
         return -1;
     }
 
-    public boolean UpdateSource(int editorID, Source src){
+    public boolean UpdateSource(int editorID, Source src) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_source`(?, ?, ?, ?, ?, ?);");
-            
+
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, src.getId());
             pstmt.setInt(3, src.getClassID());
             pstmt.setString(4, src.getTitle());
             pstmt.setString(5, src.getDesc());
             pstmt.setDate(6, new java.sql.Date(src.getPublished().getTime()));
-            
+
             ResultSet rs = pstmt.executeQuery();
             rs.next();
 
@@ -146,8 +146,10 @@ public class IntelligenceDAO {
         }
         return false;
     }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="----- EXCERPTS">
+
     public Excerpt GetExcerpt(int excerptID) {
         try {
             DBConnector db = new DBConnector();
@@ -297,7 +299,7 @@ public class IntelligenceDAO {
         }
 
         return null;
-    } 
+    }
 
     public int AddExcerpt(int userID, Excerpt excr) {
         try {
@@ -343,7 +345,7 @@ public class IntelligenceDAO {
             Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
-    } 
+    }
 
     public ArrayList<Excerpt> PrimarySearch(String query) {
         try {
@@ -392,7 +394,7 @@ public class IntelligenceDAO {
         }
 
         return null;
-    } 
+    }
 
     public ArrayList<ReportItem> GetExcerptCountOfRegion() {
         try {
@@ -426,9 +428,9 @@ public class IntelligenceDAO {
         }
 
         return null;
-    } 
+    }
 
-    public int GetSourceIDOfExcerpt(int excerptID){
+    public int GetSourceIDOfExcerpt(int excerptID) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
@@ -451,13 +453,14 @@ public class IntelligenceDAO {
         }
         return -1;
     }
-    public boolean UpdateExcerpt(int editorID, Excerpt excr){
+
+    public boolean UpdateExcerpt(int editorID, Excerpt excr) {
         try {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
             PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`update_excerpt`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-            
+
             Area area = excr.getArea();
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, excr.getId());
@@ -473,7 +476,6 @@ public class IntelligenceDAO {
             pstmt.setString(12, area.getLevel1());
             pstmt.setDouble(13, area.getLat());
             pstmt.setDouble(14, area.getLng());
-
 
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -499,8 +501,8 @@ public class IntelligenceDAO {
             Logger.getLogger(IntelligenceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    } 
-    
+    }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="----- EENTITY">\
     public ArrayList<EEntity> GetAllEEntityOfMission(int missionID) {
@@ -525,7 +527,17 @@ public class IntelligenceDAO {
                     eent.setClassID(rs.getInt(2));
                     eent.setClassDesc(rs.getString(3));
                     eent.setName(rs.getString(4));
-
+                    
+                    if(eent.getClassID() == 5){
+                        PreparedStatement pstmt3 = cn.prepareStatement("CALL shield.get_cv_data(?);");
+                        pstmt3.setInt(1, eent.getId());
+                        ResultSet rs3 = pstmt3.executeQuery();
+                        rs3.next();
+                        if(rs3.getRow() != 0){
+                            eent.setAcce(rs3.getInt(2));
+                            eent.setReco(rs3.getInt(6));
+                        }
+                    }
                     PreparedStatement pstmt2 = cn.prepareStatement("CALL shield.get_all_excerpt_eentity(?);");
                     pstmt2.setInt(1, eent.getId());
                     ResultSet rs2 = pstmt2.executeQuery();
@@ -590,9 +602,11 @@ public class IntelligenceDAO {
             pstmt.setInt(1, editorID);
             pstmt.setInt(2, missionID);
 
-            PreparedStatement pstmt3 = cn.prepareStatement("CALL `shield`.`update_cv`(?,0,?,0,0,0,?)");
-            
-            
+            PreparedStatement pstmt3 = cn.prepareStatement("CALL `shield`.`add_eentity_ext`(?, ?, ?);");
+            pstmt3.setInt(2, missionID);
+
+            PreparedStatement pstmt4 = cn.prepareStatement("CALL `shield`.`update_cv`(?,0,?,0,0,0,?)");
+
             for (EEntity e : eentList) {
                 pstmt.setInt(3, e.getClassID());
                 pstmt.setString(4, e.getName());
@@ -607,16 +621,29 @@ public class IntelligenceDAO {
                         pstmt2.setInt(2, excr.getId());
                         pstmt2.execute();
                     }
+
+                    pstmt3.setInt(1, eentityID);
+
                     
-                    if(e.getClassID() == 5){
-                        pstmt3.setInt(1, eentityID);
-                        pstmt3.setInt(2, e.getAcce());
-                        pstmt3.setInt(3, e.getReco());
+                    if (e.getClassID() == 3){
+                        pstmt3.setInt(3, 3);
                         pstmt3.execute();
                     }
+                    if (e.getClassID() == 4){
+                        pstmt3.setInt(3, 4);
+                        pstmt3.execute();
+                    }
+                    if (e.getClassID() == 5) {
+                        pstmt3.setInt(3, 5);
+                        pstmt3.execute();
+                        
+                        pstmt4.setInt(1, eentityID);
+                        pstmt4.setInt(2, e.getAcce());
+                        pstmt4.setInt(3, e.getReco());
+                        pstmt4.execute();
+                    }
                 }
-                
-                
+
             }
 
             return true;
@@ -947,5 +974,4 @@ public class IntelligenceDAO {
     }
 
 // </editor-fold>
-    
 }

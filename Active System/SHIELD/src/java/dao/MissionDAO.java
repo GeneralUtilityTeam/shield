@@ -450,42 +450,16 @@ public class MissionDAO {
             DBConnector db = new DBConnector();
             Connection cn = db.getConnection();
 
-            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`delete_all_eentity_ext_mission`(?);");
-            pstmt.setInt(1, cog.getMissionID());
-            pstmt.execute();
-            pstmt = cn.prepareStatement("CALL `shield`.`add_cog`(?, ?, ?);");
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`add_cog`(?, ?, ?);");
             pstmt.setInt(1, cog.getMissionID());
             pstmt.setString(2, cog.getNodeJSON());
             pstmt.setString(3, cog.getEdgeJSON());
             pstmt.execute();
 
-            pstmt = cn.prepareStatement("CALL `shield`.`add_eentity_ext`(?, ?, ?);");
-            pstmt.setInt(2, cog.getMissionID());
-
-            //CC
-            pstmt.setInt(3, 3);
-            for (EEntity cc : cog.getCcList()) {
-                pstmt.setInt(1, cc.getId());
-                pstmt.execute();
-            }
-
-            //CR
-            pstmt.setInt(3, 4);
-            for (EEntity cr : cog.getCrList()) {
-                pstmt.setInt(1, cr.getId());
-                pstmt.execute();
-            }
-
-            //CV
-            pstmt.setInt(3, 5);
-            for (EEntity cv : cog.getCvList()) {
-                pstmt.setInt(1, cv.getId());
-                pstmt.execute();
-            }
-
             //CC-CR
             PreparedStatement pstmt2 = cn.prepareStatement("CALL `shield`.`link_cc_cr`(?, ?);");
             for (IntTuple it : cog.getRelCRList()) {
+                System.out.println(it.getX() + "-" + it.getY());
                 pstmt2.setInt(1, it.getX());
                 pstmt2.setInt(2, it.getY());
                 pstmt2.execute();
@@ -498,7 +472,7 @@ public class MissionDAO {
                 pstmt2.setInt(2, it.getY());
                 pstmt2.execute();
             }
-
+            System.out.println("pass");
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
