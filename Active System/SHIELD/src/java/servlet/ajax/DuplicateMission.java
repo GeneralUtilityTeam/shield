@@ -70,17 +70,19 @@ public class DuplicateMission extends HttpServlet {
         MissionDAO msonDAO = new MissionDAO();
         Mission mson = msonDAO.GetMission(missionID);
         mson.setTitle(missionTitle);
-        
+        int duplicateID = -1;
         try{
-            missionID = msonDAO.AddMission(mson);
-            msonDAO.UpdateMission(missionID, mson);
+            duplicateID = msonDAO.AddMission(mson);
+            mson.setId(duplicateID);
+            msonDAO.UpdateMission(editorID, mson);
+            System.out.println("Updated Mission");
         }catch(Exception ex){
             System.out.println(ex);
         }
         
         
         JSONObject obj = new JSONObject();
-        obj.put("missionID", missionID);
+        obj.put("missionID", duplicateID);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(obj.toString());

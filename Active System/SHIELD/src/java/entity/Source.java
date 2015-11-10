@@ -18,10 +18,12 @@ public class Source {
     private int classID;
     private String classDesc;
     private String title;
+    private int version;
     private String desc;
     private Date published;
     private Date encoded;
     private ArrayList<Excerpt> excrList;
+    private boolean updated;
 
     /**
      * Get the value of id
@@ -137,6 +139,34 @@ public class Source {
      */
     public void setExcrList(ArrayList<Excerpt> excrList) {
         this.excrList = excrList;
+    }
+
+    /**
+     * @return the version
+     */
+    public int getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    /**
+     * @return the updated
+     */
+    public boolean isUpdated() {
+        return updated;
+    }
+
+    /**
+     * @param updated the updated to set
+     */
+    public void setUpdated(boolean updated) {
+        this.updated = updated;
     }
 
 }

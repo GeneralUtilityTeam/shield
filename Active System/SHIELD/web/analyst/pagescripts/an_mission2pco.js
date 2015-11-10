@@ -2,7 +2,6 @@ var excerptList;
 var searchMarker = [];
 var entity = [];
 var entityCounter = 0;
-var entityArr = [];
 var usedKeywords = [], unusedKeywords = [];
 var selectedMarker = [];
 var mapOptions;
@@ -16,6 +15,7 @@ var minClusterZoom = 19;
 var filterLevel;
 var filterArea;
 var filterStrength;
+var duplicateCOGs = [];
 
 var hiddenMap, hiddenMapOptions, hiddenMarkers = [], omsHidden;
 
@@ -764,72 +764,6 @@ function checkMissionStatus() {
     }
 }
 
-function savePCO() {
-    var proceed = true;
-    if (entity.length == 0) {
-        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
-    }
-    if (entity.length < 4) {
-        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
-    }
-    if (proceed) {
-        for (var x = 0; x < entity.length; x++) {
-            var entityObject;
-            var entityExcerptId = [];
-            for (var y = 0; y < entity[x].excrList.length; y++) {
-                entityExcerptId.push(entity[x].excrList[y].id);
-            }
-            if (entity[x].acce == -1 && entity[x].reco == -1)
-                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList)), reco: calculateRecognizability(entity[x].excrList)};
-            else {
-                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: entity[x].acce, reco: entity[x].reco};
-            }
-            entityArr.push(entityObject);
-        }
-        $.ajax({//The Super AJAX
-            type: "GET",
-            url: "Save2PCO",
-            data: {
-                missionID: missionID,
-                entityArr: toJSON(entityArr)
-            },
-            async: false,
-            success: function (response) {
-
-                var duplicateCOGs = new Array();
-
-                duplicateCOGs.forEach(function (cog) {
-                    $.ajax({
-                        type: "GET",
-                        url: "DuplicateMission",
-                        data: {
-                            missionID: missionID,
-                            missionTitle: cog.missionTitle
-                        },
-                        async: false,
-                        success: function (response) {
-
-                            var duplicateEntityArr = new Array();// process new entityArr here
-
-                            $.ajax({
-                                type: "GET",
-                                url: "Save2PCO",
-                                data: {
-                                    missionID: response.missionID,
-                                    entityArr: toJSON(duplicateEntityArr)
-                                },
-                                async: false
-                            });
-                        }
-                    });
-                });
-                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
-                window.location.assign("ANMission3COG");
-            }
-        });
-    }
-}
-
 function calculateDistance(e, excr) {
     var hqLatLng = new google.maps.LatLng(hqLat, hqLng);
     var distanceKM = 0;
@@ -874,14 +808,11 @@ function calculateAccessibility(distance) {
 }
 
 function calculateRecognizability(excrArr) {
-    console.log(excrArr);
     var totalRel = 0;
     excrArr.forEach(function (excr) {
         totalRel += excr.strength;
     });
-    console.log(totalRel);
     var avgRel = (totalRel) / (excrArr.length);
-    console.log(avgRel);
     if (avgRel > 40 && avgRel <= 46)
         return 1;
     else if (avgRel > 46 && avgRel <= 52)
@@ -1201,4 +1132,118 @@ function generateCOGModal() {
     });
 
     $('#cogModal').modal('show');
+}
+
+function setMissionCOG() {
+    var cog = $('#cogSelect').val();
+    alert(cog);
+    duplicateCOGs = [];
+    var cogArr = [];
+    for (var x = 0; x < entity.length; x++) {
+        if (entity[x].classID == 2) {
+            cogArr.push(entity[x]);
+        }
+    }
+
+    for (var x = 0; x < cogArr.length; x++) {
+        if (cogArr[x].id != cog) {
+            
+            var duplicateEntityArr = [];
+            for (var z = 0; z < entity.length; z++) {
+                var entityObject;
+                var entityExcerptId = [];
+                for (var y = 0; y < entity[z].excrList.length; y++) {
+                    entityExcerptId.push(entity[z].excrList[y].id);
+                }
+                if (entity[z].acce == -1 && entity[z].reco == -1)
+                    entityObject = {id: entity[z].id, name: entity[z].name, classID: entity[z].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[z], entity[z].excrList)), reco: calculateRecognizability(entity[z].excrList)};
+                else {
+                    entityObject = {id: entity[z].id, name: entity[z].name, classID: entity[z].classID, excrList: entityExcerptId, acce: entity[z].acce, reco: entity[z].reco};
+                }
+                if(entityObject.classID != 2 || entityObject.id == cogArr[x].id)
+                duplicateEntityArr.push(entityObject);
+
+            }
+
+            var missionTitle = $('#duplicateCOG' + cogArr[x].id).val();
+            var duplicateCOG = {duplicateEntityArr: duplicateEntityArr, missionTitle: missionTitle};
+            duplicateCOGs.push(duplicateCOG);
+        }
+    }
+    savePCO();
+}
+
+function savePCO() {
+    var entityArr = [];
+    var proceed = true;
+    if (entity.length == 0) {
+        showAndDismissAlert("danger", "You have not created a <strong> single Entity. </strong>");
+    }
+    if (entity.length < 4) {
+        showAndDismissAlert("warning", "You do not have<strong> enough entities </strong>to proceed. Consider searching for more data.");
+    }
+    if (proceed) {
+        var cogCounter = 0;
+        for (var x = 0; x < entity.length; x++) {
+            var entityObject;
+            var entityExcerptId = [];
+            for (var y = 0; y < entity[x].excrList.length; y++) {
+                entityExcerptId.push(entity[x].excrList[y].id);
+            }
+            if (entity[x].acce == -1 && entity[x].reco == -1)
+                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList)), reco: calculateRecognizability(entity[x].excrList)};
+            else {
+                entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: entity[x].acce, reco: entity[x].reco};
+            }
+            entityArr.push(entityObject);
+
+            if (entityObject.classID == 2)
+                cogCounter++;
+        }
+        if (cogCounter > 0) {
+            var cog = $('#cogSelect').val();
+            for (var x = 0; x < entityArr.length; x++) {
+                if (entityArr[x].id != cog && entityArr[x].classID == 2)
+                    entityArr.splice(x, 1);
+            }
+        }
+        console.log(entityArr);
+        $.ajax({//The Super AJAX
+            type: "GET",
+            url: "Save2PCO",
+            data: {
+                missionID: missionID,
+                entityArr: toJSON(entityArr)
+            },
+            async: false,
+            success: function (response) {
+
+                duplicateCOGs.forEach(function (cog) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DuplicateMission",
+                        data: {
+                            missionID: missionID,
+                            missionTitle: cog.missionTitle
+                        },
+                        async: false,
+                        success: function (response) {
+                            console.log(response);
+                            $.ajax({
+                                type: "GET",
+                                url: "Save2PCO",
+                                data: {
+                                    missionID: response.missionID,
+                                    entityArr: toJSON(cog.duplicateEntityArr)
+                                },
+                                async: false
+                            });
+                        }
+                    });
+                });
+                showAndDismissAlert("success", "<strong>Characteristics Overlay</strong> has been <strong>saved.</strong>");
+                window.location.assign("ANMission3COG");
+            }
+        });
+    }
 }

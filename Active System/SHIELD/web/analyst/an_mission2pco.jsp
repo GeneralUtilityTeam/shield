@@ -457,7 +457,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success"
-                                data-dismiss="modal" onclick="setCOGforMission()">Confirm
+                                data-dismiss="modal" onclick="setMissionCOG()">Confirm
                         </button>
                         <button type="button" class="btn btn-default"
                                 data-dismiss="modal">Cancel
