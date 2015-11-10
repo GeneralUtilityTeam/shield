@@ -1193,7 +1193,7 @@ function savePCO() {
             }
             if (entity[x].acce == -1 && entity[x].reco == -1)
                 entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList)), reco: calculateRecognizability(entity[x].excrList)};
-            else {
+            else {  
                 entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: entity[x].acce, reco: entity[x].reco};
             }
             entityArr.push(entityObject);

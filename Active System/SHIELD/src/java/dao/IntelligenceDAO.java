@@ -70,12 +70,14 @@ public class IntelligenceDAO {
                 do {
                     Source src = new Source();
                     src.setId(rs.getInt(1));
-                    src.setClassID(rs.getInt(2));
-                    src.setClassDesc(rs.getString(3));
-                    src.setTitle(rs.getString(4));
-                    src.setDesc(rs.getString(5));
-                    src.setPublished(rs.getDate(6));
-                    src.setEncoded(rs.getDate(7));
+                    src.setUpdated(!(rs.getBoolean(2)));
+                    src.setClassID(rs.getInt(3));
+                    src.setClassDesc(rs.getString(4));
+                    src.setTitle(rs.getString(5));
+                    src.setVersion(rs.getInt(6));
+                    src.setDesc(rs.getString(7));
+                    src.setPublished(rs.getDate(8));
+                    src.setEncoded(rs.getDate(9));
 
                     srcList.add(src);
                 } while (rs.next());
