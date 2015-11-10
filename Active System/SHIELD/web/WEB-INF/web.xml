@@ -236,6 +236,10 @@
         <servlet-name>DuplicateMission</servlet-name>
         <servlet-class>servlet.ajax.DuplicateMission</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReviseSource</servlet-name>
+        <servlet-class>servlet.ajax.ReviseSource</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -471,6 +475,10 @@
     <servlet-mapping>
         <servlet-name>DuplicateMission</servlet-name>
         <url-pattern>/DuplicateMission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReviseSource</servlet-name>
+        <url-pattern>/ReviseSource</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

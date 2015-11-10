@@ -30,6 +30,7 @@ $(document).ready(function () {
         },
         success: function (responseJSON) {
             entity = responseJSON;
+            console.log(entity);
             initialize();
         }
     });
@@ -1200,7 +1201,7 @@ function savePCO() {
             if (entityObject.classID == 2)
                 cogCounter++;
         }
-        if (cogCounter > 0) {
+        if (cogCounter > 1) {
             var cog = $('#cogSelect').val();
             for (var x = 0; x < entityArr.length; x++) {
                 if (entityArr[x].id != cog && entityArr[x].classID == 2)
