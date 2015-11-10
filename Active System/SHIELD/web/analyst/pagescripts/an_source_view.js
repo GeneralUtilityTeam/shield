@@ -4,6 +4,7 @@ var area;
 var latLng;
 var switchString; //boolean; true if a string was used, false if a click was used
 var excrTable;
+var versionExcrTable;
 var srcTable;
 var map;
 var marker;
@@ -35,16 +36,25 @@ function initialize() {
         option.setAttribute("value", conf.id);
         sourceDropdown.appendChild(option);
     });
-    
+
     document.getElementById("source-type").value = srcJSON.classID;
     document.getElementById("source-name").value = srcJSON.title;
     document.getElementById("source-description").value = srcJSON.desc;
     document.getElementById("source-date").value = srcJSON.published;
+
+
     $('#src-table').on('click', 'tr', function () {
         $('#updateSource').modal('show');
     });
 
     //End of update source
+
+    //Add Version of Source
+
+    document.getElementById("version-source-type").value = toTitleCase(srcJSON.classDesc);
+    document.getElementById("version-source-name").value = srcJSON.title;
+    document.getElementById("version-source-description").value = srcJSON.desc;
+    document.getElementById("version-source-date").value = srcJSON.published;
 
     if (map == null) {
         var latlng = new google.maps.LatLng(14.5800, 121.000)
@@ -98,6 +108,36 @@ $(document).ready(function () {
     $('#src-excerpts tbody').on('click', 'tr', function () {
         var data = excrTable.row(this).data();
         viewExcerpt(data.id);
+    });
+
+    versionExcrTable = $('#version-src-excerpts').DataTable({
+        "ajax": {
+            "url": "GetExcerptOfSource",
+            "dataSrc": ""
+        },
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "columns": [
+            {"data": "id"},
+            {"data": "categoryDesc"},
+            {"data": "text"},
+            {"data": "id"}
+        ],
+        "columnDefs": [
+            {
+                "render": function (data, type, row) {
+                    return toTitleCase(data);
+                },
+                "targets": 1
+            }
+        ],
+        "fnRowCallback": function (nRow, data) {
+            /* Turn the fourt row -- progress -- into a progressbar with bootstrap */
+
+            checkBox = '<input type="checkbox" id="check' + data.id + '" style="display: block;   margin-left: auto;   margin-right: auto;">';
+
+            $('td:eq(3)', nRow).html(checkBox);
+            return nRow;
+        }
     });
 });
 
@@ -246,6 +286,7 @@ function saveExcerpt() {
 
                 showAndDismissAlert("success", "<strong>New Excerpt</strong> has been <strong>added.</strong>");
                 excrTable.ajax.reload();
+                versionExcrTable.ajax.reload();
             }
         });
     }
@@ -296,6 +337,7 @@ function updateExcerpt() {
 
                 showAndDismissAlert("success", "<strong>Excerpt</strong> has been <strong>updated.</strong>");
                 excrTable.ajax.reload();
+                versionExcrTable.ajax.reload();
             }
         });
     }
@@ -338,19 +380,59 @@ function saveSource() {
                 srcTable.innerHTML = "";
                 var row = srcTable.insertRow(0);
                 var srcType = row.insertCell(0);
-                for(var x = 0; x < clssJSON.length; x++){
-                    if(clssJSON[x].id == sourceClass){
+                for (var x = 0; x < clssJSON.length; x++) {
+                    if (clssJSON[x].id == sourceClass) {
                         srcType.innerHTML = toTitleCase(clssJSON[x].valueText);
                         break;
                     }
                 }
-                
+
                 var srcName = row.insertCell(1);
                 srcName.innerHTML = sourceName;
                 var srcDesc = row.insertCell(2);
                 srcDesc.innerHTML = sourceDesc;
                 var srcDatePub = row.insertCell(3);
                 srcDatePub.innerHTML = sourceDate;
+            }
+        });
+    }
+}
+
+function saveVersion() {
+    var proceed = true;
+    var sourceDesc = document.getElementById("version-source-description").value;
+    var sourceDate = document.getElementById("version-source-date").value;
+    var versionExcr = [];
+
+    versionExcrTable
+            .column(0)
+            .data()
+            .each(function (value, index) {
+                if ($('#check' + value).prop('checked') == true)
+                    versionExcr.push(value);
+            });
+    if (checkIfEmpty(sourceDesc)) {
+        showAndDismissAlert("danger", "Please input <strong>source description</strong>");
+        proceed = false;
+    }
+
+    if (sourceDate == null) {
+        showAndDismissAlert("danger", "Please input <strong>source date</strong>");
+        proceed = false;
+    }
+    if (proceed) {
+        $.ajax({
+            type: "GET",
+            url: "ReviseSource",
+            data: {
+                sourceID: srcJSON.id,
+                desc: sourceDesc,
+                published: sourceDate,
+                excrArr: toJSON(versionExcr)
+            },
+            success: function (response) {
+                showAndDismissAlert("success", "<strong>New Version</strong> has been <strong>added.</strong>");
+                window.location.assign("ANSourceView?id=" + response.id);
             }
         });
     }

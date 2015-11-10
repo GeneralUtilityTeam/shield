@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -149,6 +150,37 @@ public class IntelligenceDAO {
         return false;
     }
 
+    public int ReviseSource (int editorID, int sourceID, String desc, Date published, ArrayList<Excerpt> excrList){
+        try {
+            DBConnector db = new DBConnector();
+            Connection cn = db.getConnection();
+
+            PreparedStatement pstmt = cn.prepareStatement("CALL `shield`.`disable_source`(?, ?, ?);");
+
+            pstmt.setInt(1, sourceID);
+            pstmt.setString(2, desc);
+            pstmt.setDate(3, new java.sql.Date(published.getTime()));
+
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getRow() != 0) {
+                int newID = rs.getInt(1);
+                
+                for(Excerpt excr : excrList){
+                    excr.setSourceID(newID);
+                    AddExcerpt(editorID, excr);
+                }
+                return newID;
+            } else {
+                cn.close();
+                return -1;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MissionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="----- EXCERPTS">
 
