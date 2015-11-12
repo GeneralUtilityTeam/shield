@@ -35,17 +35,7 @@ $(document).ready(function () {
                 },
                 "targets": 0
             }
-        ],
-        "fnRowCallback": function (nRow, data) {
-            /* Turn the fourt row -- progress -- into a progressbar with bootstrap */
-            if (data.version == 1)
-                srcName = '<label style="font-weight:500;">'+toTitleCase(data.title)+'</label>';
-            else {
-                srcName = '<label style="font-weight:500;">'+toTitleCase(data.title) + ' v' + data.version+'</label>';
-            }
-            $('td:eq(1)', nRow).html(srcName);
-            return nRow;
-        }
+        ]
     });
     $('#source-table tbody').on('click', 'tr', function () {
         var data = table.row(this).data();
