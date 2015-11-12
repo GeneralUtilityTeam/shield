@@ -60,7 +60,11 @@ function buildCarver() {
 
         //Panel Collapse
         var panelCollapse = document.createElement("div");
-        panelCollapse.className = "panel-collapse collapse";
+        if (x == 0)
+            panelCollapse.className = "panel-collapse collapse in";
+        else {
+            panelCollapse.className = "panel-collapse collapse";
+        }
         panelCollapse.id = "collapse" + id;
 
         //Panel Body

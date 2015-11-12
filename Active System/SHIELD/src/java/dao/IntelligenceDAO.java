@@ -45,7 +45,7 @@ public class IntelligenceDAO {
                 src.setDesc(rs.getString(4));
                 src.setPublished(rs.getDate(5));
                 src.setEncoded(rs.getDate(6));
-
+                src.setVersion(rs.getInt(7));
                 cn.close();
                 return src;
             }

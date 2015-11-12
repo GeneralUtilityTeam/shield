@@ -44,6 +44,9 @@
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
             var login = '<%=session.getAttribute("login")%>';
+            $(window).load(function () {
+                $('#tipModal').modal('show');
+            });
         </script>
 
         <style>
@@ -106,6 +109,34 @@
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Tip Modal -->
+        <div class="modal fade in" id="tipModal" tabindex="-1" role="dialog" 
+             aria-labelledby="tipModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Tip! 
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        <label style="font-weight:500;"> - <strong>Each PsyOps Objective</strong> requires at least <strong>two (2) Supporting POs</strong> (Supporting PsyOps Objective)</label> 
+                        <label style="font-weight:500;"> - A <strong>red box</strong> signifies that the value is <strong>low</strong> and is <strong>not recommended</strong> to be used as reference.</label> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
         </div>
 
         <!--Sliding Side Bar Menu-->

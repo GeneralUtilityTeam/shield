@@ -1041,7 +1041,7 @@ function generateCOGModal() {
     var modalBody = $('#cog-select');
     modalBody.empty();
     var label = document.createElement("label");
-    label.innerHTML = "You have multiple Centers of Gravity. Please choose one Center of Gravity for this Mission. <br>";
+    label.innerHTML = "You have multiple Centers of Gravity. Please choose one Center of Gravity for this Mission: " + missionTitle + ". <br>";
     var select = document.createElement("select");
     select.id = "cogSelect";
     select.style.textAlign = "center";
@@ -1055,7 +1055,7 @@ function generateCOGModal() {
     }
     var cogList = document.createElement("div");
     var label2 = document.createElement("label");
-    label2.innerHTML = "<br>A duplicate Mission will be created for each Center of Gravity. Please input Mission Title for each.";
+    label2.innerHTML = "<br>A new Mission that has the same Mission Details will be created for each Center of Gravity. Please input Mission Title for each. If you don't want to create a new mission for the Center of Gravity, leave the Mission Title Field blank.";
     cogList.appendChild(label2);
     var table = document.createElement("table");
     table.style.width = "100%";
@@ -1098,7 +1098,7 @@ function generateCOGModal() {
         onChange: function (option, checked, select) {
             cogList.innerHTML = "";
             var label2 = document.createElement("label");
-            label2.innerHTML = "<br>A duplicate Mission will be created for each Center of Gravity. Please input Mission Title for each.";
+            label2.innerHTML = "<br>A new Mission that has the same Mission Details will be created for each Center of Gravity. Please input Mission Title for each. If you don't want to create a new mission for the Center of Gravity, leave the Mission Title Field blank.";
             cogList.appendChild(label2);
             var table = document.createElement("table");
             table.style.width = "100%";
@@ -1137,7 +1137,6 @@ function generateCOGModal() {
 
 function setMissionCOG() {
     var cog = $('#cogSelect').val();
-    alert(cog);
     duplicateCOGs = [];
     var cogArr = [];
     for (var x = 0; x < entity.length; x++) {
@@ -1148,7 +1147,7 @@ function setMissionCOG() {
 
     for (var x = 0; x < cogArr.length; x++) {
         if (cogArr[x].id != cog) {
-            
+
             var duplicateEntityArr = [];
             for (var z = 0; z < entity.length; z++) {
                 var entityObject;
@@ -1161,14 +1160,16 @@ function setMissionCOG() {
                 else {
                     entityObject = {id: entity[z].id, name: entity[z].name, classID: entity[z].classID, excrList: entityExcerptId, acce: entity[z].acce, reco: entity[z].reco};
                 }
-                if(entityObject.classID != 2 || entityObject.id == cogArr[x].id)
-                duplicateEntityArr.push(entityObject);
+                if (entityObject.classID != 2 || entityObject.id == cogArr[x].id)
+                    duplicateEntityArr.push(entityObject);
 
             }
 
             var missionTitle = $('#duplicateCOG' + cogArr[x].id).val();
-            var duplicateCOG = {duplicateEntityArr: duplicateEntityArr, missionTitle: missionTitle};
-            duplicateCOGs.push(duplicateCOG);
+            if (!checkIfEmpty(missionTitle)) {
+                var duplicateCOG = {duplicateEntityArr: duplicateEntityArr, missionTitle: missionTitle};
+                duplicateCOGs.push(duplicateCOG);
+            }
         }
     }
     savePCO();
@@ -1193,7 +1194,7 @@ function savePCO() {
             }
             if (entity[x].acce == -1 && entity[x].reco == -1)
                 entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: calculateAccessibility(calculateDistance(entity[x], entity[x].excrList)), reco: calculateRecognizability(entity[x].excrList)};
-            else {  
+            else {
                 entityObject = {id: entity[x].id, name: entity[x].name, classID: entity[x].classID, excrList: entityExcerptId, acce: entity[x].acce, reco: entity[x].reco};
             }
             entityArr.push(entityObject);

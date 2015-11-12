@@ -131,7 +131,7 @@
         </div>
 
         <!-- Tip Modal -->
-        <div class="modal" id="tipModal" tabindex="-1" role="dialog" 
+        <div class="modal fade in" id="tipModal" tabindex="-1" role="dialog" 
              aria-labelledby="tipModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content" >

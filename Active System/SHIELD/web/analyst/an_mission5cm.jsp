@@ -28,7 +28,7 @@
 
         <!--Map Script-->
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing,geometry,places&ext=.js"></script>
-        
+
         <!--Page Script-->
         <script src="analyst/pagescripts/an_mission5cm.js"></script>
         <script src="js/mission-menu-builder.js"></script>
@@ -40,6 +40,9 @@
             var analystName = '<%=session.getAttribute("analystName")%>';
             var userFullName = '<%=session.getAttribute("userFullName")%>';
             var login = '<%=session.getAttribute("login")%>';
+            $(window).load(function () {
+                $('#tipModal').modal('show');
+            });
         </script>
 
         <style>
@@ -91,7 +94,33 @@
             </div>
         </div>
 
-        <!--Sliding Side Bar Menu-->
+        <!-- Tip Modal -->
+        <div class="modal fade in" id="tipModal" tabindex="-1" role="dialog" 
+             aria-labelledby="tipModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="entityModalLabel">
+                            Tip! 
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="view-modal-body" style="overflow: auto; padding-left: 10%; padding-right: 10%;">
+                        <label style="font-weight: 500;">Suggested values are provided for <strong>Accessibility</strong> and <strong>Recognizability.</strong> </label> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Close
+                        </button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+
         <!--Sliding Side Bar Menu-->
         <div id="slidingmenu" style="width: 22vw;">
             <h5 style="text-align: center;"><b>Threat Course of Action</b></h5>

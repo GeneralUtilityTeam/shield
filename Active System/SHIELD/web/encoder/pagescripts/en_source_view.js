@@ -8,7 +8,12 @@ function initialize() {
     var srcType = row.insertCell(0);
     srcType.innerHTML = toTitleCase(srcJSON.classDesc);
     var srcName = row.insertCell(1);
-    srcName.innerHTML = srcJSON.title;
+    if (srcJSON.version <= 1) {
+        srcName.innerHTML = srcJSON.title;
+    }
+    else {
+        srcName.innerHTML = srcJSON.title + ' v' + srcJSON.version;
+    }
     var srcDesc = row.insertCell(2);
     srcDesc.innerHTML = srcJSON.desc;
     var srcDatePub = row.insertCell(3);
